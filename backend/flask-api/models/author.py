@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from backend.db import db
+from db import db
 from flask import g, current_app
 
 class AuthorModel(db.Model):
-    __tablename__ = 'author'
+    __tablename__ = 'authors'
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
     birth_date = db.Column(db.Date(), primary_key=True, unique=False, nullable=False)
