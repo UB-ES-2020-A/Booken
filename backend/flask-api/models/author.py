@@ -7,7 +7,7 @@ class AuthorModel(db.Model):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
-    birth_date = db.Column(db.Date(), primary_key=True, unique=False, nullable=False)
+    birth_date = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
     city = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
     country = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
 
