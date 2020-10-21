@@ -1,5 +1,5 @@
 <template>
-    <Front/>
+  <Front/>
 </template>
 
 <script>
