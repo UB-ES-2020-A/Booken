@@ -82,6 +82,61 @@
         </ul>
       </div>
     </nav>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recommended books Recommended books Recommended books</p>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <h6>Sobre booken</h6>
+            <p class="text-justify">Librería virtual de habla hispana que brinda información y hace envíos a los cinco
+              continentes, garantizando un gran
+              fondo bibliográfico apoyado por la experiencia de expertos libreros y expertos en internet desde hace más
+              de una década.</p>
+
+            <p>booken permite registrase y acceder tanto a empresas como usuarios a infinidad de posibilidades,
+              con el fin de conseguir el libro que se necesita. Se ha creado así una gran comunidad lectora, alrededor
+              nuestro. Somos tu librero en Internet.
+            </p>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>AYUDA</h6>
+            <ul class="footer-links">
+              <li><a href="http://scanfcode.com/category/c-language/">Contacto</a></li>
+              <li><a href="http://scanfcode.com/category/c-language/">Preguntas frecuentes</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Información legal</h6>
+            <ul class="footer-links">
+              <li><a href="https://pdfhost.io/v/eKtsS3QVL_Privacy_Policy.pdf">Condiciones de uso</a></li>
+              <li><a href="https://pastebin.com/7Xfv3tkY">Política de devoluciones</a></li>
+              <li><a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">Política de protección de datos</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <p class="copyright-text" style="color: white">Copyright &copy; {{ this.getYear() }}
+              <a href="#" style="font-family: LogoFont; font-size: 1.45em; color: #2bc4ed">booken</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -94,6 +149,10 @@ export default {
   data() {
     return {
       loggedIn: false
+    }
+  }, methods: {
+    getYear() {
+      return new Date().getFullYear()
     }
   }
 }
@@ -122,74 +181,94 @@ export default {
   font-size: 3.3em;
   letter-spacing: 0.1em;
 }
-.footer {
-  max-width: 1280px;
-  margin: auto;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-around;
 
-  flex-wrap: wrap;
+.site-footer {
   background-color: #3b494d;
-  color: aliceblue;
-  font-size: 14px;
-  padding: 60px 20px 20px 20px;
-  min-height: 400px;
-  position: relative;
+  padding: 45px 0 20px;
+  font-size: 15px;
+  line-height: 24px;
+  color: #737373;
 }
 
-.footerContainer > *:last-child {
-  margin-bottom: 0;
+.site-footer hr {
+  border-top-color: #bbb;
+  opacity: 0.5
+}
+
+.site-footer hr.small {
+  margin: 20px 0
+}
+
+.site-footer h6 {
   color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 5px;
+  letter-spacing: 2px
 }
 
-.footer1,
-.footer2,
-.footer3,
-.footer4 {
-  min-width: 250px;
-  margin-bottom: 20px;
-  flex-basis: 25%;
-  text-align: left;
-  padding-left: 50px;
-}
-.footer1 ul,
-.footer2 ul,
-.footer3 ul,
-.footer4 ul {
-  list-style-type: none;
-  padding: 0;
+.site-footer a {
+  color: #737373;
 }
 
-.footer1 ul li a,
-.footer2 ul li a,
-.footer3 ul li a,
-.footer4 ul li a {
+.site-footer a:hover {
+  color: #3366cc;
   text-decoration: none;
 }
 
-.footerContainer hr {
-  border: none;
-  background: #b5b5b5;
-  height: 1px;
-  margin: 20px 0;
+.footer-links {
+  padding-left: 0;
+  list-style: none
 }
 
-.footer .copyright {
-  text-align: center;
+.footer-links li {
+  display: block
 }
 
-.footer1 ul li a:hover,
-.footer2 ul li a:hover,
-.footer3 ul li a:hover,
-.footer4 ul li a:hover {
-  color: #8a8a8a;
+.footer-links a {
+  color: #737373
 }
 
-.footer1 ul li a,
-.footer2 ul li a,
-.footer3 ul li a,
-.footer4 ul li a {
-  color: aliceblue;
+.footer-links a:active, .footer-links a:focus, .footer-links a:hover {
+  color: #3366cc;
+  text-decoration: none;
+}
+
+.footer-links.inline li {
+  display: inline-block
+}
+
+.site-footer .social-icons {
+  text-align: right
+}
+
+.site-footer .social-icons a {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 6px;
+  margin-right: 0;
+  border-radius: 100%;
+  background-color: #33353d
+}
+
+.copyright-text {
+  margin: 0
+}
+
+@media (max-width: 991px) {
+  .site-footer [class^=col-] {
+    margin-bottom: 30px
+  }
+}
+
+@media (max-width: 767px) {
+  .site-footer {
+    padding-bottom: 0
+  }
+
+  .site-footer .copyright-text, .site-footer .social-icons {
+    text-align: center
+  }
 }
 </style>
