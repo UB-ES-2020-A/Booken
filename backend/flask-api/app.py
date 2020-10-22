@@ -9,7 +9,8 @@ from flask_cors import CORS
 from models.accounts import AccountModel
 
 #resourcers
-from resources.account_rs import Account, Accounts
+from resources.account_rs import *
+from resources.login_rs import *
 
 from db import db
 
@@ -33,10 +34,12 @@ db.init_app(app)
 api.add_resource(Account, '/account/<string:username>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
+api.add_resource(Login, '/login/')
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
