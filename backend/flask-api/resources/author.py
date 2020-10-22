@@ -7,7 +7,10 @@ class Author(Resource):
 
     def get(self, id):
         author = AuthorModel.find_by_id(id)
-        return {'author': author.json()}, 200 if author else 404
+        if (author!=None):
+            return {'author': author.json()}
+        else:
+            return {'message': "Author with id [{}] Not found".format(id)}, 409
 
     def post(self, id=None):
         # Create a new author with the data passed to us.
@@ -21,7 +24,6 @@ class Author(Resource):
         data = parser.parse_args()
 
         new_id = { 'id': AuthorModel.num_authors()}
-        print("id",new_id)
         if (id != None):
             # If they passed an id, find out if already exists
             exists = AuthorModel.find_by_id(id)
@@ -32,7 +34,6 @@ class Author(Resource):
 
         # The ID is the following to the last one
         new_author = AuthorModel(new_id['id'], data.name, data.birth_date, data.city, data.country)
-        print(new_id['id'], data.name, data.birth_date, data.city, data.country)
         new_author.save_to_db()
         return {'message': "OK"}, 201
 
