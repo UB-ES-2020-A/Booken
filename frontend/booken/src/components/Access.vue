@@ -11,7 +11,7 @@
     <p>Recommended books Recommended books Recommended books Recommended books</p>
     <p>Recommended books Recommended books Recommended books Recommended books</p>
     <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
+    <p>Recommended books Recomasdasfdsjfgosdhnflkdsnflmended books Recommended books Recommended books</p>
     <p>Recommended books Recommended books Recommended books Recommended books</p>
     <p>Recommended books Recommended books Recommended books Recommended books</p>
     <p>Recommended books Recommended books Recommended books Recommended books</p>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'Front',
+  name: 'Access',
   props: {
     msg: String
   },
