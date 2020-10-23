@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 
 class Account(Resource):
     #Get: Returns the account information
@@ -21,8 +21,7 @@ class Account(Resource):
 
         data = parser.parse_args()
         account = AccountModel(data['username'])
-        #account.hash_password(data['password'])
-        account.password = data['password']  #provisional
+        account.hash_password(data['password'])
 
         try:
             account.save_to_db()
