@@ -45,6 +45,7 @@ api.add_resource(BookArtist, '/book/<int:id>/author')
 api.add_resource(Author, '/author/<int:id>', '/author')
 api.add_resource(AuthorList, '/authors')
 
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
