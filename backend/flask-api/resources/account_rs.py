@@ -4,8 +4,8 @@ from models.accounts import AccountModel, auth
 
 class Account(Resource):
     #Get: Returns the account information
-    def get(self, username):
-        account = AccountModel.find_by_username(username)
+    def get(self, email):
+        account = AccountModel.find_by_email(email)
         if(account != None):
             return {"account": account.json()}, 200
         else:
@@ -16,12 +16,13 @@ class Account(Resource):
         parser = reqparse.RequestParser()
 
         #define the input parameters need and its type
-        parser.add_argument('username', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('name', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blanck")
         parser.add_argument('password', required=True, type=str, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-        account = AccountModel(data['username'])
-        account.hash_password(data['password'])
+        account = AccountModel(data['email'],data['name'],data['lastname'],data['password'])
 
         try:
             account.save_to_db()
@@ -30,16 +31,17 @@ class Account(Resource):
             return{"Message": "Coudln't save changes"}, 500
 
     #Delete: Deletes an account from the database
-    def delete(self, username):
-        account = AccountModel.find_by_username(username)
+    def delete(self, email):
+        account = AccountModel.find_by_email(email)
         if(account==None):
-            return{'Message':'Account with username [{}] not found'.format(username)}, 404
+            return{'Message':'Account with email [{}] not found'.format(email)}, 404
 
         #TODO: remove orders as well
+        #TODO: remove wish list as well
 
         account.delete_from_db()
 
-        return{'Message':'Account with username[{}] deleted correctly'.format(username)}, 200
+        return{'Message':'Account with email[{}] deleted correctly'.format(email)}, 200
 
 class Accounts(Resource):
     def get(self):

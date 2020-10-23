@@ -11,23 +11,32 @@ auth = HTTPBasicAuth()
 class AccountModel(db.Model):
     __tablename__ = 'accounts'
 
-    username = db.Column(db.String(30), primary_key = True, unique = True, nullable = False)
+    email = db.Column(db.String(30), primary_key = True, unique = True, nullable = False)
+
+    name = db.Column(db.String(), nullable=False)
+    lastname = db.Column(db.String(), nullable=False)
+
     password = db.Column(db.String(), nullable = False)
 
     type = db.Column(db.Integer, nullable = False) # 0 = client / 1 = develop-manager / 2 = stock-manager
     available_money = db.Column(db.Integer)
 
     #orders = db.relationship('OrdersModel', backref='orders, lazy = True)
+    #wish_list = db.relationship('BookModel', backref='books', lazy = True)
 
-    def __init__(self, username, available_money = 250, type = 0):
-        self.username = username
-        self.available_money = available_money
-        self.type = type
-        #self.password = "test"
+    def __init__(self, email, name, lastname, password):
+        self.email = email
+        self.name = name
+        self.lastname = lastname
+        self.hash_password(password)
+        self.type = 0
+        self.available_money = 0
 
     def json(self):
         body = {
-            'username': self.username,
+            'name': self.name,
+            'lastname': self.lastname,
+            'email': self.email,
             'available_money': self.available_money,
             'type': self.type
         }
@@ -43,8 +52,8 @@ class AccountModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_username(self, username):
-        return self.query.filter_by(username=username).first()
+    def find_by_email(self, email):
+        return self.query.filter_by(email=email).first()
 
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)
@@ -54,7 +63,7 @@ class AccountModel(db.Model):
 
     def generate_auth_token(self, expiration = 600):
         s = Serializer(secret_key, expires_in=expiration)
-        return s.dumps({'username':self.username})
+        return s.dumps({'email':self.email})
 
     @classmethod
     def verify_auth_token(cls, token):
@@ -66,15 +75,15 @@ class AccountModel(db.Model):
         except BadSignature:
             return None
 
-        user = cls.query.filter_by(username=data['username']).first()
+        user = cls.query.filter_by(email=data['email']).first()
 
         return user
 
 
 @auth.verify_password
-def verify_password(username, token):
+def verify_password(email, token):
     user = AccountModel.verify_auth_token(token)
-    if(user and user.username == username):
+    if(user and user.email == email):
         g.user = user
         return user
 
