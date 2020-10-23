@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="background-color:#2bc4ed !important;">
       <a class="navbar-brand mainlogo ml-5" href="#">booken<span class="badge badge-light"
@@ -101,8 +101,8 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-              <li><a href="http://scanfcode.com/category/c-language/">Contacto</a></li>
-              <li><a href="http://scanfcode.com/category/c-language/">Preguntas frecuentes</a></li>
+              <li><a href="">Contacto</a></li>
+              <li><a href="">Preguntas frecuentes</a></li>
             </ul>
           </div>
 
@@ -188,7 +188,7 @@ export default {
 }
 
 .site-footer {
-  background-color: #3b494d;
+  background-color: #292b2c;
   padding: 45px 0 20px;
   font-size: 15px;
   line-height: 24px;
