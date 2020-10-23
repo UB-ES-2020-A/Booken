@@ -3,21 +3,41 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
-
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recomasdasfdsjfgosdhnflkdsnflmended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-    <p>Recommended books Recommended books Recommended books Recommended books</p>
-
-
+    <div class="logincontainer" id="loginform">
+      <div class="loginform">
+        <div class="card" style="background-color: #3b494d">
+          <h2 style="margin-top: 2rem; color: white">Iniciar sesión</h2>
+          <form>
+            <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
+              <div class="input-group" style="margin-left: 10%;">
+                <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
+                ><i class="fas fa-envelope" style="color: white"></i> </span>
+                <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="email"
+                       v-model="email">
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+              <div class="input-group" style="margin-left: 10%;">
+                <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
+                  <i class="fa fa-lock" style="color: white"></i> </span>
+                <input class="form-control" placeholder="Contraseña" type="password" id="password" v-model="password">
+              </div>
+            </div>
+          </form>
+          <button class="btn my-2 my-sm-0" style="background-color: #2bc4ed; color: white; border-radius: 0 !important; margin: 0 !important;margin-top: 2rem !important" type="submit"
+          ><b>Acceder</b>
+          </button>
+          <button class="btn my-2 my-sm-0" style="background-color: #328399; color: white; border-radius: 0 !important; margin: 0 !important" type="submit"
+          ><b>Volver a página principal</b>
+          </button>
+          <button class="btn my-2 my-sm-0" style="background-color: #7caca4; color: white; border-radius: 0 !important; margin: 0 !important" type="submit"
+          ><b>¿No tienes cuenta? ¡Créate una!</b>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,7 +49,9 @@ export default {
   },
   data() {
     return {
-      loggedIn: false
+      loggedIn: false,
+      email: '',
+      password: ''
     }
   }, methods: {
     getYear() {
@@ -41,6 +63,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.loginform {
+  margin: 0 auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.logincontainer {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
 @font-face {
   font-family: 'LogoFont';
   src: url('../assets/logo_font.woff')
