@@ -10,12 +10,12 @@ class Login(Resource):
         parser = reqparse.RequestParser()  # create parameters parser from request
 
         # define the input parameters need and its type
-        parser.add_argument('username', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blanck")
         parser.add_argument('password', required=True, type=str, help="This field cannot be left blanck")
 
         data = parser.parse_args()
 
-        account = AccountModel.find_by_username(data["username"])
+        account = AccountModel.find_by_email(data["email"])
 
         if (account != None):
             if (account.verify_password(data["password"])):
@@ -24,4 +24,4 @@ class Login(Resource):
             else:
                 return {'message': "Password is invalid"}, 400
         else:
-            return {'message': "Account with username [{}] Not found".format(data["username"])}, 404
+            return {'message': "Account with email [{}] Not found".format(data["email"])}, 404
