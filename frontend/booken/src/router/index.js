@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Front from "../components/Front.vue"
 import Access from "../components/Access.vue"
+import BookInfo from "../components/BookInfo.vue"
 const routes = [
   {
     path: "/",
@@ -11,6 +12,11 @@ const routes = [
     path: "/access",
     name: "Access",
     component: Access,
+  },
+  {
+    path: "/book_info",
+    name: "BookInfo",
+    component: BookInfo,
   },
 ];
 

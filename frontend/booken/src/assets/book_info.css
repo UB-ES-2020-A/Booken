@@ -1,0 +1,15 @@
+.sel-picture {
+  width: 80px;
+  cursor: pointer;
+  margin: 10px;
+  border: 4px double grey;
+}
+
+.sel-picture:hover {
+  transform: scale(1.1);
+}
+
+#displayPic {
+  width: 350px;
+  height: 350px;
+}
