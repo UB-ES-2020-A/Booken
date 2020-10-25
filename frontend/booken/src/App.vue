@@ -104,7 +104,7 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-              <li><a href="">Contacto</a></li>
+              <li><router-link to="/contact">Contact</router-link></li>
               <li><router-link to="/location">Location</router-link></li>
               <li><a href="">Preguntas frecuentes</a></li>
 

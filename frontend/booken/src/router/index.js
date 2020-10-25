@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Front from "../components/Front.vue"
 import Access from "../components/Access.vue"
 import Location from "../components/Location.vue";
+import Contact from "../components/Contact";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/location",
     name: "Location",
     component: Location,
+  },
+    {
+    path: "/contact",
+    name: "Contact",
+    component: Contact,
   },
 ];
 
