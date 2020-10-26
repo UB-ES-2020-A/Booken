@@ -10,30 +10,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <h1>Contact</h1>
+    <h1>Contacto</h1>
     <form>
       <div class="form-group">
         <label for="exampleFormControlInput1">Nombre y apellido</label>
         <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Name Surname">
       </div>
       <div class="form-group">
-        <label for="exampleFormControlInput2">Email address</label>
+        <label for="exampleFormControlInput2">Correo electrónico</label>
         <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="name@example.com">
       </div>
       <div class="form-group">
-        <label for="exampleFormControlInput3">Contact number</label>
+        <label for="exampleFormControlInput3">Teléfono de contacto</label>
         <input type="number" class="form-control" id="exampleFormControlInput3" placeholder="">
       </div>
 
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">Issue</label>
+        <label for="exampleFormControlTextarea1">Consulta</label>
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
       </div>
       <div class="form-group row">
           <div class="form-check" style="margin-top: 30px">
             <input class="form-check-input" type="checkbox" id="gridCheck1">
             <label class="form-check-label" for="gridCheck1">
-              I have read and accept <a href="#">the policy of privacy</a>
+              He leído y acepto <a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">la política de privacidad</a>
             </label>
           </div>
         </div>
