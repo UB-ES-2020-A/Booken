@@ -41,7 +41,7 @@
               </button>
             </li>
             <li class="nav-item">
-              <button class="btn my-2 my-sm-0 mr-5" style="background-color: #3b494d" type="submit">
+              <button class="btn my-2 my-sm-0 mr-5" @click="goShoppingCart()" style="background-color: #3b494d" type="submit">
                 <i class="fas fa-shopping-basket" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Cesta</a>
               </button>
@@ -151,6 +151,9 @@ export default {
     },
     goToAccess() {
       this.$router.push({path: '/access', query: {logged: this.loggedIn}})
+    },
+    goShoppingCart() {
+      this.$router.push({path: '/shoppingcart', query: {logged: this.loggedIn}})
     }
   }
 }
