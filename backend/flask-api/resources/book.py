@@ -39,7 +39,7 @@ class Book(Resource):
                                  data.get('author_city'), data.get('author_country'))
         new_book = BookModel(data.get('id'), data.get('name'), [new_Author], data.get('genre'), data.get('year'),
                              data.get('editorial'), data.get('language'), data.get('price'), data.get('synopsis'),
-                             data.get('num_sales'))
+                             data.get('num_sales'), data.get('total_available'))
         new_book.save_to_db()
         return new_book.json(), 200
 
@@ -62,7 +62,7 @@ class Book(Resource):
                                  data.get('author_city'), data.get('author_country'))
         new_book = BookModel(data.get('id'), data.get('name'), [new_Author], data.get('genre'), data.get('year'),
                              data.get('editorial'), data.get('language'),data.get('price'), data.get('synopsis'),
-                             data.get('num_sales'))
+                             data.get('num_sales'), data. get('total_available'))
         new_book.save_to_db()
         return new_book.json(), 200
 
@@ -85,4 +85,6 @@ class Book(Resource):
         parser.add_argument('price', type=str, required=True, help="Operation not valid: 'price' not provided")
         parser.add_argument('synopsis', type=str, required=True, help="Operation not valid: 'synopsis' not provided")
         parser.add_argument('num_sales', type=str, required=True, help="Operation not valid: 'num_sales' not provided")
+        parser.add_argument('total_available', type=str, required=True, help="Operation not valid: "
+                                                                             "'total_available' not provided")
         return parser.parse_args()

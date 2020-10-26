@@ -20,8 +20,9 @@ class BookModel(db.Model):
     synopsis = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     num_sales = db.Column(db.Integer, nullable=False)
+    total_available = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, name, author, genre, year, editorial, language, price, synopsis, num_sales):
+    def __init__(self, id, name, author, genre, year, editorial, language, price, synopsis, num_sales, total_available):
         self.id = id
         self.name = name
         self.author = author
@@ -32,6 +33,7 @@ class BookModel(db.Model):
         self.synopsis = synopsis
         self.price = price
         self.num_sales = num_sales
+        self.total_available = total_available
 
     @classmethod
     def find_by_id(cls, idd):
@@ -43,7 +45,7 @@ class BookModel(db.Model):
 
     @classmethod
     def find_by_author(cls, author):
-        return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in author.name.split(" ")))
+        return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in [a.name for a in author].split(" ")))
 
     def save_to_db(self):
         db.session.add(self)
@@ -64,5 +66,6 @@ class BookModel(db.Model):
             "language": self.language,
             "price": self.price,
             "synopsis": self.synopsis,
-            "num_sales": self.num_sales
+            "num_sales": self.num_sales,
+            "total_available": self.total_available
         }}
