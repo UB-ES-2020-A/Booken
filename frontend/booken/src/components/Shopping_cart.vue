@@ -1,19 +1,19 @@
 <template>
     <div class="wrap">
-        <h1 class="title">SHOPPING CART</h1>
-        <div class="row">
+        <h1 class="title">TU CESTA</h1>
+        <div class="row" style="margin-top: 5%">
             <div v-if="this.is_empty==1">
                 <table style="width:100%;text-align: center">
                     <thead>
-                        <tr class="bg-info border: 1px solid rgba(0, 0, 0, 0.5)">
-                            <th>Book title</th>
-                            <th>Quantity</th>
-                            <th>Price(€)</th>
+                        <tr style="background: #2bc4ed; border: 1px solid rgba(0, 0, 0, 0.5)">
+                            <th>Titulo del libro</th>
+                            <th>Cantidad</th>
+                            <th>Precio(€)</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         <tr v-for="(book,i) in cart" :key="book.id" >
                             <td>{{ book.name }}</td>
                             <td> <button class="btn" @click="addTciket(i,book)"> + </button>
@@ -23,28 +23,28 @@
                             <td>{{ book.price }}</td>
                             <td>{{ cart_total_price[i] }}</td>
                             <td>
-                                <button class="btn" @click="deleteBook(i)"> x </button>
+                                <button type="button" style="margin-right: 20%" class="close" @click="deleteBook(i)" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
                             </td>
                             <td></td>
                         </tr>
-                        <div class="subtotal cf" style="list-style:none; margin-left: 167%; text-align: center">
-                            <ul>
-                                <h6 class="totalRow"><span class="label">Subtotal: </span><span class="value">35.00</span></h6>
-                                <h6 class="totalRow"><span class="label">Shipping: </span><span class="value">5.00</span></h6>
-                                <h6 class="totalRow final"><span class="label">Total: </span><span class="value">44.00</span></h6>
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <div class="col-6"></div>
-                            <div class="col-6" style="margin-left: 65%">
-                                <button style="width: 100%" class="bg-info"><a href="#" class="btn continue">Proced to Checkout</a></button>
-                            </div>
-                        </div>
                     </tbody>
                 </table>
+                <div class="subtotal cf" style="list-style:none; margin-right: 2%; text-align: center">
+                    <ul>
+                        <h6 class="totalRow"><span class="label">Subtotal: </span><span class="value">{{ getSubTotal() }}</span></h6>
+                        <h6 class="totalRow"><span class="label">Envío: </span><span class="value">{{ shipping }}</span></h6>
+                        <h6 class="totalRow final"><span class="label">Total: </span><span class="value">{{ getTotal() }}</span></h6>
+                    </ul>
+                </div>
+                <div class="row" style="width:100%; align-content: center">
+                  <button class="btn btn-lg" style="background-color: #2bc4ed;color: white" @click="checkout()">Ir a pagar</button>
+                  <button class="btn btn-lg" style="background-color: #328399; color: white" @click="returnMainPage()">Volver</button>
+                </div>
         </div>
             <div v-if="this.is_empty==0">
-                <table style="width:75%;border: 1px solid black;text-align: center;margin-left: 150px">
+                <table style="width:100%;text-align: center">
                     <thead>
                         <tr>
                           <th></th>
@@ -52,10 +52,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Empty item on shopping cart</td>
+                            <td>Tu cesta está vacía</td>
                         </tr>
                     </tbody>
-                    <button class="totalRow"><a href="#" class="btn continue">Back</a></button>
+                    <button class="btn btn-lg" style="background-color: #328399; color: white" @click="returnMainPage()">Volver</button>
                 </table>
             </div>
         </div>
@@ -69,34 +69,54 @@
         data () {
             return {
               is_empty: 1,
-              cart: [{'name':"Prueba", "price":10}],
-              cart_quantity: [1],
-              cart_total_price: [10],
-              can_ret: [false],
-            }
-        }, methods: {
-        addTciket (i,book) {
-            this.$set(this.cart_quantity, i, this.cart_quantity[i] + 1)
-            this.$set(this.can_ret, i, true)
-            this.$set(this.cart_total_price, i, this.cart_total_price[i] * book.price)
-        },
-        returnTicket (i, book) {
-            if (this.cart_quantity[i] > 0) {
-              this.$set(this.cart_quantity, i, this.cart_quantity[i] - 1)
-              this.$set(this.cart_total_price, i, this.cart_total_price[i] * book.price)
-              if (this.cart_quantity[i] === 0) {
-                this.$set(this.can_ret, i, false)
-              }
+              cart: [{'name':"Prueba", "price":10},{'name':"Prueba", "price":10},{'name':"Prueba", "price":10},{'name':"Prueba", "price":10},{'name':"Prueba", "price":10},{'name':"Prueba", "price":10}],
+              cart_quantity: [1,1,1,1,1,1],
+              cart_total_price: [10,10,10,10,10,10],
+              subtotal: 0,
+              shipping: 5.00
             }
         },
-        deleteBook (i) {
-            this.cart_quantity.delete(i)
-            this.cart_total_price.delete(i)
-            if ( this.cart_quantity.length == 0 ) {
-                this.isEmpty = 0
+        methods: {
+            addTciket (i,book) {
+                this.cart_quantity[i] = this.cart_quantity[i] + 1
+                this.cart_total_price[i] = this.cart_total_price[i] + book.price
+            },
+            returnTicket (i, book) {
+                if (this.cart_quantity[i] > 0) {
+                    this.cart_quantity[i] = this.cart_quantity[i]-1
+                    this.cart_total_price[i] = this.cart_total_price[i] - book.price
+                    if (this.cart_quantity[i] === 0) {
+                        this.deleteBook()
+                    }
+                }
+            },
+            deleteBook (i) {
+                this.cart.splice(i,1)
+                this.cart_quantity.splice(i,1)
+                this.cart_total_price.splice(i,1)
+                if ( this.cart_quantity.length < 1 ) {
+                    this.is_empty = 0
+                }
+            },
+            getSubTotal () {
+                this.subtotal = 0
+                for (let i = 0; i < this.cart_total_price.length; i += 1) {
+                    this.subtotal = this.subtotal + this.cart_total_price[i]
+                }
+                return this.subtotal
+            },
+            getTotal () {
+                return this.getSubTotal() + this.shipping
+            },
+            checkout () {
+                if ( this.$route.query.logged === "false") {
+                    this.$router.replace({ path: '/access', query: { logged: false } })
+                }
+            },
+            returnMainPage () {
+                this.$router.replace({ path: '/'})
             }
         }
-      }
     }
 
 </script>
@@ -121,30 +141,9 @@
        text-transform: uppercase;
     }
 
-    .heading {
-        padding: 1em 0;
-        border-bottom: 1px solid #D0D0D0;
-        font-family: sans-serif;
-        font-size: 2em;
-        float: left;
-    }
-
     a.btn.continue {
         width: 100%;
         text-align: center;
-    }
-
-    a.remove {
-        text-decoration: none;
-        font-family: sans-serif;
-        color: #ffffff;
-        font-weight: bold;
-        background: #e0e0e0;
-        padding: .5em;
-        font-size: .75em;
-        display: inline-block;
-        border-radius: 100%;
-        line-height: .85;
     }
 
     .totalRow {
