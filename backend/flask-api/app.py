@@ -36,7 +36,7 @@ db.init_app(app)
 api.add_resource(Account, '/account/<string:username>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
-api.add_resource(Login, '/login/')
+api.add_resource(Login, '/login')
 
 api.add_resource(Book, '/book/<int:id>', '/book')
 api.add_resource(BookList, '/books')

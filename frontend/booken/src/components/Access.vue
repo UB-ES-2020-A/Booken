@@ -120,7 +120,7 @@ import * as toastr from '../assets/toastr.js'
 // eslint-disable-next-line no-unused-vars
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
-let api = 'URL DE LA API'
+let api = 'http://127.0.0.1:5000/'
 export default {
   name: 'Access',
   props: {
@@ -143,8 +143,8 @@ export default {
       document.getElementById('passwordL').disabled = !document.getElementById('passwordL').disabled
 
       document.getElementById('btLogin').disabled = !document.getElementById('btLogin').disabled;
-      document.getElementById('btBackL').disabled = !document.getElementById('btLogin').disabled;
-      document.getElementById('bt2Reg').disabled = !document.getElementById('btLogin').disabled;
+      document.getElementById('btBackL').disabled = !document.getElementById('btBackL').disabled;
+      document.getElementById('bt2Reg').disabled = !document.getElementById('bt2Reg').disabled;
     },
     toggleInputsRegister() {
       document.getElementById('nameR').disabled = !document.getElementById('nameR').disabled;
@@ -158,7 +158,7 @@ export default {
       document.getElementById('btBack2L').disabled = !document.getElementById('btBack2L').disabled;
     },
     login(register, params) {
-      const path = api + '/login'
+      const path = api + 'login'
       axios.post(path, params)
           .then((res) => {
             this.logged = true
@@ -185,6 +185,9 @@ export default {
       if (document.getElementById('emailL').value == '' || document.getElementById('passwordL').value == '') {
         toastr.info('', 'Rellena todos los campos para acceder.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else if (!this.validateEmail(this.email)) {
+        toastr.error('', 'Dirección de correo electrónico no válida.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       } else {
         const param = {
           email: this.email,
@@ -195,7 +198,7 @@ export default {
       }
     },
     register() {
-      const path = api + '/register'
+      const path = api + 'account'
       axios.post(path, {
         'name': this.name, 'lastname': this.lastname, 'password': this.password,
         'email': this.email
@@ -215,10 +218,9 @@ export default {
                 {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
     },
-    validateEmail(email)
-    {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
+    validateEmail(email) {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
     },
     doRegister() {
       if (document.getElementById('nameR').value == '' || document.getElementById('lastnameR').value == '' ||
@@ -249,13 +251,9 @@ export default {
       if (document.getElementById('loginform').style.display == 'block') {
         document.getElementById('loginform').style.display = 'none'
         document.getElementById('registerform').style.display = 'block'
-        this.username = ''
-        this.password = ''
       } else {
         document.getElementById('loginform').style.display = 'block'
         document.getElementById('registerform').style.display = 'none'
-        this.username = ''
-        this.password = ''
       }
     }
   }
