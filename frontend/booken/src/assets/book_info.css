@@ -1,3 +1,71 @@
+.bookTitle {
+    position: relative;
+    text-align:left;
+    text-indent:10px;
+    padding-top:10px;
+    margin-left: 10px;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 52px;
+    text-transform: uppercase;
+    height: 80px;
+}
+
+.bookTitle:before {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-right: 10px;
+    height: 100%;
+    width: 6px;
+    background: #2bc4ed;
+}
+
+.label-info-selected {
+  text-transform: uppercase;
+}
+
+.label-info-selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+
+    width: 100%;
+
+    background: black;
+}
+
+.label-info-not-selected {
+  text-transform: uppercase;
+}
+
+.label-info-not-selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+
+    /*width: 100%;*/
+
+    background: black;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+
+.label-info-not-selected:hover:after {
+  width: 100%;
+  /*left: 0;*/
+}
+
+.detail-table th{
+  border: 1px solid #ccc;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 200px
+}
+
+
 .sel-picture {
   width: 80px;
   cursor: pointer;
