@@ -57,6 +57,10 @@ class AccountModel(db.Model):
     def find_by_id(self, id):
         return self.query.filter_by(id=id).first()
 
+    @classmethod
+    def find_by_email(self, email):
+        return self.query.filter_by(email=email).first()
+
     def hash_password(self, password):
         self.password = pwd_context.encrypt(password)
 
