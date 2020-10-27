@@ -193,8 +193,9 @@ export default {
 .front-container {
   margin-right: 5%;
   margin-left: 5%;
-  margin-top: 2%;
+  margin-top: 50px;
   text-align: left;
+
 }
 
 @font-face {
