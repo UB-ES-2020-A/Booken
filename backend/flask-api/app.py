@@ -31,7 +31,7 @@ db.init_app(app)
 
 #EndPoints configuration
 
-api.add_resource(Account, '/account/<string:username>', '/account')
+api.add_resource(Account, '/account/<string:email>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
 api.add_resource(Login, '/login/')
