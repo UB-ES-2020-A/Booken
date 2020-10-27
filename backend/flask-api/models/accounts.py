@@ -54,6 +54,10 @@ class AccountModel(db.Model):
         db.session.commit()
 
     @classmethod
+    def find_by_id(self, id):
+        return self.query.filter_by(id=id).first()
+
+    @classmethod
     def find_by_email(self, email):
         return self.query.filter_by(email=email).first()
 

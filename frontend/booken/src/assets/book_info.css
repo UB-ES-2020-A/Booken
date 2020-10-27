@@ -1,28 +1,29 @@
 .bookTitle {
     position: relative;
     text-align:left;
-    text-indent:10px;
     padding-top:10px;
     margin-left: 10px;
     font-family: Helvetica;
     font-weight: bold;
     font-size: 52px;
     text-transform: uppercase;
-    height: 80px;
 }
 
 .bookTitle:before {
     content: '';
     display: block;
     position: absolute;
+    margin-left: -20px;
     margin-right: 10px;
-    height: 100%;
+    height: 90%;
     width: 6px;
     background: #2bc4ed;
 }
 
 .label-info-selected {
   text-transform: uppercase;
+  cursor: pointer;
+
 }
 
 .label-info-selected:after {
@@ -31,13 +32,14 @@
     position: absolute;
     height: 2px;
 
-    width: 100%;
+    width: 90%;
 
     background: black;
 }
 
 .label-info-not-selected {
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .label-info-not-selected:after {
@@ -46,16 +48,13 @@
     position: absolute;
     height: 2px;
 
-    /*width: 100%;*/
-
     background: grey;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
 }
 
 .label-info-not-selected:hover:after {
-  width: 100%;
-  /*left: 0;*/
+  width: 90%;
 }
 
 .detail-table th{
@@ -75,9 +74,4 @@
 
 .sel-picture:hover {
   transform: scale(1.1);
-}
-
-#displayPic {
-  width: 350px;
-  height: 350px;
 }

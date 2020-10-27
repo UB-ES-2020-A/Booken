@@ -4,8 +4,8 @@ from models.accounts import AccountModel, auth
 
 class Account(Resource):
     #Get: Returns the account information
-    def get(self, email):
-        account = AccountModel.find_by_email(email)
+    def get(self, id):
+        account = AccountModel.find_by_id(id)
         if(account != None):
             return {"account": account.json()}, 200
         else:
