@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 #models (necessary to make the migration correctly)
+from add_data import add_data_db
 from models.accounts import AccountModel
 
 #resourcers
@@ -17,6 +18,7 @@ from resources.book import *
 from db import db
 
 app = Flask(__name__)
+app.app_context().push()
 
 api = Api(app)
 
