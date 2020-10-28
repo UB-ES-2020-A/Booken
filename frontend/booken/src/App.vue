@@ -1,3 +1,6 @@
+<style>
+@import url("./assets/animate.min.css");
+</style>
 <template>
   <div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -6,7 +9,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="background-color:#2bc4ed !important;">
-      <a class="navbar-brand mainlogo ml-5" href="#">booken<span class="badge badge-light"
+      <a class="navbar-brand mainlogo ml-5 animate__animated animate__flipInX" href="/">booken<span class="badge badge-light"
                                                                  style="font-size: 0.3em; letter-spacing: normal">alpha</span></a>
 
       <button class="navbar-toggler ml-auto" data-toggle="collapse" data-target=".navbars">
@@ -101,8 +104,9 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-              <li><a href="">Contacto</a></li>
+              <li><router-link to="/contact">Contacto</router-link></li>
               <li><a href="">Preguntas frecuentes</a></li>
+
             </ul>
           </div>
 
@@ -154,6 +158,9 @@ export default {
     },
     goShoppingCart() {
       this.$router.push({path: '/shoppingcart', query: {logged: this.loggedIn}})
+    },
+    goToLocation() {
+      this.$router.push({path: '/location'})
     }
   }
 }

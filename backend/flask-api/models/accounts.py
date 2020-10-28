@@ -11,7 +11,8 @@ auth = HTTPBasicAuth()
 class AccountModel(db.Model):
     __tablename__ = 'accounts'
 
-    email = db.Column(db.String(30), primary_key = True, unique = True, nullable = False)
+    id = db.Column(db.Integer, primary_key = True, unique = True)
+    email = db.Column(db.String(30), unique = True, nullable = False)
 
     name = db.Column(db.String(), nullable=False)
     lastname = db.Column(db.String(), nullable=False)
@@ -34,6 +35,7 @@ class AccountModel(db.Model):
 
     def json(self):
         body = {
+            'id': self.id,
             'name': self.name,
             'lastname': self.lastname,
             'email': self.email,
@@ -50,6 +52,10 @@ class AccountModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+    @classmethod
+    def find_by_id(self, id):
+        return self.query.filter_by(id=id).first()
 
     @classmethod
     def find_by_email(self, email):
@@ -81,16 +87,17 @@ class AccountModel(db.Model):
 
 
 @auth.verify_password
-def verify_password(email, token):
+def verify_password(id, token):
+    id = int(id)
     user = AccountModel.verify_auth_token(token)
-    if(user and user.email == email):
+    if(user and user.id == id):
         g.user = user
         return user
 
 @auth.get_user_roles
 def get_user_roles(user):
     roles = {
-        0: 'user',
+        0: 'client',
         1: 'dev_manager',
         2: 'stock_manager'
     }

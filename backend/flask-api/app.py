@@ -10,7 +10,9 @@ from models.accounts import AccountModel
 
 #resourcers
 from resources.account_rs import *
+from resources.author import *
 from resources.login_rs import *
+from resources.book import *
 
 from db import db
 
@@ -31,10 +33,18 @@ db.init_app(app)
 
 #EndPoints configuration
 
-api.add_resource(Account, '/account/<string:username>', '/account')
+api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
-api.add_resource(Login, '/login/')
+api.add_resource(Login, '/login')
+
+api.add_resource(Book, '/book/<int:id>', '/book')
+api.add_resource(BookList, '/books')
+api.add_resource(BookArtist, '/book/<int:id>/author')
+
+api.add_resource(Author, '/author/<int:id>', '/author')
+api.add_resource(AuthorList, '/authors')
+
 
 @app.route('/')
 def hello_world():
@@ -43,4 +53,3 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

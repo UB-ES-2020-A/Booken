@@ -1,0 +1,85 @@
+.bookTitle {
+    position: relative;
+    text-align: left;
+    padding-top: 10px;
+    /*margin-left: 10px;*/
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 52px;
+    text-transform: uppercase;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #72d6f1;
+}
+
+/*.bookTitle:before {
+    content: '';
+    display: block;
+    position: absolute;
+    margin-left: -20px;
+    margin-right: 10px;
+    height: 90%;
+    width: 6px;
+    background: #2bc4ed;
+}*/
+
+.label-info-selected {
+    text-transform: uppercase;
+    cursor: pointer;
+
+}
+
+.label-info-selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+
+    width: 90%;
+
+    background: #292b2c;
+}
+
+.label-info-not-selected {
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.label-info-not-selected:after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 2px;
+
+    background: grey;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+}
+
+.label-info-not-selected:hover:after {
+    width: 90%;
+}
+
+.detail-table th {
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 200px
+}
+.navbartextbt {
+  color: white;
+  font-size: 1.2em
+}
+
+.sel-picture {
+    width: 80px;
+    cursor: pointer;
+    margin-right: 0.6rem;
+    margin-top: 1rem;
+    border: 4px double grey;
+}
+
+.sel-picture:hover {
+    transform: scale(1.1);
+}
