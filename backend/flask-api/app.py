@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 #models (necessary to make the migration correctly)
+from add_data import add_data_db
 from models.accounts import AccountModel
 
 #resourcers
@@ -53,3 +54,4 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    add_data_db()
