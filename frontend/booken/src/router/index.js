@@ -17,12 +17,12 @@ const routes = [
     component: Access,
   },
   {
-    path: "/shoppingcart",
+    path: "/cart",
     name: "ShoppingCart",
     component: Shopping_cart,
   },
   {
-    path: "/book_info",
+    path: "/book",
     name: "BookInfo",
     component: BookInfo,
    },

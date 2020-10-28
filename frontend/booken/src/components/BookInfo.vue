@@ -257,9 +257,9 @@ export default {
   data() {
     return {
 
-      book_found: 0,
+      book_found: 1,
       book_id: 0,
-      admin: 0,
+      admin: 1,
 
       bookInfo: {
         name: 'NameTest',
