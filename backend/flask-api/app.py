@@ -1,40 +1,25 @@
-from flask import Flask
-
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_restful import Api
-from flask_cors import CORS
 
-#models (necessary to make the migration correctly)
-from add_data import add_data_db
-from models.accounts import AccountModel
-
-#resourcers
+# resourcers
 from resources.account_rs import *
 from resources.author import *
 from resources.login_rs import *
 from resources.book import *
+from db import db, create_app
 
-from db import db
 
-app = Flask(__name__)
+app = create_app()
 app.app_context().push()
-
 api = Api(app)
 
-#Cross-origin request config
-CORS(app, resources={r'/*': {'origins': '*'}})
-
-#Database config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# models (necessary to make the migration correctly)
+from models.accounts import AccountModel
+from models.author import AuthorModel
+from models.book import BookModel
 
 migrate = Migrate(app, db)
-db.init_app(app)
 
-
-#EndPoints configuration
-
+# EndPoints configuration
 api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
@@ -54,4 +39,4 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

@@ -35,6 +35,7 @@ class Book(Resource):
         exists = BookModel.find_by_name(data.get('name'))
         if exists:
             return {'message': "A book with ['name': {}] already exists".format(exists.name)}, 409
+
         new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
                                  data.get('author_city'), data.get('author_country'))
         new_book = BookModel(data.get('id'), data.get('name'), [new_Author], data.get('genre'), data.get('year'),
