@@ -13,7 +13,7 @@ from resources.account_rs import *
 from resources.author import *
 from resources.login_rs import *
 from resources.book import *
-
+from resources.order import *
 from db import db
 
 app = Flask(__name__)
@@ -36,8 +36,6 @@ db.init_app(app)
 api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
-api.add_resource(Login, '/login')
-
 api.add_resource(Book, '/book/<int:id>', '/book')
 api.add_resource(BookList, '/books')
 api.add_resource(BookArtist, '/book/<int:id>/author')
@@ -45,6 +43,8 @@ api.add_resource(BookArtist, '/book/<int:id>/author')
 api.add_resource(Author, '/author/<int:id>', '/author')
 api.add_resource(AuthorList, '/authors')
 
+api.add_resource(OrdersList, '/orders/')
+api.add_resource(Orders, '/order/<string:email>', '/order')
 
 @app.route('/')
 def hello_world():

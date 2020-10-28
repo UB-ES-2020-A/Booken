@@ -22,7 +22,7 @@ class AccountModel(db.Model):
     type = db.Column(db.Integer, nullable = False) # 0 = client / 1 = develop-manager / 2 = stock-manager
     available_money = db.Column(db.Integer)
 
-    #orders = db.relationship('OrdersModel', backref='orders, lazy = True)
+    orders = db.relationship('OrdersModel', backref='orders', lazy = True)
     #wish_list = db.relationship('BookModel', backref='books', lazy = True)
 
     def __init__(self, email, name, lastname, password):
