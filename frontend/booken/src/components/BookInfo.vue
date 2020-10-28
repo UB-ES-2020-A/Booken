@@ -15,9 +15,19 @@
     <div class="container">
       <div class="card" style="margin-top: 1em">
         <div class="card-body" style="text-align: left">
-          <h1 class="card-title" v-if="book_found"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
-          <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found">{{ bookInfo.author }}</h3>
-
+          <div class="row row-cols-1 row-cols-md-2">
+            <div class="col">
+              <h1 class="card-title" v-if="book_found"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
+              <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found">{{ bookInfo.author }}</h3>
+            </div>
+            <div class="col" style="text-align: right">
+              <h1 class="card-title" v-if="book_found"><p class="bookTitle" style="text-align: right !important">
+                {{ bookInfo.price }}€</p></h1>
+              <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
+                      v-if="admin"><i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Editar</a></button>
+            </div>
+          </div>
           <div class="col" v-if="book_found">
             <div class="row">
               <div ref="images" class="col" style="margin-bottom: 2rem">
@@ -27,8 +37,10 @@
                     <img ref="pic2" class="sel-picture" :src="bookInfo.back_cover" @click="changeImage(2)">
                   </div>
                   <div style="margin-left:auto; margin-right:auto">
-                    <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em" :src="bookInfo.cover">
-                    <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2" style="max-height: 20em; display: none" :src="bookInfo.back_cover">
+                    <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em"
+                         :src="bookInfo.cover">
+                    <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2"
+                         style="max-height: 20em; display: none" :src="bookInfo.back_cover">
                   </div>
                 </div>
               </div>
@@ -41,23 +53,23 @@
                     <p ref="label_details" class="label-info-not-selected" @click="change_info('details')">Detalles</p>
                   </div>
                 </div>
-                <div style="text-align:left" v-if="showSummary">
+                <div style="text-align:left" v-if="showSummary" class="animate__animated animate__fadeIn">
                   <p>{{ bookInfo.synopsis }}</p>
                 </div>
-                <div style="text-align:left" v-else>
+                <div style="text-align:left" class="animate__animated animate__fadeIn" v-else>
                   <table class="table table-striped">
                     <tbody>
                     <tr>
                       <th scope="row">Editorial</th>
-                      <td>{{bookInfo.editorial}}</td>
+                      <td>{{ bookInfo.editorial }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Año de publicación</th>
-                      <td>{{bookInfo.year}}</td>
+                      <td>{{ bookInfo.year }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Género</th>
-                      <td>{{bookInfo.genre}}</td>
+                      <td>{{ bookInfo.genre }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Número de páginas</th>
@@ -77,7 +89,18 @@
                   <p><b>Idioma: </b>{{ bookInfo.language }}</p> -->
                 </div>
               </div>
+              <div style="text-align: right">
+                <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
+                        v-if="bookInfo.available > 0"><a
+                    class="navbartextbt">Añadir a la cesta</a></button>
+                <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
+                        v-if="bookInfo.available <= 0" disabled><a
+                    class="navbartextbt">Agotado</a></button>
+                <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
+                    class="navbartextbt">Añadir a lista de deseos</a></button>
+              </div>
             </div>
+
           </div>
 
           <div class="col" v-else style="text-align: center">
@@ -89,8 +112,18 @@
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem" v-if="book_found">
         <div class="card-body">
-          <h2 class="card-title">Reseñas de los usuarios</h2>
-          <div class="card" style="width: auto; margin-top: 0.5.em">
+          <div class="row row-cols-1 row-cols-md-2">
+            <div class="col">
+              <h2 class="card-title">Reseñas de los usuarios</h2>
+            </div>
+            <div class="col" style="text-align: right">
+              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit">
+                <i class="fa fa-pencil" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Escribir reseña</a>
+              </button>
+            </div>
+          </div>
+          <div class="card" style="width: auto; margin-top: 0.5em">
             <div class="card-header">
               Miguel C. — 11 de marzo de 2020
             </div>
@@ -141,6 +174,11 @@
             </div>
           </div>
         </div>
+        <button class="btn my-2 my-sm-0 mr-2"
+                style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
+                type="submit">
+          <a class="navbartextbt">Cargar más</a>
+        </button>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
         <div class="card-body">
@@ -219,8 +257,9 @@ export default {
   data() {
     return {
 
-      book_found: 1,
+      book_found: 0,
       book_id: 0,
+      admin: 0,
 
       bookInfo: {
         name: 'NameTest',
@@ -229,6 +268,7 @@ export default {
         year: 0,
         editorial: 'EditorialTest',
         language: 'LenguageTest',
+        available: 10,
         price: 0,
         synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         cover: 'https://static.fnac-static.com/multimedia/Images/ES/NR/22/0f/18/1576738/1507-1.jpg',
