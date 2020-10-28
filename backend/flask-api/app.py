@@ -18,6 +18,7 @@ from resources.book import *
 from db import db
 
 app = Flask(__name__)
+app.app_context().push()
 
 api = Api(app)
 
@@ -54,4 +55,3 @@ def hello_world():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    add_data_db()

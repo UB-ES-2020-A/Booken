@@ -13,7 +13,7 @@ def add_data_db():
 
     bookss, authorss = 0, 0
     for i in books:
-        book = db.session.query(BookModel).filter_by(id=i[0]).first()
+        book = db.session.query(BookModel).filter_by(name=i[1]).first()
         if book:
             break;
         authors = []
