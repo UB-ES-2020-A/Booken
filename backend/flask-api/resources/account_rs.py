@@ -31,17 +31,17 @@ class Account(Resource):
             return{"Message": "Coudln't save changes"}, 500
 
     #Delete: Deletes an account from the database
-    def delete(self, email):
-        account = AccountModel.find_by_email(email)
+    def delete(self, id):
+        account = AccountModel.find_by_id(id)
         if(account==None):
-            return{'Message':'Account with email [{}] not found'.format(email)}, 404
+            return{'Message':'Account with id [{}] not found'.format(id)}, 404
 
         #TODO: remove orders as well
         #TODO: remove wish list as well
 
         account.delete_from_db()
 
-        return{'Message':'Account with email[{}] deleted correctly'.format(email)}, 200
+        return{'Message':'Account with id[{}] deleted correctly'.format(id)}, 200
 
 class Accounts(Resource):
     def get(self):
