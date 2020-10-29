@@ -4,4 +4,6 @@ node_js:
 
 cache: npm
 
-script: npm run build
+script:
+    cd frontend/booken
+    npm run build
