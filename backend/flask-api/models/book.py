@@ -17,12 +17,16 @@ class BookModel(db.Model):
     year = db.Column(db.Integer, nullable=False)
     editorial = db.Column(db.String(30), nullable=False)
     language = db.Column(db.String(30), nullable=False)
-    synopsis = db.Column(db.String(250), nullable=False)
+    synopsis = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
+    num_pages = db.Column(db.Integer, nullable=False)
+    cover_type = db.Column(db.Integer, nullable=False)  # 0-> tapa blanda , 1-> tapa dura
     price = db.Column(db.Integer, nullable=False)
     num_sales = db.Column(db.Integer, nullable=False)
     total_available = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, id, name, author, genre, year, editorial, language, price, synopsis, num_sales, total_available):
+    def __init__(self, id, name, author, genre, year, editorial, language, price, synopsis, description, num_pages,
+                 cover_type, num_sales, total_available):
         self.id = id
         self.name = name
         self.author = author
@@ -31,6 +35,9 @@ class BookModel(db.Model):
         self.editorial = editorial
         self.language = language
         self.synopsis = synopsis
+        self.description = description
+        self.num_pages = num_pages
+        self.cover_type = cover_type
         self.price = price
         self.num_sales = num_sales
         self.total_available = total_available
@@ -45,7 +52,8 @@ class BookModel(db.Model):
 
     @classmethod
     def find_by_author(cls, author):
-        return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in [a.name for a in author].split(" ")))
+        return db.session.query(BookModel).filter_by(
+            name=" ".join(w.capitalize() for w in [a.name for a in author].split(" ")))
 
     def save_to_db(self):
         db.session.add(self)
@@ -65,7 +73,10 @@ class BookModel(db.Model):
             "editorial": self.editorial,
             "language": self.language,
             "price": self.price,
+            "num_pages": self.num_pages,
+            "cover_type": self.cover_type,
             "synopsis": self.synopsis,
+            "description": self.description,
             "num_sales": self.num_sales,
             "total_available": self.total_available
         }}

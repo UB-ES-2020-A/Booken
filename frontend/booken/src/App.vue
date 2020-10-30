@@ -2,113 +2,89 @@
 @import url("./assets/animate.min.css");
 </style>
 <template>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
   <div>
-    <div style="background: #2bc4ed;">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" style="background-color:#2bc4ed !important;">
+      <a class="navbar-brand mainlogo ml-5 animate__animated animate__flipInX" href="/">booken<span class="badge badge-light"
+                                                                 style="font-size: 0.3em; letter-spacing: normal">alpha</span></a>
 
-      <div class="container" style="max-width: 1400px">
-
-        <nav class="navbar navbar-expand-xl navbar-dark">
-
-          <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
-              class="badge badge-light" style="font-size: 0.3em; letter-spacing: normal">alpha</span></a>
-
-          <button class="navbar-toggler ml-auto" data-toggle="collapse" data-target=".navbars">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse navbars " id="collapse_target1">
-            <ul class=" navbar-nav ml-auto " >
-              <form class="form-inline mb-3 my-lg-3 mx-auto">
-                <div class="col">
-                <input class="form-control mr-sm-2" type="search"
-                       placeholder="Busca por autor, título, ISBN"
-                       aria-label="Search">
-                  </div>
-                <button class="btn my-2 my-sm-0" style="background-color: #3b494d" type="submit"><i
-                    class="fas fa-search"
-                    style="color: #FFF"/>
-                </button>
-              </form>
-            </ul>
-            <ul class="navbar-nav ml-auto justify-content-center customnav">
-                <li class="nav-item">
-                  <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
-                          v-if="!loggedIn"
-                          @click="goToAccess">
-                    <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                      class="navbartextbt">Identíficate</a>
-                  </button>
-                  <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="loggedIn">
-                    <i class="fas fa-user" style="color: #000; font-size: 1.5em; margin-right: 0.5em"/><a
-                      class="navbartextbt">Tu cuenta</a>
-                  </button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d;" type="submit">
-                    <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                      class="navbartextbt">Ayuda</a>
-                  </button>
-                </li>
-
-                <li class="nav-item">
-                  <button class="btn my-2 my-sm-0 mr-3" style="background-color: #3b494d;" type="submit">
-                    <i class="fas fa-shopping-basket" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                      class="navbartextbt">Cesta</a>
-                  </button>
-                </li>
-
-
-            </ul>
-          </div>
-        </nav>
-      </div>
-
-      <div class="bg-dark">
-        <nav class="navbar navbar-expand-xl navbar-light">
-          <div class="collapse navbar-collapse navbars" id="collapse_target2">
-            <ul class="navbar-nav mx-auto">
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Humanidades</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Técnico y formación</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Métodos de idiomas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Literatura</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Infantil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Cómics y manga</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Juvenil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link categoriestxt" href="#">Otras categorías</a>
-              </li>
-            </ul>
+      <button class="navbar-toggler ml-auto" data-toggle="collapse" data-target=".navbars">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse navbars" id="collapse_target1">
+        <ul class="navbar-nav mx-auto">
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Busca por autor, título, ISBN"
+                   aria-label="Search" style="width: 80%; margin-right: 1em">
+            <button class="btn my-2 my-sm-0" style="background-color: #3b494d" type="submit"><i class="fas fa-search"
+                                                                                                style="color: #FFF"/>
+            </button>
+          </form>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <div class="btn-toolbar">
+            <li class="nav-item">
+              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="!loggedIn" @click="goToAccess">
+                <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Identíficate</a>
+              </button>
+              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="loggedIn">
+                <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Tu cuenta</a>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit">
+                <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Ayuda</a>
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="btn my-2 my-sm-0 mr-5" @click="goShoppingCart" style="background-color: #3b494d" type="submit">
+                <i class="fas fa-shopping-basket" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt">Cesta</a>
+              </button>
+            </li>
           </div>
 
-        </nav>
+        </ul>
       </div>
-    </div>
-
-
+    </nav>
+    <nav class="navbar navbar-expand-sm navbar-light bg-dark">
+      <div class="collapse navbar-collapse navbars" id="collapse_target2">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Humanidades</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Técnico y formación</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Métodos de idiomas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Literatura</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Infantil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Cómics y manga</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Juvenil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link categoriestxt" href="#">Otras categorías</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <router-view/>
-
-
     <footer class="site-footer">
       <div class="container">
         <div class="row">
@@ -128,9 +104,7 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-              <li>
-                <router-link to="/contact">Contacto</router-link>
-              </li>
+              <li><router-link to="/contact">Contacto</router-link></li>
               <li><a href="">Preguntas frecuentes</a></li>
 
             </ul>
@@ -162,7 +136,6 @@
 
 <script>
 import Front from './components/Front.vue'
-
 export default {
   name: 'App',
   components: {
@@ -182,6 +155,9 @@ export default {
     },
     goToAccess() {
       this.$router.push({path: '/access', query: {logged: this.loggedIn}})
+    },
+    goShoppingCart() {
+      this.$router.push({path: '/cart'})
     },
     goToLocation() {
       this.$router.push({path: '/location'})
@@ -203,13 +179,6 @@ export default {
   font-family: 'LogoFont';
   src: url('/assets/logo_font.woff')
 }
-
-@media (max-width: 1rem !important) {
-  .customnav{
-    width: 100%;
-  }
-}
-
 
 .categoriestxt {
   color: #2bc4ed !important;
