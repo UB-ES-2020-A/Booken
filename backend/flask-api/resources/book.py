@@ -59,6 +59,7 @@ class Book(Resource):
         exists = BookModel.find_by_id(id)
         if not exists:
             return {'message': "A book with ['ISBN': {}] not found".format(id)}, 404
+        [a.delete_from_db() for a in exists.author]
         exists.delete_from_db()
         new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
                                  data.get('author_city'), data.get('author_country'))
