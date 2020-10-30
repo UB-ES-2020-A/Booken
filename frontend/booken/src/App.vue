@@ -22,29 +22,30 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse navbars" id="collapse_target1">
-            <ul class="navbar-nav mx-auto">
-              <form class="form-inline my-2 my-lg-2">
-                <input class="form-control mr-sm-2" style="min-width: 400px" type="search"
+          <div class="collapse navbar-collapse navbars " id="collapse_target1">
+            <ul class=" navbar-nav ml-auto " >
+              <form class="form-inline mb-3 my-lg-3 mx-auto">
+                <div class="col">
+                <input class="form-control mr-sm-2" type="search"
                        placeholder="Busca por autor, título, ISBN"
                        aria-label="Search">
+                  </div>
                 <button class="btn my-2 my-sm-0" style="background-color: #3b494d" type="submit"><i
                     class="fas fa-search"
                     style="color: #FFF"/>
                 </button>
               </form>
             </ul>
-            <ul class="navbar-nav ml-auto">
-              <div class="btn-toolbar">
+            <ul class="navbar-nav ml-auto justify-content-center customnav">
                 <li class="nav-item">
-                  <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d;" type="submit"
+                  <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
                           v-if="!loggedIn"
                           @click="goToAccess">
                     <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt">Identíficate</a>
                   </button>
                   <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="loggedIn">
-                    <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                    <i class="fas fa-user" style="color: #000; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt">Tu cuenta</a>
                   </button>
                 </li>
@@ -55,13 +56,14 @@
                       class="navbartextbt">Ayuda</a>
                   </button>
                 </li>
+
                 <li class="nav-item">
                   <button class="btn my-2 my-sm-0 mr-3" style="background-color: #3b494d;" type="submit">
                     <i class="fas fa-shopping-basket" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt">Cesta</a>
                   </button>
                 </li>
-              </div>
+
 
             </ul>
           </div>
@@ -200,6 +202,12 @@ export default {
 @font-face {
   font-family: 'LogoFont';
   src: url('/assets/logo_font.woff')
+}
+
+@media (max-width: 1rem !important) {
+  .customnav{
+    width: 100%;
+  }
 }
 
 
