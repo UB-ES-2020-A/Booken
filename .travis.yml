@@ -9,5 +9,8 @@ before_deploy:
     cd ../../backend/flask-api
 deploy:
     provider: heroku
+    app: booken-app
+    on:
+        branch: development
     api_key:
         secure: Kcck/STIGJu9RSGwjEpiwcnxQ9r/H+B2r42WbPDBrmsJtX2jcfj833+db9EQauDDfM22t5kVta9iLYaUeu1UfS344tHOQFQoP2OWY7eilQjRN0CuTSQCo6AxBBjepWMEuXWXhH1UZENb856Lor2V7zxjMBpdMHGJjY1a2Zbh3dcHhOkh471i29AJ4dGsyOSNBdqSnaN6we6sH6oWziqt9fNZWftGT4C9w2iDiOGg4Lwn8GPktIlQkGLYTw8EVXTsDoogTRMu+Za8cL7LWh4/bo+c6hsZYI05BY2edqQhad+yd2DvoLWSfaxa5THYIDMOwHdntZ+lCg7rGDnk8WO6KpqMUq+ppOSnVovbojrMD9mLN7GBVc4xkSmEClTkd0FIx664K8sxOp7bxkv0tM32Nr/NbHCy3232Gf1qxa0cKq4kLh7JOmpJNdgT7WZPf3U17XZ8Tbzn4fIuG9l58oqrgq3gq6y2zpXxaMd+F1QNJF9X/jFuKamMGKkppHVA1LOBuOvo96JfHtdbutjiqdNLCnsgQBuDCnQDtl4w/ZEkct+/o/4WDb1ioMyfkYnBBShe+H8a4q8aJWKsemfugz2rltS65eMHn0b6pWSj4kYlnJ2xoYLpwRSS+tF8UOnvFhG/xIwTBOFYv9DSg0b2oKOM8lgntaBW8K2LVrhNpAbjoWs=
