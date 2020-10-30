@@ -40,7 +40,7 @@
               class="card-img-top" alt="...">
           <div class="card-body">
             <h6 class="card-subtitle">J. D. Barker</h6>
-            <h4 class="card-title"><a href="">El Cuarto Mono</a></h4>
+            <h4 class="card-title"><router-link to="/book">El Cuarto Mono</router-link></h4>
 
             <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
           </div>
