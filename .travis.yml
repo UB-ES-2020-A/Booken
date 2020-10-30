@@ -4,6 +4,7 @@ node_js:
 cache: npm
 script: 
     - cd frontend/booken
+    - npm install
     - npm run build
 before_deploy:
     - cd ../../backend/flask-api
