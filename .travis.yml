@@ -6,9 +6,10 @@ script: cd frontend/booken npm run build
 before_deploy: cd ../../backend/flask-api
 deploy:
   provider: heroku
+  api_key:
+    secure: NrJDC4X3GvAVjJQaZ+aXHgkkhyLhMSbGLhznObCCu3BNz/0AbC0efjo09GuPmPsAV3lPjAjdQtldwDZB06kNmFwRrBbLjAWWjNy9I5Impx2I37pZp2kyyJ8F4GmHzT86zUYwUFJI07DFF/SY0159KbPeMnF5EqbjeOCCun6RcW5Xbn+NDndvvuFUm7EPFDqL5Sa8lTRZdDFK99/Ug2KMZdauJ8vCUJCeRcifC/rSTtnoo5uNtzwSdxVIq99wEzW+URnXeeQdH7b46LIaPyKahA5d3zPyYWoilqgny/uAAca2qPqpjgluviLa/UPGal+F0TdDMVmxMQ7AlrpNS1vaUnyE2QSAjTQkyvAhVCmJO9PVqAtT3grwQkS/jRKCeQkFE+Hatrn+I93N9riI443kyVET7YEHVcbz/5tt74qBxlnqw4j+Vw4JLxuIACzpFeT0kcgbzQEaMz9dBxEidBIJ64/xUawu8vtCZr7r/ezs3x+mAFd9X+QVfuI+BCj8Q1cTHjCh45qMIh9z2m+bXk4X60hRbxdtBogUcOiMH59rwAB+aDxz+zxtU+w+/EzP5I05Pu6l0o7/Vx6P/KQYriQzAPCjMUeMukQAsKAlssAaz+kv+tNn5167okFUs5bJo0dQnhN8l77Y8SA6GTLVlzmnuVIoopCBg7prhFKX6SrDzxc=
   app: booken-app
   on:
     repo: UB-ES-2020/Booken
     branch: development
-  api_key:
-    secure: NrJDC4X3GvAVjJQaZ+aXHgkkhyLhMSbGLhznObCCu3BNz/0AbC0efjo09GuPmPsAV3lPjAjdQtldwDZB06kNmFwRrBbLjAWWjNy9I5Impx2I37pZp2kyyJ8F4GmHzT86zUYwUFJI07DFF/SY0159KbPeMnF5EqbjeOCCun6RcW5Xbn+NDndvvuFUm7EPFDqL5Sa8lTRZdDFK99/Ug2KMZdauJ8vCUJCeRcifC/rSTtnoo5uNtzwSdxVIq99wEzW+URnXeeQdH7b46LIaPyKahA5d3zPyYWoilqgny/uAAca2qPqpjgluviLa/UPGal+F0TdDMVmxMQ7AlrpNS1vaUnyE2QSAjTQkyvAhVCmJO9PVqAtT3grwQkS/jRKCeQkFE+Hatrn+I93N9riI443kyVET7YEHVcbz/5tt74qBxlnqw4j+Vw4JLxuIACzpFeT0kcgbzQEaMz9dBxEidBIJ64/xUawu8vtCZr7r/ezs3x+mAFd9X+QVfuI+BCj8Q1cTHjCh45qMIh9z2m+bXk4X60hRbxdtBogUcOiMH59rwAB+aDxz+zxtU+w+/EzP5I05Pu6l0o7/Vx6P/KQYriQzAPCjMUeMukQAsKAlssAaz+kv+tNn5167okFUs5bJo0dQnhN8l77Y8SA6GTLVlzmnuVIoopCBg7prhFKX6SrDzxc=
+  
