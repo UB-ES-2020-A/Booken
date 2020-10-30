@@ -1,5 +1,7 @@
 // vue.config.js
-module.exports = {
-    outputDir: '../../backend/flask-api/dist',
-    assetsDir: '../static'
+if (process.env.NODE_ENV === 'production') {
+    module.exports = {
+        outputDir: '../../backend/flask-api/dist',
+        assetsDir: '../static'
+    }
 }
