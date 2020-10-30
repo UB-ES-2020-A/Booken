@@ -2,15 +2,12 @@ language: node_js
 node_js:
 - node
 cache: npm
-script: 
-    cd frontend/booken
-    npm run build
-before_deploy:
-    cd ../../backend/flask-api
+script: cd frontend/booken npm run build
+before_deploy: cd ../../backend/flask-api
 deploy:
-    provider: heroku
-    app: booken-app
-    on:
-        branch: development
-    api_key:
-        secure: Kcck/STIGJu9RSGwjEpiwcnxQ9r/H+B2r42WbPDBrmsJtX2jcfj833+db9EQauDDfM22t5kVta9iLYaUeu1UfS344tHOQFQoP2OWY7eilQjRN0CuTSQCo6AxBBjepWMEuXWXhH1UZENb856Lor2V7zxjMBpdMHGJjY1a2Zbh3dcHhOkh471i29AJ4dGsyOSNBdqSnaN6we6sH6oWziqt9fNZWftGT4C9w2iDiOGg4Lwn8GPktIlQkGLYTw8EVXTsDoogTRMu+Za8cL7LWh4/bo+c6hsZYI05BY2edqQhad+yd2DvoLWSfaxa5THYIDMOwHdntZ+lCg7rGDnk8WO6KpqMUq+ppOSnVovbojrMD9mLN7GBVc4xkSmEClTkd0FIx664K8sxOp7bxkv0tM32Nr/NbHCy3232Gf1qxa0cKq4kLh7JOmpJNdgT7WZPf3U17XZ8Tbzn4fIuG9l58oqrgq3gq6y2zpXxaMd+F1QNJF9X/jFuKamMGKkppHVA1LOBuOvo96JfHtdbutjiqdNLCnsgQBuDCnQDtl4w/ZEkct+/o/4WDb1ioMyfkYnBBShe+H8a4q8aJWKsemfugz2rltS65eMHn0b6pWSj4kYlnJ2xoYLpwRSS+tF8UOnvFhG/xIwTBOFYv9DSg0b2oKOM8lgntaBW8K2LVrhNpAbjoWs=
+  provider: heroku
+  app: booken-app
+  on:
+    branch: development
+  api_key:
+    secure: qWpXYaEa5186QkDNOtFR+kIEG7FCEu5ZtqrcJpTngwlXreKlxSYWg0+Qm9nDgsOK1DhHK6r7QCjk+z74KokuSFl1wM35EwynotQ81g+60+/mrbMu1PoYi5ccuPoYI48gBos233Q9I0MIAlFzzhNbvFFFcpPlO3A3asPhGL49O41hu25QEAYdzr2Xr8rELxb03i24Km0+VG7NCwd0Dshsh+eUo9Bn3bDpb8lkk8eB1gfTao+y9ULbQ3yhTh/b3yD7lcpQEu8fSpwvCPVYTG9h79WoSdZ0ZkYatJVWIxcPRYRPytb7iVWE8VLFGOjFh2zjpDP8+zQuEhNy3fwzbuYZ5pFLdoKrn09NNGSXt2AdaRYJ8SgqhJlUCwbNamZ3m4OcTx4RKXiSnvshqvweM9+QySpQnbJQSG4ByydxathO6+i6LzsaK1MpnCm5jC/u0niqqeGamtqEZDpr4nMn/y6vOXd2R2jJqiww7Fohmt9ybwDonfpwMeudHx0Q591x/KHs1Q5D+lA6eh9mmbu9JTVO84RWlK5M17uzEZG0I9Wy6VZFzgfa9jYnScT7x52vyXB9JtvhJYbHDvw4vYudjfdPPqwfo9aRvZoaht2RMNTxuO5lwJRTRyYxRgazwb1fEDgL5u1Rw+PvXNRqoJsoyElqv6myvrCdcP4wCKLImGXqmMA=
