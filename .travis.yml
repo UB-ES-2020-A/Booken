@@ -2,15 +2,18 @@ language: node_js
 node_js:
 - node
 cache: npm
-script: cd frontend/booken npm run build
-before_deploy: cd ../../backend/flask-api
+script: 
+    cd frontend/booken
+    npm run build
+before_deploy: 
+    cd ../../backend/flask-api
 deploy:
-  provider: heroku
-  api_key:
-    secure: Tbtne+5uUQ+oCA8D5LXqZA0+BRbFRfJ2P29urU+Vl1dFAK6jfB1md6xmaI3GsiByu3jgt8wmZ04xKlkqlhsHO9OjzD5OomJFqc3rTeAyX9zgT3ed2Jufp/19/HoN614n8SFFA0uWF9tDwjfiARWyHlflOaXFHGJDlgQJ/jLEVwIZ4OZKmxAownD8f0YsyLXBc2TJimJEed0xNVWkU5CnNsrs/oYZdfzgadkoVP31X1CqthaZ/cxZouG0/nIDYe/jlj1kzY9X1rSPakPl1UTpMMqs4gTDPlo5PGAwdiMEcw0j9FZFF3c3QUVcg4M0AkvjeYhR5HRnDHf7rtoXHG3D07m3GgLKOx6VQdSporGH3Acz7j54JiP5y4kYDaj3geLgJIVA/Eh6Dv8PXCwnd9J30ZExVSpc8Vhoc+FeVvwQ2cqFLKZNz7punCTB8BDM8No9jcNlGNxtRXkS4kB8dHu2xmZ+7XYV8pHohI+cZYxT5II7Z6WOrcgIzES0xgj4oBP1wl3HPJ8lQcPYSdJa7N1+b8sm+Kg4M7BTBRzBvOlwvpAQhftGHaKRWJfp8fOvAmbnkEL70I/0Hldr57tBq/yBKcHjQBlifDRmhj5sAjk494HCrsQdGojj6345VUzckZoSRU4DqqbR/h9dm9K8MDojvyju1ThrtoHPXgbZFf0l8N0=
-  app: booken-app
-  on:
-    repo: UB-ES-2020/Booken
-    branch: development
-dd:
-  secure: XUtmeCE7WuLynhZ/cIPCpQj9OWZT2mKpGNYlUaOJjn2jZOVc+nbK8qXxIn48ZOXRJy8m0gw48ktMegvw5tbudOj+ddtHov18PZKRitVirdwwejKlKUJpuHbGOYCi/v0rLfS955W4fDgeolIgv/CF41a4JrfIm7TMOSBcDQDv/yLF5jhtPE1ysXxNAgtFi+jKElYoSc34/Vu2qmzOgR29De3sTOKTX8aABpJQa7kG5MMjV/yfWgvzmAKchuah+fZDXWsRZk4eHHx6cJDW9Cb6MMuKyYLwF5JZcGInSwhszzUZ1DCLhH4xt/2Nx2XQcx29e3ixuxQlw1bqZyTJQxp8yO9XOivwe+otgciZyMcWy5QOJfaJtMi+MCcqSggNoJ88dnmzNZpJIlnVix2llCL7pjq26SzD0jUX78OrHD7aLbVzv0Qsfi2DQr20moUf/Q+NTgK4XqCFJ3K3XCwcGekbkDuREtH2niS1y25J1f3wmHkJq3C/eUdfPcGQ6iHBhFfyv5R76NARr6wnES2uAs0dJGMiMiNhgyHPcA6wKA0iEAeV0qVstjqSqg+c0UeCHfIadtUMxfybWMSlgF48KVVjZ9WwJ+0UireMbROWBZQ5X93JLvqVHp3fx3hhX8SBsJd7L2BNXLyGer0zcm133VEf0B1Fxp2iSEU0ms0bFI8hQZA=
+    skip_cleanup: true
+    provider: heroku
+    api_key:
+        secure: 
+            Tbtne+5uUQ+oCA8D5LXqZA0+BRbFRfJ2P29urU+Vl1dFAK6jfB1md6xmaI3GsiByu3jgt8wmZ04xKlkqlhsHO9OjzD5OomJFqc3rTeAyX9zgT3ed2Jufp/19/HoN614n8SFFA0uWF9tDwjfiARWyHlflOaXFHGJDlgQJ/jLEVwIZ4OZKmxAownD8f0YsyLXBc2TJimJEed0xNVWkU5CnNsrs/oYZdfzgadkoVP31X1CqthaZ/cxZouG0/nIDYe/jlj1kzY9X1rSPakPl1UTpMMqs4gTDPlo5PGAwdiMEcw0j9FZFF3c3QUVcg4M0AkvjeYhR5HRnDHf7rtoXHG3D07m3GgLKOx6VQdSporGH3Acz7j54JiP5y4kYDaj3geLgJIVA/Eh6Dv8PXCwnd9J30ZExVSpc8Vhoc+FeVvwQ2cqFLKZNz7punCTB8BDM8No9jcNlGNxtRXkS4kB8dHu2xmZ+7XYV8pHohI+cZYxT5II7Z6WOrcgIzES0xgj4oBP1wl3HPJ8lQcPYSdJa7N1+b8sm+Kg4M7BTBRzBvOlwvpAQhftGHaKRWJfp8fOvAmbnkEL70I/0Hldr57tBq/yBKcHjQBlifDRmhj5sAjk494HCrsQdGojj6345VUzckZoSRU4DqqbR/h9dm9K8MDojvyju1ThrtoHPXgbZFf0l8N0=
+    app: booken-app
+    on:
+        repo: UB-ES-2020/Booken
+        branch: development
