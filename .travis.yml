@@ -1,9 +1,12 @@
 language: node_js
 node_js:
-- node
+    - node
 cache: npm
-script: cd frontend/booken && npm run build
-before_deploy: cd ../../backend/flask-api
+script: 
+    - cd frontend/booken
+    - npm run build
+before_deploy:
+    - cd ../../backend/flask-api
 deploy:
   skip_cleanup: true
   provider: heroku
