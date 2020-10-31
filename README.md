@@ -87,9 +87,3 @@ This section should list any major frameworks that you built your project using.
 ## Roadmap
 
 See the [open issues](https://github.com/UB-ES-2020/Booken/issues) for a list of proposed features (and known issues).
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Font Awesome](https://fontawesome.com)
