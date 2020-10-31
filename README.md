@@ -52,7 +52,7 @@ This section should list any major frameworks that you built your project using.
 
 * Backend:
   * [Python 3.8](https://www.python.org/downloads/)
-Frontend:
+* Frontend:
   * [Node.js](https://nodejs.org/)
   * [npm](https://www.npmjs.com/get-npm)
 
