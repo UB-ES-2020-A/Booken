@@ -28,7 +28,7 @@
         <ul class="navbar-nav ml-auto">
           <div class="btn-toolbar">
             <li class="nav-item">
-              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="!loggedIn" @click="goToAccess">
+              <button class="btn my-2 my-sm-0 mr-2" data-toggle="collapse" data-target=".navbars" style="background-color: #3b494d" type="submit" v-if="!loggedIn" @click="goToAccess">
                 <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Identíficate</a>
               </button>
