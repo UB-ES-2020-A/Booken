@@ -51,9 +51,9 @@ This section should list any major frameworks that you built your project using.
 ### Prerequisites
 
 * Backend:
-  * [Python 3.8] (https://www.python.org/downloads/)
+  * [Python 3.8](https://www.python.org/downloads/)
 Frontend:
-  * [Node.js] (https://nodejs.org/)
+  * [Node.js](https://nodejs.org/)
   * [npm](https://www.npmjs.com/get-npm)
 
 ### Installation
