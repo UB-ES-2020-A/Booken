@@ -51,7 +51,7 @@ This section should list any major frameworks that you built your project using.
 ### Prerequisites
 
 * Backend:
-  * [Python 3.8](https://www.python.org/downloads/)
+  * [Python](https://www.python.org/downloads/)
 * Frontend:
   * [Node.js](https://nodejs.org/)
   * [npm](https://www.npmjs.com/get-npm)
@@ -76,34 +76,18 @@ This section should list any major frameworks that you built your project using.
   ```
 * Frontend:
   1. For development environment:
-    ```npm
-    npm run serve
-    ```
+  ```npm
+  npm run serve
+  ```
   2. For production environment:
-    ```npm
-    npm run build
-    ```
+  ```npm
+  npm run build
+  ```
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/UB-ES-2020/Booken/issues) for a list of proposed features (and known issues).
 
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
