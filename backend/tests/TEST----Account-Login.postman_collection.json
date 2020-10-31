@@ -177,7 +177,7 @@
 						"id": "20f13311-6f98-488f-93ee-3e56c017606a",
 						"exec": [
 							"pm.sendRequest({",
-							"    url: \"http://127.0.0.1:5000/accounts/\",",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
 							"    var data = res.json().Accounts",
@@ -243,7 +243,7 @@
 						"id": "97f5eed6-e7ef-4af1-9816-768346492a2b",
 						"exec": [
 							"pm.sendRequest({",
-							"    url: \"http://127.0.0.1:5000/accounts/\",",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
 							"    var data = res.json().Accounts",
@@ -313,12 +313,12 @@
 	],
 	"variable": [
 		{
-			"id": "64e4fc3a-e3be-4f26-94bb-7e07fa3480a3",
+			"id": "5c77118f-9fa5-4b7f-8f38-67c838625fa1",
 			"key": "account_id",
 			"value": "1"
 		},
 		{
-			"id": "78d3411c-d974-49b3-979c-00262abe760e",
+			"id": "1ee2dbe2-0bd9-42b0-9c40-dadcf2e6f975",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		}
