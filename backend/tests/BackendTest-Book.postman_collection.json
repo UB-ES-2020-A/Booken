@@ -11,15 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/books",
-					"protocol": "http",
+					"raw": "{{base_url}}/books",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"books"
 					]
@@ -33,15 +28,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book?id=12345&name=Book test&author_id=4&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=9.90€&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12",
-					"protocol": "http",
+					"raw": "{{base_url}}/book?id=12345&name=Book test&author_id=4&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=9.90€&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"book"
 					],
@@ -130,15 +120,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/12345",
-					"protocol": "http",
+					"raw": "{{base_url}}/book/12345",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"book",
 						"12345"
@@ -153,15 +138,10 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/12345?id=12345&name=Book test (PUT)&author_id=5&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90€&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12",
-					"protocol": "http",
+					"raw": "{{base_url}}/book/12345?id=12345&name=Book test (PUT)&author_id=5&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90€&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"book",
 						"12345"
@@ -250,15 +230,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/12345",
-					"protocol": "http",
+					"raw": "{{base_url}}/book/12345",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"book",
 						"12345"
@@ -288,6 +263,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"id": "b1cc7ce7-e86f-4e38-a024-6eb1c29eeace",
+			"key": "base_url",
+			"value": "http://booken-app.herokuapp.com/"
 		}
 	],
 	"protocolProfileBehavior": {}

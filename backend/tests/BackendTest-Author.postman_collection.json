@@ -11,15 +11,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/author?name=Quim&birth_date=1999-01-01&city=Barcelona&country=España",
-					"protocol": "http",
+					"raw": "{{base_url}}/author?name=Quim&birth_date=1999-01-01&city=Barcelona&country=España",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"author"
 					],
@@ -51,15 +46,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/authors",
-					"protocol": "http",
+					"raw": "{{base_url}}/authors",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"authors"
 					]
@@ -73,15 +63,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/author/0",
-					"protocol": "http",
+					"raw": "{{base_url}}/author/0",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"author",
 						"0"
@@ -96,15 +81,10 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/author/1?name=Joaquim&birth_date=1999-01-01&city=Barcelona&country=España",
-					"protocol": "http",
+					"raw": "{{base_url}}/author/1?name=Joaquim&birth_date=1999-01-01&city=Barcelona&country=España",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"author",
 						"1"
@@ -137,15 +117,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/author/0",
-					"protocol": "http",
+					"raw": "{{base_url}}/author/0",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"{{base_url}}"
 					],
-					"port": "5000",
 					"path": [
 						"author",
 						"0"
@@ -153,6 +128,35 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ac4e4d51-a206-4c22-901a-9a8b36a0d213",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6df259be-626b-4f5c-8c78-1ad1c6f13abe",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c437b1dc-48a8-49ab-9373-ae3b7561c605",
+			"key": "base_url",
+			"value": "http://booken-app.herokuapp.com/"
 		}
 	],
 	"protocolProfileBehavior": {}
