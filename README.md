@@ -50,14 +50,11 @@ This section should list any major frameworks that you built your project using.
 
 ### Prerequisites
 
-Backend with Flask:
-* [Python 3.8] (https://www.python.org/downloads/)
-Frontend with Vue.js:
-* [Node.js] (https://nodejs.org/)
-* [npm](https://www.npmjs.com/get-npm)
-```sh
-npm install npm@latest -g
-```
+* Backend:
+  * [Python 3.8] (https://www.python.org/downloads/)
+Frontend:
+  * [Node.js] (https://nodejs.org/)
+  * [npm](https://www.npmjs.com/get-npm)
 
 ### Installation
 
