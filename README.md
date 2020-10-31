@@ -76,14 +76,14 @@ This section should list any major frameworks that you built your project using.
   ```
 * Frontend:
   * For development environment:
-  ```npm
-  npm run serve
-  ```
+    ```npm
+    npm run serve
+    ```
   * For production environment:
-  ```npm
-  npm run build
-  ```
-<!-- ROADMAP -->
+    ```npm
+    npm run build
+    ```
+
 ## Roadmap
 
 See the [open issues](https://github.com/UB-ES-2020/Booken/issues) for a list of proposed features (and known issues).
