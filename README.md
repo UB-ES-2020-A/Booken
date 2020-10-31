@@ -7,12 +7,12 @@
   </a>
 
   <h3 align="center">booken app</h3>
-  <img align="center" src="https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development">
 
   <p align="center">
     An awesome web app to buy books!
     <br />
     <br />
+  <img src="https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development">
     <br />
     <a href="http://booken-app.herokuapp.com/">View Demo</a>
   </p>
