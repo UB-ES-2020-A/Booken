@@ -64,21 +64,25 @@ This section should list any major frameworks that you built your project using.
   pip install -r requirements.txt
   ```
 * Frontend:
-```npm
-npm install
-```
+  ```npm
+  npm install
+  ```
 
+### Usage
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
+* Backend:
+  ```pip
+  python app.py
+  ```
+* Frontend:
+  1. For development environment:
+    ```npm
+    npm run serve
+    ```
+  2. For production environment:
+    ```npm
+    npm run build
+    ```
 <!-- ROADMAP -->
 ## Roadmap
 
