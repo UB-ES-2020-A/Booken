@@ -1,4 +1,4 @@
-[![Contributors][contributors-shield]][contributors-url]![](https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development)
+![](https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development)
 
 
 
@@ -10,7 +10,7 @@
     <img src="https://i.ibb.co/vP6HB4x/Captura.png" alt="Logo">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">booken app</h3>
 
   <p align="center">
     An awesome README template to jumpstart your projects!
