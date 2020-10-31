@@ -55,21 +55,17 @@ This section should list any major frameworks that you built your project using.
 * Frontend:
   * [Node.js](https://nodejs.org/)
   * [npm](https://www.npmjs.com/get-npm)
+  * [Vue CLI](https://cli.vuejs.org/guide/installation.html)
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-```sh
-git clone https://github.com/your_username_/Project-Name.git
-```
-3. Install NPM packages
-```sh
+* Backend:
+  ```pip
+  pip install -r requirements.txt
+  ```
+* Frontend:
+```npm
 npm install
-```
-4. Enter your API in `config.js`
-```JS
-const API_KEY = 'ENTER YOUR API';
 ```
 
 
