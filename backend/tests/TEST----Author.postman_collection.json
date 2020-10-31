@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "e4466a7d-d626-4b15-845d-b764de6ae25b",
-		"name": "BackendTest-Author",
+		"name": "TEST----Author",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -154,9 +154,9 @@
 	],
 	"variable": [
 		{
-			"id": "c437b1dc-48a8-49ab-9373-ae3b7561c605",
+			"id": "3391ff21-902d-4dcf-aa33-7425f58abe73",
 			"key": "base_url",
-			"value": "http://booken-app.herokuapp.com/"
+			"value": "http://booken-app.herokuapp.com"
 		}
 	],
 	"protocolProfileBehavior": {}
