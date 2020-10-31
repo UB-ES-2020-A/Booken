@@ -1,3 +1,4 @@
+from flask import render_template
 from flask_migrate import Migrate
 
 # resourcers
@@ -34,8 +35,8 @@ api.add_resource(AuthorList, '/authors')
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def render_vue():
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

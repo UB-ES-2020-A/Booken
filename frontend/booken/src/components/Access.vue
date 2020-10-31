@@ -120,7 +120,7 @@ import * as toastr from '../assets/toastr.js'
 // eslint-disable-next-line no-unused-vars
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
-let api = 'http://127.0.0.1:5000/'
+let api = 'http://booken-app.herokuapp.com/'
 export default {
   name: 'Access',
   props: {

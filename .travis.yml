@@ -1,9 +1,29 @@
 language: node_js
 node_js:
- - "node"
-
+    - node
 cache: npm
-
-script:
-    cd frontend/booken
-    npm run build
+install:
+    - npm install newman
+script: 
+    - cd frontend/booken
+    - npm install
+    - npm run build
+before_deploy:
+    - cd ../../backend/flask-api
+deploy:
+  skip_cleanup: true
+  provider: heroku
+  api_key:
+    secure: Tbtne+5uUQ+oCA8D5LXqZA0+BRbFRfJ2P29urU+Vl1dFAK6jfB1md6xmaI3GsiByu3jgt8wmZ04xKlkqlhsHO9OjzD5OomJFqc3rTeAyX9zgT3ed2Jufp/19/HoN614n8SFFA0uWF9tDwjfiARWyHlflOaXFHGJDlgQJ/jLEVwIZ4OZKmxAownD8f0YsyLXBc2TJimJEed0xNVWkU5CnNsrs/oYZdfzgadkoVP31X1CqthaZ/cxZouG0/nIDYe/jlj1kzY9X1rSPakPl1UTpMMqs4gTDPlo5PGAwdiMEcw0j9FZFF3c3QUVcg4M0AkvjeYhR5HRnDHf7rtoXHG3D07m3GgLKOx6VQdSporGH3Acz7j54JiP5y4kYDaj3geLgJIVA/Eh6Dv8PXCwnd9J30ZExVSpc8Vhoc+FeVvwQ2cqFLKZNz7punCTB8BDM8No9jcNlGNxtRXkS4kB8dHu2xmZ+7XYV8pHohI+cZYxT5II7Z6WOrcgIzES0xgj4oBP1wl3HPJ8lQcPYSdJa7N1+b8sm+Kg4M7BTBRzBvOlwvpAQhftGHaKRWJfp8fOvAmbnkEL70I/0Hldr57tBq/yBKcHjQBlifDRmhj5sAjk494HCrsQdGojj6345VUzckZoSRU4DqqbR/h9dm9K8MDojvyju1ThrtoHPXgbZFf0l8N0=
+  app: booken-app
+  on:
+    repo: UB-ES-2020/Booken
+    branch: development
+notifications:
+  slack:
+    secure: PmiwCTDDv9GxdBKDQWIJuB/jmOxEvU7aW0NhOBuCAJ2G77pxt7zTCu9kJS2TtziiUEPwTCe7HmkiTB0xvykoTipaN4UOpN6INMgDwl4jd4bbCB8IabJsY8RVCmXbpbdotJclkS5Ul/XLQN+G7RzsFbLiniZ3d1X+V82JoAajT9CCuk1FlfVDhuh3EURbcqD7HqO26hhoKSQepqDSlAAqLKY63ScIQHguEC1CovBuWd6W0OiE5UnTxm7aA3WR+fId0q+OZ5oAbJahwRVNC37OFYwSjGkBscB/FK9MrtRPl5N2jW8tEzg8lmbROchZawH04o4j5nxsjpeNunOIJD9ZOp65PHyot0qZTDPEsTID86s9f90YYqqYtBPXILtGqLPK2Yjdb2xkIJ8xjmZ85PG3OznqzgojGhauK7VVzdmoiyoPHoGtwIZj1dlUOYYUJ1SLJPvF2Mqu9W5SGSh9jqMq61NgSsgeNi22LVH/Sf4cmt8cyuQvruRElu9K/JZrfmiApSPg/ypsTvy+UBdCqiFhhzZnKEMxngph25zlcAD4uRGnGEvbIJpsZdI5IcYfBNCm5MbuVjRjfC2PjuAufYVz0lUaObBp27SCILkB3tDyk3kjs0UCtIfj3BWE55Nme6qXl/z6zSO7c5l48xWkuxuRRwnsHmkk2DUAs9aLPwwK4QI=
+after_deploy:
+    - cd ../..
+    - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json

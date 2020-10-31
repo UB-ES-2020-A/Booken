@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "e4466a7d-d626-4b15-845d-b764de6ae25b",
+		"name": "TEST----Author",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/author?name=Quim&birth_date=1999-01-01&city=Barcelona&country=España",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"author"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Quim"
+						},
+						{
+							"key": "birth_date",
+							"value": "1999-01-01"
+						},
+						{
+							"key": "city",
+							"value": "Barcelona"
+						},
+						{
+							"key": "country",
+							"value": "España"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Authors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/authors",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/author/0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"author",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/author/1?name=Joaquim&birth_date=1999-01-01&city=Barcelona&country=España",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"author",
+						"1"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Joaquim"
+						},
+						{
+							"key": "birth_date",
+							"value": "1999-01-01"
+						},
+						{
+							"key": "city",
+							"value": "Barcelona"
+						},
+						{
+							"key": "country",
+							"value": "España"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/author/0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"author",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ac4e4d51-a206-4c22-901a-9a8b36a0d213",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6df259be-626b-4f5c-8c78-1ad1c6f13abe",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3391ff21-902d-4dcf-aa33-7425f58abe73",
+			"key": "base_url",
+			"value": "http://booken-app.herokuapp.com"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

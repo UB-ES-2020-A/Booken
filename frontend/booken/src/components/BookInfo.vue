@@ -237,7 +237,7 @@
 
 <script>
 import axios from 'axios'
-
+let api = 'http://booken-app.herokuapp.com/'
 export default {
   name: 'BookInfo',
 
@@ -287,7 +287,7 @@ export default {
 
     initBookInfo() {
       this.toPrint(this.book_id)
-      var path = `http://127.0.0.1:5000/book/${this.book_id}`
+      var path = api + 'book/${this.book_id}'
 
       axios.get(path)
           .then((res) => {
