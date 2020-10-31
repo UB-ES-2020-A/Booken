@@ -1,7 +1,3 @@
-![](https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development)
-
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -16,6 +12,7 @@
     An awesome web app to buy books!
     <br />
     <br />
+  ![](https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development)
     <br />
     <a href="http://booken-app.herokuapp.com/">View Demo</a>
   </p>
