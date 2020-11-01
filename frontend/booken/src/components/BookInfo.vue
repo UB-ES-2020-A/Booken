@@ -259,7 +259,7 @@ export default {
 
       book_found: 1,
       book_id: 0,
-      admin: 1,
+      admin: 0,
 
       bookInfo: {
         name: 'NameTest',
