@@ -20,7 +20,46 @@
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
 							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"})"
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().Accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "98d11640-b146-471b-b4d1-592ac11d97d2",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});"
 						],
 						"type": "text/javascript"
 					}
@@ -42,10 +81,7 @@
 							"value": "123",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{base_url}}/login",
@@ -118,7 +154,24 @@
 						"exec": [
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
-							"})"
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().Accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
 						],
 						"type": "text/javascript"
 					}
@@ -150,10 +203,7 @@
 							"value": "123",
 							"type": "text"
 						}
-					],
-					"options": {
-						"formdata": {}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{base_url}}/account",
@@ -176,6 +226,20 @@
 					"script": {
 						"id": "20f13311-6f98-488f-93ee-3e56c017606a",
 						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
 							"pm.sendRequest({",
 							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
@@ -211,7 +275,12 @@
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
 							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"})"
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
 						],
 						"type": "text/javascript"
 					}
@@ -240,8 +309,22 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "97f5eed6-e7ef-4af1-9816-768346492a2b",
+						"id": "96c85ebf-f59b-4c8e-b33b-487c18988f00",
 						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
 							"pm.sendRequest({",
 							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
@@ -252,8 +335,7 @@
 							"            pm.collectionVariables.set(\"account_id\", account.id)",
 							"        }",
 							"    })",
-							"});",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -261,7 +343,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5623927b-3015-4770-89a5-b7a0d29af081",
+						"id": "8011e1f1-9d7d-4f9f-a0d7-a7c2ce801e7c",
 						"exec": [
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
@@ -313,12 +395,12 @@
 	],
 	"variable": [
 		{
-			"id": "5c77118f-9fa5-4b7f-8f38-67c838625fa1",
+			"id": "92215a35-67b3-47cd-aa5c-930607482ad4",
 			"key": "account_id",
 			"value": "1"
 		},
 		{
-			"id": "1ee2dbe2-0bd9-42b0-9c40-dadcf2e6f975",
+			"id": "c1269eaa-3a97-412d-86f7-a4381a6fbec8",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		}
