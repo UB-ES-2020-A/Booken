@@ -1,12 +1,72 @@
 {
 	"info": {
 		"_postman_id": "e4466a7d-d626-4b15-845d-b764de6ae25b",
-		"name": "TEST----Author",
+		"name": "BackendTest-Author",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
+			"name": "Get Authors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "947c82d4-b453-4c0e-8010-90a5e3cd9ee9",
+						"exec": [
+							"var schema = {",
+							"   \"Authors\": \"array\",",
+							"   \"items\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"name\": {\"type\":\"string\"},",
+							"        \"birth_date\": {\"type\":\"string\"},",
+							"        \"city\": {\"type\":\"string\"},",
+							"        \"country\": {\"type\":\"integer\"},",
+							"    }",
+							"",
+							"};",
+							"",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/authors",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "49a0b25b-f783-437b-9413-cf2cbd1c8334",
+						"exec": [
+							"pm.test(\"Status code 201\", function(){",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -41,42 +101,22 @@
 			"response": []
 		},
 		{
-			"name": "Get Authors",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/authors",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"authors"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/author/0",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"author",
-						"0"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "64bb5f10-771a-43d7-9882-017408760876",
+						"exec": [
+							"pm.test(\"Status code 201\", function(){",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -112,18 +152,79 @@
 			"response": []
 		},
 		{
-			"name": "Delete",
+			"name": "Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d27914aa-8fab-4693-81fe-a7a1ae6bd9a7",
+						"exec": [
+							"var schema = {",
+							"   \"Author\": \"array\",",
+							"   \"items\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"name\": {\"type\":\"string\"},",
+							"        \"birth_date\": {\"type\":\"string\"},",
+							"        \"city\": {\"type\":\"string\"},",
+							"        \"country\": {\"type\":\"integer\"},",
+							"    }",
+							"",
+							"};",
+							"",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "DELETE",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/author/0",
+					"raw": "{{base_url}}/author/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"author",
-						"0"
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3242d0e7-f2f1-462c-85b2-18dce8ab1f0c",
+						"exec": [
+							"pm.test(\"Status code 201\", function(){",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/author/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"author",
+						"1"
 					]
 				}
 			},
@@ -134,7 +235,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "ac4e4d51-a206-4c22-901a-9a8b36a0d213",
+				"id": "35853dd5-b5bc-4fbd-8eda-738fdd9caf63",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -144,7 +245,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "6df259be-626b-4f5c-8c78-1ad1c6f13abe",
+				"id": "2a2d3b52-0857-42ec-a885-2220cb7afe50",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -154,7 +255,7 @@
 	],
 	"variable": [
 		{
-			"id": "3391ff21-902d-4dcf-aa33-7425f58abe73",
+			"id": "3fca1b75-df91-4b4c-9713-43fb76cdf01c",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		}
