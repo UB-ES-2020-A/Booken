@@ -12,7 +12,7 @@
     An awesome web app to buy books!
     <br /> 
     <br />
-    <img src="https://travis-ci.com/UB-ES-2020/Booken.svg?branch=main">
+    <img src="https://travis-ci.com/UB-ES-2020/Booken.svg?branch=development">
     <br />
     <br/>
     <a href="http://booken-app.herokuapp.com/">View Demo</a>
