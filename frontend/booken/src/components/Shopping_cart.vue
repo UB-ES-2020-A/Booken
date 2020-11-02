@@ -111,7 +111,7 @@ export default {
   },
   data() {
     return {
-      is_empty: 0,
+      is_empty: 1,
       cart: [{'name': "Prueba", "price": 10}, {'name': "Prueba", "price": 10}, {
         'name': "Prueba",
         "price": 10
