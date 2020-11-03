@@ -6,63 +6,72 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <div class="jumbotron" style="background-image: url('https://w.wallhaven.cc/full/x1/wallhaven-x1kd1d.jpg')">
-      <h1 class="display-4" style="color: white">¡Todos los libros a un clic de ti!</h1>
-      <p class="lead" style="color: white">¿Preparándote para otro confinamiento? En <span
-          style="font-family: LogoFont; color: #2bc4ed; font-size: 1.3em">booken</span> te ayudamos, compra <b>2</b> libros y el envío
-        te sale gratis.</p>
-      <hr class="my-4">
-      <p style="font-size: 0.6em; color: white">*Para compras de más de 49€. Se aplican otras restricciones.</p>
-    </div>
-    <h2>Los libros de los que todos hablan</h2>
-    <div class="row row-cols-1 row-cols-sm-6">
-      <div class="col mb-4">
-        <div class="card h-100">
-          <img
-              src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
-              class="card-img-top" alt="...">
-          <div class="card-body">
-            <h6 class="card-subtitle">J. D. Barker</h6>
-            <h4 class="card-title"><router-link to="/book">El Cuarto Mono</router-link></h4>
+    <div class="container" style="max-width: 1400px">
+      <div class="jumbotron" style="background-image: url('https://w.wallhaven.cc/full/x1/wallhaven-x1kd1d.jpg')">
+        <h1 class="display-4" style="color: white">¡Todos los libros a un clic de ti!</h1>
+        <p class="lead" style="color: white">¿Preparándote para otro confinamiento? En <span
+            style="font-family: LogoFont; color: #2bc4ed; font-size: 1.3em">booken</span> te ayudamos, compra <b>2</b>
+          libros y el envío
+          te sale gratis.</p>
+        <hr class="my-4">
+        <p style="font-size: 0.6em; color: white">*Para compras de más de 49€. Se aplican otras restricciones.</p>
+      </div>
+      <h2>Los libros de los que todos hablan</h2>
+      <div class="row row-cols-1 row-cols-sm-6">
+        <div class="col mb-4">
+          <div class="card h-100">
+            <img
+                src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+                class="card-img-top" alt="...">
+            <div class="card-body">
+              <h6 class="card-subtitle">J. D. Barker</h6>
+              <h4 class="card-title">
+                <router-link to="/book">El Cuarto Mono</router-link>
+              </h4>
 
-            <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
-          </div>
-          <div class="card-footer">
-            <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span> <span
-                class="badge badge-dark">Tapa dura</span></h4>
+              <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
+            </div>
+            <div class="card-footer">
+              <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span>
+                <span
+                    class="badge badge-dark">Tapa dura</span></h4>
+            </div>
           </div>
         </div>
+
       </div>
+      <h2>Las novelas más populares</h2>
+      <div class="row row-cols-1 row-cols-sm-6">
+        <div class="col mb-4">
+          <div class="card h-100">
+            <img
+                src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+                class="card-img-top" alt="...">
+            <div class="card-body">
+              <h6 class="card-subtitle">J. D. Barker</h6>
+              <h4 class="card-title">
+                <router-link to="/book">El Cuarto Mono</router-link>
+              </h4>
 
-    </div>
-    <h2>Las novelas más populares</h2>
-    <div class="row row-cols-1 row-cols-sm-6">
-      <div class="col mb-4">
-        <div class="card h-100">
-          <img
-              src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
-              class="card-img-top" alt="...">
-          <div class="card-body">
-            <h6 class="card-subtitle">J. D. Barker</h6>
-            <h4 class="card-title"><router-link to="/book">El Cuarto Mono</router-link></h4>
-
-            <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
-          </div>
-          <div class="card-footer">
-            <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span> <span
-                class="badge badge-dark">Tapa dura</span></h4>
+              <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
+            </div>
+            <div class="card-footer">
+              <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span>
+                <span
+                    class="badge badge-dark">Tapa dura</span></h4>
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
-    <div class="jumbotron jumbotron-fluid" style="background-color: #2bc4ed; text-align: left !important;">
-      <div class="container">
-        <h1 class="display-4">¿No encuentras lo que buscas?</h1>
-        <p class="lead">No dudes en
-          <router-link to="/contact">contactarnos</router-link>
-          , ¡y te ayudaremos!
-        </p>
+      </div>
+      <div class="jumbotron jumbotron-fluid" style="background-color: #2bc4ed; text-align: left !important;">
+        <div class="container">
+          <h1 class="display-4">¿No encuentras lo que buscas?</h1>
+          <p class="lead">No dudes en
+            <router-link to="/contact">contactarnos</router-link>
+            , ¡y te ayudaremos!
+          </p>
+        </div>
       </div>
     </div>
   </div>

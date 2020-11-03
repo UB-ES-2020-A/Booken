@@ -66,34 +66,6 @@
           </button>
 
 
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <div class="btn-toolbar">
-            <li class="nav-item">
-              <button class="btn my-2 my-sm-0 mr-2" data-toggle="collapse" data-target=".navbars" style="background-color: #3b494d" type="submit" v-if="!loggedIn" @click="goToAccess">
-                <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                  class="navbartextbt">Identíficate</a>
-              </button>
-              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="loggedIn">
-                <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                  class="navbartextbt">Tu cuenta</a>
-              </button>
-            </li>
-            <li class="nav-item">
-              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit">
-                <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                  class="navbartextbt">Ayuda</a>
-              </button>
-            </li>
-            <li class="nav-item">
-              <button class="btn my-2 my-sm-0 mr-5" @click="goShoppingCart" style="background-color: #3b494d" type="submit">
-                <i class="fas fa-shopping-basket" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                  class="navbartextbt">Cesta</a>
-              </button>
-            </li>
-          </div>
-
-
           <!-- Links -->
           <div class="collapse navbar-collapse my-3 mynavbar " id="collapse_target1">
             <!--
@@ -219,13 +191,7 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-
-              <li>
-                <router-link to="/contact">Contacto</router-link>
-              </li>
-
               <li><router-link to="/contact">Contacto</router-link></li>
-
               <li><a href="">Preguntas frecuentes</a></li>
 
             </ul>
