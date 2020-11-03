@@ -305,7 +305,7 @@ export default {
             this.bookInfo.price = res.data.book.price
             this.bookInfo.isbn = res.data.book.ISBN
             this.bookInfo.cover_image_url = res.data.book.cover_image_url
-            this.num_pages = res.data.book.num_pages
+            this.bookInfo.num_pages = res.data.book.num_pages
             this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
             this.bookInfo.synopsis = res.data.book.synopsis
           })
