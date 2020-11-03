@@ -69,11 +69,11 @@
                     </tr>
                     <tr>
                       <th scope="row">Género</th>
-                      <td>{{ this.toLowercase(bookInfo.genre )}}</td>
+                      <td>{{ this.toLowercase(bookInfo.genre) }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Número de páginas</th>
-                      <td>{{bookInfo.num_pages}}</td>
+                      <td>{{ bookInfo.num_pages }}</td>
                     </tr>
                     <tr>
                       <th scope="row">Formato</th>
@@ -82,7 +82,7 @@
                     </tr>
                     <tr>
                       <th scope="row">ISBN</th>
-                      <td>{{bookInfo.isbn}}</td>
+                      <td>{{ bookInfo.isbn }}</td>
                     </tr>
                     </tbody>
                   </table>
@@ -116,10 +116,57 @@
               <h2 class="card-title">Reseñas de los usuarios</h2>
             </div>
             <div class="col" style="text-align: right">
-              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit">
+              <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
+                      data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">
                 <i class="fa fa-pencil" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Escribir reseña</a>
               </button>
+
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                   aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Escribir reseña</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group" style="text-align: left">
+                          <label for="reviewTitle" class="col-form-label">Añadir un título</label>
+                          <input type="text" class="form-control" id="reviewTitle"
+                                 placeholder="¿Qué és lo más importante?">
+                        </div>
+                        <div class="form-group" style="text-align: left">
+                          <label class="col-form-label">Añadir una valoración</label>
+                          <div style="margin-left: 0.1em">
+                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: orange"></span>
+                          </div>
+                          <!--<input type="text" class="form-control" id="reviewValoration"
+                                 placeholder="¿Qué és lo más importante?">-->
+                        </div>
+                        <div class="form-group" style="text-align: left">
+                          <label for="reviewText" class="col-form-label">Añadir una reseña escrita</label>
+                          <textarea class="form-control" id="reviewText" rows="5"
+                                    placeholder="¿Qué te ha gustado y qué no? ¿Para qué usaste este producto?"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal">
+                        Enviar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="card" style="width: auto; margin-top: 0.5em">
