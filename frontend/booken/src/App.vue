@@ -87,7 +87,7 @@
         </ul>
       </div>
     </nav>
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
     <footer class="site-footer">
       <div class="container">
         <div class="row">
