@@ -25,7 +25,7 @@ for i in books:
         authors.append(a)
         db.session.add(a)
         authorss += 1
-    book = BookModel(i[0], i[1], authors, i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], i[12], i[13])
+    book = BookModel(i[0], i[1], authors, i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10], i[11], i[12], i[13], i[14], i[15])
     bookss += 1
     db.session.add(book)
 

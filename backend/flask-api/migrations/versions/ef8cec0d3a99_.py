@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 940683dc077e
+Revision ID: ef8cec0d3a99
 Revises: 
-Create Date: 2020-10-28 17:42:23.655334
+Create Date: 2020-11-03 16:11:43.131709
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '940683dc077e'
+revision = 'ef8cec0d3a99'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,6 +41,7 @@ def upgrade():
     )
     op.create_table('books',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('isbn', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=30), nullable=False),
     sa.Column('genre', sa.Enum('HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL', 'COMICS Y MANGA', 'JUVENIL', 'OTRAS CATEGORIAS', name='genres_types'), nullable=False),
     sa.Column('year', sa.Integer(), nullable=False),
@@ -53,6 +54,8 @@ def upgrade():
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('num_sales', sa.Integer(), nullable=False),
     sa.Column('total_available', sa.Integer(), nullable=False),
+    sa.Column('cover_image_url', sa.String(length=100), nullable=True),
+    sa.Column('back_cover_image_url', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('tags',

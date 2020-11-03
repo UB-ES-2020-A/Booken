@@ -28,7 +28,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book?id=12345&name=Book test&author_id=4&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=9.90€&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12",
+					"raw": "{{base_url}}/book?isbn=12345&name=Book test&author_id=4&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=9.90€&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test.com&back_cover_image_url=www.url_test.com",
 					"host": [
 						"{{base_url}}"
 					],
@@ -37,7 +37,7 @@
 					],
 					"query": [
 						{
-							"key": "id",
+							"key": "isbn",
 							"value": "12345"
 						},
 						{
@@ -108,6 +108,14 @@
 						{
 							"key": "total_available",
 							"value": "12"
+						},
+						{
+							"key": "cover_image_url",
+							"value": "www.url_test.com"
+						},
+						{
+							"key": "back_cover_image_url",
+							"value": "www.url_test.com"
 						}
 					]
 				}
@@ -120,13 +128,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/12345",
+					"raw": "{{base_url}}/book/4",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"book",
-						"12345"
+						"4"
 					]
 				}
 			},
@@ -138,17 +146,22 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/12345?id=12345&name=Book test (PUT)&author_id=5&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90€&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12",
+					"raw": "http://127.0.0.1:5000/book/4?isbn=12345&name=Book test (PUT)&author_id=4&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90€&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test_put.com&back_cover_image_url=www.url_test_put.com",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
+					"port": "5000",
 					"path": [
 						"book",
-						"12345"
+						"4"
 					],
 					"query": [
 						{
-							"key": "id",
+							"key": "isbn",
 							"value": "12345"
 						},
 						{
@@ -157,7 +170,7 @@
 						},
 						{
 							"key": "author_id",
-							"value": "5"
+							"value": "4"
 						},
 						{
 							"key": "author_name",
@@ -218,6 +231,14 @@
 						{
 							"key": "total_available",
 							"value": "12"
+						},
+						{
+							"key": "cover_image_url",
+							"value": "www.url_test_put.com"
+						},
+						{
+							"key": "back_cover_image_url",
+							"value": "www.url_test_put.com"
 						}
 					]
 				}
@@ -230,13 +251,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/12345",
+					"raw": "{{base_url}}/book/4",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"book",
-						"12345"
+						"4"
 					]
 				}
 			},
@@ -267,7 +288,7 @@
 	],
 	"variable": [
 		{
-			"id": "4fa657bf-34ac-430c-8a69-0e9597fd498a",
+			"id": "4a3c50e3-aa67-4ed8-907e-d12dff85bdf6",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		}
