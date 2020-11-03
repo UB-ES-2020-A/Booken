@@ -76,7 +76,7 @@ class Book(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('isbn', type=str, required=True, help="Operation not valid: 'ISBN' not provided")
         parser.add_argument('name', type=str, required=True, help="Operation not valid: 'name' not provided")
-        parser.add_argument('author_id', type=str, required=True, help="Operation not valid: 'author_id' not provided")
+        parser.add_argument('author_id', type=int, required=True, help="Operation not valid: 'author_id' not provided")
         parser.add_argument('author_name', type=str, required=True, help="Operation not valid: "
                                                                          "'author_name' not provided")
         parser.add_argument('author_bd', type=str, required=True, help="Operation not valid: 'author_bd' not provided")
@@ -85,18 +85,18 @@ class Book(Resource):
         parser.add_argument('author_country', type=str, required=True, help="Operation not valid: "
                                                                             "'author_country' not provided")
         parser.add_argument('genre', type=str, required=True, help="Operation not valid: 'genre' not provided")
-        parser.add_argument('year', type=str, required=True, help="Operation not valid: 'year' not provided")
+        parser.add_argument('year', type=int, required=True, help="Operation not valid: 'year' not provided")
         parser.add_argument('editorial', type=str, required=True, help="Operation not valid: 'editorial' not provided")
         parser.add_argument('language', type=str, required=True, help="Operation not valid: 'language' not provided")
-        parser.add_argument('price', type=str, required=True, help="Operation not valid: 'price' not provided")
+        parser.add_argument('price', type=float, required=True, help="Operation not valid: 'price' not provided")
         parser.add_argument('synopsis', type=str, required=True, help="Operation not valid: 'synopsis' not provided")
         parser.add_argument('description', type=str, required=True, help="Operation not valid: "
                                                                          "'description' not provided")
-        parser.add_argument('num_pages', type=str, required=True, help="Operation not valid: 'num_pages' not provided")
-        parser.add_argument('cover_type', type=str, required=True, help="Operation not valid: "
+        parser.add_argument('num_pages', type=int, required=True, help="Operation not valid: 'num_pages' not provided")
+        parser.add_argument('cover_type', type=int, required=True, help="Operation not valid: "
                                                                         "'cover_type' not provided")
-        parser.add_argument('num_sales', type=str, required=True, help="Operation not valid: 'num_sales' not provided")
-        parser.add_argument('total_available', type=str, required=True, help="Operation not valid: "
+        parser.add_argument('num_sales', type=int, required=True, help="Operation not valid: 'num_sales' not provided")
+        parser.add_argument('total_available', type=int, required=True, help="Operation not valid: "
                                                                              "'total_available' not provided")
         parser.add_argument('cover_image_url', type=str, required=True, help="Operation not valid: "
                                                                              "'cover_image_url' not provided")

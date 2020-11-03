@@ -22,7 +22,7 @@ class BookModel(db.Model):
     description = db.Column(db.String(100), nullable=False)
     num_pages = db.Column(db.Integer, nullable=False)
     cover_type = db.Column(db.Integer, nullable=False)  # 0-> tapa blanda , 1-> tapa dura
-    price = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
     num_sales = db.Column(db.Integer, nullable=False)
     total_available = db.Column(db.Integer, nullable=False)
     cover_image_url = db.Column(db.String(100))
