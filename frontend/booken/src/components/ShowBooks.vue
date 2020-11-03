@@ -30,7 +30,7 @@
               src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
               class="card-img-top" alt="...">
           <div class="card-body">
-            <h6 class="card-subtitle">{{this.joinAuthours(book.author)}}</h6>
+            <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
             <h4 class="card-title">
               <router-link to="/book">{{ book.name }}</router-link>
             </h4>
@@ -38,7 +38,9 @@
             <p class="card-text">FALTA DESC</p>
           </div>
           <div class="card-footer">
-            <h4><span class="badge badge-info">{{ this.replaceDecimal(book.price) }}</span> <span class="badge badge-secondary">{{ this.toLowercase(book.genre)}}</span>
+            <h4>
+              <span class="badge badge-info">{{ this.replaceDecimal(book.price) }}</span>&nbsp;
+              <span class="badge badge-secondary">{{ this.toLowercase(book.genre) }}</span>&nbsp;
               <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
               <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
             </h4>
@@ -53,41 +55,43 @@
 
 <script>
 import axios from 'axios'
+
 let api = 'https://booken-app.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
     this.getBooksFromDB(this.$route.params.category)
   },
-  data () {
+  data() {
     return {
       books: []
     }
   },
   methods: {
-    joinAuthours (aut) {
+    joinAuthours(aut) {
       if (aut.length == 1) {
-      return aut[0]
-      }else{
+        console.log(aut[0])
+        return aut[0]
+      } else {
         var ret = ''
-        for(const a in aut){
+        for (const a in aut) {
           ret += aut[a] + ','
         }
         return ret.slice(0, -1)
       }
 
     },
-    replaceDecimal (stg){
+    replaceDecimal(stg) {
       return stg.replace(',', '.')
     },
     toLowercase(stg) {
       return stg.replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase();
-    });
+      });
     },
-    getBooksFromDB (req) {
+    getBooksFromDB(req) {
       var path = api + 'books/' + req
-      if (req === 'TODO'){
+      if (req === 'TODO') {
         path = api + 'books'
       }
       axios.get(path)
