@@ -23,7 +23,7 @@
 
       </div>
     </div>
-    <div class="row row-cols-1 row-cols-sm-6">
+    <div class="row row-cols-1 row-cols-sm-6" :key="$route.params.category">
       <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
         <div class="card h-100">
           <img
@@ -56,7 +56,7 @@
 <script>
 import axios from 'axios'
 
-let api = 'https://booken-dev.herokuapp.com/'
+let api = 'http://127.0.0.1:5000/'
 export default {
   name: "ShowBooks",
   created() {

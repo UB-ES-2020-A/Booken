@@ -9,7 +9,9 @@ from models.book import BookModel
 
 class BookList(Resource):
 
-    def get(self):
+    def get(self, genre=None):
+        if genre:
+            return {'books': [i.json()['book'] for i in BookModel.find_by_genre(genre)]}, 200
         return {'books': [i.json()['book'] for i in db.session.query(BookModel).all()]}, 200
 
 
