@@ -279,14 +279,12 @@ export default {
 
     }
   },
-
   methods: {
     toPrint(toPrint) {
       console.log(toPrint)
     },
 
     initBookInfo() {
-      this.toPrint(this.book_id)
       var path = api + 'book/${this.book_id}'
 
       axios.get(path)
