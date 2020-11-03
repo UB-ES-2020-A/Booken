@@ -27,7 +27,7 @@ api.add_resource(Accounts, '/accounts/')
 api.add_resource(Login, '/login')
 
 api.add_resource(Book, '/book/<int:id>', '/book')
-api.add_resource(BookList, '/books')
+api.add_resource(BookList, '/books', '/books/<string:genre>')
 api.add_resource(BookArtist, '/book/<int:id>/author')
 
 api.add_resource(Author, '/author/<int:id>', '/author')

@@ -32,7 +32,7 @@ class BookModel(db.Model):
                  cover_type, num_sales, total_available, cover_image_url, back_cover_image_url, id=None):
         if id:
             self.id = id
-        self.isbn= isbn
+        self.isbn = isbn
         self.name = name
         self.author = author
         self.genre = genre
@@ -55,11 +55,15 @@ class BookModel(db.Model):
 
     @classmethod
     def find_by_isbn(cls, isbn):
-        return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in isbn.split(" "))).first()
+        return db.session.query(BookModel).filter_by(isbn=" ".join(w.capitalize() for w in isbn.split(" "))).first()
 
     @classmethod
     def find_by_name(cls, name):
         return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in name.split(" "))).first()
+
+    @classmethod
+    def find_by_genre(cls, genre):
+        return db.session.query(BookModel).filter_by(genre=genre).all()
 
     @classmethod
     def find_by_author(cls, author):
