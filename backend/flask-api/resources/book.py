@@ -10,7 +10,7 @@ from models.book import BookModel
 class BookList(Resource):
 
     def get(self):
-        return {'Books': [i.json()['book'] for i in db.session.query(BookModel).all()]}, 200
+        return {'books': [i.json()['book'] for i in db.session.query(BookModel).all()]}, 200
 
 
 class BookArtist(Resource):
@@ -27,7 +27,7 @@ class Book(Resource):
     def get(self, id):
         book = BookModel.find_by_id(id)
         if book:
-            return {'Book': book.json()}, 200
+            return book.json(), 200
         return {'message': "Book with ['id': {}] not found".format(id)}, 404
 
     def post(self):

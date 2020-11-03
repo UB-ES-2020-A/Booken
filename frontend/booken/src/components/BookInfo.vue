@@ -22,7 +22,7 @@
             </div>
             <div class="col" style="text-align: right">
               <h1 class="card-title" v-if="book_found"><p class="bookTitle" style="text-align: right !important">
-                {{ bookInfo.price }}€</p></h1>
+                {{ this.replaceDecimal(bookInfo.price) }}€</p></h1>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="admin"><i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
@@ -33,14 +33,14 @@
               <div ref="images" class="col" style="margin-bottom: 2rem">
                 <div style="display:flex; flex-direction: row">
                   <div style="display:flex; flex-direction: column">
-                    <img ref="pic1" class="sel-picture" :src="bookInfo.cover" @click="changeImage(1)">
-                    <img ref="pic2" class="sel-picture" :src="bookInfo.back_cover" @click="changeImage(2)">
+                    <img ref="pic1" class="sel-picture" :src="bookInfo.cover_image_url" @click="changeImage(1)">
+                    <img ref="pic2" class="sel-picture" :src="bookInfo.back_cover_image_url" @click="changeImage(2)">
                   </div>
                   <div style="margin-left:auto; margin-right:auto">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em"
-                         :src="bookInfo.cover">
+                         :src="bookInfo.cover_image_url">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2"
-                         style="max-height: 20em; display: none" :src="bookInfo.back_cover">
+                         style="max-height: 20em; display: none" :src="bookInfo.back_cover_image_url">
                   </div>
                 </div>
               </div>
@@ -69,24 +69,23 @@
                     </tr>
                     <tr>
                       <th scope="row">Género</th>
-                      <td>{{ bookInfo.genre }}</td>
+                      <td>{{ this.toLowercase(bookInfo.genre )}}</td>
                     </tr>
                     <tr>
                       <th scope="row">Número de páginas</th>
-                      <td>19854</td>
+                      <td>{{bookInfo.num_pages}}</td>
                     </tr>
                     <tr>
                       <th scope="row">Formato</th>
-                      <td>Tapa dura</td>
+                      <td v-if="bookInfo.cover_type == 0">Tapa dura</td>
+                      <td v-if="bookInfo.cover_type == 1">Tapa blanda</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">ISBN</th>
+                      <td>{{bookInfo.isbn}}</td>
                     </tr>
                     </tbody>
                   </table>
-                  <!--<p style="color: red"><b>Autor: </b>{{ bookInfo.author }}
-                  </p>
-                  <p><b>Editorial: </b>{{ bookInfo.editorial }}</p>
-                  <p><b>Año de publicación: </b>{{ bookInfo.year }}</p>
-                  <p><b>Genero: </b>{{ bookInfo.genre }}</p>
-                  <p><b>Idioma: </b>{{ bookInfo.language }}</p> -->
                 </div>
               </div>
               <div style="text-align: right">
@@ -237,7 +236,8 @@
 
 <script>
 import axios from 'axios'
-let api = 'http://booken-app.herokuapp.com/'
+
+let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: 'BookInfo',
 
@@ -257,7 +257,7 @@ export default {
   data() {
     return {
 
-      book_found: 1,
+      book_found: 0,
       book_id: 0,
       admin: 0,
 
@@ -270,6 +270,11 @@ export default {
         language: 'LenguageTest',
         available: 10,
         price: 0,
+        isbn: 0,
+        num_pages: 0,
+        cover_type: 0,
+        cover_image_url: '',
+        back_cover_image_url: '',
         synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         cover: 'https://static.fnac-static.com/multimedia/Images/ES/NR/22/0f/18/1576738/1507-1.jpg',
         back_cover: 'https://images-na.ssl-images-amazon.com/images/I/71XhS2XgMxL.jpg',
@@ -285,19 +290,45 @@ export default {
     },
 
     initBookInfo() {
-      var path = api + 'book/${this.book_id}'
+      var path = api + 'book/' + this.$route.params.id
 
       axios.get(path)
           .then((res) => {
+            console.log('lel')
             this.book_found = 1
-            this.bookInfo.name = res.data.Book.book.name
-            this.bookInfo.author = res.data.Book.book.author[0]
-            this.bookInfo.genre = res.data.Book.book.genre
-            this.bookInfo.year = res.data.Book.book.year
-            this.bookInfo.editorial = res.data.Book.book.editorial
-            this.bookInfo.language = res.data.Book.book.language
-            this.bookInfo.price = res.data.Book.book.price
-            this.bookInfo.synopsis = res.data.Book.book.synopsis
+            this.bookInfo.name = res.data.book.name
+            this.bookInfo.author = res.data.book.author[0]
+            this.bookInfo.genre = res.data.book.genre
+            this.bookInfo.year = res.data.book.year
+            this.bookInfo.editorial = res.data.book.editorial
+            this.bookInfo.language = res.data.book.language
+            this.bookInfo.price = res.data.book.price
+            this.bookInfo.isbn = res.data.book.ISBN
+            this.bookInfo.cover_image_url = res.data.book.cover_image_url
+            this.num_pages = res.data.book.num_pages
+            this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
+            this.bookInfo.synopsis = res.data.book.synopsis
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    },
+    replaceDecimal(stg) {
+      return stg.replace(',', '.')
+    },
+    toLowercase(stg) {
+      return stg.replace(/\S*/g, function (word) {
+        return word.charAt(0) + word.slice(1).toLowerCase();
+      });
+    },
+    getBooksFromDB(req) {
+      var path = api + 'books/' + req
+      if (req === 'TODO') {
+        path = api + 'books'
+      }
+      axios.get(path)
+          .then((res) => {
+            this.books = res.data.books
           })
           .catch((error) => {
             this.toPrint(error)

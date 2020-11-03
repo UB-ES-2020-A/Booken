@@ -24,22 +24,22 @@
       </div>
     </div>
     <div class="row row-cols-1 row-cols-sm-6">
-      <div class="col mb-4" v-for="(book) in this.books" :key="book.author">
+      <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
         <div class="card h-100">
           <img
-              src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+              :src="book.cover_image_url"
               class="card-img-top" alt="...">
           <div class="card-body">
             <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
             <h4 class="card-title">
-              <router-link to="/book">{{ book.name }}</router-link>
+              <router-link :to="{name: 'BookInfo', params: {id: book.id}}">{{ book.name }}</router-link>
             </h4>
 
-            <p class="card-text">FALTA DESC</p>
+            <p class="card-text">{{book.description}}</p>
           </div>
           <div class="card-footer">
             <h4>
-              <span class="badge badge-info">{{ this.replaceDecimal(book.price) }}</span>&nbsp;
+              <span class="badge badge-info">{{ this.replaceDecimal(book.price) }}€</span>&nbsp;
               <span class="badge badge-secondary">{{ this.toLowercase(book.genre) }}</span>&nbsp;
               <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
               <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
@@ -56,7 +56,7 @@
 <script>
 import axios from 'axios'
 
-let api = 'https://booken-app.herokuapp.com/'
+let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
@@ -70,7 +70,6 @@ export default {
   methods: {
     joinAuthours(aut) {
       if (aut.length == 1) {
-        console.log(aut[0])
         return aut[0]
       } else {
         var ret = ''
@@ -96,7 +95,7 @@ export default {
       }
       axios.get(path)
           .then((res) => {
-            this.books = res.data.Books
+            this.books = res.data.books
           })
           .catch((error) => {
             this.toPrint(error)
