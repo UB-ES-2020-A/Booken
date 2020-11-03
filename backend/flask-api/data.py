@@ -3,7 +3,10 @@ books = [["9788431690656", "Mitos griegos", [["0", "Maria Angelidou", "06/09/197
             "al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y "
             "atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición "
             "literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-          "Una inmejorable introducción al universo de la mitología", "128", "0", "0", "28"],
+          "Una inmejorable introducción al universo de la mitología", "128", "0", "0", "28",
+          "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+          "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg"],
+
          ["9788408127321", "Pideme lo que quieras", [["1", "Megan Maxwell", "19/02/1965", "Nuremberg", "Alemania"]],
           "LITERATURA", "2014", "Planeta", "Castellano", "6,60€", "Tras la muerte de su padre, el prestigioso "
             "empresario alemán Eric Zimmerman decide viajar a España para supervisar las delegaciones de la empresa "
@@ -13,9 +16,13 @@ books = [["9788431690656", "Mitos griegos", [["0", "Maria Angelidou", "06/09/197
             "dentro un voyeur, y que las personas se dividen en sumisas y dominantes... Pero el tiempo pasa, "
             "la relación se intensifica y Eric empieza a temer que se descubra su secreto, algo que podría marcar"
             " el principio o el fin de la relación.", "Tras la muerte de su padre, Eric Zimmerman viaja a España "
-            "para supervisar las delegaciones de la empresa Müller", "464", "0", "0", "32"],
+            "para supervisar las delegaciones de la empresa Müller", "464", "0", "0", "32",
+          "https://images-na.ssl-images-amazon.com/images/I/71-nQT06CjL.jpg",
+          "https://images-na.ssl-images-amazon.com/images/I/71i2NjGYGHL.jpg"],
+
          ["9788855060769", "¿Quien hay en la selva?", [["2", "Agnese Baruzzi", "14/07/1980", "Barcelona", "España"]],
           "INFANTIL", "2020", "La Coccinella","Castellano", "8,45€", "Inspirado en el conocido juego del cucú, este "
             "libros  estimula la psicomotricidad y la imaginación de los más pequeños: con solo un dedito, "
             "¡se producirá la magia! Un libro-juego de primeros conceptos para aprender jugando.", "Un libro-juego "
-            "de primeros conceptos para aprender jugando.", "8", "0", "0", "25"]]
+            "de primeros conceptos para aprender jugando.", "8", "0", "0", "25",
+          "https://www.udllibros.com/imagenes/9788855/978885506076.JPG?version=29503", "null"]]
