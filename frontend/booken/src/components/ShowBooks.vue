@@ -35,7 +35,7 @@
               <router-link to="/book">{{ book.name }}</router-link>
             </h4>
 
-            <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
+            <p class="card-text">FALTA DESC</p>
           </div>
           <div class="card-footer">
             <h4><span class="badge badge-info">{{ this.replaceDecimal(book.price) }}</span> <span class="badge badge-secondary">{{ this.toLowercase(book.genre)}}</span>
@@ -53,7 +53,7 @@
 
 <script>
 import axios from 'axios'
-let api = 'http://booken-app.herokuapp.com/'
+let api = 'https://booken-app.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
