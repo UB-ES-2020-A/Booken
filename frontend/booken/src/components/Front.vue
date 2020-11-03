@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <div class="container" style="max-width: 1400px">
+    <div class="container">
       <div class="jumbotron" style="background-image: url('https://w.wallhaven.cc/full/x1/wallhaven-x1kd1d.jpg')">
         <h1 class="display-4" style="color: white">¡Todos los libros a un clic de ti!</h1>
         <p class="lead" style="color: white">¿Preparándote para otro confinamiento? En <span
