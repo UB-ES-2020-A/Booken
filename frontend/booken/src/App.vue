@@ -58,28 +58,31 @@
       <div class="collapse navbar-collapse navbars" id="collapse_target2">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Humanidades</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'HUMANIDADES'}}">Humanidades</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Técnico y formación</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}">Técnico y formación</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Métodos de idiomas</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}">Métodos de idiomas</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Literatura</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Infantil</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'INFANTIL'}}">Infantil</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Cómics y manga</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">Cómics y manga</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Juvenil</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link categoriestxt" href="#">Otras categorías</a>
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b></router-link>
           </li>
         </ul>
       </div>
