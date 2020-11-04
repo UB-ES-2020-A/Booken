@@ -8,7 +8,7 @@
   <div style="margin-top: 2rem; margin-left: 5%; margin-right: 5%">
     <div class="row row-cols-1 row-cols-sm-2">
       <div class="col mb-4" style="text-align: left">
-        <h2>Viendo todos los resultados para: {{ $route.params.category }}</h2>
+        <h2>Viendo todos los resultados para: {{ this.toLowercase($route.params.category) }}</h2>
       </div>
       <div class="col mb-4">
 
@@ -81,12 +81,12 @@ export default {
 
     },
     replaceDecimal(stg) {
-      return stg.replace(',', '.')
+      return stg
     },
     toLowercase(stg) {
       return stg.replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase();
-      });
+    })
     },
     getBooksFromDB(req) {
       var path = api + 'books/' + req

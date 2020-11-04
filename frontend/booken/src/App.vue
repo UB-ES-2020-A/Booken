@@ -108,7 +108,7 @@
                 </button>
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d;" type="submit"
                         v-if="loggedIn">
-                  <i class="fas fa-user" style="color: #000; font-size: 1.5em; margin-right: 0.5em"/><a
+                  <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Tu cuenta</a>
                 </button>
               </li>
@@ -123,7 +123,7 @@
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt">Cesta</a>
+                    class="navbartextbt" @click="toggleCart">Cesta</a>
                 </button>
               </li>
 
@@ -133,7 +133,6 @@
         </nav>
       </div>
     </div>
-
     <nav class="navbar navbar-expand-sm navbar-light bg-dark">
       <div class="collapse navbar-collapse navbars" id="collapse_target2">
         <ul class="navbar-nav mx-auto">
@@ -183,7 +182,105 @@
         </ul>
       </div>
     </nav>
-    <router-view :key="$route.fullPath"/>
+
+    <div id="shopping_cart" style="display: none">
+      <h1 style="margin-top: 1em">Tu cesta</h1>
+      <div class="container mb-4" v-if="this.cart.length >= 1">
+        <div class="row">
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table table-striped" style="text-align: left">
+                <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Artículo</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col" class="text-center">Cantidad</th>
+                  <th scope="col" class="text-right">Total</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item,i) in this.cart" :key="i">
+                  <td></td>
+                  <!--<td><img :src="image" style="width: 10%"></td>-->
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.price }} €</td>
+                  <td class="text-center">
+                    <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-right: 0.5rem"
+                            type="submit" @click="decreaseQuant(item.id)"
+                    ><i
+                        class="fas fa-minus" style="color: #FFF"/></button>
+                    {{ item.quant }}
+                    <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-left: 0.5rem"
+                            type="submit" @click="increaseQuant(item.id)"><i
+                        class="fas fa-plus" style="color: #FFF"/></button>
+                  </td>
+                  <td class="text-right">{{ item.price * item.quant }} €</td>
+                  <td class="text-right">
+                    <button class="btn btn-sm btn-danger" @click="removeBook(item.id)"><i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>IVA (21%)</td>
+                  <td class="text-right">{{ taxes }} €</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>Envío</td>
+                  <td class="text-right">{{ shipping }} €</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>TOTAL</strong></td>
+                  <td class="text-right"><strong>{{ total }} €</strong></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col mb-2">
+            <div class="row">
+              <div class="col-sm-12  col-md-6">
+                <button class="btn btn-lg btn-block" style="background-color:#3b494d; color: white; margin-top: 0.5rem">
+                  Continuar comprando
+                </button>
+              </div>
+              <div class="col-sm-12 col-md-6 text-right">
+                <button class="btn btn-lg btn-block" style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
+                        @click="checkout">
+                  Pagar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 1rem" v-if="this.cart.length == 0">
+        <div class="row">
+          <div class="col">
+            <h3 style="margin-top: 1.5rem;">Tu cesta está vacía.</h3>
+            <button class="btn btn-lg animate__animated animate__bounce animate__infinite" @click="toggleCart"
+                    style="background-color:#3b494d; color: white; margin-top: 5rem; margin-bottom: 10rem">¿Compras
+              algo?
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <router-view :key="$route.fullPath" id="router_view"/>
     <footer class="site-footer">
       <div class="container">
         <div class="row">
@@ -238,32 +335,123 @@
 
 <script>
 import Front from './components/Front.vue'
+import Access from "@/components/Access"
+import {bus} from './main.js'
 
 export default {
   name: 'App',
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    Front
+    Front,
+    // eslint-disable-next-line no-undef,vue/no-unused-components
+    Access
   },
   props: {
     msg: String
   },
+  created() {
+    bus.on('has-logged-in', (logged, token) => {
+      this.loggedIn = logged
+      this.token = token
+    })
+    bus.on('added-to-cart', (book) => {
+      this.checkAddToCart(book)
+      bus.emit('cart-updated')
+    })
+    bus.on('cart-updated', () => {
+      this.computeTotals()
+    })
+  },
   data() {
     return {
-      loggedIn: false
+      loggedIn: false,
+      token: '',
+      taxes: 0,
+      subtotal: 0,
+      shipping: 7.00,
+      total: 5.00,
+      cart: []
     }
   }, methods: {
+    computeTotals() {
+      this.getSubTotal()
+      this.taxes = Math.round((0.21*this.subtotal)*100)/100
+      this.total = this.subtotal + this.taxes + this.shipping
+    },
+    increaseQuant(id) {
+      var b = this.searchInCart(id)
+      b.quant += 1
+      bus.emit('cart-updated')
+    },
+    getSubTotal() {
+      this.subtotal = 0
+      var i, item
+      for (i in this.cart) {
+        item = this.cart[i]
+        this.subtotal += (item.price * item.quant)
+      }
+    },
+    getBookIndex(id) {
+      var i, item
+      if (this.cart.length == 0) {
+        return null
+      } else {
+        for (i in this.cart) {
+          item = this.cart[i]
+          if (item.id == id) {
+            return i
+          }
+        }
+      }
+    },
+    decreaseQuant(id) {
+      var b = this.searchInCart(id)
+      if (b.quant == 1) {
+        this.cart.splice(this.getBookIndex(id), 1)
+      } else {
+        b.quant -= 1
+      }
+      bus.emit('cart-updated')
+    },
+    removeBook(id) {
+      this.cart.splice(this.getBookIndex(id), 1)
+      bus.emit('cart-updated')
+    },
+    toggleCart() {
+      if (document.getElementById('shopping_cart').style.display == 'block') {
+        document.getElementById('shopping_cart').style.display = 'none'
+        document.getElementById('router_view').style.display = 'block'
+      } else {
+        document.getElementById('shopping_cart').style.display = 'block'
+        document.getElementById('router_view').style.display = 'none'
+      }
+    },
+    searchInCart(id) {
+      var i, item
+      if (this.cart.length == 0) {
+        return null
+      } else {
+        for (i in this.cart) {
+          item = this.cart[i]
+          if (item.id == id) {
+            return item
+          }
+        }
+      }
+    },
+    checkAddToCart(book) {
+      var b = this.searchInCart(book.id)
+      if (b == null) {
+        this.cart.push(book)
+      } else {
+        b.quant += 1
+      }
+    },
     getYear() {
       return new Date().getFullYear()
     },
     goToAccess() {
-      this.$router.push({path: '/access', query: {logged: this.loggedIn}})
-    },
-    goShoppingCart() {
-      this.$router.push({path: '/cart'})
-    },
-    goToLocation() {
-      this.$router.push({path: '/location'})
+      this.$router.push({path: '/access'})
     }
   }
 }
@@ -366,6 +554,7 @@ export default {
     width: 180px;
   }
 }
+
 .categoriestxt {
   color: #2bc4ed !important;
   font-size: 1.1em;
