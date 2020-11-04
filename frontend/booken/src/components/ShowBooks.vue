@@ -39,7 +39,7 @@
           </div>
           <div class="card-footer">
             <h4>
-              <span class="badge badge-info">{{ this.replaceDecimal(book.price) }}€</span>&nbsp;
+              <span class="badge badge-info">{{ book.price}}€</span>&nbsp;
               <span class="badge badge-secondary">{{ this.toLowercase(book.genre) }}</span>&nbsp;
               <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
               <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
