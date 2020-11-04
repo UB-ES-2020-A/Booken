@@ -216,7 +216,7 @@
                             type="submit" @click="increaseQuant(item.id)"><i
                         class="fas fa-plus" style="color: #FFF"/></button>
                   </td>
-                  <td class="text-right">{{ item.price * item.quant }} €</td>
+                  <td class="text-right">{{ round2Dec(item.price * item.quant) }} €</td>
                   <td class="text-right">
                     <button class="btn btn-sm btn-danger" @click="removeBook(item.id)"><i class="fas fa-trash"></i>
                     </button>
@@ -229,7 +229,7 @@
                   <td></td>
                   <td></td>
                   <td>IVA (21%)</td>
-                  <td class="text-right">{{ taxes }} €</td>
+                  <td class="text-right">{{ round2Dec(taxes) }} €</td>
                 </tr>
                 <tr>
                   <td></td>
@@ -237,7 +237,7 @@
                   <td></td>
                   <td></td>
                   <td>Envío</td>
-                  <td class="text-right">{{ shipping }} €</td>
+                  <td class="text-right">{{ round2Dec(shipping) }} €</td>
                 </tr>
                 <tr>
                   <td></td>
@@ -245,7 +245,7 @@
                   <td></td>
                   <td></td>
                   <td><strong>TOTAL</strong></td>
-                  <td class="text-right"><strong>{{ total }} €</strong></td>
+                  <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
                 </tr>
                 </tbody>
               </table>
@@ -254,7 +254,7 @@
           <div class="col mb-2">
             <div class="row">
               <div class="col-sm-12  col-md-6">
-                <button class="btn btn-lg btn-block" style="background-color:#3b494d; color: white; margin-top: 0.5rem">
+                <button class="btn btn-lg btn-block" style="background-color:#3b494d; color: white; margin-top: 0.5rem" @click="toggleCart">
                   Continuar comprando
                 </button>
               </div>
@@ -373,10 +373,13 @@ export default {
       cart: []
     }
   }, methods: {
+    round2Dec (trnd) {
+      return Math.round(trnd*100)/100
+    },
     computeTotals() {
       this.getSubTotal()
       this.taxes = Math.round((0.21*this.subtotal)*100)/100
-      this.total = this.subtotal + this.taxes + this.shipping
+      this.total = Math.round((this.subtotal + this.taxes + this.shipping)*100)/100
     },
     increaseQuant(id) {
       var b = this.searchInCart(id)
