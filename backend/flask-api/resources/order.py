@@ -49,6 +49,17 @@ class Orders(Resource):
             db.session.commit()
             return new_order.json(), 200
 
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
+    def delete(self, id):
+        order = OrdersModel.find_by_id(id)
+        if order:
+            order.delete_from_db()
+            return {'message': "OK"}, 200
+        else:
+            return {'message': "Event with id [{}] Not found".format(id)}, 409
+
+
     #@auth.login_required(role=['dev_manager', 'stock_manager'])
     def put(self, id):
         parser = reqparse.RequestParser()  # create parameters parser from request
