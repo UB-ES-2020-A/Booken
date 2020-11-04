@@ -31,7 +31,6 @@
                   </button>
                 </form>
               </div>
-
             </div>
           </div>-->
           <form class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
@@ -100,28 +99,32 @@
                 </div>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-0 mr-md-auto ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d" type="submit"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                        style="background-color: #3b494d" type="submit"
                         v-if="!loggedIn"
                         @click="goToAccess">
                   <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
-                  <a class="navbartextbt" data-toggle="collapse" data-target=".mynavbar">Identíficate</a>
+                  <a class="navbartextbt">Identíficate</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d;" type="submit"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                        style="background-color: #3b494d;" type="submit"
                         v-if="loggedIn">
-                  <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt">Tu cuenta</a>
+                  <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/>
+                  <a class="navbartextbt">Tu cuenta</a>
                 </button>
               </li>
 
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d;" type="submit">
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                        style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Ayuda</a>
                 </button>
               </li>
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" style="background-color: #3b494d;" type="submit">
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                        style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt" @click="toggleCart">Cesta</a>
                 </button>
@@ -133,55 +136,58 @@
         </nav>
       </div>
     </div>
-    <nav class="navbar navbar-expand-sm navbar-light bg-dark">
-      <div class="collapse navbar-collapse navbars" id="collapse_target2">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'HUMANIDADES'}}">
-              Humanidades
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt"
-                         :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}">Técnico y formación
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt"
-                         :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}">Métodos de idiomas
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'LITERATURA'}}">
-              Literatura
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'INFANTIL'}}">
-              Infantil
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">
-              Cómics y manga
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">
-              Otras categorías
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'TODO'}}"><b
-                style="color: yellow">Ver todo</b></router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+
+    <div class="bg-dark">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="collapse navbar-collapse mynavbar" id="collapse_target2">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'HUMANIDADES'}}">
+                Humanidades
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt"
+                           :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}">Técnico y formación
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt"
+                           :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}">Métodos de idiomas
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'LITERATURA'}}">
+                Literatura
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'INFANTIL'}}">
+                Infantil
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">
+                Cómics y manga
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">
+                Otras categorías
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'TODO'}}"><b
+                  style="color: yellow">Ver todo</b></router-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
 
     <div id="shopping_cart" style="display: none">
       <h1 style="margin-top: 1em">Tu cesta</h1>
@@ -254,12 +260,15 @@
           <div class="col mb-2">
             <div class="row">
               <div class="col-sm-12  col-md-6">
-                <button class="btn btn-lg btn-block" style="background-color:#3b494d; color: white; margin-top: 0.5rem" @click="toggleCart">
+                <button class="btn btn-lg btn-block"
+                        style="background-color:#3b494d; color: white; margin-top: 0.5rem"
+                        @click="toggleCart">
                   Continuar comprando
                 </button>
               </div>
               <div class="col-sm-12 col-md-6 text-right">
-                <button class="btn btn-lg btn-block" style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
+                <button class="btn btn-lg btn-block"
+                        style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
                         @click="checkout">
                   Pagar
                 </button>
@@ -332,7 +341,6 @@
     </footer>
   </div>
 </template>
-
 <script>
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
@@ -373,13 +381,13 @@ export default {
       cart: []
     }
   }, methods: {
-    round2Dec (trnd) {
-      return Math.round(trnd*100)/100
+    round2Dec(trnd) {
+      return Math.round(trnd * 100) / 100
     },
     computeTotals() {
       this.getSubTotal()
-      this.taxes = Math.round((0.21*this.subtotal)*100)/100
-      this.total = Math.round((this.subtotal + this.taxes + this.shipping)*100)/100
+      this.taxes = Math.round((0.21 * this.subtotal) * 100) / 100
+      this.total = Math.round((this.subtotal + this.taxes + this.shipping) * 100) / 100
     },
     increaseQuant(id) {
       var b = this.searchInCart(id)
@@ -560,7 +568,7 @@ export default {
 
 .categoriestxt {
   color: #2bc4ed !important;
-  font-size: 1.1em;
+  font-size: 0.9em;
 }
 
 .navbartextbt {
