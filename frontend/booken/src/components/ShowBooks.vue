@@ -80,12 +80,9 @@ export default {
       }
 
     },
-    replaceDecimal(stg) {
-      return stg
-    },
     toLowercase(stg) {
       return stg.replace(/\S*/g, function (word) {
-        return word.charAt(0) + word.slice(1).toLowerCase();
+        return word.charAt(0) + word.slice(1).toLowerCase()
     })
     },
     getBooksFromDB(req) {
