@@ -6,18 +6,22 @@ class OrdersModel(db.Model):
     email = db.Column(db.String(30), db.ForeignKey('accounts.email'), nullable=False)
     id_book = db.Column(db.Integer, nullable=False)
     num_books = db.Column(db.Integer, nullable=False)
+    state = db.Column(db.String(30), nullable=False)
 
-    def __init__(self, id_book, num_books):
+    def __init__(self, id, email ,id_book, num_books,state):
+        self.id = id
+        self.email = email
         self.id_book = id_book
         self.num_books = num_books
+        self.state = state
 
     def json(self):
         return {
             "id": self.id,
             "email": self.email,
             "id_book": self.id_book,
-            "num_books": self.num_books
-
+            "num_books": self.num_books,
+            "state": self.state
         }
 
     def json_filtered_by_book_id(self):
@@ -26,8 +30,8 @@ class OrdersModel(db.Model):
             "id": self.id_book,
             "email": self.email,
             "book_naem": book.name,
-            "num_books": self.num_books
-
+            "num_books": self.num_books,
+            "state": self.state
         }
 
     def save_to_db(self):
@@ -38,12 +42,26 @@ class OrdersModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def change_order_state(self, new_state):
+        self.state=new_state
+
     @classmethod
     def find_by_email(cls, email):
         try:
             return OrdersModel.query.filter_by(email=email).all()
         except:
             return None
+
+    @classmethod
+    def find_by_id(cls, id):
+        try:
+            return OrdersModel.query.filter_by(id=id).first()
+        except:
+            return None
+
+    @classmethod
+    def num_orders(cls):
+        return len(OrdersModel.query.all())
 
     @classmethod
     def get_orders(cls):
