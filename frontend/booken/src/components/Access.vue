@@ -115,24 +115,23 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
 import * as toastr from '../assets/toastr.js'
-// eslint-disable-next-line no-unused-vars
 import axios from 'axios'
-// eslint-disable-next-line no-unused-vars
-let api = 'http://booken-app.herokuapp.com/'
+let api = 'http://booken-dev.herokuapp.com/'
+import {bus} from '../main.js'
+
 export default {
   name: 'Access',
   props: {
-    msg: String
+
   },
   data() {
     return {
-      loggedIn: false,
       email: '',
       password: '',
       name: '',
-      lastname: ''
+      lastname: '',
+      logged: false
     }
   }, methods: {
     getYear() {
@@ -170,6 +169,7 @@ export default {
               toastr.success('', '¡Hola otra vez!',
                   {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             }
+            bus.emit('has-logged-in', {logged: this.logged, token: this.token})
             this.$router.push({path: '/'})
           })
           .catch((error) => {

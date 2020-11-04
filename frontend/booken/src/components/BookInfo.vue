@@ -91,7 +91,7 @@
               <div style="text-align: right">
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
                         v-if="bookInfo.available > 0"><a
-                    class="navbartextbt">Añadir a la cesta</a></button>
+                    class="navbartextbt" @click="addToCart(bookInfo)">Añadir a la cesta</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
                         v-if="bookInfo.available <= 0" disabled><a
                     class="navbartextbt">Agotado</a></button>
@@ -283,7 +283,7 @@
 
 <script>
 import axios from 'axios'
-
+import {bus} from '../main.js'
 let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: 'BookInfo',
@@ -309,6 +309,7 @@ export default {
       admin: 0,
 
       bookInfo: {
+        id: 0,
         name: 'NameTest',
         author: 'AuthorTest',
         genre: 'GenreTest',
@@ -332,6 +333,9 @@ export default {
     }
   },
   methods: {
+    addToCart (book) {
+      bus.emit('added-to-cart', {'id': book.id, 'title': book.name, 'price': book.price, 'cover': book.cover_image_url, 'quant': 1})
+    },
     toPrint(toPrint) {
       console.log(toPrint)
     },
@@ -341,8 +345,8 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log('lel')
             this.book_found = 1
+            this.bookInfo.id = res.data.book.id
             this.bookInfo.name = res.data.book.name
             this.bookInfo.author = res.data.book.author[0]
             this.bookInfo.genre = res.data.book.genre
@@ -361,12 +365,12 @@ export default {
           })
     },
     replaceDecimal(stg) {
-      return stg.replace(',', '.')
+      return stg
     },
     toLowercase(stg) {
       return stg.replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase();
-      });
+    })
     },
     getBooksFromDB(req) {
       var path = api + 'books/' + req
