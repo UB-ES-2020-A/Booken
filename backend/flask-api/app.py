@@ -6,6 +6,7 @@ from resources.account_rs import *
 from resources.author import *
 from resources.login_rs import *
 from resources.book import *
+from resources.contact_rs import *
 from db import db, create_app
 
 
@@ -17,6 +18,7 @@ api = Api(app)
 from models.accounts import AccountModel
 from models.author import AuthorModel
 from models.book import BookModel
+from models.contact import ContactModel
 
 migrate = Migrate(app, db)
 
@@ -32,6 +34,9 @@ api.add_resource(BookArtist, '/book/<int:id>/author')
 
 api.add_resource(Author, '/author/<int:id>', '/author')
 api.add_resource(AuthorList, '/authors')
+
+api.add_resource(Contact, '/contact/<int:id>', '/contact')
+api.add_resource(ContactList, '/contacts/')
 
 
 @app.route('/')
