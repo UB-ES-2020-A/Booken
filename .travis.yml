@@ -27,3 +27,4 @@ after_deploy:
     - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Contact.postman_collection.json
