@@ -43,8 +43,8 @@ api.add_resource(BookArtist, '/book/<int:id>/author')
 api.add_resource(Author, '/author/<int:id>', '/author')
 api.add_resource(AuthorList, '/authors')
 
-api.add_resource(OrdersList, '/orders/')
-api.add_resource(Orders, '/order/<string:email>', '/order','/order/<int:id>')
+api.add_resource(OrdersList, '/orders')
+api.add_resource(Orders, '/order/<string:email>', '/order', '/order/<int:id>')
 
 @app.route('/')
 def hello_world():

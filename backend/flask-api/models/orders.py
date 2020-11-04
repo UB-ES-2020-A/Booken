@@ -8,8 +8,9 @@ class OrdersModel(db.Model):
     num_books = db.Column(db.Integer, nullable=False)
     state = db.Column(db.String(30), nullable=False)
 
-    def __init__(self, id ,id_book, num_books,state):
+    def __init__(self, id, email ,id_book, num_books,state):
         self.id = id
+        self.email = email
         self.id_book = id_book
         self.num_books = num_books
         self.state = state
@@ -19,7 +20,7 @@ class OrdersModel(db.Model):
             "id": self.id,
             "email": self.email,
             "id_book": self.id_book,
-            "num_books": self.num_books
+            "num_books": self.num_books,
             "state": self.state
         }
 
@@ -29,7 +30,7 @@ class OrdersModel(db.Model):
             "id": self.id_book,
             "email": self.email,
             "book_naem": book.name,
-            "num_books": self.num_books
+            "num_books": self.num_books,
             "state": self.state
         }
 
@@ -42,6 +43,7 @@ class OrdersModel(db.Model):
         db.session.commit()
 
     def change_order_state(self, new_state):
+        self.state=new_state
 
     @classmethod
     def find_by_email(cls, email):
