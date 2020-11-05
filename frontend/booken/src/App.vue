@@ -126,9 +126,9 @@
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
-                        style="background-color: #3b494d;" type="submit">
+                        style="background-color: #3b494d;" type="submit" @click="toggleCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt" @click="toggleCart">Cesta</a>
+                    class="navbartextbt">Cesta</a>
                 </button>
               </li>
 
