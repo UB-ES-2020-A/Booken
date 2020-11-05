@@ -126,9 +126,9 @@
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
-                        style="background-color: #3b494d;" type="submit">
+                        style="background-color: #3b494d;" type="submit" @click="toggleCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt" @click="toggleCart">Cesta</a>
+                    class="navbartextbt">Cesta</a>
                 </button>
               </li>
 
@@ -145,6 +145,7 @@
           <div class="nav navbar-nav mx-auto">
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
+
                          >Humanidades
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
@@ -170,7 +171,9 @@
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
                          :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
             </router-link>
+
             <router-link class="nav-link categoriestxt" active-class="active"
+
                          :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
             </router-link>
           </div>
@@ -368,14 +371,14 @@ export default {
       shipping: 7.00,
       total: 5.00,
       cart: [],
-      toggledNav: false
+      //toggledNav: false
     }
-  },
+  },/*
   watch: {
     '$route'() {
       this.toggledNav = false
     }
-  },
+  },*/
   methods: {
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
