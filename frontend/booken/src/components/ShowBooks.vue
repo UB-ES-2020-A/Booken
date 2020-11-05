@@ -9,17 +9,13 @@
   <div class="front-container">
     <div class="container" style="max-width: 1400px;">
       <div class="row justify-content-md-between justify-content-sm-start">
-        <div class="col-12 col-md-6 mr-auto my-auto">
-          <h2 v-if=" $route.params.category =='TECNICO Y FORMACION'">Técnico y formación</h2>
-          <h2 v-else-if=" $route.params.category =='METODOS DE IDIOMAS'">Métodos de idiomas</h2>
-          <h2 v-else-if=" $route.params.category == 'OTRAS CATEGORIAS'">Otras categorías</h2>
-          <h2 v-else-if=" $route.params.category == 'COMICS Y MANGA'">Cómics y manga</h2>
-          <h2 v-else>{{ this.toLowercase($route.params.category) }}</h2>
+
+        <div class="col-12 col-md-6 mr-md-auto my-auto ">
+          <h2>{{ this.toLowercase($route.params.category) }}</h2>
 
           <!--Viendo todos los resultados para-->
         </div>
         <div class="col-12 col-md-6 my-auto filterBox">
-
           <label>Ordenar por: </label>
           <select class="form-control-sm " style="width: 180px; margin-left:10px">
             <option>Recomendado</option>
@@ -30,27 +26,36 @@
         </div>
       </div>
       <hr>
-      <div class="row row-cols-1 row-cols-sm-6" :key="$route.params.category">
-        <div class="col mb-4 " v-for="(book) in this.books" :key="book.id">
-          <div class="card h-100 ">
-            <img
-                :src="book.cover_image_url"
-                class="card-img-top" alt="...">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4" :key="$route.params.category">
+        <div class="col my-3" v-for="(book) in this.books" :key="book.id">
+          <div class="card h-100">
+            <img :src="book.cover_image_url"
+                 class="card-img-top imgBook" alt="..."
+                 style="object-fit: fill; object-position: center; width: 100%">
             <div class="card-body">
-              <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
+              <h6 class="card-subtitle mb-2">{{ this.joinAuthours(book.author) }}</h6>
               <h4 class="card-title">
                 <router-link :to="{name: 'BookInfo', params: {id: book.id}}">{{ book.name }}</router-link>
               </h4>
 
-              <p class="card-text">{{ book.description }}</p>
+              <p class="card-text text-muted"
+                 style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box;  -webkit-line-clamp: 3;
+                  -webkit-box-orient: vertical;">
+                {{ book.description }}</p>
             </div>
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item">{{ this.toLowercase(book.genre) }}</li>
+              <li class="list-group-item" v-if="book.cover_type == 0">Tapa dura</li>
+              <li class="list-group-item" v-if="book.cover_type == 1">Tapa blanda</li>
+
+            </ul>
             <div class="card-footer">
-              <h4>
-                <span class="badge badge-info">{{ book.price }}€</span>&nbsp;
-                <span class="badge badge-secondary">{{ this.toLowercase(book.genre) }}</span>&nbsp;
-                <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
-                <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
-              </h4>
+              <div>Comprar por</div>
+              <div class="q" style="text-align: right">
+                <span class="badge badge-info" style="text-align: right;">{{ book.price }}€</span>
+              </div>
             </div>
           </div>
         </div>
@@ -118,10 +123,43 @@ export default {
   text-align: left;
 }
 
+@media (min-width: 0px) {
+  .filterBox {
+    margin-top: 15px !important;
+  }
+
+  .imgBook {
+    height: 100vw;
+  }
+}
+
+@media (min-width: 576px) {
+  .imgBook {
+    height: 60vw;
+  }
+}
+
 @media (min-width: 768px) {
   .filterBox {
+    text-align: right;
+    margin-top: 0px !important;
+  }
 
-    text-align: right
+  .imgBook {
+    height: 32vw;
+
+  }
+}
+
+@media (min-width: 992px) {
+  .imgBook {
+    height: 24vw;
+  }
+}
+
+@media (min-width: 1600px) {
+  .imgBook {
+    height: 20vw;
   }
 }
 </style>
