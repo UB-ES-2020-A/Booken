@@ -60,13 +60,15 @@
           </ul>-->
 
           <!-- Links Button -->
-          <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target=".mynavbar">
+          <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+                  data-target="#mynavbar, #mynavbar2"
+                  aria-controls="mynavbar, mynavbar2" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
           </button>
 
 
           <!-- Links -->
-          <div class="collapse navbar-collapse my-3 mynavbar " id="collapse_target1">
+          <div class="collapse navbar-collapse my-3" id="mynavbar">
             <!--
                         <ul class="navbar-nav ">
                           <li class="nav-item my-xl-auto my-2">
@@ -139,52 +141,45 @@
 
     <div class="bg-dark">
       <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="collapse navbar-collapse mynavbar" id="collapse_target2">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'HUMANIDADES'}}">
-                Humanidades
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt"
-                           :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}">Técnico y formación
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt"
-                           :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}">Métodos de idiomas
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'LITERATURA'}}">
-                Literatura
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'INFANTIL'}}">
-                Infantil
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">
-                Cómics y manga
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">
-                Otras categorías
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link categoriestxt" :to="{name: 'books', params: {category: 'TODO'}}"><b
-                  style="color: yellow">Ver todo</b></router-link>
-            </li>
-          </ul>
+        <div class="collapse navbar-collapse" id="mynavbar2">
+          <div class="nav navbar-nav mx-auto">
+            <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
+                         class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav">Humanidades
+            </router-link>
+            <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
+                         class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav">Técnico y formación
+            </router-link>
+            <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
+                         class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav">Métodos de idiomas
+            </router-link>
+            <router-link class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura
+            </router-link>
+            <router-link class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'INFANTIL'}}">Infantil
+            </router-link>
+            <router-link class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">Cómics y manga
+            </router-link>
+            <router-link class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
+            </router-link>
+            <router-link class="nav-item nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
+            </router-link>
+            <router-link class="nav-link categoriestxt" active-class="active"
+                         exact @click="toggledNav = !toggledNav"
+                         :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
+            </router-link>
+          </div>
         </div>
       </nav>
     </div>
@@ -378,9 +373,16 @@ export default {
       subtotal: 0,
       shipping: 7.00,
       total: 5.00,
-      cart: []
+      cart: [],
+      toggledNav: false
     }
-  }, methods: {
+  },
+  watch: {
+    '$route'() {
+      this.toggledNav = false
+    }
+  },
+  methods: {
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
     },
@@ -465,7 +467,9 @@ export default {
       this.$router.push({path: '/access'})
     }
   }
+
 }
+
 </script>
 <style>
 #app {
@@ -549,6 +553,10 @@ export default {
     min-width: 50% !important;
   }
 
+  .categoriestxt {
+    font-size: 0.9em !important;
+  }
+
 }
 
 @media (min-width: 1400px) {
@@ -568,7 +576,7 @@ export default {
 
 .categoriestxt {
   color: #2bc4ed !important;
-  font-size: 0.9em;
+  font-size: 1.1em;
 }
 
 .navbartextbt {
