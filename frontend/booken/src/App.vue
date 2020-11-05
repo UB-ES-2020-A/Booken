@@ -374,14 +374,14 @@ export default {
       shipping: 7.00,
       total: 5.00,
       cart: [],
-      toggledNav: false
+      //toggledNav: false
     }
-  },
+  },/*
   watch: {
     '$route'() {
       this.toggledNav = false
     }
-  },
+  },*/
   methods: {
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
