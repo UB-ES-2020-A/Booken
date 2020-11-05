@@ -9,8 +9,10 @@
   <div class="front-container">
     <div class="container" style="max-width: 1400px;">
       <div class="row justify-content-md-between justify-content-sm-start">
+
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
           <h2>{{ this.toLowercase($route.params.category) }}</h2>
+
           <!--Viendo todos los resultados para-->
         </div>
         <div class="col-12 col-md-6 my-auto filterBox">
