@@ -17,15 +17,28 @@
         <div class="card-body" style="text-align: left">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
-              <h1 class="card-title" v-if="book_found"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
-              <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found">{{ bookInfo.author }}</h3>
+              <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
+              <h1 class="card-title" v-if="edit"><input class="form-control" type="text" v-model="bookInfo.name"
+                                                         style="font-size: 52px" placeholder="Título del libro"></h1>
+              <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found && !edit">{{
+                  bookInfo.author
+                }}</h3>
+              <h3 class="card-subtitle" v-if="edit" style="margin-bottom: 1em"><input class="form-control" type="text"
+                 style="font-size: 28px" v-model="bookInfo.author" placeholder="Autor del libro">
+              </h3>
             </div>
-            <div class="col" style="text-align: right">
-              <h1 class="card-title" v-if="book_found"><p class="bookTitle" style="text-align: right !important">
+            <div class="col" style="text-align: right; margin-bottom: 1em">
+              <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle" style="text-align: right !important">
                 {{ this.replaceDecimal(bookInfo.price) }}€</p></h1>
+              <h1 class="card-title" v-if="book_found && edit"><p class="bookTitle" style="text-align: right !important">
+                <input class="form-control" type="text" v-model="bookInfo.price"
+                   style="font-size: 28px; max-width: 140px; text-align: right !important" placeholder="Precio (sin el €)"></p></h1>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
-                      v-if="admin"><i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                      v-if="admin && !edit" @click="editInfo"><i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
+              <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
+                      v-if="edit"><i class="fas fa-save" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt" @click="saveChanges">Guardar</a></button>
             </div>
           </div>
           <div class="col" v-if="book_found">
@@ -54,35 +67,84 @@
                   </div>
                 </div>
                 <div style="text-align:left" v-if="showSummary" class="animate__animated animate__fadeIn">
-                  <p>{{ bookInfo.synopsis }}</p>
+                  <p v-if="!edit">{{ bookInfo.synopsis }}</p>
+                  <textarea class="form-control" rows="8" v-if="edit" v-model="bookInfo.synopsis"></textarea>
                 </div>
                 <div style="text-align:left" class="animate__animated animate__fadeIn" v-else>
                   <table class="table table-striped">
                     <tbody>
                     <tr>
                       <th scope="row">Editorial</th>
-                      <td>{{ bookInfo.editorial }}</td>
+                      <td v-if="!edit">{{ bookInfo.editorial }}</td>
+                      <td v-if="edit"><input class="form-control" :value="bookInfo.editorial"></td>
                     </tr>
                     <tr>
                       <th scope="row">Año de publicación</th>
-                      <td>{{ bookInfo.year }}</td>
+                      <td v-if="!edit">{{ bookInfo.year }}</td>
+                      <td v-if="edit"><input class="form-control" type="number" maxlength="4" :value="bookInfo.year">
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Género</th>
-                      <td>{{ this.toLowercase(bookInfo.genre) }}</td>
+                      <td v-if="!edit && bookInfo.genre =='TECNICO Y FORMACION'">Técnico y formación</td>
+                      <td v-else-if="!edit && bookInfo.genre =='METODOS DE IDIOMAS'">Métodos de idiomas</td>
+                      <td v-else-if="!edit && bookInfo.genre == 'OTRAS CATEGORIAS'">Otras categorías</td>
+                      <td v-else-if="!edit && bookInfo.genre == 'COMICS Y MANGA'">Cómics y manga</td>
+                      <td v-else-if="!edit">{{ this.toLowercase(bookInfo.genre) }}</td>
+                      <td v-if="edit"><select class="form-control">
+                        <option selected>Seleccione género</option>
+                        <option :selected="bookInfo.genre == 'HUMANIDADES'" value="HUMANIDADES">Humanidades</option>
+                        <option :selected="bookInfo.genre == 'TECNICO Y FORMACION'" value="TECNICO Y FORMACION">Técnico
+                          y formación
+                        </option>
+                        <option :selected="bookInfo.genre == 'METODOS DE IDIOMAS'" value="METODOS DE IDIOMAS">Métodos de
+                          idiomas
+                        </option>
+                        <option :selected="bookInfo.genre == 'LITERATURA'" value="LITERATURA">Literatura</option>
+                        <option :selected="bookInfo.genre == 'INFANTIL'" value="INFANTIL">Infantil</option>
+                        <option :selected="bookInfo.genre == 'COMICS Y MANGA'" value="COMICS Y MANGA">Cómics y manga
+                        </option>
+                        <option :selected="bookInfo.genre == 'JUVENIL'" value="JUVENIL">Juvenil</option>
+                        <option :selected="bookInfo.genre == 'OTRAS CATEGORIAS'" value="OTRAS CATEGORIAS">Otras
+                          categorías
+                        </option>
+                      </select>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Número de páginas</th>
-                      <td>{{ bookInfo.num_pages }}</td>
+                      <td v-if="!edit">{{ bookInfo.num_pages }}</td>
+                      <td v-if="edit"><input class="form-control" :value="bookInfo.num_pages" type="number"></td>
                     </tr>
                     <tr>
                       <th scope="row">Formato</th>
-                      <td v-if="bookInfo.cover_type == 0">Tapa dura</td>
-                      <td v-if="bookInfo.cover_type == 1">Tapa blanda</td>
+                      <td v-if="bookInfo.cover_type == 0 && !edit">Tapa dura</td>
+                      <td v-if="bookInfo.cover_type == 1 && !edit">Tapa blanda</td>
+                      <td v-if="edit">
+                        <select class="form-control">
+                          <option selected>Seleccione formato</option>
+                          <option :selected="bookInfo.cover_type == 0" value=0>Tapa dura</option>
+                          <option :selected="bookInfo.cover_type == 1" value=1>Tapa blanda</option>
+                        </select>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">ISBN</th>
-                      <td>{{ bookInfo.isbn }}</td>
+                      <td v-if="!edit">{{ bookInfo.isbn }}</td>
+                      <td v-if="edit"><input class="form-control" :value="bookInfo.isbn" type="number" maxlength="13">
+                      </td>
+                    </tr>
+                    <tr v-if="edit">
+                      <th scope="row">Descripción corta</th>
+                      <td><textarea class="form-control" rows="3" v-model="bookInfo.desc"></textarea></td>
+                    </tr>
+                    <tr v-if="edit">
+                      <th scope="row">URL portada</th>
+                      <td><input class="form-control" v-model="bookInfo.cover_image_url"></td>
+                    </tr>
+                    <tr v-if="edit">
+                      <th scope="row">URL contraportada</th>
+                      <td><input class="form-control" v-model="bookInfo.back_cover_image_url"></td>
                     </tr>
                     </tbody>
                   </table>
@@ -99,9 +161,7 @@
                     class="navbartextbt">Añadir a lista de deseos</a></button>
               </div>
             </div>
-
           </div>
-
           <div class="col" v-else style="text-align: center">
             <h1>No se ha encontrado el libro</h1>
             <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
@@ -284,6 +344,7 @@
 <script>
 import axios from 'axios'
 import {bus} from '../main.js'
+
 let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: 'BookInfo',
@@ -294,7 +355,7 @@ export default {
 
   created() {
     this.logged = this.$route.query.logged
-    this.is_admin = this.$route.query.is_admin
+    this.is_edit = this.$route.query.is_edit
     this.token = this.$route.query.token
     this.book_id = this.$route.query.id
 
@@ -303,10 +364,10 @@ export default {
 
   data() {
     return {
-
+      admin: 1,
       book_found: 0,
       book_id: 0,
-      admin: 0,
+      edit: 0,
 
       bookInfo: {
         id: 0,
@@ -319,6 +380,7 @@ export default {
         available: 10,
         price: 0,
         isbn: 0,
+        desc: '',
         num_pages: 0,
         cover_type: 0,
         cover_image_url: '',
@@ -333,8 +395,67 @@ export default {
     }
   },
   methods: {
-    addToCart (book) {
-      bus.emit('added-to-cart', {'id': book.id, 'title': book.name, 'price': book.price, 'cover': book.cover_image_url, 'quant': 1})
+    editInfo () {
+      if(this.admin){
+        this.edit = 1
+      }
+    },
+    saveChanges () {
+      if(this.admin){
+        this.edit = 0
+      }
+    },
+    isValidIsbn(str) {
+
+      var sum,
+          weight,
+          digit,
+          check,
+          i;
+
+      str = str.replace(/[^0-9X]/gi, '');
+
+      if (str.length != 10 && str.length != 13) {
+        return false;
+      }
+
+      if (str.length == 13) {
+        sum = 0;
+        for (i = 0; i < 12; i++) {
+          digit = parseInt(str[i]);
+          if (i % 2 == 1) {
+            sum += 3 * digit;
+          } else {
+            sum += digit;
+          }
+        }
+        check = (10 - (sum % 10)) % 10;
+        return (check == str[str.length - 1]);
+      }
+
+      if (str.length == 10) {
+        weight = 10;
+        sum = 0;
+        for (i = 0; i < 9; i++) {
+          digit = parseInt(str[i]);
+          sum += weight * digit;
+          weight--;
+        }
+        check = (11 - (sum % 11)) % 11
+        if (check == 10) {
+          check = 'X';
+        }
+        return (check == str[str.length - 1].toUpperCase());
+      }
+    },
+    addToCart(book) {
+      bus.emit('added-to-cart', {
+        'id': book.id,
+        'title': book.name,
+        'price': book.price,
+        'cover': book.cover_image_url,
+        'quant': 1
+      })
     },
     toPrint(toPrint) {
       console.log(toPrint)
@@ -355,6 +476,8 @@ export default {
             this.bookInfo.language = res.data.book.language
             this.bookInfo.price = res.data.book.price
             this.bookInfo.isbn = res.data.book.ISBN
+            this.bookInfo.cover_type = res.data.book.cover_type
+            this.bookInfo.desc = res.data.book.description
             this.bookInfo.cover_image_url = res.data.book.cover_image_url
             this.bookInfo.num_pages = res.data.book.num_pages
             this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
@@ -370,7 +493,7 @@ export default {
     toLowercase(stg) {
       return stg.replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase();
-    })
+      })
     },
     getBooksFromDB(req) {
       var path = api + 'books/' + req
