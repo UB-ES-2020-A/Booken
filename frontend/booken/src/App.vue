@@ -175,8 +175,7 @@
                          exact @click="toggledNav = !toggledNav"
                          :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
             </router-link>
-            <router-link class="nav-link categoriestxt" active-class="active"
-                         exact @click="toggledNav = !toggledNav"
+            <router-link class="nav-link categoriestxt"
                          :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
             </router-link>
           </div>
