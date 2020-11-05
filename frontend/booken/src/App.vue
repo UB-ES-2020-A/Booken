@@ -145,39 +145,34 @@
           <div class="nav navbar-nav mx-auto">
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-                         exact >Humanidades
+
+                         >Humanidades
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-                         exact >Técnico y formación
+                         >Técnico y formación
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-                         exact >Métodos de idiomas
+                         >Métodos de idiomas
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         exact
                          :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         exact
                          :to="{name: 'books', params: {category: 'INFANTIL'}}">Infantil
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         exact
                          :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">Cómics y manga
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         exact
                          :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         exact
                          :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
             </router-link>
 
             <router-link class="nav-link categoriestxt" active-class="active"
-                         exact
 
                          :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
             </router-link>
@@ -376,14 +371,14 @@ export default {
       shipping: 7.00,
       total: 5.00,
       cart: [],
-      toggledNav: false
+      //toggledNav: false
     }
-  },
+  },/*
   watch: {
     '$route'() {
       this.toggledNav = false
     }
-  },
+  },*/
   methods: {
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
