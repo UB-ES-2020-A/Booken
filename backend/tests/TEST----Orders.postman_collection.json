@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "980c738f-5bf1-4966-9835-3f650ed82471",
+		"name": "TEST----Orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orders",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/postman_test@gmail.com?id_book=0&num_books=2&state=Progress",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"postman_test@gmail.com"
+					],
+					"query": [
+						{
+							"key": "id_book",
+							"value": "0"
+						},
+						{
+							"key": "num_books",
+							"value": "2"
+						},
+						{
+							"key": "state",
+							"value": "Progress"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/postman_test@gmail.com",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"postman_test@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/0?id_book=0&num_books=2&state=End",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"0"
+					],
+					"query": [
+						{
+							"key": "id_book",
+							"value": "0"
+						},
+						{
+							"key": "num_books",
+							"value": "2"
+						},
+						{
+							"key": "state",
+							"value": "End"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"0"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d0c42a51-85a5-4dbe-a677-9929f3fe526b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "106ef4f3-3cfd-4c8c-b082-06ee8cda2981",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "add542ee-ce3b-4b2b-bf94-8fbfab1cf068",
+			"key": "base_url",
+			"value": "http://booken-app.herokuapp.com"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
