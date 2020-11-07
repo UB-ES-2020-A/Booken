@@ -417,7 +417,7 @@ export default {
       bookInfo: {
         id: 0,
         name: '',
-        author: '',
+        author: -1,
         genre: '',
         year: '',
         editorial: '',
