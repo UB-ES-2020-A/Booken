@@ -35,8 +35,8 @@ api.add_resource(BookArtist, '/book/<int:id>/author')
 api.add_resource(Author, '/author/<int:id>', '/author')
 api.add_resource(AuthorList, '/authors')
 
-api.add_resource(Contact, '/contact/<int:id>', '/contact')
-api.add_resource(ContactList, '/contacts/')
+api.add_resource(Contact, '/contact_info/<int:id>', '/contact_info')
+api.add_resource(ContactList, '/contact_list/')
 
 
 @app.route('/')
