@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd ../../backend/flask-api
-
 set -e -o pipefail
 
 if [ "${TRAVIS_BRANCH}" == "dev" ]; then
