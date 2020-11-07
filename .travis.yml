@@ -9,7 +9,7 @@ script:
     - cd frontend/booken
 before_deploy:
     - cd ../../backend/flask-api
-    - bash .travis_before_deploy.sh
+    - ./.travis_before_deploy.sh
 deploy:
   skip_cleanup: true
   provider: heroku
@@ -23,7 +23,7 @@ notifications:
   slack:
     secure: PmiwCTDDv9GxdBKDQWIJuB/jmOxEvU7aW0NhOBuCAJ2G77pxt7zTCu9kJS2TtziiUEPwTCe7HmkiTB0xvykoTipaN4UOpN6INMgDwl4jd4bbCB8IabJsY8RVCmXbpbdotJclkS5Ul/XLQN+G7RzsFbLiniZ3d1X+V82JoAajT9CCuk1FlfVDhuh3EURbcqD7HqO26hhoKSQepqDSlAAqLKY63ScIQHguEC1CovBuWd6W0OiE5UnTxm7aA3WR+fId0q+OZ5oAbJahwRVNC37OFYwSjGkBscB/FK9MrtRPl5N2jW8tEzg8lmbROchZawH04o4j5nxsjpeNunOIJD9ZOp65PHyot0qZTDPEsTID86s9f90YYqqYtBPXILtGqLPK2Yjdb2xkIJ8xjmZ85PG3OznqzgojGhauK7VVzdmoiyoPHoGtwIZj1dlUOYYUJ1SLJPvF2Mqu9W5SGSh9jqMq61NgSsgeNi22LVH/Sf4cmt8cyuQvruRElu9K/JZrfmiApSPg/ypsTvy+UBdCqiFhhzZnKEMxngph25zlcAD4uRGnGEvbIJpsZdI5IcYfBNCm5MbuVjRjfC2PjuAufYVz0lUaObBp27SCILkB3tDyk3kjs0UCtIfj3BWE55Nme6qXl/z6zSO7c5l48xWkuxuRRwnsHmkk2DUAs9aLPwwK4QI=
 after_deploy:
-    - bash .travis_after_deploy.sh
+    - ./.travis_after_deploy.sh
     - cd ../..
     - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
