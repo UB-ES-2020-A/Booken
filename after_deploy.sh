@@ -1,15 +1,9 @@
 #!/bin/bash
 
 set -e -o pipefail
-
 if [ "${TRAVIS_BRANCH}" == "master" ]; then
-
-  TARGET_APP_NAME="your_app_name"
-
-  echo "Setting maintenance mode 'off' on heroku's app"
+  TARGET_APP_NAME="booken-dev"
   heroku maintenance:off --app "${TARGET_APP_NAME}"
-
-  echo "Application ready again. YAY!"
 fi
 
 cd ../..
