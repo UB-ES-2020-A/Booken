@@ -111,7 +111,7 @@
                       <td v-else-if="!edit">{{ this.toLowercase(bookInfo.genre) }}</td>
                       <td v-if="edit">
                         <select class="form-control" v-model="bookInfo.genre">
-                          <option selected>Seleccione género</option>
+                          <option value="">Seleccione género</option>
                           <option :selected="bookInfo.genre == 'HUMANIDADES'" value="HUMANIDADES">Humanidades</option>
                           <option :selected="bookInfo.genre == 'TECNICO Y FORMACION'" value="TECNICO Y FORMACION">
                             Técnico
