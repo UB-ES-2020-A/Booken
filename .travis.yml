@@ -3,8 +3,7 @@ sudo: required
 node_js:
 - node
 cache: npm
-install:
-- npm install newman
+
 before_deploy:
 - before_deploy.sh
 deploy:
