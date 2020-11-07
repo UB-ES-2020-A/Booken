@@ -7,9 +7,10 @@ install:
     - npm install newman
 script:
     - cd frontend/booken
+    - npm install
+    - npm run build
 before_deploy:
     - cd ../../backend/flask-api
-    - ./.travis_before_deploy.sh
 deploy:
   skip_cleanup: true
   provider: heroku
@@ -23,13 +24,7 @@ notifications:
   slack:
     secure: PmiwCTDDv9GxdBKDQWIJuB/jmOxEvU7aW0NhOBuCAJ2G77pxt7zTCu9kJS2TtziiUEPwTCe7HmkiTB0xvykoTipaN4UOpN6INMgDwl4jd4bbCB8IabJsY8RVCmXbpbdotJclkS5Ul/XLQN+G7RzsFbLiniZ3d1X+V82JoAajT9CCuk1FlfVDhuh3EURbcqD7HqO26hhoKSQepqDSlAAqLKY63ScIQHguEC1CovBuWd6W0OiE5UnTxm7aA3WR+fId0q+OZ5oAbJahwRVNC37OFYwSjGkBscB/FK9MrtRPl5N2jW8tEzg8lmbROchZawH04o4j5nxsjpeNunOIJD9ZOp65PHyot0qZTDPEsTID86s9f90YYqqYtBPXILtGqLPK2Yjdb2xkIJ8xjmZ85PG3OznqzgojGhauK7VVzdmoiyoPHoGtwIZj1dlUOYYUJ1SLJPvF2Mqu9W5SGSh9jqMq61NgSsgeNi22LVH/Sf4cmt8cyuQvruRElu9K/JZrfmiApSPg/ypsTvy+UBdCqiFhhzZnKEMxngph25zlcAD4uRGnGEvbIJpsZdI5IcYfBNCm5MbuVjRjfC2PjuAufYVz0lUaObBp27SCILkB3tDyk3kjs0UCtIfj3BWE55Nme6qXl/z6zSO7c5l48xWkuxuRRwnsHmkk2DUAs9aLPwwK4QI=
 after_deploy:
-    - ./.travis_after_deploy.sh
     - cd ../..
     - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Contact.postman_collection.json
-env:
-  global:
-    - secure: ZTIMDJfbAY9ZdcQG/XIq/ZCze5LXk2ES6OCHZ/cxjF13jLTmXuSRTEtVHdU4PBR2XKeLtVObiX4DtsLKJzg6HbauyQTYdh3b32lBivHqPgG7XVYvAchwXzXIpjnJVgJxiagwa2aJsf4U5u1eQAjmNNo4SYP/YZsjwZIZooWC8L8VsA5buI4yHbUM2RimI3gYKlnKl2zgFHknN565TBBFFuDab5++uoSwXFcv08h+wFkad11Ng9QhvjitN4qpuqNvRmNaXuPcGWGGdJDD4GztfN2IcXBWUKs1c3zGJilQj6veCs3VakeEo+1BAmOhl3C1pLRfHadHpY4YG26GbqM6D6SwyH2xk5p3a8u18jIxRQosCNEd43MsyC8fTPmlfuQWDkvz1cLi+sHTdrbg6DtbtFOcgxwVQawCicnTZwk5fMoiyCjXBPXGbTFlbQstuu9yWLr32Rqeir0PrQNbx3giWa1fs8VwfhyzzbuKGcTCXe5we/CoHJMcn3zMXC45p3CnC2CfmbdJuEP6uHsXeE0xZ7LypHN/iRq5U0Ef8HP3BYJ/DlIN8jpZGpo8Hq3lAakbOGTMbXd72aE5U1OAYbwuQDUBCRz6P/2HnWKrtnOWf1ElmY354tZ04OITQMJA+KGjy6cnE9472l8AndR9DSB5b20TvmMazwtRIHZe/tyxNDs=
-    - secure: WX+nYldBthuJYqY3sRka28Ho3Qye305yrV4tFizQHHmSUAsIXz3gJpkXIzOmkt7y8gNXmg2zCWsGyIFFUzw6sF6sHcy2BwT8ZUP1Y7MvId201HgeKHX1iiEaEYD1jcKU33SpA6im6MlYV9iBQ56x5iE4R6G2y7lJfc5C4W99GCKARuQF1/g6tJA/nL1xM3UB2mYgUh+jOKNqEjyfOPGFzNq9STUFNl7ctxG36ogJmyfoVVFsSQ6JfKzz2w32c93zsTasOm5cEEKuF2VQQv+Imco9dmjb6yJx3dQ/A9FF1YQwrG8JGRGjt9I3X5i6ruirFkSLY1Mw/MQc6EY5HnDjoatUQLsy/+ClLp711H7aUHUyF0th1Yt6kBHOTdQyLK6bYkmh2MtiJzyudEtFa9MsHNR5S+8CJQuloCIuyyy6J1wudLGsDqc0dniX6dTHehSf7fRVTZEmha6K2pLwbthFkIVCpfskAIbQdH0NGS+geq/mfTD0QVUY8wjW6TThmSol/gWOzRjPnaoRXuyIeutp4+jlGnliJkuzL+YWKsncAgTFS7n0GFPUhUsSS4sBB6gl1zC0PcjOA94t/ujtflt/cFaGVhpaaB/nMJ2cJnOK/yq3DL5g6k6bC0uZ3zEr9JYgcNBoUU6VH8xxB3wo00czJtEFO4Tta+fFcLqE6JF7z2o=
