@@ -40,6 +40,11 @@
     background: #292b2c;
 }
 
+select {
+    -webkit-appearance: menulist !important;
+    -moz-appearance: menulist !important;
+}
+
 .label-info-not-selected {
     text-transform: uppercase;
     cursor: pointer;

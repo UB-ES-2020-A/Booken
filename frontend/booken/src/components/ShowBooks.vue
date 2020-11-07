@@ -23,6 +23,10 @@
             <option>Precio descendente</option>
             <option>Más vendidos</option>
           </select>
+          <router-link :to="{name: 'BookInfo', params: {id: 0}}">
+          <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
+                      v-if="admin" style="margin-left: 1em"><i class="fas fa-plus" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+              class="navbartextbt" @click="addNewBook">Añadir</a></button></router-link>
         </div>
       </div>
       <hr>
@@ -67,7 +71,8 @@ export default {
   },
   data() {
     return {
-      books: []
+      books: [],
+      admin: 1
     }
   },
   methods: {

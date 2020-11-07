@@ -10,31 +10,49 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
       <div class="card" style="margin-top: 1em">
         <div class="card-body" style="text-align: left">
           <div class="row row-cols-1 row-cols-md-2">
-            <div class="col">
+            <div class="col" v-if="book_found">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
               <h1 class="card-title" v-if="edit"><input class="form-control" type="text" v-model="bookInfo.name"
-                                                         style="font-size: 52px" placeholder="Título del libro"></h1>
+                                                        style="font-size: 52px" placeholder="Título del libro"></h1>
               <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found && !edit">{{
                   bookInfo.author
                 }}</h3>
-              <h3 class="card-subtitle" v-if="edit" style="margin-bottom: 1em"><input class="form-control" type="text"
-                 style="font-size: 28px" v-model="bookInfo.author" placeholder="Autor del libro">
-              </h3>
+              <select class="form-control" v-model="bookInfo.author"  v-if="edit" style="margin-bottom: 1em">
+                <option value=-1>Selecciona autor</option>
+                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name">
+                  {{ a.name }}
+                </option>
+                <option value=0>Otro autor/a</option>
+              </select>
+              <div v-if="bookInfo.author == 0" style="margin-bottom: 1em">
+                <input class="form-control" type="text" v-model="nAutor.name" placeholder="Nombre del autor"
+                       style="margin-top: 0.5em">
+                <input class="form-control" type="date" v-model="nAutor.birth_date" placeholder="Fecha nacimiento"
+                       style="margin-top: 0.5em" title="Fecha de nacimiento">
+                <input class="form-control" type="text" v-model="nAutor.country" placeholder="País"
+                       style="margin-top: 0.5em">
+                <input class="form-control" type="text" v-model="nAutor.city" placeholder="Ciudad del autor"
+                       style="margin-top: 0.5em">
+              </div>
             </div>
-            <div class="col" style="text-align: right; margin-bottom: 1em">
-              <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle" style="text-align: right !important">
+            <div class="col" style="text-align: right; margin-bottom: 1em" v-if="book_found">
+              <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle"
+                                                                   style="text-align: right !important">
                 {{ this.replaceDecimal(bookInfo.price) }}€</p></h1>
-              <h1 class="card-title" v-if="book_found && edit"><p class="bookTitle" style="text-align: right !important">
+              <h1 class="card-title" v-if="book_found && edit"><p class="bookTitle"
+                                                                  style="text-align: right !important">
                 <input class="form-control" type="text" v-model="bookInfo.price"
-                   style="font-size: 28px; max-width: 140px; text-align: right !important" placeholder="Precio (sin el €)"></p></h1>
+                       style="font-size: 28px; max-width: 140px; text-align: right !important"
+                       placeholder="Precio (sin el €)"></p></h1>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
-                      v-if="admin && !edit" @click="editInfo"><i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                      v-if="admin && !edit" @click="editInfo"><i class="fas fa-edit"
+                                                                 style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="edit"><i class="fas fa-save" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
@@ -91,24 +109,27 @@
                       <td v-else-if="!edit && bookInfo.genre == 'OTRAS CATEGORIAS'">Otras categorías</td>
                       <td v-else-if="!edit && bookInfo.genre == 'COMICS Y MANGA'">Cómics y manga</td>
                       <td v-else-if="!edit">{{ this.toLowercase(bookInfo.genre) }}</td>
-                      <td v-if="edit"><select class="form-control">
-                        <option selected>Seleccione género</option>
-                        <option :selected="bookInfo.genre == 'HUMANIDADES'" value="HUMANIDADES">Humanidades</option>
-                        <option :selected="bookInfo.genre == 'TECNICO Y FORMACION'" value="TECNICO Y FORMACION">Técnico
-                          y formación
-                        </option>
-                        <option :selected="bookInfo.genre == 'METODOS DE IDIOMAS'" value="METODOS DE IDIOMAS">Métodos de
-                          idiomas
-                        </option>
-                        <option :selected="bookInfo.genre == 'LITERATURA'" value="LITERATURA">Literatura</option>
-                        <option :selected="bookInfo.genre == 'INFANTIL'" value="INFANTIL">Infantil</option>
-                        <option :selected="bookInfo.genre == 'COMICS Y MANGA'" value="COMICS Y MANGA">Cómics y manga
-                        </option>
-                        <option :selected="bookInfo.genre == 'JUVENIL'" value="JUVENIL">Juvenil</option>
-                        <option :selected="bookInfo.genre == 'OTRAS CATEGORIAS'" value="OTRAS CATEGORIAS">Otras
-                          categorías
-                        </option>
-                      </select>
+                      <td v-if="edit">
+                        <select class="form-control" v-model="bookInfo.genre">
+                          <option selected>Seleccione género</option>
+                          <option :selected="bookInfo.genre == 'HUMANIDADES'" value="HUMANIDADES">Humanidades</option>
+                          <option :selected="bookInfo.genre == 'TECNICO Y FORMACION'" value="TECNICO Y FORMACION">
+                            Técnico
+                            y formación
+                          </option>
+                          <option :selected="bookInfo.genre == 'METODOS DE IDIOMAS'" value="METODOS DE IDIOMAS">Métodos
+                            de
+                            idiomas
+                          </option>
+                          <option :selected="bookInfo.genre == 'LITERATURA'" value="LITERATURA">Literatura</option>
+                          <option :selected="bookInfo.genre == 'INFANTIL'" value="INFANTIL">Infantil</option>
+                          <option :selected="bookInfo.genre == 'COMICS Y MANGA'" value="COMICS Y MANGA">Cómics y manga
+                          </option>
+                          <option :selected="bookInfo.genre == 'JUVENIL'" value="JUVENIL">Juvenil</option>
+                          <option :selected="bookInfo.genre == 'OTRAS CATEGORIAS'" value="OTRAS CATEGORIAS">Otras
+                            categorías
+                          </option>
+                        </select>
                       </td>
                     </tr>
                     <tr>
@@ -122,7 +143,7 @@
                       <td v-if="bookInfo.cover_type == 1 && !edit">Tapa blanda</td>
                       <td v-if="edit">
                         <select class="form-control">
-                          <option selected>Seleccione formato</option>
+                          <option :selected="bookInfo.cover_type == -1">Seleccione formato</option>
                           <option :selected="bookInfo.cover_type == 0" value=0>Tapa dura</option>
                           <option :selected="bookInfo.cover_type == 1" value=1>Tapa blanda</option>
                         </select>
@@ -134,9 +155,18 @@
                       <td v-if="edit"><input class="form-control" :value="bookInfo.isbn" type="number" maxlength="13">
                       </td>
                     </tr>
+
                     <tr v-if="edit">
                       <th scope="row">Descripción corta</th>
                       <td><textarea class="form-control" rows="3" v-model="bookInfo.desc"></textarea></td>
+                    </tr>
+                    <tr v-if="edit">
+                      <th scope="row">Unidades stock</th>
+                      <td><input class="form-control" v-model="bookInfo.available" type="number"></td>
+                    </tr>
+                    <tr v-if="edit">
+                      <th scope="row">Unidades vendidas</th>
+                      <td><input class="form-control" v-model="bookInfo.num_sales" type="number"></td>
                     </tr>
                     <tr v-if="edit">
                       <th scope="row">URL portada</th>
@@ -150,15 +180,15 @@
                   </table>
                 </div>
               </div>
-              <div style="text-align: right">
+              <div style="text-align: right" v-if="!edit">
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
                         v-if="bookInfo.available > 0"><a
                     class="navbartextbt" @click="addToCart(bookInfo)">Añadir a la cesta</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
                         v-if="bookInfo.available <= 0" disabled><a
-                    class="navbartextbt">Agotado</a></button>
+                    class="navbartextbt" v-if="!edit">Agotado</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
-                    class="navbartextbt">Añadir a lista de deseos</a></button>
+                    class="navbartextbt" v-if="!edit">Añadir a lista de deseos</a></button>
               </div>
             </div>
           </div>
@@ -357,35 +387,51 @@ export default {
     this.logged = this.$route.query.logged
     this.is_edit = this.$route.query.is_edit
     this.token = this.$route.query.token
-    this.book_id = this.$route.query.id
-
-    this.initBookInfo()
+    this.book_id = this.$route.params.id
+    this.initAuthors()
+    if (this.book_id == 0) {
+      if (this.admin) {
+        this.book_found = 1
+        this.edit = 1
+      }
+    } else {
+      this.initBookInfo()
+    }
   },
 
   data() {
     return {
       admin: 1,
       book_found: 0,
-      book_id: 0,
+      newAutor: 0,
+      nAutor: {
+        c: '',
+        name: '',
+        birth_date: '',
+        country: '',
+        city: ''
+      },
+      book_id: '0',
       edit: 0,
-
+      authors: [],
       bookInfo: {
         id: 0,
-        name: 'NameTest',
-        author: 'AuthorTest',
-        genre: 'GenreTest',
-        year: 0,
-        editorial: 'EditorialTest',
-        language: 'LenguageTest',
-        available: 10,
-        price: 0,
-        isbn: 0,
+        name: '',
+        author: '',
+        genre: '',
+        year: '',
+        editorial: '',
+        language: '',
+        available: '',
+        price: '',
+        num_sales: 0,
+        isbn: '',
         desc: '',
-        num_pages: 0,
-        cover_type: 0,
+        num_pages: '',
+        cover_type: -1,
         cover_image_url: '',
         back_cover_image_url: '',
-        synopsis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        synopsis: '',
         cover: 'https://static.fnac-static.com/multimedia/Images/ES/NR/22/0f/18/1576738/1507-1.jpg',
         back_cover: 'https://images-na.ssl-images-amazon.com/images/I/71XhS2XgMxL.jpg',
       },
@@ -395,13 +441,13 @@ export default {
     }
   },
   methods: {
-    editInfo () {
-      if(this.admin){
+    editInfo() {
+      if (this.admin) {
         this.edit = 1
       }
     },
-    saveChanges () {
-      if(this.admin){
+    saveChanges() {
+      if (this.admin) {
         this.edit = 0
       }
     },
@@ -460,7 +506,17 @@ export default {
     toPrint(toPrint) {
       console.log(toPrint)
     },
+    initAuthors() {
+      var path = api + 'authors'
 
+      axios.get(path)
+          .then((res) => {
+            this.authors = res.data.authors
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    },
     initBookInfo() {
       var path = api + 'book/' + this.$route.params.id
 
@@ -475,10 +531,12 @@ export default {
             this.bookInfo.editorial = res.data.book.editorial
             this.bookInfo.language = res.data.book.language
             this.bookInfo.price = res.data.book.price
+            this.bookInfo.num_sales = res.data.book.num_sales
             this.bookInfo.isbn = res.data.book.ISBN
             this.bookInfo.cover_type = res.data.book.cover_type
             this.bookInfo.desc = res.data.book.description
             this.bookInfo.cover_image_url = res.data.book.cover_image_url
+            this.bookInfo.available = res.data.book.total_available
             this.bookInfo.num_pages = res.data.book.num_pages
             this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
             this.bookInfo.synopsis = res.data.book.synopsis
