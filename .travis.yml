@@ -9,7 +9,7 @@ script:
     - cd frontend/booken
 before_deploy:
     - cd ../../backend/flask-api
-    - bash travis_before_deploy.sh
+    - bash .travis_before_deploy.sh
 deploy:
   skip_cleanup: true
   provider: heroku
