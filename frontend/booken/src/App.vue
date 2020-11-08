@@ -606,7 +606,7 @@ export default {
 }
 
 .navbartextbt {
-  color: white;
+  color: white !important;
   font-size: 1.2em
 }
 
