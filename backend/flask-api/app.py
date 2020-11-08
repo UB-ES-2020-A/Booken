@@ -8,6 +8,7 @@ from resources.login_rs import *
 from resources.book import *
 from resources.contact_rs import *
 from resources.order import *
+from resources.article import *
 from db import db, create_app
 
 
@@ -21,6 +22,7 @@ from models.author import AuthorModel
 from models.book import BookModel
 from models.contact import ContactModel
 from models.orders import OrdersModel
+from models.articles import ArticlesModel
 
 migrate = Migrate(app, db)
 
@@ -42,6 +44,9 @@ api.add_resource(ContactList, '/contact_list/')
 
 api.add_resource(OrdersList, '/orders')
 api.add_resource(Orders, '/order/<string:email>', '/order', '/order/<int:id>')
+
+api.add_resource(ArticlesList, '/articles')
+api.add_resource(Articles, '/article/<int:id>', '/article')
 
 @app.route('/')
 def render_vue():
