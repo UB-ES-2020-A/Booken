@@ -64,6 +64,18 @@
 							"})",
 							"",
 							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().contacts",
+							"    data.forEach(contact => {",
+							"        if (contact.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"contact_id\", contact.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
 							"    url: pm.variables.get(\"base_url\") + \"/contact_info/\" + pm.variables.get(\"contact_id\"),",
 							"    method: 'DELETE',",
 							"}, function (err, res) {});"
@@ -85,7 +97,7 @@
 						},
 						{
 							"key": "email",
-							"value": "test@gmail.com",
+							"value": "postman_test@gmail.com",
 							"type": "text"
 						},
 						{
@@ -286,12 +298,12 @@
 	],
 	"variable": [
 		{
-			"id": "da536898-3894-40ff-8d2f-3bb3d6c3341c",
+			"id": "3cc06e53-e457-4199-abf5-9f342a049a53",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		},
 		{
-			"id": "098acfed-6cd5-4ce1-9277-117204886573",
+			"id": "ba71262d-ebdc-4cc0-bd0f-40d4082e2861",
 			"key": "contact_id",
 			"value": "1"
 		}
