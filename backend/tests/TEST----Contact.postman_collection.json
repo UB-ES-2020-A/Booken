@@ -39,12 +39,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/contacts/",
+					"raw": "{{base_url}}/contact_list/",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"contacts",
+						"contact_list",
 						""
 					]
 				}
@@ -64,7 +64,7 @@
 							"})",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contact/\" + pm.variables.get(\"contact_id\"),",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info/\" + pm.variables.get(\"contact_id\"),",
 							"    method: 'DELETE',",
 							"}, function (err, res) {});"
 						],
@@ -101,12 +101,12 @@
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}/contact",
+					"raw": "{{base_url}}/contact_info",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"contact"
+						"contact_info"
 					]
 				}
 			},
@@ -121,7 +121,7 @@
 						"id": "ebff8aa6-7b0f-404a-b20c-4ba7c337dab3",
 						"exec": [
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contact\",",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info\",",
 							"    method: 'POST',",
 							"    body: {",
 							"     mode: 'formdata',",
@@ -135,7 +135,7 @@
 							"}, function (err, res) {});",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contacts/\",",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
 							"    var data = res.json().contacts",
@@ -171,7 +171,7 @@
 							"})",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contact/\" + pm.variables.get(\"contact_id\"),",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info/\" + pm.variables.get(\"contact_id\"),",
 							"    method: 'DELETE',",
 							"}, function (err, res) {});"
 						],
@@ -183,12 +183,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/contact/{{contact_id}}",
+					"raw": "{{base_url}}/contact_info/{{contact_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"contact",
+						"contact_info",
 						"{{contact_id}}"
 					]
 				}
@@ -204,7 +204,7 @@
 						"id": "bd67e861-a546-47ec-94ad-9429916d1c24",
 						"exec": [
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contact\",",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info\",",
 							"    method: 'POST',",
 							"    body: {",
 							"     mode: 'formdata',",
@@ -218,7 +218,7 @@
 							"}, function (err, res) {});",
 							"",
 							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/contacts/\",",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
 							"    var data = res.json().contacts",
@@ -249,12 +249,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/contact/{{contact_id}}",
+					"raw": "{{base_url}}/contact_info/{{contact_id}}",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"contact",
+						"contact_info",
 						"{{contact_id}}"
 					]
 				}
@@ -286,12 +286,12 @@
 	],
 	"variable": [
 		{
-			"id": "08e7a709-9c68-4124-83d0-d983cda7f13d",
+			"id": "da536898-3894-40ff-8d2f-3bb3d6c3341c",
 			"key": "base_url",
 			"value": "http://booken-app.herokuapp.com"
 		},
 		{
-			"id": "11b93496-27e2-44d0-b22f-4431e91cb3a9",
+			"id": "098acfed-6cd5-4ce1-9277-117204886573",
 			"key": "contact_id",
 			"value": "1"
 		}
