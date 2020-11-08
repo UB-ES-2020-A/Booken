@@ -37,10 +37,15 @@ class Book(Resource):
         exists = BookModel.find_by_name(data.get('name'))
         if exists:
             return {'message': "A book with ['name': {}] already exists".format(exists.name)}, 409
-
-        new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
-                                 data.get('author_city'), data.get('author_country'))
-        new_book = BookModel(data.get('isbn'), data.get('name'), [new_Author], data.get('genre'), data.get('year'),
+        authors = []
+        author = AuthorModel.find_by_id(data.get('author_id'))
+        if author:
+            authors.append(author)
+        else:
+            new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
+                                     data.get('author_city'), data.get('author_country'))
+            authors.append(new_Author)
+        new_book = BookModel(data.get('isbn'), data.get('name'), authors, data.get('genre'), data.get('year'),
                              data.get('editorial'), data.get('language'), data.get('price'), data.get('synopsis'),
                              data.get('description'), data.get('num_pages'), data.get('cover_type'),
                              data.get('num_sales'), data.get('total_available'), data.get('cover_image_url'),
@@ -62,11 +67,17 @@ class Book(Resource):
         exists = BookModel.find_by_id(id)
         if not exists:
             return {'message': "A book with ['id': {}] not found".format(id)}, 404
-        [a.delete_from_db() for a in exists.author]
+        authors = []
+        author = AuthorModel.find_by_id(data.get('author_id'))
+        if author:
+            authors.append(author)
+        else:
+            [a.delete_from_db() for a in exists.author]
+            new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
+                                     data.get('author_city'), data.get('author_country'))
+            authors.append(new_Author)
         exists.delete_from_db()
-        new_Author = AuthorModel(data.get('author_id'), data.get('author_name'), data.get('author_bd'),
-                                 data.get('author_city'), data.get('author_country'))
-        new_book = BookModel(data.get('isbn'), data.get('name'), [new_Author], data.get('genre'), data.get('year'),
+        new_book = BookModel(data.get('isbn'), data.get('name'), authors, data.get('genre'), data.get('year'),
                              data.get('editorial'), data.get('language'), data.get('price'), data.get('synopsis'),
                              data.get('description'), data.get('num_pages'), data.get('cover_type'),
                              data.get('num_sales'), data.get('total_available'), data.get('cover_image_url'),
