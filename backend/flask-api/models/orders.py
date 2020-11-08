@@ -1,12 +1,13 @@
 from db import db
 from models.book import BookModel
+states = ("In progress", "Received")
 class OrdersModel(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(30), db.ForeignKey('accounts.email'), nullable=False)
     id_book = db.Column(db.Integer, nullable=False)
     num_books = db.Column(db.Integer, nullable=False)
-    state = db.Column(db.String(30), nullable=False)
+    state = db.Column(db.Enum(*states, name='states_types'), nullable=False)
 
     def __init__(self, id, email ,id_book, num_books,state):
         self.id = id

@@ -452,23 +452,17 @@ export default {
         }
     },
     checkout(parameters) {
-      if( !this.loggedIn ) {
-        this.goToAccess()
-      } else {
-        const path = `http://localhost:8080/order/${this.email}`
-        console.log(path)
-        console.log(parameters)
-        axios.post(path, parameters, {
-          auth: {username: this.$route.query.token}
+      const path = `https://booken-dev.herokuapp.com/order/${this.email}`
+      console.log(path)
+      console.log(parameters)
+      axios.post(path, parameters)
+        .then(() => {
+          console.log('Order done')
         })
-          .then(() => {
-            console.log('Order done')
-          })
-          .catch((error) => {
-            // eslint-disable-next-line
-            console.log(error)
-          })
-      }
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+        })
     },
     searchInCart(id) {
       var i, item
