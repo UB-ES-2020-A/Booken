@@ -429,7 +429,8 @@ export default {
               "id": 0,
               "price": 36.99,
             }
-          ]
+          ],
+          "card": {}
         },
         {
           "id": 2,
