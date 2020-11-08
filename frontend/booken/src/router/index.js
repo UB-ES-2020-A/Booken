@@ -4,6 +4,7 @@ import Access from "../components/Access.vue"
 import BookInfo from "../components/BookInfo.vue"
 import Contact from "../components/Contact";
 import ShowBooks from "@/components/ShowBooks";
+import ControlPanel from "@/components/ControlPanel";
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         path: "/books/:category",
         name: "books",
         component: ShowBooks,
+    },
+    {
+        path: "/cp",
+        name: "ControlPanel",
+        component: ControlPanel
     }
 ];
 

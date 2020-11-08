@@ -489,7 +489,8 @@ export default {
       return new Date().getFullYear()
     },
     goToAccess() {
-      this.$router.push({path: '/access'})
+      this.$router.push({path: '/cp'})
+      //this.$router.push({path: '/access'})
     }
   }
 

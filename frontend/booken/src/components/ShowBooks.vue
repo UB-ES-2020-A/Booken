@@ -7,7 +7,7 @@
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
   <div class="front-container">
-    <div class="container" style="max-width: 1400px;">
+    <div class="container" style="max-width: 1400px">
       <div class="row justify-content-md-between justify-content-sm-start">
 
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
