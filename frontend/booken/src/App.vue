@@ -261,7 +261,7 @@
               <div class="col-sm-12 col-md-6 text-right">
                 <button class="btn btn-lg btn-block"
                         style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
-                        @click="checkout">
+                        @click="finalizePurchase">
                   Pagar
                 </button>
               </div>
@@ -337,7 +337,7 @@
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
 import {bus} from './main.js'
-
+import axios from 'axios'
 export default {
   name: 'App',
   components: {
@@ -371,6 +371,7 @@ export default {
       shipping: 7.00,
       total: 5.00,
       cart: [],
+      email: "prueba@gmail.com"
       //toggledNav: false
     }
   },/*
@@ -435,6 +436,33 @@ export default {
         document.getElementById('shopping_cart').style.display = 'block'
         document.getElementById('router_view').style.display = 'none'
       }
+    },
+    finalizePurchase () {
+      for (let i = 0; i < this.cart.length; i += 1) {
+          var item = this.cart[i]
+          console.log(item)
+          var quant =  item.quant
+          var id =  item.id
+          const parameters = {
+            id_book: id,
+            num_books: quant,
+            state: "In Progress"
+          }
+          this.checkout(parameters)
+        }
+    },
+    checkout(parameters) {
+      const path = `https://booken-dev.herokuapp.com/order/${this.email}`
+      console.log(path)
+      console.log(parameters)
+      axios.post(path, parameters)
+        .then(() => {
+          console.log('Order done')
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+        })
     },
     searchInCart(id) {
       var i, item
