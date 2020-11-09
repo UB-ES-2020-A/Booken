@@ -23,9 +23,9 @@
               <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found && !edit">{{
                   bookInfo.author
                 }}</h3>
-              <select class="form-control" v-model="bookInfo.author"  v-if="edit" style="margin-bottom: 1em">
+              <select class="form-control" v-model="bookInfo.author" v-if="edit" style="margin-bottom: 1em">
                 <option value=-1>Selecciona autor</option>
-                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name">
+                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name" value=a.id>
                   {{ a.name }}
                 </option>
                 <option value=0>Otro autor/a</option>
@@ -214,7 +214,7 @@
 
               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                    aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-dialog" role="document" style="top: 20%">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Escribir reseña</h5>
@@ -232,11 +232,30 @@
                         <div class="form-group" style="text-align: left">
                           <label class="col-form-label">Añadir una valoración</label>
                           <div style="margin-left: 0.1em">
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(1)"
+                                  v-if="addRatingNumber <= 0"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(1)" v-if="addRatingNumber >= 1"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(2)"
+                            v-if="addRatingNumber <= 1"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(2)" v-if="addRatingNumber >= 2"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(3)"
+                            v-if="addRatingNumber <= 2"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(3)" v-if="addRatingNumber >= 3"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(4)"
+                            v-if="addRatingNumber <= 3"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(4)" v-if="addRatingNumber >= 4"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(5)"
+                            v-if="addRatingNumber <= 4"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(5)" v-if="addRatingNumber >= 5"></span>
                           </div>
                           <!--<input type="text" class="form-control" id="reviewValoration"
                                  placeholder="¿Qué és lo más importante?">-->
@@ -249,7 +268,7 @@
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">Cancelar</button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal">
                         Enviar
                       </button>
@@ -370,7 +389,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios'
 import {bus} from '../main.js'
@@ -404,6 +422,7 @@ export default {
       admin: 1,
       book_found: 0,
       newAutor: 0,
+      addRatingNumber: 0,
       nAutor: {
         c: '',
         name: '',
@@ -441,6 +460,9 @@ export default {
     }
   },
   methods: {
+    updateStars(index) {
+      this.addRatingNumber = index
+    },
     editInfo() {
       if (this.admin) {
         this.edit = 1
@@ -449,6 +471,16 @@ export default {
     saveChanges() {
       if (this.admin) {
         this.edit = 0
+        var path = api + 'book/' + this.book_id
+
+      axios.put(path, {"author_id": this.bookInfo.author, })
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
       }
     },
     isValidIsbn(str) {
