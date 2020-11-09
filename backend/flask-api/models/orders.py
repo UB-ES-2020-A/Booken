@@ -1,6 +1,9 @@
 from db import db
 from models.book import BookModel
+
 states = ("In progress", "Received")
+
+
 class OrdersModel(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
@@ -9,8 +12,7 @@ class OrdersModel(db.Model):
     num_books = db.Column(db.Integer, nullable=False)
     state = db.Column(db.Enum(*states, name='states_types'), nullable=False)
 
-    def __init__(self, id, email ,id_book, num_books,state):
-        self.id = id
+    def __init__(self, email, id_book, num_books, state):
         self.email = email
         self.id_book = id_book
         self.num_books = num_books
@@ -30,7 +32,7 @@ class OrdersModel(db.Model):
         return {
             "id": self.id_book,
             "email": self.email,
-            "book_naem": book.name,
+            "book_name": book.name,
             "num_books": self.num_books,
             "state": self.state
         }
@@ -44,7 +46,7 @@ class OrdersModel(db.Model):
         db.session.commit()
 
     def change_order_state(self, new_state):
-        self.state=new_state
+        self.state = new_state
 
     @classmethod
     def find_by_email(cls, email):

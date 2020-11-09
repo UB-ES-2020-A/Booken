@@ -1,18 +1,15 @@
 from db import db
 from datetime import date
 
+
 class ContactModel(db.Model):
     __tablename__ = 'contacts'
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     email = db.Column(db.String(30), nullable=False)
-
     full_name = db.Column(db.String(), nullable=False)
-
     phone_number = db.Column(db.Integer)
-
     contact_query = db.Column(db.String(), nullable=False)
-
     contact_date = db.Column(db.String(), nullable=False)
 
     def __init__(self, full_name, email, phone_number, contact_query):
@@ -23,7 +20,6 @@ class ContactModel(db.Model):
         self.contact_date = date.today().strftime("%d/%m/%Y")
 
     def json(self):
-
         body = {
             'id': self.id,
             'email': self.email,
@@ -42,11 +38,10 @@ class ContactModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.filter_by(id=id).first()
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
-
-    @classmethod
-    def find_by_email(self, email):
-        return self.query.filter_by(email=email).first()
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()

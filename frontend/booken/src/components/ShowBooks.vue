@@ -11,7 +11,11 @@
       <div class="row justify-content-md-between justify-content-sm-start">
 
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
-          <h2>{{ this.toLowercase($route.params.category) }}</h2>
+          <h2 v-if="$route.params.category == 'HUMANIDADES'">Humanidades</h2>
+          <h2 v-if="$route.params.category == 'TECNICO Y FORMACION'">Técnico y formación</h2>
+          <h2 v-if="$route.params.category == 'METODOS DE IDIOMAS'">Métodos de idiomas</h2>
+          <h2 v-if="$route.params.category == 'COMICS Y MANGA'">Cómics y manga</h2>
+          <h2 v-if="$route.params.category == 'OTRAS CATEGORIAS'">Otras categorías</h2>
 
           <!--Viendo todos los resultados para-->
         </div>
@@ -26,7 +30,7 @@
           <router-link :to="{name: 'BookInfo', params: {id: 0}}">
           <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
                       v-if="admin" style="margin-left: 1em"><i class="fas fa-plus" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-              class="navbartextbt" @click="addNewBook">Añadir</a></button></router-link>
+              class="navbartextbt">Añadir</a></button></router-link>
         </div>
       </div>
       <hr>
@@ -48,7 +52,12 @@
           <div class="card-footer">
             <h4>
               <span class="badge badge-info">{{ book.price}}€</span>&nbsp;
-              <span class="badge badge-secondary">{{ this.toLowercase(book.genre) }}</span>&nbsp;
+              <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'COMICS Y MANGA'">Cómics y manga</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
               <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
               <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
             </h4>
@@ -62,7 +71,6 @@
 
 <script>
 import axios from 'axios'
-
 let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",

@@ -29,9 +29,7 @@ class BookModel(db.Model):
     back_cover_image_url = db.Column(db.String(100))
 
     def __init__(self, isbn, name, author, genre, year, editorial, language, price, synopsis, description, num_pages,
-                 cover_type, num_sales, total_available, cover_image_url, back_cover_image_url, id=None):
-        if id:
-            self.id = id
+                 cover_type, num_sales, total_available, cover_image_url, back_cover_image_url):
         self.isbn = isbn
         self.name = name
         self.author = author
