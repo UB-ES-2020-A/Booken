@@ -24,6 +24,7 @@ class AccountModel(db.Model):
 
     #orders = db.relationship('OrdersModel', backref='orders, lazy = True)
     #wish_list = db.relationship('BookModel', backref='books', lazy = True)
+    addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
 
     def __init__(self, email, name, lastname, password):
         self.email = email
