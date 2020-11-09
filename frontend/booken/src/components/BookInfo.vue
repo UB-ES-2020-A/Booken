@@ -395,8 +395,7 @@
 import axios from 'axios'
 import {bus} from '../main.js'
 
-//let api = 'https://booken-dev.herokuapp.com/'
-let api = 'http://127.0.0.1:5000/'
+let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: 'BookInfo',
 
