@@ -11,15 +11,12 @@ class Orders(Resource):
     def get(self, id):
         order = OrdersModel.find_by_id(id)
         if order:
-            list = []
-            for i in order:
-                list.append(i.json())
-            return {"orders": list}, 200
+            return {"orders": order.json()}, 200
         else:
             return {'message': "The user with id [{}] hasn't got any order".format(id)}, 409
 
    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def post(self, id_user):
+    def post(self, id):
         parser = reqparse.RequestParser()  # create parameters parser from request
 
         parser.add_argument('date', type=str, required=True, help="This field cannot be left blanck")
@@ -29,16 +26,16 @@ class Orders(Resource):
         parser.add_argument('state', type=str, required=True, help="This field cannot be left blanck")
         parser.add_argument('adress', type=str, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        acc = AccountModel.find_by_id(id_user)
+        acc = AccountModel.find_by_id(id)
 
         if data.state not in states:
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
-        if (acc == None):
-            return {'message': "There isn't a user with this id"}, 409
+        #if (acc == None):
+         #   return {'message': "There isn't a user with this id"}, 409
 
         new_id = OrdersModel.num_orders()
-        new_order = OrdersModel(new_id,id_user, data.date, data.total,data.shipping,data.taxes,data.state,data.adress)
-        acc.orders.append(new_order)
+        new_order = OrdersModel(new_id,id, data.date, data.total,data.shipping,data.taxes,data.state,data.adress)
+        #acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
         return new_order.json(), 200
@@ -90,8 +87,7 @@ class OrdersList(Resource):
 class OrderArticlesList(Resource):
     def get(self, id):
         try:
-            return OrdersModel.find_by_id(id).json()["articles"], 200 if OrdersModel.find_by_id(id).json()[
-                "articles"] else 404
+            return {"articles": OrdersModel.find_by_id(id).json()["articles"]}
         except:
             return {"message": "Order with id [{}] Not Found".format(id)}, 404
 
@@ -120,16 +116,17 @@ class OrderArticles(Resource):
         # define all input parameters need and its type
         parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-
-        id_article = order.get_num_articles()
+        #Create article and add to order
+        id_article = ArticlesModel.num_articles()+1
         article = ArticlesModel(id_article,data.price)
         order.add_article(article)
+        article.save_to_db()
         return id_article, 200
 
 
    # @auth.login_required(role='admin')
     def delete(self, id, id_article):
-        order = OrdersList.find_by_id(id)
+        order = OrdersModel.find_by_id(id)
         list = [order.json()["articles"][i]["id"] == int(id_article) for i in
                 range(len(order.json()["articles"]))]
         if len(list) == 0:
@@ -138,7 +135,7 @@ class OrderArticles(Resource):
             return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, id)}
         index = list.index(True)
         if index is not None:
-            deleted = order.delete_artist(id_article)
+            deleted = order.delete_article(id_article)
             if deleted:
                 return {'message': "OK"}, 201
 

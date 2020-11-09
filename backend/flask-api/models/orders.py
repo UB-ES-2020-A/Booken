@@ -3,6 +3,9 @@ from models.book import BookModel
 from models.articles import ArticlesModel
 
 states = ("In progress", "Received")
+articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
+                   db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
+
 class OrdersModel(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +17,8 @@ class OrdersModel(db.Model):
     state = db.Column(db.Enum(*states, name='states_types'), nullable=False)
     adress = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
     #Articles de la order
-    articles = db.relationship('ArticleModel', secondary="articles", backref='orders', lazy=True)
+    articles = db.relationship('ArticlesModel', secondary=articles, backref=db.backref('orders', lazy='dynamic'))
+
     #Card de pagament
     #card = db.relationship('CardModel', secondary="card", backref='orders', lazy=True)
 

@@ -48,6 +48,9 @@ api.add_resource(Orders, '/order/<string:email>', '/order', '/order/<int:id>')
 api.add_resource(ArticlesList, '/articles')
 api.add_resource(Articles, '/article/<int:id>', '/article')
 
+api.add_resource(OrderArticlesList, '/articles-order/<int:id>')
+api.add_resource(OrderArticles, '/article-order/<int:id>/<int:id_article>', '/article-order/<int:id>')
+
 @app.route('/')
 def render_vue():
     return render_template("index.html")
