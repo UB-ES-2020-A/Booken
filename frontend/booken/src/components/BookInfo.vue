@@ -25,7 +25,7 @@
                 }}</h3>
               <select class="form-control" v-model="bookInfo.author" v-if="edit" style="margin-bottom: 1em">
                 <option value=-1>Selecciona autor</option>
-                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name" value=a.id>
+                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name" :value=a.name>
                   {{ a.name }}
                 </option>
                 <option value=0>Otro autor/a</option>
@@ -238,22 +238,22 @@
                                   @click="updateStars(1)" v-if="addRatingNumber >= 1"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(2)"
-                            v-if="addRatingNumber <= 1"></span>
+                                  v-if="addRatingNumber <= 1"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
                                   @click="updateStars(2)" v-if="addRatingNumber >= 2"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(3)"
-                            v-if="addRatingNumber <= 2"></span>
+                                  v-if="addRatingNumber <= 2"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
                                   @click="updateStars(3)" v-if="addRatingNumber >= 3"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(4)"
-                            v-if="addRatingNumber <= 3"></span>
+                                  v-if="addRatingNumber <= 3"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
                                   @click="updateStars(4)" v-if="addRatingNumber >= 4"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(5)"
-                            v-if="addRatingNumber <= 4"></span>
+                                  v-if="addRatingNumber <= 4"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
                                   @click="updateStars(5)" v-if="addRatingNumber >= 5"></span>
                           </div>
@@ -268,7 +268,9 @@
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">Cancelar</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">
+                        Cancelar
+                      </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal">
                         Enviar
                       </button>
@@ -393,7 +395,8 @@
 import axios from 'axios'
 import {bus} from '../main.js'
 
-let api = 'https://booken-dev.herokuapp.com/'
+//let api = 'https://booken-dev.herokuapp.com/'
+let api = 'http://127.0.0.1:5000/'
 export default {
   name: 'BookInfo',
 
@@ -424,6 +427,7 @@ export default {
       newAutor: 0,
       addRatingNumber: 0,
       nAutor: {
+        id: 0,
         c: '',
         name: '',
         birth_date: '',
@@ -436,6 +440,7 @@ export default {
       bookInfo: {
         id: 0,
         name: '',
+        author_id: -2,
         author: -1,
         genre: '',
         year: '',
@@ -460,6 +465,16 @@ export default {
     }
   },
   methods: {
+    getAuthorId(name) {
+      let item
+      for (item in this.authors) {
+        console.log(item)
+        if (this.authors[item].name == name) {
+          return this.authors[item].id
+        }
+      }
+      return -1
+    },
     updateStars(index) {
       this.addRatingNumber = index
     },
@@ -471,16 +486,70 @@ export default {
     saveChanges() {
       if (this.admin) {
         this.edit = 0
-        var path = api + 'book/' + this.book_id
-
-      axios.put(path, {"author_id": this.bookInfo.author, })
-          // eslint-disable-next-line no-unused-vars
-          .then((res) => {
-
+        let path
+        if (this.book_id != 0) {
+          path = api + 'book/' + this.book_id
+          axios.put(path, {
+            'author_id': this.getAuthorId(this.bookInfo.author),
+            'author_name': this.nAutor.name,
+            'author_bd': this.nAutor.birth_date,
+            'author_city': this.nAutor.city,
+            'author_country': this.nAutor.country,
+            'isbn': this.bookInfo.isbn,
+            'name': this.bookInfo.name,
+            'genre': this.bookInfo.genre,
+            'year': this.bookInfo.year,
+            'editorial': this.bookInfo.editorial,
+            'language': this.bookInfo.language,
+            'price': this.bookInfo.price,
+            'synopsis': this.bookInfo.synopsis,
+            'description': this.bookInfo.desc,
+            'num_pages': this.bookInfo.num_pages,
+            'cover_type': this.bookInfo.cover_type,
+            'num_sales': this.bookInfo.num_sales,
+            'total_available': this.bookInfo.available,
+            'cover_image_url': this.bookInfo.cover_image_url,
+            'back_cover_image_url': this.bookInfo.back_cover_image_url
           })
-          .catch((error) => {
-            this.toPrint(error)
+              // eslint-disable-next-line no-unused-vars
+              .then((res) => {
+
+              })
+              .catch((error) => {
+                this.toPrint(error)
+              })
+        } else {
+          axios.post(path, {
+            'author_id': this.getAuthorId(this.bookInfo.author),
+            'author_name': this.nAutor.name,
+            'author_bd': this.nAutor.birth_date,
+            'author_city': this.nAutor.city,
+            'author_country': this.nAutor.country,
+            'isbn': this.bookInfo.isbn,
+            'name': this.bookInfo.name,
+            'genre': this.bookInfo.genre,
+            'year': this.bookInfo.year,
+            'editorial': this.bookInfo.editorial,
+            'language': this.bookInfo.language,
+            'price': this.bookInfo.price,
+            'synopsis': this.bookInfo.synopsis,
+            'description': this.bookInfo.desc,
+            'num_pages': this.bookInfo.num_pages,
+            'cover_type': this.bookInfo.cover_type,
+            'num_sales': this.bookInfo.num_sales,
+            'total_available': this.bookInfo.available,
+            'cover_image_url': this.bookInfo.cover_image_url,
+            'back_cover_image_url': this.bookInfo.back_cover_image_url
           })
+              path = api + 'book'
+              // eslint-disable-next-line no-unused-vars
+              .then((res) => {
+
+              })
+              .catch((error) => {
+                this.toPrint(error)
+              })
+        }
       }
     },
     isValidIsbn(str) {
