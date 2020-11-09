@@ -8,22 +8,23 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 
 auth = HTTPBasicAuth()
 
+
 class AccountModel(db.Model):
     __tablename__ = 'accounts'
 
-    id = db.Column(db.Integer, primary_key = True, unique = True)
-    email = db.Column(db.String(30), unique = True, nullable = False)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    email = db.Column(db.String(30), unique=True, nullable=False)
 
     name = db.Column(db.String(), nullable=False)
     lastname = db.Column(db.String(), nullable=False)
 
-    password = db.Column(db.String(), nullable = False)
+    password = db.Column(db.String(), nullable=False)
 
-    type = db.Column(db.Integer, nullable = False) # 0 = client / 1 = develop-manager / 2 = stock-manager
+    type = db.Column(db.Integer, nullable=False)  # 0 = client / 1 = develop-manager / 2 = stock-manager
     available_money = db.Column(db.Integer)
 
-    #orders = db.relationship('OrdersModel', backref='orders, lazy = True)
-    #wish_list = db.relationship('BookModel', backref='books', lazy = True)
+
+    addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
 
     def __init__(self, email, name, lastname, password):
         self.email = email
@@ -67,9 +68,9 @@ class AccountModel(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)
 
-    def generate_auth_token(self, expiration = 600):
+    def generate_auth_token(self, expiration=600):
         s = Serializer(secret_key, expires_in=expiration)
-        return s.dumps({'email':self.email})
+        return s.dumps({'email': self.email})
 
     @classmethod
     def verify_auth_token(cls, token):
@@ -90,9 +91,10 @@ class AccountModel(db.Model):
 def verify_password(id, token):
     id = int(id)
     user = AccountModel.verify_auth_token(token)
-    if(user and user.id == id):
+    if (user and user.id == id):
         g.user = user
         return user
+
 
 @auth.get_user_roles
 def get_user_roles(user):

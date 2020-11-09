@@ -9,6 +9,7 @@ from resources.book import *
 from resources.contact_rs import *
 from resources.order import *
 from resources.article import *
+from resources.address_rs import *
 from db import db, create_app
 
 
@@ -23,12 +24,16 @@ from models.book import BookModel
 from models.contact import ContactModel
 from models.orders import OrdersModel
 from models.articles import ArticlesModel
+from models.address import AddressModel
 
 migrate = Migrate(app, db)
 
 # EndPoints configuration
 api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
+
+api.add_resource(Address, '/account/<int:account_id>/address/<int:id>', '/account/<int:account_id>/address')
+api.add_resource(AddressList, '/account/<int:account_id>/addresses/')
 
 api.add_resource(Login, '/login')
 

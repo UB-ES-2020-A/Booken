@@ -6,7 +6,9 @@ from models.orders import OrdersModel,states
 from flask_restful import Resource, reqparse
 from models.accounts import auth, g
 
+
 class Orders(Resource):
+
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
     def get(self, id):
         order = OrdersModel.find_by_id(id)
@@ -41,7 +43,7 @@ class Orders(Resource):
         return new_order.json(), 200
 
 
-    #@auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
+    # @auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
     def delete(self, id):
         order = OrdersModel.find_by_id(id)
         if order:
@@ -50,23 +52,25 @@ class Orders(Resource):
         else:
             return {'message': "Order with id [{}] Not found".format(id)}, 409
 
-
-    #@auth.login_required(role=['dev_manager', 'stock_manager'])
+    # @auth.login_required(role=['dev_manager', 'stock_manager'])
     def put(self, id):
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
+
         parser.add_argument('date', type=str, required=True, help="This field cannot be left blanck")
         parser.add_argument('total', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('state', type=str, required=True, help="This field cannot be left blanck")
         parser.add_argument('adress', type=str, required=True, help="This field cannot be left blanck")
+
         data = parser.parse_args()
 
         if data.state not in states:
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
 
         order = OrdersModel.find_by_id(id)
+
         if ( order ) :
             id_user = order.id_user
             order.delete_from_db()
@@ -77,11 +81,14 @@ class Orders(Resource):
         else:
             return {'message': "Order not found"}, 400
 
-#@auth.login_required(role=['dev_manager', 'stock_manager'])
+
+
+# @auth.login_required(role=['dev_manager', 'stock_manager'])
 class OrdersList(Resource):
     def get(self):
         orders = OrdersModel.get_orders()
         return orders, 200 if orders else 404
+
 
 #articles list of an order
 class OrderArticlesList(Resource):
@@ -140,3 +147,4 @@ class OrderArticles(Resource):
                 return {'message': "OK"}, 201
 
         return {'message': "Article with id [{}] Not found in order with id [{}]".format(id_article, id)}, 409
+

@@ -23,9 +23,9 @@
               <h3 class="card-subtitle" style="margin-bottom: 1em" v-if="book_found && !edit">{{
                   bookInfo.author
                 }}</h3>
-              <select class="form-control" v-model="bookInfo.author"  v-if="edit" style="margin-bottom: 1em">
+              <select class="form-control" v-model="bookInfo.author" v-if="edit" style="margin-bottom: 1em">
                 <option value=-1>Selecciona autor</option>
-                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name">
+                <option v-for="(a) in this.authors" :key="a.id" :selected="bookInfo.author == a.name" :value=a.name>
                   {{ a.name }}
                 </option>
                 <option value=0>Otro autor/a</option>
@@ -64,14 +64,21 @@
               <div ref="images" class="col" style="margin-bottom: 2rem">
                 <div style="display:flex; flex-direction: row">
                   <div style="display:flex; flex-direction: column">
-                    <img ref="pic1" class="sel-picture" :src="bookInfo.cover_image_url" @click="changeImage(1)">
-                    <img ref="pic2" class="sel-picture" :src="bookInfo.back_cover_image_url" @click="changeImage(2)">
+                    <img ref="pic1" class="sel-picture" :src="bookInfo.cover_image_url" @click="changeImage(1)"
+                         v-if="bookInfo.cover_image_url != ''">
+                    <img ref="pic1" class="sel-picture" src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png"
+                         v-if="bookInfo.cover_image_url == ''">
+                    <img ref="pic2" class="sel-picture" :src="bookInfo.back_cover_image_url" @click="changeImage(2)"
+                         v-if="bookInfo.back_cover_image_url != ''">
                   </div>
                   <div style="margin-left:auto; margin-right:auto">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em"
-                         :src="bookInfo.cover_image_url">
+                         :src="bookInfo.cover_image_url" v-if="bookInfo.cover_image_url != ''">
+                    <img ref="bigPic" class="animate__animated animate__zoomIn" style="max-height: 20em"
+                         src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png" v-if="bookInfo.cover_image_url == ''">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2"
-                         style="max-height: 20em; display: none" :src="bookInfo.back_cover_image_url">
+                         style="max-height: 20em; display: none" :src="bookInfo.back_cover_image_url"
+                         v-if="bookInfo.back_cover_image_url != ''">
                   </div>
                 </div>
               </div>
@@ -94,12 +101,12 @@
                     <tr>
                       <th scope="row">Editorial</th>
                       <td v-if="!edit">{{ bookInfo.editorial }}</td>
-                      <td v-if="edit"><input class="form-control" :value="bookInfo.editorial"></td>
+                      <td v-if="edit"><input class="form-control" v-model="bookInfo.editorial"></td>
                     </tr>
                     <tr>
                       <th scope="row">Año de publicación</th>
                       <td v-if="!edit">{{ bookInfo.year }}</td>
-                      <td v-if="edit"><input class="form-control" type="number" maxlength="4" :value="bookInfo.year">
+                      <td v-if="edit"><input class="form-control" type="number" maxlength=4 v-model="bookInfo.year">
                       </td>
                     </tr>
                     <tr>
@@ -135,7 +142,7 @@
                     <tr>
                       <th scope="row">Número de páginas</th>
                       <td v-if="!edit">{{ bookInfo.num_pages }}</td>
-                      <td v-if="edit"><input class="form-control" :value="bookInfo.num_pages" type="number"></td>
+                      <td v-if="edit"><input class="form-control" v-model="bookInfo.num_pages" type="number"></td>
                     </tr>
                     <tr>
                       <th scope="row">Formato</th>
@@ -152,7 +159,7 @@
                     <tr>
                       <th scope="row">ISBN</th>
                       <td v-if="!edit">{{ bookInfo.isbn }}</td>
-                      <td v-if="edit"><input class="form-control" :value="bookInfo.isbn" type="number" maxlength="13">
+                      <td v-if="edit"><input class="form-control" v-model="bookInfo.isbn" type="number" maxlength="13">
                       </td>
                     </tr>
 
@@ -174,7 +181,9 @@
                     </tr>
                     <tr v-if="edit">
                       <th scope="row">URL contraportada</th>
-                      <td><input class="form-control" v-model="bookInfo.back_cover_image_url"></td>
+                      <td><input class="form-control" v-model="bookInfo.back_cover_image_url"
+                                 :disabled="bookInfo.cover_image_url == ''"
+                                 title="Pon la portada antes de la contraportada."></td>
                     </tr>
                     </tbody>
                   </table>
@@ -214,7 +223,7 @@
 
               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                    aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-dialog" role="document" style="top: 20%">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Escribir reseña</h5>
@@ -225,32 +234,57 @@
                     <div class="modal-body">
                       <form>
                         <div class="form-group" style="text-align: left">
-                          <label for="reviewTitle" class="col-form-label">Añadir un título</label>
+                          <label for="reviewTitle" class="col-form-label">Título</label>
                           <input type="text" class="form-control" id="reviewTitle"
-                                 placeholder="¿Qué és lo más importante?">
+                                 v-model="ratingTitle">
                         </div>
                         <div class="form-group" style="text-align: left">
-                          <label class="col-form-label">Añadir una valoración</label>
+                          <label class="col-form-label">Tu valoración:</label>
                           <div style="margin-left: 0.1em">
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
-                            <span class="fa fa-star" style="color: orange"></span>
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(1)"
+                                  v-if="addRatingNumber <= 0"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(1)" v-if="addRatingNumber >= 1"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(2)"
+                                  v-if="addRatingNumber <= 1"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(2)" v-if="addRatingNumber >= 2"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(3)"
+                                  v-if="addRatingNumber <= 2"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(3)" v-if="addRatingNumber >= 3"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(4)"
+                                  v-if="addRatingNumber <= 3"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(4)" v-if="addRatingNumber >= 4"></span>
+
+                            <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(5)"
+                                  v-if="addRatingNumber <= 4"></span>
+                            <span class="fa fa-star" style="color: orange; font-size: 2em"
+                                  @click="updateStars(5)" v-if="addRatingNumber >= 5"></span>
                           </div>
-                          <!--<input type="text" class="form-control" id="reviewValoration"
-                                 placeholder="¿Qué és lo más importante?">-->
                         </div>
                         <div class="form-group" style="text-align: left">
-                          <label for="reviewText" class="col-form-label">Añadir una reseña escrita</label>
+                          <label for="reviewText" class="col-form-label">Explayate (si quieres 😉):</label>
                           <textarea class="form-control" id="reviewText" rows="5"
-                                    placeholder="¿Qué te ha gustado y qué no? ¿Para qué usaste este producto?"></textarea>
+                                    placeholder="¿Qué te ha parecido el libro? ¿A quién se lo recomendarias?"
+                                    v-model="ratingText"></textarea>
+                        </div>
+                        <div class="form-group" style="text-align: center">
+                          <span class="badge badge-danger animate__animated animate__rubberBand"
+                                style="font-size: 1.5em" v-if="ratingText != ''">¡NO NOS HAGAS SPOILER!</span>
                         </div>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                      <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">
+                        Cancelar
+                      </button>
+                      <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
+                              @click="postReview">
                         Enviar
                       </button>
                     </div>
@@ -370,7 +404,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios'
 import {bus} from '../main.js'
@@ -404,7 +437,11 @@ export default {
       admin: 1,
       book_found: 0,
       newAutor: 0,
+      addRatingNumber: 0,
+      ratingTitle: '',
+      ratingText: '',
       nAutor: {
+        id: 0,
         c: '',
         name: '',
         birth_date: '',
@@ -417,6 +454,7 @@ export default {
       bookInfo: {
         id: 0,
         name: '',
+        author_id: -2,
         author: -1,
         genre: '',
         year: '',
@@ -435,12 +473,33 @@ export default {
         cover: 'https://static.fnac-static.com/multimedia/Images/ES/NR/22/0f/18/1576738/1507-1.jpg',
         back_cover: 'https://images-na.ssl-images-amazon.com/images/I/71XhS2XgMxL.jpg',
       },
-
       showSummary: 1
-
     }
   },
   methods: {
+    postReview() {
+      //var path = api + 'book/' + this.$route.params.id
+
+      /*axios.post(path, {})
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })*/
+    },
+    getAuthorId(name) {
+      let item
+      for (item in this.authors) {
+        if (this.authors[item].name == name) {
+          return this.authors[item].id
+        }
+      }
+      return -1
+    },
+    updateStars(index) {
+      this.addRatingNumber = index
+    },
     editInfo() {
       if (this.admin) {
         this.edit = 1
@@ -449,6 +508,70 @@ export default {
     saveChanges() {
       if (this.admin) {
         this.edit = 0
+        let path
+        if (this.book_id != 0) {
+          path = api + 'book/' + this.book_id
+          axios.put(path, {
+            'author_id': this.getAuthorId(this.bookInfo.author),
+            'author_name': this.nAutor.name,
+            'author_bd': this.nAutor.birth_date,
+            'author_city': this.nAutor.city,
+            'author_country': this.nAutor.country,
+            'isbn': this.bookInfo.isbn,
+            'name': this.bookInfo.name,
+            'genre': this.bookInfo.genre,
+            'year': this.bookInfo.year,
+            'editorial': this.bookInfo.editorial,
+            'language': this.bookInfo.language,
+            'price': this.bookInfo.price,
+            'synopsis': this.bookInfo.synopsis,
+            'description': this.bookInfo.desc,
+            'num_pages': this.bookInfo.num_pages,
+            'cover_type': this.bookInfo.cover_type,
+            'num_sales': this.bookInfo.num_sales,
+            'total_available': this.bookInfo.available,
+            'cover_image_url': this.bookInfo.cover_image_url,
+            'back_cover_image_url': this.bookInfo.back_cover_image_url
+          })
+              // eslint-disable-next-line no-unused-vars
+              .then((res) => {
+
+              })
+              .catch((error) => {
+                this.toPrint(error)
+              })
+        } else {
+          path = api + 'book'
+          axios.post(path, {
+            'author_id': this.getAuthorId(this.bookInfo.author),
+            'author_name': this.nAutor.name,
+            'author_bd': this.nAutor.birth_date,
+            'author_city': this.nAutor.city,
+            'author_country': this.nAutor.country,
+            'isbn': this.bookInfo.isbn,
+            'name': this.bookInfo.name,
+            'genre': this.bookInfo.genre,
+            'year': this.bookInfo.year,
+            'editorial': this.bookInfo.editorial,
+            'language': this.bookInfo.language,
+            'price': this.bookInfo.price,
+            'synopsis': this.bookInfo.synopsis,
+            'description': this.bookInfo.desc,
+            'num_pages': this.bookInfo.num_pages,
+            'cover_type': this.bookInfo.cover_type,
+            'num_sales': this.bookInfo.num_sales,
+            'total_available': this.bookInfo.available,
+            'cover_image_url': this.bookInfo.cover_image_url,
+            'back_cover_image_url': this.bookInfo.back_cover_image_url
+          })
+              // eslint-disable-next-line no-unused-vars
+              .then((res) => {
+
+              })
+              .catch((error) => {
+                this.toPrint(error)
+              })
+        }
       }
     },
     isValidIsbn(str) {

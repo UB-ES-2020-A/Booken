@@ -3,7 +3,6 @@
 @import url("../assets/toastr.css");
 @import url("../assets/animate.min.css");
 @import url("../assets/book_info.css");
-@import url("../assets/main.css");
 
 </style>
 <template>
@@ -254,7 +253,7 @@
           </div>
           <!-- ECONOMY: for admin only -->
           <div class="tab-pane fade" id="pills-economy" role="tabpanel" aria-labelledby="pills-pay-tab">
-            <div class="container-fluid">
+            <!--<div class="container-fluid">
               <div class="row">
                 <div class="col-md-6 col-xl-4">
                   <div class="card mb-3 widget-content">
@@ -397,6 +396,7 @@
                 </div>
               </div>
             </div>
+          </div>-->
           </div>
         </div>
       </div>

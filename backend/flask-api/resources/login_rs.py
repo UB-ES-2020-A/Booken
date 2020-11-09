@@ -17,8 +17,8 @@ class Login(Resource):
 
         account = AccountModel.find_by_email(data["email"])
 
-        if (account != None):
-            if (account.verify_password(data["password"])):
+        if account:
+            if account.verify_password(data["password"]):
                 token = account.generate_auth_token()
                 return {'token': token.decode('ascii')}, 200
             else:

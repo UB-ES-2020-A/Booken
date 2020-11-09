@@ -1,10 +1,12 @@
 from db import db
 from models.book import BookModel
+
 from models.articles import ArticlesModel
 
 states = ("In progress", "Received")
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                    db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
+
 
 class OrdersModel(db.Model):
     __tablename__ = 'orders'
@@ -46,6 +48,16 @@ class OrdersModel(db.Model):
             "articles": articles_json
         }
 
+    def json_filtered_by_book_id(self):
+        book = BookModel.find_by_id(self.id_book)
+        return {
+            "id": self.id_book,
+            "email": self.email,
+            "book_name": book.name,
+            "num_books": self.num_books,
+            "state": self.state
+        }
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -55,7 +67,7 @@ class OrdersModel(db.Model):
         db.session.commit()
 
     def change_order_state(self, new_state):
-        self.state=new_state
+        self.state = new_state
 
     @classmethod
     def find_by_id_user(cls, id):
@@ -80,7 +92,7 @@ class OrdersModel(db.Model):
         list_orders = [order.json() for order in OrdersModel.query.all()]
         dicc = {"orders": list_orders}
         return dicc
-
+      
     def add_article(self, article):
         self.articles += [article]
         self.save_to_db()
@@ -96,3 +108,4 @@ class OrdersModel(db.Model):
             return 0
     def get_num_articles(self):
         return len(self.articles)
+
