@@ -223,7 +223,8 @@
 
               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                    aria-hidden="true">
-                <div class="modal-dialog" role="document" style="top: 20%">
+                <div class="modal-dialog" role="document"
+                     style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">Escribir reseña</h5>
@@ -240,7 +241,7 @@
                         </div>
                         <div class="form-group" style="text-align: left">
                           <label class="col-form-label">Tu valoración:</label>
-                          <div style="margin-left: 0.1em">
+                          <div class="Rating" style="margin-left: 0.1em">
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(1)"
                                   v-if="addRatingNumber <= 0"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
@@ -293,62 +294,62 @@
               </div>
             </div>
           </div>
-          <div class="card" style="width: auto; margin-top: 0.5em">
-            <div class="card-header">
-              Miguel C. — 11 de marzo de 2020
+
+
+          <!--<div class="container">
+            <div v-if="commentIndex < reviews.length" v-for="commentIndex in commentsToShow">
+              <div>{{reviews[commentIndex].name}} says:</div>
+              <i><div>{{reviews[commentIndex].description}}</div></i>
+              <hr />
             </div>
-            <div class="card-body">
-              <h5 class="card-title"><b>¡Me ha encantado!</b></h5>
-              <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
-              <div style="margin-left: 0.1em">
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
+            <div v-if="commentsToShow < reviews.length || reviews.length > commentsToShow">
+              <button @click="commentsToShow += 3">show more reviews</button>
+            </div>
+            </div>-->
+
+
+          <div v-for="index in reviewsToShow" :key="index">
+            <div class="card" style="width: auto; margin-top: 1em">
+              <div class="card-header">{{ reviews[index - 1].reviewUser }} - {{ reviews[index - 1].reviewDate }}</div>
+              <div class="card-body">
+                <h5 class="card-title"><b>{{ reviews[index - 1].reviewTitle }}</b></h5>
+                <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
+                <div class="ReviewsRating" style="margin-left: 0.1em; margin-top: 0.5em">
+                  <span class="fa fa-star" style="color: gray; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating <= 0"></span>
+                  <span class="fa fa-star" style="color: orange; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating >= 1"></span>
+                  <span class="fa fa-star" style="color: gray; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating <= 1"></span>
+                  <span class="fa fa-star" style="color: orange; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating >= 2"></span>
+                  <span class="fa fa-star" style="color: gray; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating <= 2"></span>
+                  <span class="fa fa-star" style="color: orange; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating >= 3"></span>
+                  <span class="fa fa-star" style="color: gray; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating <= 3"></span>
+                  <span class="fa fa-star" style="color: orange; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating >= 4"></span>
+                  <span class="fa fa-star" style="color: gray; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating <= 4"></span>
+                  <span class="fa fa-star" style="color: orange; font-size: 2em"
+                        v-if="reviews[index - 1].reviewRating >= 5"></span>
+                </div>
+                <h6 class="card-subtitle" style="margin-top: 1em">Comentario</h6>
+                <p class="card-text" style="margin-top: 0.5em">{{ reviews[index - 1].reviewDesc }}</p>
               </div>
-              <h6 class="card-subtitle" style="margin-top: 10px">Comentario</h6>
-              <p class="card-text">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
-            </div>
-          </div>
-          <div class="card" style="width: auto; margin-top: 0.5em">
-            <div class="card-header">
-              Miguel C. — 11 de marzo de 2020
-            </div>
-            <div class="card-body">
-              <h5 class="card-title"><b>¡Me ha encantado!</b></h5>
-              <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
-              <div style="margin-left: 0.1em">
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-                <span class="fa fa-star" style="color: orange"></span>
-              </div>
-              <h6 class="card-subtitle" style="margin-top: 10px">Comentario</h6>
-              <p class="card-text">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
             </div>
           </div>
         </div>
-        <button class="btn my-2 my-sm-0 mr-2"
+
+        <button class="btn"
                 style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
-                type="submit">
+                type="submit"
+                @click="reviewsToShow += (reviews.length - reviewsToShow)/5 >= 1? 5: reviews.length % reviewsToShow">
           <a class="navbartextbt">Cargar más</a>
         </button>
+
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
         <div class="card-body">
@@ -473,7 +474,125 @@ export default {
         cover: 'https://static.fnac-static.com/multimedia/Images/ES/NR/22/0f/18/1576738/1507-1.jpg',
         back_cover: 'https://images-na.ssl-images-amazon.com/images/I/71XhS2XgMxL.jpg',
       },
-      showSummary: 1
+      showSummary: 1,
+      reviewsToShow: 2,
+
+      reviews: [{
+        reviewUser: 'Miguel C.',
+        reviewDate: '11 de marzo de 2020',
+        reviewRating: 2,
+        reviewTitle: '¡Me ha encantado!',
+        reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+            '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+            '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+            '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+            '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+            '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+      },
+        {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        },
+        {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }, {
+          reviewUser: 'Juanjo C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 3,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        },
+        {
+          reviewUser: 'Antonio C.',
+          reviewDate: '11 de marzo de 2020',
+          reviewRating: 5,
+          reviewTitle: '¡Me ha encantado!',
+          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
+              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
+              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
+              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+        }]
+
+
     }
   },
   methods: {
