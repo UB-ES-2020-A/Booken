@@ -7,7 +7,7 @@ class ArticlesModel(db.Model):
     __tablename__ = 'articles'  # This is table name
 
     id = db.Column(db.Integer, primary_key=True)
-    price = db.Column(db.Float, unique=True, nullable=False)
+    price = db.Column(db.Float, unique=False, nullable=False)
 
     def __init__(self, id, price):
         self.id = id
