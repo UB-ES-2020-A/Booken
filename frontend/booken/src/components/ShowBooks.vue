@@ -53,11 +53,12 @@
             <h4>
               <span class="badge badge-info">{{ book.price}}€</span>&nbsp;
               <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'LITERATURA'">Literatura</span>
               <span class="badge badge-secondary" v-if="book.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
               <span class="badge badge-secondary" v-if="book.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
               <span class="badge badge-secondary" v-if="book.genre == 'COMICS Y MANGA'">Cómics y manga</span>
               <span class="badge badge-secondary" v-if="book.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
+              <span class="badge badge-secondary" v-if="book.genre == 'INFANTIL'">Infantil</span>
               <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
               <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
             </h4>
