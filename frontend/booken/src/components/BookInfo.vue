@@ -270,9 +270,10 @@
                         </div>
                         <div class="form-group" style="text-align: left">
                           <label for="reviewText" class="col-form-label">Explayate (si quieres 😉):</label>
-                          <textarea class="form-control" id="reviewText" rows="5"
+                          <textarea class="form-control" id="reviewText" rows="5" maxlength="250"
                                     placeholder="¿Qué te ha parecido el libro? ¿A quién se lo recomendarias?"
                                     v-model="ratingText"></textarea>
+                          <div id="charNum"></div>
                         </div>
                         <div class="form-group" style="text-align: center">
                           <span class="badge badge-danger animate__animated animate__rubberBand"
@@ -295,61 +296,56 @@
             </div>
           </div>
 
-
-          <!--<div class="container">
-            <div v-if="commentIndex < reviews.length" v-for="commentIndex in commentsToShow">
-              <div>{{reviews[commentIndex].name}} says:</div>
-              <i><div>{{reviews[commentIndex].description}}</div></i>
-              <hr />
-            </div>
-            <div v-if="commentsToShow < reviews.length || reviews.length > commentsToShow">
-              <button @click="commentsToShow += 3">show more reviews</button>
-            </div>
-            </div>-->
-
-
-          <div v-for="index in reviewsToShow" :key="index">
-            <div class="card" style="width: auto; margin-top: 1em">
-              <div class="card-header">{{ reviews[index - 1].reviewUser }} - {{ reviews[index - 1].reviewDate }}</div>
-              <div class="card-body">
-                <h5 class="card-title"><b>{{ reviews[index - 1].reviewTitle }}</b></h5>
-                <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
-                <div class="ReviewsRating" style="margin-left: 0.1em; margin-top: 0.5em">
+          <div class="row">
+            <div class="col-12" v-for="index in reviewsToShow" :key="index">
+              <div class="card" style="width: auto; margin-top: 1em">
+                <div class="card-header">{{ reviews[index - 1].reviewUser }} - {{ reviews[index - 1].reviewDate }}</div>
+                <div class="card-body">
+                  <h5 class="card-title"><b>{{ reviews[index - 1].reviewTitle }}</b></h5>
+                  <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
+                  <div class="ReviewsRating" style="margin-left: 0.1em; margin-top: 0.5em">
                   <span class="fa fa-star" style="color: gray; font-size: 2em"
                         v-if="reviews[index - 1].reviewRating <= 0"></span>
-                  <span class="fa fa-star" style="color: orange; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating >= 1"></span>
-                  <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating <= 1"></span>
-                  <span class="fa fa-star" style="color: orange; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating >= 2"></span>
-                  <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating <= 2"></span>
-                  <span class="fa fa-star" style="color: orange; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating >= 3"></span>
-                  <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating <= 3"></span>
-                  <span class="fa fa-star" style="color: orange; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating >= 4"></span>
-                  <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating <= 4"></span>
-                  <span class="fa fa-star" style="color: orange; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating >= 5"></span>
+                    <span class="fa fa-star" style="color: orange; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating >= 1"></span>
+                    <span class="fa fa-star" style="color: gray; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating <= 1"></span>
+                    <span class="fa fa-star" style="color: orange; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating >= 2"></span>
+                    <span class="fa fa-star" style="color: gray; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating <= 2"></span>
+                    <span class="fa fa-star" style="color: orange; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating >= 3"></span>
+                    <span class="fa fa-star" style="color: gray; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating <= 3"></span>
+                    <span class="fa fa-star" style="color: orange; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating >= 4"></span>
+                    <span class="fa fa-star" style="color: gray; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating <= 4"></span>
+                    <span class="fa fa-star" style="color: orange; font-size: 2em"
+                          v-if="reviews[index - 1].reviewRating >= 5"></span>
+                  </div>
+                  <h6 class="card-subtitle" style="margin-top: 1em">Comentario</h6>
+                  <p class="card-text" style="margin-top: 0.5em">{{ reviews[index - 1].reviewDesc }}</p>
                 </div>
-                <h6 class="card-subtitle" style="margin-top: 1em">Comentario</h6>
-                <p class="card-text" style="margin-top: 0.5em">{{ reviews[index - 1].reviewDesc }}</p>
               </div>
             </div>
           </div>
         </div>
-
         <button class="btn"
                 style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
                 type="submit"
-                @click="reviewsToShow += (reviews.length - reviewsToShow)/5 >= 1? 5: reviews.length % reviewsToShow">
+                @click="reviewsToShow += (reviews.length - reviewsToShow)/4 >= 1? 4: reviews.length % reviewsToShow"
+                v-if="reviews.length > reviewsToShow">
           <a class="navbartextbt">Cargar más</a>
         </button>
-
+        <button class="btn"
+                style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
+                type="submit"
+                @click="reviewsToShow = 2"
+                v-else>
+          <a class="navbartextbt">Contraer las reseñas</a>
+        </button>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
         <div class="card-body">
@@ -405,6 +401,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
 import {bus} from '../main.js'
@@ -497,9 +494,7 @@ export default {
           reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
               '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
               '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
+              '                into electronic typesetting, remaining essentiLorem Ipsum.'
         },
         {
           reviewUser: 'Juanjo C.',
@@ -519,8 +514,7 @@ export default {
           reviewTitle: '¡Me ha encantado!',
           reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
               '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
+              '                scrambled it to make a type specimen book. It hly unchanged. It was popularised in the 1960s with the\n' +
               '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
               '                software like Aldus PageMaker including versions of Lorem Ipsum.'
         }, {
@@ -590,7 +584,7 @@ export default {
               '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
               '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
               '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }]
+        }],
 
 
     }
