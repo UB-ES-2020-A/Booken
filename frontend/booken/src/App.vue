@@ -120,15 +120,20 @@
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
                         style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt">Ayuda</a>
+                    class="navbartextbt" @click="getHelp">Ayuda</a>
                 </button>
               </li>
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
-                        style="background-color: #3b494d;" type="submit" @click="toggleCart">
+                        style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="!viewCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Cesta</a>
+                </button>
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                        style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="viewCart">
+                  <i class="fas fa-arrow-left " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                    class="navbartextbt">Volver</a>
                 </button>
               </li>
 
@@ -142,19 +147,19 @@
     <div class="bg-dark">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="mynavbar2">
-          <div class="nav navbar-nav mx-auto">
+          <div class="nav navbar-nav mx-auto" @click="hideCart">
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
 
-                         >Humanidades
+            >Humanidades
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-                         >Técnico y formación
+            >Técnico y formación
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-                         >Métodos de idiomas
+            >Métodos de idiomas
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
                          :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura
@@ -180,8 +185,8 @@
         </div>
       </nav>
     </div>
-
-    <div id="shopping_cart" style="display: none">
+    <router-view :key="$route.fullPath" v-if="!viewCart"/>
+    <div id="shopping_cart" v-if="viewCart">
       <h1 style="margin-top: 1em">Tu cesta</h1>
       <div class="container mb-4" v-if="this.cart.length >= 1">
         <div class="row">
@@ -281,7 +286,7 @@
         </div>
       </div>
     </div>
-    <router-view :key="$route.fullPath" id="router_view"/>
+
     <footer class="site-footer">
       <div class="container">
         <div class="row">
@@ -302,10 +307,10 @@
           <div class="col-xs-6 col-md-3">
             <h6>AYUDA</h6>
             <ul class="footer-links">
-              <li>
+              <li @click="hideCart">
                 <router-link to="/contact">Contacto</router-link>
               </li>
-              <li><a href="">Preguntas frecuentes</a></li>
+              <li @click="hideCart"><a href="">Preguntas frecuentes</a></li>
 
             </ul>
           </div>
@@ -334,10 +339,12 @@
   </div>
 </template>
 <script>
+import * as toastr from './assets/toastr.js'
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
 import {bus} from './main.js'
 import axios from 'axios'
+
 export default {
   name: 'App',
   components: {
@@ -371,7 +378,8 @@ export default {
       shipping: 7.00,
       total: 5.00,
       cart: [],
-      email: "prueba@gmail.com"
+      email: "prueba@gmail.com",
+      viewCart: false
       //toggledNav: false
     }
   },/*
@@ -393,6 +401,8 @@ export default {
       var b = this.searchInCart(id)
       b.quant += 1
       bus.emit('cart-updated')
+      toastr.success('', 'Carrito actualizado.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getSubTotal() {
       this.subtotal = 0
@@ -423,46 +433,52 @@ export default {
         b.quant -= 1
       }
       bus.emit('cart-updated')
+      toastr.success('', 'Carrito actualizado.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
+      toastr.success('', 'Carrito actualizado.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+    },
+    getHelp() {
+      if(this.viewCart)
+        this.viewCart = false
+    },
+    hideCart () {
+      if(this.viewCart)
+        this.viewCart = false
     },
     toggleCart() {
-      if (document.getElementById('shopping_cart').style.display == 'block') {
-        document.getElementById('shopping_cart').style.display = 'none'
-        document.getElementById('router_view').style.display = 'block'
-      } else {
-        document.getElementById('shopping_cart').style.display = 'block'
-        document.getElementById('router_view').style.display = 'none'
-      }
+      this.viewCart = !this.viewCart
     },
-    finalizePurchase () {
+    finalizePurchase() {
       for (let i = 0; i < this.cart.length; i += 1) {
-          var item = this.cart[i]
-          console.log(item)
-          var quant =  item.quant
-          var id =  item.id
-          const parameters = {
-            id_book: id,
-            num_books: quant,
-            state: "In Progress"
-          }
-          this.checkout(parameters)
+        var item = this.cart[i]
+        console.log(item)
+        var quant = item.quant
+        var id = item.id
+        const parameters = {
+          id_book: id,
+          num_books: quant,
+          state: "In Progress"
         }
+        this.checkout(parameters)
+      }
     },
     checkout(parameters) {
       const path = `https://booken-dev.herokuapp.com/order/${this.email}`
       console.log(path)
       console.log(parameters)
       axios.post(path, parameters)
-        .then(() => {
-          console.log('Order done')
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error)
-        })
+          .then(() => {
+            console.log('Order done')
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+          })
     },
     searchInCart(id) {
       var i, item
@@ -489,6 +505,8 @@ export default {
       return new Date().getFullYear()
     },
     goToAccess() {
+      if(this.viewCart)
+        this.viewCart = false
       this.$router.push({path: '/cp'})
       //this.$router.push({path: '/access'})
     }
@@ -557,6 +575,7 @@ export default {
 
 
   .searchBarOutside .btn {
+    width: 50px;
     width: 50px;
 
   }

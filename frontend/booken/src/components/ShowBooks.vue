@@ -15,8 +15,11 @@
           <h2 v-if="$route.params.category == 'TECNICO Y FORMACION'">Técnico y formación</h2>
           <h2 v-if="$route.params.category == 'METODOS DE IDIOMAS'">Métodos de idiomas</h2>
           <h2 v-if="$route.params.category == 'COMICS Y MANGA'">Cómics y manga</h2>
+          <h2 v-if="$route.params.category == 'LITERATURA'">Literatura</h2>
+          <h2 v-if="$route.params.category == 'JUVENIL'">Juvenil</h2>
+          <h2 v-if="$route.params.category == 'INFANTIL'">Infantil</h2>
           <h2 v-if="$route.params.category == 'OTRAS CATEGORIAS'">Otras categorías</h2>
-
+          <h2 v-if="$route.params.category == 'TODO'">Todos los libros</h2>
           <!--Viendo todos los resultados para-->
         </div>
         <div class="col-12 col-md-6 my-auto filterBox">
@@ -78,6 +81,7 @@
 
 <script>
 import axios from 'axios'
+import * as toastr from "@/assets/toastr";
 
 let api = 'https://booken-dev.herokuapp.com/'
 export default {
@@ -99,6 +103,8 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             this.getBooksFromDB(this.$route.params.category)
+            toastr.success('', '¡Libro borrado!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             this.toPrint(error)
@@ -117,7 +123,7 @@ export default {
 
     },
     toLowercase(stg) {
-      return stg.replace(/\S*/g, function (word) {
+      return stg.toString().replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase()
       })
     },
