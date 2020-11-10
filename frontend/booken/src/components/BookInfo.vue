@@ -197,7 +197,7 @@
                         v-if="bookInfo.available <= 0" disabled><a
                     class="navbartextbt" v-if="!edit">Agotado</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
-                    class="navbartextbt" v-if="!edit">Añadir a lista de deseos</a></button>
+                    class="navbartextbt" v-if="!edit" @click="addToWishList(book)">Añadir a lista de deseos</a></button>
               </div>
             </div>
           </div>
@@ -286,7 +286,7 @@
                         Cancelar
                       </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
-                              @click="postReview">
+                              @click="postReview" :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
                         Enviar
                       </button>
                     </div>
@@ -404,6 +404,7 @@
 
 <script>
 import axios from 'axios'
+import * as toastr from '../assets/toastr.js'
 import {bus} from '../main.js'
 
 let api = 'https://booken-dev.herokuapp.com/'
@@ -591,11 +592,14 @@ export default {
   },
   methods: {
     postReview() {
-      //var path = api + 'book/' + this.$route.params.id
 
-      /*axios.post(path, {})
+      /*var path = api + 'book/' + this.$route.params.id
+
+      axios.post(path, {})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
+          toastr.success('', '¡Reseña añadida!',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             this.toPrint(error)
@@ -619,9 +623,38 @@ export default {
       }
     },
     saveChanges() {
-      if (this.admin  && this.isValidIsbn(this.bookInfo.isbn)) {
+      if (this.admin) {
+        if (this.bookInfo.isbn == '' || this.bookInfo.name == '' || this.bookInfo.author == '' || this.bookInfo.genre == ''
+            || this.bookInfo.year == '' || this.bookInfo.editorial == '' || this.bookInfo.language == '' ||
+            this.bookInfo.price == '' || this.bookInfo.synopsis == '' || this.bookInfo.desc == '' || this.bookInfo.num_pages == ''
+            || this.bookInfo.cover_type == -1 || this.bookInfo.num_sales.toString() == '' || this.bookInfo.available == '') {
+          toastr.info('', 'Por favor, rellena todos los campos.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          return 0
+        }
+        if (this.bookInfo.year < 0 || this.bookInfo.price < 0 || this.bookInfo.available < 0 || this.bookInfo.num_sales < 0
+            || this.bookInfo.num_pages < 0) {
+          toastr.warning('', 'No se admiten valores negativos',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          return 0
+        }
+        if (this.bookInfo.author == 0) {
+          if (this.nAutor.name == '' || this.nAutor.birth_date == '' || this.nAutor.country == '' || this.nAutor.city == '') {
+            toastr.info('', 'Por favor, rellena todos los campos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            return 0
+          }
+        }
+        if (!this.isValidIsbn(this.bookInfo.isbn)) {
+          toastr.warning('', 'El ISBN introducido no tiene el formato correcto.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          return 0
+        }
         this.edit = 0
         let path
+        if (this.bookInfo.cover_image_url == '') {
+          this.bookInfo.cover_image_url = 'https://i.ibb.co/jkbth7h/Portada-no-disponible.png'
+        }
         if (this.book_id != 0) {
           path = api + 'book/' + this.book_id
           axios.put(path, {
@@ -648,7 +681,8 @@ export default {
           })
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
-
+                toastr.success('', '¡Libro actualizado correctamente!',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
               .catch((error) => {
                 this.toPrint(error)
@@ -679,7 +713,8 @@ export default {
           })
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
-
+                toastr.success('', '¡Libro añadido correctamente!',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
               .catch((error) => {
                 this.toPrint(error)
@@ -695,7 +730,7 @@ export default {
           check,
           i;
 
-      str = str.replace(/[^0-9X]/gi, '');
+      str = str.toString().replace(/[^0-9X]/gi, '');
 
       if (str.length != 10 && str.length != 13) {
         return false;
@@ -729,8 +764,16 @@ export default {
         }
         return (check == str[str.length - 1].toUpperCase());
       }
+    }
+    ,
+    addToWishList(book) {
+      console.log(book)
+      toastr.success('', 'Añadido a tu lista de deseos.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     addToCart(book) {
+      toastr.success('', 'Libro añadido a tu cesta.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       bus.emit('added-to-cart', {
         'id': book.id,
         'title': book.name,
@@ -738,10 +781,12 @@ export default {
         'cover': book.cover_image_url,
         'quant': 1
       })
-    },
+    }
+    ,
     toPrint(toPrint) {
       console.log(toPrint)
-    },
+    }
+    ,
     initAuthors() {
       var path = api + 'authors'
 
@@ -752,7 +797,8 @@ export default {
           .catch((error) => {
             this.toPrint(error)
           })
-    },
+    }
+    ,
     initBookInfo() {
       var path = api + 'book/' + this.$route.params.id
 
@@ -780,15 +826,18 @@ export default {
           .catch((error) => {
             this.toPrint(error)
           })
-    },
+    }
+    ,
     replaceDecimal(stg) {
       return stg
-    },
+    }
+    ,
     toLowercase(stg) {
-      return stg.replace(/\S*/g, function (word) {
+      return stg.toString().replace(/\S*/g, function (word) {
         return word.charAt(0) + word.slice(1).toLowerCase();
       })
-    },
+    }
+    ,
     getBooksFromDB(req) {
       var path = api + 'books/' + req
       if (req === 'TODO') {
@@ -801,7 +850,8 @@ export default {
           .catch((error) => {
             this.toPrint(error)
           })
-    },
+    }
+    ,
     changeImage(id_image) {
       if (id_image == 1) {
         document.getElementById('displayPic').style.display = 'block'
@@ -812,7 +862,8 @@ export default {
         document.getElementById('displayPic').style.display = 'none'
         /*this.$refs.bigPic.src = this.$refs.pic2.src*/
       }
-    },
+    }
+    ,
 
     change_info(info) {
       if (info == "summary") {
