@@ -28,50 +28,57 @@
             <option>Más vendidos</option>
           </select>
           <router-link :to="{name: 'BookInfo', params: {id: 0}}">
-          <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
-                      v-if="admin" style="margin-left: 1em"><i class="fas fa-plus" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-              class="navbartextbt">Añadir</a></button></router-link>
+            <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
+                    v-if="admin" style="margin-left: 1em"><i class="fas fa-plus"
+                                                             style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                class="navbartextbt">Añadir</a></button>
+          </router-link>
         </div>
       </div>
       <hr>
 
-      <div class="row row-cols-1 row-cols-md-5" :key="$route.params.category">
-      <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
-        <div class="card h-100">
-          <img
-              :src="book.cover_image_url"
-              class="card-img-top" alt="...">
-          <div class="card-body">
-            <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
-            <h4 class="card-title">
-              <router-link :to="{name: 'BookInfo', params: {id: book.id}}">{{ book.name }}</router-link>
-            </h4>
+      <div class="row row-cols-1 row-cols-md-5" :key="nbooks">
+        <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
+          <div class="card h-100">
+            <img
+                :src="book.cover_image_url"
+                class="card-img-top" alt="...">
+            <div class="card-body">
+              <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
+              <h4 class="card-title">
+                <router-link :to="{name: 'BookInfo', params: {id: book.id}}">{{ book.name }}</router-link>
+              </h4>
 
-            <p class="card-text">{{book.description}}</p>
-          </div>
-          <div class="card-footer">
-            <h4>
-              <span class="badge badge-info">{{ book.price}}€</span>&nbsp;
-              <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'LITERATURA'">Literatura</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'COMICS Y MANGA'">Cómics y manga</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
-              <span class="badge badge-secondary" v-if="book.genre == 'INFANTIL'">Infantil</span>
-              <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
-              <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
-            </h4>
+              <p class="card-text">{{ book.description }}</p>
+            </div>
+            <div class="card-footer">
+              <h4>
+                <span class="badge badge-info">{{ book.price }}€</span>&nbsp;
+                <span class="badge badge-secondary" v-if="book.genre == 'HUMANIDADES'">Humanidades</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'LITERATURA'">Literatura</span>
+                <span class="badge badge-secondary"
+                      v-if="book.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'COMICS Y MANGA'">Cómics y manga</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'INFANTIL'">Infantil</span>
+                <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
+                <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
+                <button v-if="admin" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
+                        @click="deleteBook(book.id)"><i class="fas fa-times"></i>
+                </button>
+              </h4>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+
 let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
@@ -81,10 +88,22 @@ export default {
   data() {
     return {
       books: [],
-      admin: 1
+      admin: 1,
+      nbooks: 0
     }
   },
   methods: {
+    deleteBook(id) {
+      var path = api + 'book/' + id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            this.getBooksFromDB(this.$route.params.category)
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    },
     joinAuthours(aut) {
       if (aut.length == 1) {
         return aut[0]
@@ -110,6 +129,7 @@ export default {
       axios.get(path)
           .then((res) => {
             this.books = res.data.books
+            this.nbooks = this.books.length
           })
           .catch((error) => {
             this.toPrint(error)
