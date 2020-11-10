@@ -619,7 +619,7 @@ export default {
       }
     },
     saveChanges() {
-      if (this.admin) {
+      if (this.admin  && this.isValidIsbn(this.bookInfo.isbn)) {
         this.edit = 0
         let path
         if (this.book_id != 0) {
