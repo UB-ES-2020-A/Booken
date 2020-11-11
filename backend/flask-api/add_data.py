@@ -21,7 +21,7 @@ for i in books:
         break;
     authors = []
     for j in i[2]:
-        a = AuthorModel(j[0], j[1], j[2], j[3], j[4])
+        a = AuthorModel(j[0], j[1], j[2], j[3])
         authors.append(a)
         db.session.add(a)
         authorss += 1

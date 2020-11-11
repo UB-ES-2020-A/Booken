@@ -21,7 +21,7 @@ class BookModel(db.Model):
     synopsis = db.Column(db.String(500), nullable=False)
     description = db.Column(db.String(100), nullable=False)
     num_pages = db.Column(db.Integer, nullable=False)
-    cover_type = db.Column(db.Integer, nullable=False)  # 0-> tapa blanda , 1-> tapa dura
+    cover_type = db.Column(db.Integer, nullable=False)  # 0-> tapa dura , 1-> tapa blanda
     price = db.Column(db.Float, nullable=False)
     num_sales = db.Column(db.Integer, nullable=False)
     total_available = db.Column(db.Integer, nullable=False)
