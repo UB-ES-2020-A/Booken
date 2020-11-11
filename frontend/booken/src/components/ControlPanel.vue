@@ -12,6 +12,7 @@
             integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://unpkg.com/@fracto/vue-credit-card/dist/VueCreditCard.css">
       <div class="card">
         <div class="card-header">
           <h3>Panel de control</h3>
@@ -268,36 +269,16 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form>
-                      <div class="form-group" style="text-align: left">
-                        <label for="reviewTitle" class="col-form-label">Título</label>
-                        <input type="text" class="form-control" id="reviewTitle"
-                               v-model="ratingTitle">
-                      </div>
-                      <div class="form-group" style="text-align: left">
-                        <label class="col-form-label">Tu valoración:</label>
 
-                      </div>
-                      <div class="form-group" style="text-align: left">
-                        <label for="reviewText" class="col-form-label">Explayate (si quieres 😉):</label>
-                        <textarea class="form-control" id="reviewText" rows="5" maxlength="250"
-                                  placeholder="¿Qué te ha parecido el libro? ¿A quién se lo recomendarias?"
-                                  v-model="ratingText"></textarea>
-                        <div id="charNum"></div>
-                      </div>
-                      <div class="form-group" style="text-align: center">
-                          <span class="badge badge-danger animate__animated animate__rubberBand"
-                                style="font-size: 1.5em" v-if="ratingText != ''">¡NO NOS HAGAS SPOILER!</span>
-                      </div>
-                    </form>
+
+                    asd
+
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
                       Cancelar
                     </button>
-                    <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
-                            @click="postReview"
-                            :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
+                    <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal">
                       Enviar
                     </button>
                   </div>
@@ -458,6 +439,7 @@
     </div>
   </div>
 </template>
+
 <script>
 // eslint-disable-next-line no-unused-vars
 import {bus} from '../main.js'
