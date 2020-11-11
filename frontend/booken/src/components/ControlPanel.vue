@@ -206,7 +206,10 @@
                 </div>
                 <div class="col mb-4" style="margin-right: 1.5rem" v-if="addressNumber < 4">
                   <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: center">
-                    <a href="" style="color: #3b494d"><br><br><i class="fas fa-plus" style="font-size: 7rem"></i></a>
+                    <button style="color: #3b494d; height: 100%" type="submit"
+                            data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"
+                                                                               style="font-size: 6em; top: 50%"></i>
+                    </button>
                   </div>
 
                 </div>
@@ -244,12 +247,64 @@
                   </div>
                 </div>
                 <div class="col mb-4" style="margin-right: 1.5rem" v-if="cardNumber < 3">
-                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: center">
-                    <a href="" style="color: #3b494d"><br><br><i class="fas fa-plus" style="font-size: 7rem"></i></a>
+                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: center !important">
+                    <button style="color: #3b494d; height: 100%" type="submit"
+                            data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"
+                                                                               style="font-size: 6em; top: 50%"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog" role="document"
+                   style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir una tarjeta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group" style="text-align: left">
+                        <label for="reviewTitle" class="col-form-label">Título</label>
+                        <input type="text" class="form-control" id="reviewTitle"
+                               v-model="ratingTitle">
+                      </div>
+                      <div class="form-group" style="text-align: left">
+                        <label class="col-form-label">Tu valoración:</label>
+
+                      </div>
+                      <div class="form-group" style="text-align: left">
+                        <label for="reviewText" class="col-form-label">Explayate (si quieres 😉):</label>
+                        <textarea class="form-control" id="reviewText" rows="5" maxlength="250"
+                                  placeholder="¿Qué te ha parecido el libro? ¿A quién se lo recomendarias?"
+                                  v-model="ratingText"></textarea>
+                        <div id="charNum"></div>
+                      </div>
+                      <div class="form-group" style="text-align: center">
+                          <span class="badge badge-danger animate__animated animate__rubberBand"
+                                style="font-size: 1.5em" v-if="ratingText != ''">¡NO NOS HAGAS SPOILER!</span>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">
+                      Cancelar
+                    </button>
+                    <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
+                            @click="postReview"
+                            :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
+                      Enviar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <!-- ECONOMY: for admin only -->
           <div class="tab-pane fade" id="pills-economy" role="tabpanel" aria-labelledby="pills-pay-tab">
