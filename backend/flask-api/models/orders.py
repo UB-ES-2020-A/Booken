@@ -1,15 +1,18 @@
 from db import db
 from models.book import BookModel
 
-from models.articles import ArticlesModel
+from models.address import AddressModel
 
 states = ("In progress", "Received")
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                    db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
 
+address = db.Table('relationship2', db.Column('addresses_id', db.Integer, db.ForeignKey('addresses.id')),
+                   db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
 
 class OrdersModel(db.Model):
     __tablename__ = 'orders'
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
     date = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
@@ -17,14 +20,15 @@ class OrdersModel(db.Model):
     shipping = db.Column(db.Float, nullable=False)
     taxes = db.Column(db.Float, nullable=False)
     state = db.Column(db.Enum(*states, name='states_types'), nullable=False)
-    adress = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
+    #Address de la order
+    address = db.relationship('AddressModel', secondary=address, backref=db.backref('orders', lazy='dynamic'))
     #Articles de la order
     articles = db.relationship('ArticlesModel', secondary=articles, backref=db.backref('orders', lazy='dynamic'))
 
     #Card de pagament
     #card = db.relationship('CardModel', secondary="card", backref='orders', lazy=True)
 
-    def __init__(self, id, id_user ,date, total,shipping, taxes, state, adress):
+    def __init__(self, id, id_user ,date, total,shipping, taxes, state):
         self.id = id
         self.id_user = id_user
         self.date = date
@@ -32,10 +36,10 @@ class OrdersModel(db.Model):
         self.shipping = shipping
         self.taxes = taxes
         self.state = state
-        self.adress = adress
 
     def json(self):
         articles_json = [article.json() for article in self.articles]
+        address_json = [address.json() for address in self.address]
         return {
             "id": self.id,
             "id_user": self.id_user,
@@ -44,7 +48,22 @@ class OrdersModel(db.Model):
             "shipping": self.shipping,
             "taxes": self.taxes,
             "state": self.state,
-            "adress": self.adress,
+            "address": address_json,
+            "articles": articles_json
+        }
+
+    def json_with_address_id(self):
+        articles_json = [article.json() for article in self.articles]
+        address_json = [address.json_with_id() for address in self.address]
+        return {
+            "id": self.id,
+            "id_user": self.id_user,
+            "date": self.date,
+            "total": self.total,
+            "shipping": self.shipping,
+            "taxes": self.taxes,
+            "state": self.state,
+            "address": address_json,
             "articles": articles_json
         }
 
@@ -52,7 +71,7 @@ class OrdersModel(db.Model):
         book = BookModel.find_by_id(self.id_book)
         return {
             "id": self.id_book,
-            "email": self.email,
+            "id_user": self.id_user,
             "book_name": book.name,
             "num_books": self.num_books,
             "state": self.state
@@ -101,6 +120,20 @@ class OrdersModel(db.Model):
         index = [i for i in range(len(self.json()["articles"])) if self.json()["articles"][i]["id"] == int(id)]
         if index:
             self.articles.pop(index[0])
+            db.session.add(self)
+            db.session.commit()
+            return 1
+        else:
+            return 0
+
+    def add_address(self, address):
+        self.address += [address]
+        self.save_to_db()
+
+    def delete_address(self, id):
+        index = [i for i in range(len(self.json()["address"])) if self.json()["address"][i]["id"] == int(id)]
+        if index:
+            self.address.pop(index[0])
             db.session.add(self)
             db.session.commit()
             return 1
