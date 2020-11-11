@@ -217,7 +217,7 @@
             </div>
             <div class="col" style="text-align: right">
               <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
-                      data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">
+                      data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" v-if="loggedIn">
                 <i class="fa fa-pencil" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Escribir reseña</a>
               </button>
@@ -298,7 +298,7 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
                 <div class="card-header">{{ item.user }} - {{ item.date }}</div>
@@ -331,6 +331,11 @@
                   <p class="card-text" style="margin-top: 0.5em">{{ item.desc }}</p>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="row" v-if="reviews.length == 0">
+            <div class="col-12" style="text-align: center;">
+              <img src="https://i.ibb.co/kDmqZRz/asd.png" >
             </div>
           </div>
         </div>
@@ -438,6 +443,7 @@ export default {
   data() {
     return {
       admin: 1,
+      loggedIn: false,
       book_found: 0,
       newAutor: 0,
       addRatingNumber: 0,
@@ -483,19 +489,7 @@ export default {
       nReviews: 0,
       nPages: 0,
       sReviews: [],
-      reviews: [{
-        user: 'Miguel C.',
-        date: '11/03/2020',
-        rating: 1,
-        title: '¡1!',
-        desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-            '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-            '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-            '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-            '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-            '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-      }
-      ],
+      reviews: [],
 
 
     }
@@ -511,7 +505,7 @@ export default {
       } else {
         this.showing -= -1
         let item
-        for(item in this.sReviews[this.showing]){
+        for (item in this.sReviews[this.showing]) {
           this.viewingReviews.push(this.sReviews[this.showing][item])
         }
       }
