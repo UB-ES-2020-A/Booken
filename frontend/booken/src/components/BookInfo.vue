@@ -208,7 +208,8 @@
           </div>
         </div>
       </div>
-      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem" v-if="book_found">
+      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem"
+           v-if="book_found && book_id != 0">
         <div class="card-body">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
@@ -286,7 +287,8 @@
                         Cancelar
                       </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
-                              @click="postReview" :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
+                              @click="postReview"
+                              :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
                         Enviar
                       </button>
                     </div>
@@ -297,36 +299,36 @@
           </div>
 
           <div class="row">
-            <div class="col-12" v-for="index in reviewsToShow" :key="index">
+            <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{ reviews[index - 1].reviewUser }} - {{ reviews[index - 1].reviewDate }}</div>
+                <div class="card-header">{{ item.user }} - {{ item.date }}</div>
                 <div class="card-body">
-                  <h5 class="card-title"><b>{{ reviews[index - 1].reviewTitle }}</b></h5>
+                  <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
                   <div class="ReviewsRating" style="margin-left: 0.1em; margin-top: 0.5em">
                   <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="reviews[index - 1].reviewRating <= 0"></span>
+                        v-if="item.rating <= 0"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating >= 1"></span>
+                          v-if="item.rating >= 1"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating <= 1"></span>
+                          v-if="item.rating <= 1"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating >= 2"></span>
+                          v-if="item.rating >= 2"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating <= 2"></span>
+                          v-if="item.rating <= 2"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating >= 3"></span>
+                          v-if="item.rating >= 3"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating <= 3"></span>
+                          v-if="item.rating <= 3"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating >= 4"></span>
+                          v-if="item.rating >= 4"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating <= 4"></span>
+                          v-if="item.rating <= 4"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="reviews[index - 1].reviewRating >= 5"></span>
+                          v-if="item.rating >= 5"></span>
                   </div>
                   <h6 class="card-subtitle" style="margin-top: 1em">Comentario</h6>
-                  <p class="card-text" style="margin-top: 0.5em">{{ reviews[index - 1].reviewDesc }}</p>
+                  <p class="card-text" style="margin-top: 0.5em">{{ item.desc }}</p>
                 </div>
               </div>
             </div>
@@ -335,16 +337,16 @@
         <button class="btn"
                 style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
                 type="submit"
-                @click="reviewsToShow += (reviews.length - reviewsToShow)/4 >= 1? 4: reviews.length % reviewsToShow"
-                v-if="reviews.length > reviewsToShow">
+                @click="changeViewingReviews"
+                v-if="this.showing != (this.nPages - 1) && this.reviews.length > 2">
           <a class="navbartextbt">Cargar más</a>
         </button>
         <button class="btn"
                 style="background-color: #3b494d; width: 100%; border-top-left-radius: 0px; border-top-right-radius: 0px"
                 type="submit"
-                @click="reviewsToShow = 2"
-                v-else>
-          <a class="navbartextbt">Contraer las reseñas</a>
+                @click="changeViewingReviews"
+                v-if="this.showing == (this.nPages - 1) && this.reviews.length > 2">
+          <a class="navbartextbt">Ver menos</a>
         </button>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
@@ -428,6 +430,8 @@ export default {
       }
     } else {
       this.initBookInfo()
+      this.getBooksFromDB()
+      this.splitReviews()
     }
   },
 
@@ -473,124 +477,60 @@ export default {
         back_cover: 'https://images-na.ssl-images-amazon.com/images/I/71XhS2XgMxL.jpg',
       },
       showSummary: 1,
-      reviewsToShow: 2,
-
+      showing: 0,
+      maxPerPage: 2,
+      viewingReviews: [],
+      nReviews: 0,
+      nPages: 0,
+      sReviews: [],
       reviews: [{
-        reviewUser: 'Miguel C.',
-        reviewDate: '11 de marzo de 2020',
-        reviewRating: 2,
-        reviewTitle: '¡Me ha encantado!',
-        reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
+        user: 'Miguel C.',
+        date: '11/03/2020',
+        rating: 1,
+        title: '¡1!',
+        desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
             '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
             '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
             '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
             '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
             '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-      },
-        {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentiLorem Ipsum.'
-        },
-        {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It hly unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }, {
-          reviewUser: 'Juanjo C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 3,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        },
-        {
-          reviewUser: 'Antonio C.',
-          reviewDate: '11 de marzo de 2020',
-          reviewRating: 5,
-          reviewTitle: '¡Me ha encantado!',
-          reviewDesc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the\n' +
-              '                industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and\n' +
-              '                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap\n' +
-              '                into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the\n' +
-              '                release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing\n' +
-              '                software like Aldus PageMaker including versions of Lorem Ipsum.'
-        }],
+      }
+      ],
 
 
     }
   },
   methods: {
+    getOrdersFromDB() {
+
+    },
+    changeViewingReviews() {
+      if (this.showing == (this.nPages - 1)) {
+        this.showing = 0
+        this.viewingReviews = this.sReviews[0].slice()
+      } else {
+        this.showing -= -1
+        let item
+        for(item in this.sReviews[this.showing]){
+          this.viewingReviews.push(this.sReviews[this.showing][item])
+        }
+      }
+    },
+    splitReviews() {
+      if (this.reviews.length <= 2) {
+        this.viewingReviews = this.reviews
+      } else {
+        this.nReviews = this.reviews.length
+        this.nPages = Math.ceil(this.nReviews / this.maxPerPage)
+        let i
+        let arr = []
+        for (i = 0; i < this.nPages; i++) {
+          arr = this.reviews.slice(i * this.maxPerPage, this.maxPerPage * (i + 1))
+          this.sReviews.push(arr)
+        }
+        this.viewingReviews = this.sReviews[0].slice()
+      }
+    },
     postReview() {
 
       /*var path = api + 'book/' + this.$route.params.id
