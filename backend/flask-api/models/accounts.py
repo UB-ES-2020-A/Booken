@@ -1,5 +1,6 @@
 from db import db, secret_key
 from flask import g
+# from models.review import ReviewModel
 
 from flask_httpauth import HTTPBasicAuth
 
@@ -25,6 +26,7 @@ class AccountModel(db.Model):
 
 
     addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
+    reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
 
     def __init__(self, email, name, lastname, password):
         self.email = email

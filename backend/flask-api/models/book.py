@@ -1,5 +1,6 @@
 from db import db
 from models.author import AuthorModel
+# from models.review import ReviewModel
 
 genres = ('HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL', 'COMICS Y MANGA',
           'JUVENIL', 'OTRAS CATEGORIAS')
@@ -27,6 +28,8 @@ class BookModel(db.Model):
     total_available = db.Column(db.Integer, nullable=False)
     cover_image_url = db.Column(db.String(100))
     back_cover_image_url = db.Column(db.String(100))
+
+    reviews = db.relationship('ReviewModel', backref='reviews_book', lazy=True)
 
     def __init__(self, isbn, name, author, genre, year, editorial, language, price, synopsis, description, num_pages,
                  cover_type, num_sales, total_available, cover_image_url, back_cover_image_url):

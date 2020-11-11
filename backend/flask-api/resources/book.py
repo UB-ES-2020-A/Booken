@@ -68,7 +68,6 @@ class Book(Resource):
         if not exists:
             return {'message': "A book with ['id': {}] not found".format(id)}, 404
         authors = []
-        print(data.get('name'))
         a = AuthorModel.find_by_name(data.get('author_name'))
         if a:
             authors.append(a)
