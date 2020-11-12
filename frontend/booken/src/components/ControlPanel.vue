@@ -7,7 +7,7 @@
 </style>
 <template>
   <div class="front-container">
-    <div style="max-width: 1400px">
+    <div style="max-width: 1400px; min-height:60vw;">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
             integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -185,7 +185,7 @@
                 </div>
               </div>
               <div class="row row-cols-1 row-cols-sm-6">
-                <div class="col mb-4" style="margin-right: 1.5rem" v-for="item in this.addresses" :key="item.id">
+                <div class="col-sm-3 mb-4" style="margin-right: 1.5rem" v-for="item in this.addresses" :key="item.id">
                   <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: left">
                     <div class="card-header">
                       {{ item.add_name }}
@@ -226,7 +226,7 @@
                 </div>
               </div>
               <div class="row row-cols-1 row-cols-sm-6">
-                <div class="col mb-4" style="margin-right: 1.5rem" v-for="item in this.cards" :key="item.id">
+                <div class="col-sm-6 mb-4" style="margin-right: 1.5rem" v-for="item in this.cards" :key="item.id">
                   <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: left">
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
