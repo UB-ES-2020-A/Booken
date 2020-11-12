@@ -2,6 +2,9 @@ from data import books
 from db import db, create_app
 from models.author import AuthorModel
 from models.book import BookModel
+from models.accounts import AccountModel
+from models.review import ReviewModel
+from models.address import AddressModel
 
 
 app = create_app()
@@ -16,12 +19,12 @@ db.session.commit()
 
 bookss, authorss = 0, 0
 for i in books:
-    book = db.session.query(BookModel).filter_by(name=i[1]).first()
+    book = BookModel.query.filter_by(name=i[1]).first()
     if book:
         break;
     authors = []
     for j in i[2]:
-        a = AuthorModel(j[0], j[1], j[2], j[3], j[4])
+        a = AuthorModel(j[0], j[1], j[2], j[3])
         authors.append(a)
         db.session.add(a)
         authorss += 1
