@@ -176,7 +176,7 @@ export default {
               toastr.success('', '¡Hola otra vez!',
                   {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             }
-            bus.emit('has-logged-in', {logged: this.logged, token: String(this.token), type: this.type, id: this.id})
+            bus.emit('has-logged-in', {'logged': this.logged, 'token': String(this.token.toString()), 'type': this.type, 'id': this.id})
             this.$router.push({path: '/'})
           })
           .catch((error) => {

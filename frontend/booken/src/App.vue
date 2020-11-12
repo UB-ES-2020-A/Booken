@@ -366,12 +366,12 @@ export default {
     ShowBooks
   },
   created() {
-    bus.on('has-logged-in', asd => {
-      this.loggedIn = Boolean(asd.logged)
-      this.tokenIn = String(asd.token)
-      this.typeIn = asd.type
-      console.log(asd.id)
-      this.idIn = parseInt(asd.id)
+    bus.on('has-logged-in', (logged, token, type, id) => {
+      this.loggedIn = Boolean(logged)
+      this.tokenIn = String(token)
+      this.typeIn = type
+      console.log(token)
+      this.idIn = parseInt(id)
     })
     bus.on('added-to-cart', (book) => {
       this.checkAddToCart(book)
