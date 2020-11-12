@@ -444,6 +444,7 @@
 // eslint-disable-next-line no-unused-vars
 import {bus} from '../main.js'
 // eslint-disable-next-line no-unused-vars
+let api = 'https://booken-dev.herokuapp.com/'
 import axios from 'axios'
 
 export default {
@@ -452,351 +453,7 @@ export default {
     return {
       editProfile: false,
       editPass: false,
-      orders: [
-        {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ],
-          "card": {}
-        },
-        {
-          "id": 2,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 2,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        },
-        {
-          "id": 3,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 1,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        },
-        {
-          "id": 4,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 1,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        },
-        {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 3,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        },
-        {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }, {
-          "id": 1,
-          "date": "25/11/2019",
-          "total": 36.99,
-          "shipping": 5,
-          "taxes": 7.76,
-          "state": 0,
-          "adress": "Calle Sants 235, 4º A",
-          "articles": [
-            {
-              "id": 0,
-              "price": 36.99,
-            }
-          ]
-        }
-      ],
+      orders: [],
       sOrders: [],
       viewOrders: [],
       numberOfOrders: 0,
@@ -845,11 +502,23 @@ export default {
     }
   },
   created() {
+    this.getOrders()
     this.splitOrders()
     this.getAddresses()
     this.getCards()
   },
   methods: {
+    getOrders(){
+      var path = api + 'orders'
+
+      axios.get(path)
+          .then((res) => {
+            this.orders = res.data.authors
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    },
     getCards() {
       this.cardNumber = this.cards.length
     },
