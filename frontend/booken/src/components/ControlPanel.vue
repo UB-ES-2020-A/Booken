@@ -6,8 +6,8 @@
 
 </style>
 <template>
-  <div class="front-container">
-    <div style="max-width: 1400px">
+  <div class="container front-container">
+    <div style="max-width: 1400px; ">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
             integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -17,29 +17,29 @@
         <div class="card-header">
           <h3>Panel de control</h3>
         </div>
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <li class="nav-item active" role="presentation">
+        <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
+          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
             <a class="nav-link active" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab"
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-directions-tab" data-toggle="pill" href="#pills-directions" role="tab"
                aria-controls="pills-directions" aria-selected="false">Direcciones</a>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-economy-tab" data-toggle="pill" href="#pills-economy" role="tab"
                aria-controls="pills-economy" aria-selected="false">Rendimiento</a>
           </li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
+        <div class="tab-content mt-3" id="pills-tabContent">
           <!-- ORDERS: view order history -->
           <div class="tab-pane fade show active" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
             <div class="container-fluid">
@@ -184,9 +184,9 @@
                   <h5>Tus direcciones</h5>
                 </div>
               </div>
-              <div class="row row-cols-1 row-cols-sm-6">
-                <div class="col mb-4" style="margin-right: 1.5rem" v-for="item in this.addresses" :key="item.id">
-                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: left">
+              <div class="row">
+                <div class="col-12 col-lg-4 mb-4 myAddressCard" v-for="item in this.addresses" :key="item.id">
+                  <div class="card" style="text-align: left">
                     <div class="card-header">
                       {{ item.add_name }}
                     </div>
@@ -205,12 +205,67 @@
                     </div>
                   </div>
                 </div>
-                <div class="col mb-4" style="margin-right: 1.5rem" v-if="addressNumber < 4">
-                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: center">
+                <div class="col-12 col-lg-4 mb-4 myAddressCard" v-if="addressNumber < 4">
+                  <div class="card h-100" style="text-align: center">
                     <button style="color: #3b494d; height: 100%" type="submit"
-                            data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"
-                                                                               style="font-size: 6em; top: 50%"></i>
+                            data-toggle="modal" data-target="#modalAddress" data-whatever="@getbootstrap">
+                      <i class="fas fa-plus" style="font-size: 6em; top: 50%"></i>
                     </button>
+
+                    <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
+                         aria-labelledby="modalAddressLabel"
+                         aria-hidden="true">
+                      <div class="modal-dialog" role="document"
+                           style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modalAddressLabel">Añadir dirección</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form>
+                              <div class="form-group" style="text-align: left">
+                                <label for="addressUser" class="col-form-label">Nombre</label>
+                                <input type="text" class="form-control" id="addressUser"
+                                       v-model="newAddressUser">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="addressRoad" class="col-form-label">Dirección</label>
+                                <input type="text" class="form-control" id="addressRoad"
+                                       v-model="newAddressRoad">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="addressCode" class="col-form-label">Código postal</label>
+                                <input type="text" class="form-control" id="addressCode"
+                                       v-model="newAddressCode">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="addressProvince" class="col-form-label">Provincia</label>
+                                <input type="text" class="form-control" id="addressProvince"
+                                       v-model="newAddressProvince">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="addressPhone" class="col-form-label">Telefono</label>
+                                <input type="text" class="form-control" id="addressPhone"
+                                       v-model="newAddressPhone">
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                              Cancelar
+                            </button>
+                            <button type="button" class="btn" style="background: #2bc4ed; color: white"
+                                    data-dismiss="modal">
+                              Enviar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                 </div>
@@ -225,18 +280,20 @@
                   <h5>Tus tarjetas</h5>
                 </div>
               </div>
-              <div class="row row-cols-1 row-cols-sm-6">
-                <div class="col mb-4" style="margin-right: 1.5rem" v-for="item in this.cards" :key="item.id">
-                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: left">
+              <div class="row">
+                <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-for="item in this.cards" :key="item.id">
+                  <div class="card" style=" text-align: left">
+                    <div class="card-header">
+                      <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
+                                                                  style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'VISA'"><i class="fab fa-cc-visa"
+                                                            style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'DISCOVER'"><i class="fab fa-cc-discover"
+                                                                style="font-size: 1.8em"></i></span><br>
+                    </div>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
-                        <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
-                                                                    style="font-size: 1.8em"></i></span>
-                        <span v-if="item.vendor == 'VISA'"><i class="fab fa-cc-visa"
-                                                              style="font-size: 1.8em"></i></span>
-                        <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
-                        <span v-if="item.vendor == 'DISCOVER'"><i class="fab fa-cc-discover"
-                                                                  style="font-size: 1.8em"></i></span><br>
                         <b>Titular:</b> {{ item.holder }}<br>
                         <b>Termina en:</b> {{ item.end_number }}<br>
                         <b>Caduca:</b> {{ item.expires }}
@@ -247,12 +304,54 @@
                     </div>
                   </div>
                 </div>
-                <div class="col mb-4" style="margin-right: 1.5rem" v-if="cardNumber < 3">
-                  <div class="card h-100" style="width: 15.5rem; max-width: 16rem; text-align: center !important">
-                    <button style="color: #3b494d; height: 100%" type="submit"
-                            data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"
-                                                                               style="font-size: 6em; top: 50%"></i>
+                <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-if="cardNumber < 3">
+                  <div class="card h-100">
+                    <button style="color: #3b494d; height: 100%" type="submit" data-toggle="modal" data-target="#modalPayment" data-whatever="@getbootstrap">
+                      <i class="fas fa-plus" style="font-size: 6em; top: 50%"></i>
                     </button>
+                    <div class="modal fade" id="modalPayment" tabindex="-1" role="dialog"
+                         aria-labelledby="modalAddressLabel"
+                         aria-hidden="true">
+                      <div class="modal-dialog" role="document"
+                           style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modalPaymentLabel">Añadir tarjeta</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form>
+                              <div class="form-group" style="text-align: left">
+                                <label for="paymentTitular" class="col-form-label">Nombre de titular</label>
+                                <input type="text" class="form-control" id="paymentTitular"
+                                       v-model="newPaymentTitular">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="paymentNumber" class="col-form-label">Número de tarjeta</label>
+                                <input type="text" class="form-control" id="paymentNumber"
+                                       v-model="newPaymentNumber">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="paymentEndDate" class="col-form-label">Fecha de vencimiento</label>
+                                <input type="text" class="form-control" id="paymentEndDate"
+                                       v-model="newPaymentEndDate" placeholder="00/00">
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                              Cancelar
+                            </button>
+                            <button type="button" class="btn" style="background: #2bc4ed; color: white"
+                                    data-dismiss="modal">
+                              Enviar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -438,6 +537,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -508,7 +608,7 @@ export default {
     this.getCards()
   },
   methods: {
-    getOrders(){
+    getOrders() {
       var path = api + 'orders'
 
       axios.get(path)
@@ -565,9 +665,39 @@ export default {
 
 <style scoped>
 .front-container {
-  width: 75%;
+  width: 100%;
   margin: auto;
   margin-top: 2em;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
+  min-height: 60vw;
+}
+
+@media (min-width: 0px) {
+  .myPillItems {
+    width: 100%
+  }
+
+  .myAddressCard {
+    min-height: 220px;
+  }
+
+  .myPaymentCard {
+    min-height: 200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .myPillItems {
+    width: 20%
+  }
+
+  .myAddressCard {
+    height: auto;
+  }
+
+
+  .myPaymentCard {
+    height: auto;
+  }
 }
 </style>
