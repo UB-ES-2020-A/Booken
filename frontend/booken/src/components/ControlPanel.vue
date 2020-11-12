@@ -188,7 +188,7 @@
                 <div class="col-12 col-lg-4 mb-4 myAddressCard" v-for="item in this.addresses" :key="item.id">
                   <div class="card" style="text-align: left">
                     <div class="card-header">
-                      {{ item.add_name }}
+                      {{ item.label_name }}
                     </div>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
@@ -580,32 +580,7 @@ export default {
           "holder": "Borat Led"
         }
       ],
-      addresses: [
-        {
-          "id": 0,
-          "add_name": "casa",
-          "name": "Pepito",
-          "surnames": "Asd",
-          "street": "Calle Sants",
-          "number": 32,
-          "cp": "08014",
-          "city": "Barcelona",
-          "province": "Barcelona",
-          "telf": "645214587"
-        },
-        {
-          "id": 0,
-          "add_name": "casa",
-          "name": "Pepito",
-          "surnames": "Asd",
-          "street": "Calle Sants",
-          "number": 32,
-          "cp": "08014",
-          "city": "Barcelona",
-          "province": "Barcelona",
-          "telf": "645214587"
-        }
-      ]
+      addresses: []
     }
   },
   created() {
@@ -632,6 +607,17 @@ export default {
       this.cardNumber = this.cards.length
     },
     getAddresses() {
+      var path = api + 'account/' + this.id + '/addresses/'
+
+      axios.get(path)
+          .then((res) => {
+            this.addresses = res.data.accounts_addresses
+          })
+          .catch((error) => {
+            this.toPrint(error)
+            toastr.error('', 'No se ha podido recuperar las direcciones.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
       this.addressNumber = this.addresses.length
     },
     changeViewingOrders(index) {
