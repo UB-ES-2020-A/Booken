@@ -52,7 +52,7 @@
                        placeholder="Precio (sin el €)"></p></h1>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="type == 2 && !edit" @click="editInfo"><i class="fas fa-edit"
-                                                                 style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                                                                     style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="edit"><i class="fas fa-save" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
@@ -217,7 +217,7 @@
             </div>
             <div class="col" style="text-align: right">
               <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
-                      data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" v-if="loggedIn">
+                      data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap" v-if="logged">
                 <i class="fa fa-pencil" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Escribir reseña</a>
               </button>
@@ -335,7 +335,7 @@
           </div>
           <div class="row" v-if="reviews.length == 0">
             <div class="col-12" style="text-align: center;">
-              <img src="https://i.ibb.co/kDmqZRz/asd.png" >
+              <img src="https://i.ibb.co/kDmqZRz/asd.png">
             </div>
           </div>
         </div>
@@ -436,7 +436,8 @@ export default {
       }
     } else {
       this.initBookInfo()
-      this.getBooksFromDB()
+      //this.getBooksFromDB()
+      this.getReviewsFromDB()
       this.splitReviews()
     }
   },
@@ -496,8 +497,15 @@ export default {
     }
   },
   methods: {
-    getOrdersFromDB() {
-
+    getReviewsFromDB() {
+      var path = api + 'reviewsBook/' + this.bookInfo.id
+      axios.get(path)
+          .then((res) => {
+            this.reviews = res.data.reviews
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
     },
     changeViewingReviews() {
       if (this.showing == (this.nPages - 1)) {
@@ -526,19 +534,30 @@ export default {
         this.viewingReviews = this.sReviews[0].slice()
       }
     },
+    getTodayDate() {
+      var today = new Date()
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      today = dd + '/' + mm + '/' + yyyy
+      return today
+    },
     postReview() {
 
-      /*var path = api + 'book/' + this.$route.params.id
+      var path = api + 'review'
 
-      axios.post(path, {})
+      axios.post(path, {
+        "user_id": this.id, "book_id": this.bookInfo.id, "title": this.ratingTitle, "valuation": this.addRatingNumber,
+        "comment": this.ratingText, "date": this.getTodayDate()})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-          toastr.success('', '¡Reseña añadida!',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            toastr.success('', '¡Reseña añadida!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             this.toPrint(error)
-          })*/
+          })
     },
     getAuthorId(name) {
       let item
