@@ -110,7 +110,7 @@
                 </button>
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
                         style="background-color: #3b494d;" type="submit"
-                        v-if="loggedIn">
+                        v-if="loggedIn" @click="goToCP">
                   <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/>
                   <a class="navbartextbt">Tu cuenta</a>
                 </button>
@@ -185,7 +185,7 @@
         </div>
       </nav>
     </div>
-    <router-view :key="$route.fullPath" v-if="!viewCart"/>
+    <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn" :id="this.idIn"/>
     <div id="shopping_cart" v-if="viewCart">
       <h1 style="margin-top: 1em">Tu cesta</h1>
       <div class="container mb-4" v-if="this.cart.length >= 1">
@@ -344,6 +344,10 @@ import Front from './components/Front.vue'
 import Access from "@/components/Access"
 import {bus} from './main.js'
 import axios from 'axios'
+import BookInfo from "@/components/BookInfo";
+import Contact from "@/components/Contact";
+import ControlPanel from "@/components/ControlPanel";
+import ShowBooks from "@/components/ShowBooks";
 
 export default {
   name: 'App',
@@ -351,15 +355,23 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     Front,
     // eslint-disable-next-line no-undef,vue/no-unused-components
-    Access
-  },
-  props: {
-    msg: String
+    Access,
+    // eslint-disable-next-line vue/no-unused-components
+    BookInfo,
+    // eslint-disable-next-line vue/no-unused-components
+    Contact,
+    // eslint-disable-next-line vue/no-unused-components
+    ControlPanel,
+    // eslint-disable-next-line vue/no-unused-components
+    ShowBooks
   },
   created() {
-    bus.on('has-logged-in', (logged, token) => {
-      this.loggedIn = logged
-      this.token = token
+    bus.on('has-logged-in', asd => {
+      this.loggedIn = Boolean(asd.logged)
+      this.tokenIn = String(asd.token)
+      this.typeIn = asd.type
+      console.log(asd.id)
+      this.idIn = parseInt(asd.id)
     })
     bus.on('added-to-cart', (book) => {
       this.checkAddToCart(book)
@@ -372,22 +384,19 @@ export default {
   data() {
     return {
       loggedIn: false,
-      token: '',
+      tokenIn: '',
       taxes: 0,
       subtotal: 0,
       shipping: 7.00,
       total: 5.00,
+      idIn: -1,
       cart: [],
+      typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false
       //toggledNav: false
     }
-  },/*
-  watch: {
-    '$route'() {
-      this.toggledNav = false
-    }
-  },*/
+  },
   methods: {
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
@@ -507,8 +516,12 @@ export default {
     goToAccess() {
       if(this.viewCart)
         this.viewCart = false
+      this.$router.push({path: '/access'})
+    },
+    goToCP() {
+      if(this.viewCart)
+        this.viewCart = false
       this.$router.push({path: '/cp'})
-      //this.$router.push({path: '/access'})
     }
   }
 

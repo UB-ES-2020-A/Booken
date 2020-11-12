@@ -87,6 +87,8 @@ let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
+        console.log(this.id)
+
     this.getBooksFromDB(this.$route.params.category)
   },
   data() {
@@ -95,6 +97,12 @@ export default {
       admin: 1,
       nbooks: 0
     }
+  },
+  props: {
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
   },
   methods: {
     deleteBook(id) {

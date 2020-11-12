@@ -117,21 +117,26 @@
 <script>
 import * as toastr from '../assets/toastr.js'
 import axios from 'axios'
-let api = 'https://booken-dev.herokuapp.com/'
+
+//let api = 'https://booken-dev.herokuapp.com/'
+let api = 'http://127.0.0.1:5000/'
 import {bus} from '../main.js'
 
 export default {
   name: 'Access',
   props: {
-
   },
   data() {
     return {
+      // eslint-disable-next-line vue/no-dupe-keys
       email: '',
       password: '',
       name: '',
       lastname: '',
-      logged: false
+      logged: false,
+      type: -1,
+      token: '',
+      id: -1
     }
   }, methods: {
     getYear() {
@@ -162,6 +167,8 @@ export default {
           .then((res) => {
             this.logged = true
             this.token = res.data.token
+            this.type = res.data.type
+            this.id = res.data.id
             if (register) {
               toastr.success('', '¡Bienvenido a booken!',
                   {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
@@ -169,7 +176,7 @@ export default {
               toastr.success('', '¡Hola otra vez!',
                   {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             }
-            bus.emit('has-logged-in', {logged: this.logged, token: this.token})
+            bus.emit('has-logged-in', {logged: this.logged, token: String(this.token), type: this.type, id: this.id})
             this.$router.push({path: '/'})
           })
           .catch((error) => {
