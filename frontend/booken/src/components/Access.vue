@@ -118,8 +118,7 @@
 import * as toastr from '../assets/toastr.js'
 import axios from 'axios'
 
-//let api = 'https://booken-dev.herokuapp.com/'
-let api = 'http://127.0.0.1:5000/'
+let api = 'https://booken-dev.herokuapp.com/'
 import {bus} from '../main.js'
 
 export default {
