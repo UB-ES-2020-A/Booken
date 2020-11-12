@@ -615,11 +615,11 @@ export default {
   },
   methods: {
     getOrders() {
-      var path = api + 'orders'
+      var path = api + 'order/' + this.id
 
       axios.get(path)
           .then((res) => {
-            this.orders = res.data.authors
+            this.orders = res.data.orders
           })
           .catch((error) => {
             this.toPrint(error)
