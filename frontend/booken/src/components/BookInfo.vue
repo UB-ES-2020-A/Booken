@@ -675,6 +675,7 @@ export default {
                     {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
               .catch((error) => {
+                console.log(error)
                 toastr.error('', 'No se ha podido añadir el libro.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
