@@ -51,7 +51,7 @@
                        style="font-size: 28px; max-width: 140px; text-align: right !important"
                        placeholder="Precio (sin el €)"></p></h1>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
-                      v-if="admin && !edit" @click="editInfo"><i class="fas fa-edit"
+                      v-if="type == 2 && !edit" @click="editInfo"><i class="fas fa-edit"
                                                                  style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
@@ -419,13 +419,14 @@ export default {
   name: 'BookInfo',
 
   props: {
-    msg: String
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
   },
 
   created() {
-    this.logged = this.$route.query.logged
     this.is_edit = this.$route.query.is_edit
-    this.token = this.$route.query.token
     this.book_id = this.$route.params.id
     this.initAuthors()
     if (this.book_id == 0) {

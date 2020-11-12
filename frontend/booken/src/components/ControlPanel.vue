@@ -34,7 +34,7 @@
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type == 2">
             <a class="nav-link" id="pills-economy-tab" data-toggle="pill" href="#pills-economy" role="tab"
                aria-controls="pills-economy" aria-selected="false">Rendimiento</a>
           </li>
@@ -549,6 +549,12 @@ import axios from 'axios'
 
 export default {
   name: "ControlPanel",
+  props: {
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
+  },
   data() {
     return {
       editProfile: false,

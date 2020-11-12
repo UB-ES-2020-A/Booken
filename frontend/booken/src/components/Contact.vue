@@ -55,7 +55,10 @@ let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: 'Location',
   props: {
-    msg: String
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
   },
 
   data() {
