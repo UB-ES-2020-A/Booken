@@ -51,7 +51,6 @@ class Review(Resource):
         new_review = ReviewModel(data.get('title'), data.get('user_id'), data.get('book_id'), data.get('date'),
                                  data.get('valuation'), data.get('comment'))
         new_review.save_to_db()
-        print(user.reviews)
         user.reviews.append(new_review)
         book.reviews.append(new_review)
         return new_review.json(), 200
