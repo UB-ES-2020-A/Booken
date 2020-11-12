@@ -546,6 +546,7 @@ import {bus} from '../main.js'
 // eslint-disable-next-line no-unused-vars
 let api = 'https://booken-dev.herokuapp.com/'
 import axios from 'axios'
+import * as toastr from "@/assets/toastr";
 
 export default {
   name: "ControlPanel",
@@ -623,6 +624,8 @@ export default {
           })
           .catch((error) => {
             this.toPrint(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
     },
     getCards() {
@@ -648,7 +651,19 @@ export default {
       this.viewOrders = this.sOrders[0]
     },
     cancelOrder(id) {
-      console.log(id)
+      var path = api + 'order/' + id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            this.getBooksFromDB(this.$route.params.category)
+            toastr.success('', '¡Pedido cancelado!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+          .catch((error) => {
+            toastr.error('', 'No se ha podido cancelar el pedido.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.toPrint(error)
+          })
     },
     viewOrder(id) {
       console.log(id)

@@ -557,6 +557,8 @@ export default {
           })
           .catch((error) => {
             this.toPrint(error)
+            toastr.error('', 'No se ha guardar la reseña.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
     },
     getAuthorId(name) {
@@ -640,6 +642,8 @@ export default {
               })
               .catch((error) => {
                 this.toPrint(error)
+                toastr.error('', 'No se ha podido guardar los cambios en el libro.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
         } else {
           path = api + 'book'
@@ -671,7 +675,8 @@ export default {
                     {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
               .catch((error) => {
-                this.toPrint(error)
+                toastr.error('', 'No se ha podido añadir el libro.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
         }
       }
