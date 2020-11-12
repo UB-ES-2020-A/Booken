@@ -28,7 +28,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book?isbn=12345&name=Book test&author_id=100&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=10&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test.com&back_cover_image_url=www.url_test.com",
+					"raw": "{{base_url}}/book?isbn=12345&name=Book test&author_name=Author name test&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test&language=spanish&price=10&synopsis=Book synopsis test&description=Book description test&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test.com&back_cover_image_url=www.url_test.com",
 					"host": [
 						"{{base_url}}"
 					],
@@ -45,8 +45,9 @@
 							"value": "Book test"
 						},
 						{
-							"key": "author_id",
-							"value": "100"
+							"key": "",
+							"value": "",
+							"disabled": true
 						},
 						{
 							"key": "author_name",
@@ -146,7 +147,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/5?isbn=12345&name=Book test (PUT)&author_id=100&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test_put.com&back_cover_image_url=www.url_test_put.com",
+					"raw": "{{base_url}}/book/5?isbn=12345&name=Book test (PUT)&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test_put.com&back_cover_image_url=www.url_test_put.com",
 					"host": [
 						"{{base_url}}"
 					],
@@ -164,8 +165,9 @@
 							"value": "Book test (PUT)"
 						},
 						{
-							"key": "author_id",
-							"value": "100"
+							"key": "",
+							"value": "",
+							"disabled": true
 						},
 						{
 							"key": "author_name",
@@ -283,9 +285,9 @@
 	],
 	"variable": [
 		{
-			"id": "6cee4fb8-a923-4178-8846-3cc430b0e2ca",
+			"id": "0bf29d38-27fd-4b1f-9314-b2d2cd164fd7",
 			"key": "base_url",
-			"value": "http://booken-app.herokuapp.com"
+			"value": "http://booken-dev.herokuapp.com"
 		}
 	],
 	"protocolProfileBehavior": {}
