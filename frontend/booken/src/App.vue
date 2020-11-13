@@ -266,7 +266,7 @@
               <div class="col-sm-12 col-md-6 text-right">
                 <button class="btn btn-lg btn-block"
                         style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
-                        @click="finalizePurchase">
+                        @click="checkout">
                   Pagar
                 </button>
               </div>
@@ -461,26 +461,43 @@ export default {
     toggleCart() {
       this.viewCart = !this.viewCart
     },
-    finalizePurchase() {
+    finalizePurchase(order_id) {
       for (let i = 0; i < this.cart.length; i += 1) {
         var item = this.cart[i]
         console.log(item)
-        var quant = item.quant
+        var price = item.price * item.quant
         var id = item.id
+        const path = `https://booken-dev.herokuapp.com/article-order/${order_id}/${id}`
         const parameters = {
-          id_book: id,
-          num_books: quant,
-          state: "In Progress"
+          price: price
         }
-        this.checkout(parameters)
+        axios.post(path, parameters)
+          .then(() => {
+            console.log('Article added')
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+          })
+
       }
     },
-    checkout(parameters) {
-      const path = `https://booken-dev.herokuapp.com/order/${this.email}`
+    checkout() {
+      const path = `https://booken-dev.herokuapp.com/order/1`
+      const parameters = {
+          date: this.date,
+          total: this.total,
+          shipping: this.shipping,
+          taxes: this.taxes,
+          state: 0
+        }
       console.log(path)
       console.log(parameters)
       axios.post(path, parameters)
-          .then(() => {
+          .then((res) => {
+            console.log(res)
+            var order_id = res
+            this.finalizePurchase(order_id)
             console.log('Order done')
           })
           .catch((error) => {

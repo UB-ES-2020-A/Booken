@@ -67,6 +67,10 @@ api.add_resource(OrderAddressList, '/addresses-order/<int:id>')
 api.add_resource(OrderAddress, '/address-order/<int:id>/<int:id_sub>',
                  '/address-order/<int:id>/<int:id_sub>/<int:address_id>')
 
+api.add_resource(InProgressOrders, '/orders-state-0')
+api.add_resource(SendOrders, '/orders-state-1')
+api.add_resource(ReceivedOrders, '/orders-state-2')
+
 api.add_resource(Review, '/review/<int:id>', '/review')
 api.add_resource(ReviewList, '/reviews')
 api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
