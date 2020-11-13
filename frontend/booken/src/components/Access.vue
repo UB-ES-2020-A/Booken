@@ -4,110 +4,113 @@
 @import url("../assets/toastr.css");
 </style>
 <template>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
   <div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
-
-    <div class="logincontainer" id="loginform">
-      <div class="loginform">
-        <div class="card animate__animated animate__slideInRight" style="background-color: #3b494d">
-          <h2 style="margin-top: 2rem; color: white">Iniciar sesión</h2>
-          <form>
-            <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+    <div class="container" style="max-width: 1400px">
+      <div class="logincontainer" id="loginform">
+        <div class="loginform">
+          <div class="card animate__animated animate__slideInRight" style="background-color: #3b494d">
+            <h2 style="margin-top: 2rem; color: white">Iniciar sesión</h2>
+            <form>
+              <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed; "><i
                     class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
-                <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailL"
-                       v-model="email">
+                  <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailL"
+                         v-model="email">
+                </div>
               </div>
-            </div>
-            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
-                <input class="form-control" placeholder="Contraseña" type="password" id="passwordL" v-model="password">
+                  <input class="form-control" placeholder="Contraseña" type="password" id="passwordL"
+                         v-model="password">
+                </div>
               </div>
-            </div>
-          </form>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #2bc4ed; color: white; border-radius: 0 !important; margin: 0 !important;margin-top: 2rem !important"
-                  type="submit" @click="doLogin" id="btLogin"
-          ><b>Acceder</b>
-          </button>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #328399; color: white; border-radius: 0 !important; margin: 0 !important"
-                  type="submit" @click="back2Main" id="btBackL"
-          ><b>Volver a página principal</b>
-          </button>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #7caca4; color: white; border-radius: 0 !important; margin: 0 !important"
-                  type="submit" @click="toggleRegister" id="bt2Reg"
-          ><b>¿No tienes cuenta? ¡Créate una!</b>
-          </button>
+            </form>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #2bc4ed; color: white; border-radius: 0 !important; margin: 0 !important;margin-top: 2rem !important"
+                    type="submit" @click="doLogin" id="btLogin"
+            ><b>Acceder</b>
+            </button>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #328399; color: white; border-radius: 0 !important; margin: 0 !important"
+                    type="submit" @click="back2Main" id="btBackL"
+            ><b>Volver a página principal</b>
+            </button>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #7caca4; color: white; border-radius: 0 !important; margin: 0 !important"
+                    type="submit" @click="toggleRegister" id="bt2Reg"
+            ><b>¿No tienes cuenta? ¡Créate una!</b>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="logincontainer" id="registerform" style="display: none">
-      <div class="loginform">
-        <div class="card  animate__animated animate__slideInRight" style="background-color: #3b494d">
-          <h2 style="margin-top: 2rem; color: white">Registro</h2>
-          <form>
-            <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+      <div class="logincontainer" id="registerform" style="display: none">
+        <div class="loginform">
+          <div class="card  animate__animated animate__slideInRight" style="background-color: #3b494d">
+            <h2 style="margin-top: 2rem; color: white">Registro</h2>
+            <form>
+              <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
-                ><i class="fas fa-user" style="color: white"></i> </span>
-                <input name="" class="form-control" placeholder="Nombre" type="text" id="nameR"
-                       v-model="name">
+                ><i class="fas fa-user" style="color: white; width: 20px"></i> </span>
+                  <input name="" class="form-control" placeholder="Nombre" type="text" id="nameR"
+                         v-model="name">
+                </div>
               </div>
-            </div>
-            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
-                ><i class="fas fa-signature" style="color: white"></i> </span>
-                <input name="" class="form-control" placeholder="Apellidos" type="text" id="lastnameR"
-                       v-model="lastname">
+                ><i class="fas fa-signature" style="color: white; width: 20px"></i> </span>
+                  <input name="" class="form-control" placeholder="Apellidos" type="text" id="lastnameR"
+                         v-model="lastname">
+                </div>
               </div>
-            </div>
-            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
-                ><i class="fas fa-envelope" style="color: white"></i> </span>
-                <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailR"
-                       v-model="email">
+                ><i class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
+                  <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailR"
+                         v-model="email">
+                </div>
               </div>
-            </div>
-            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
-                  <i class="fa fa-lock" style="color: white"></i> </span>
-                <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1" v-model="password">
+                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
+                  <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
+                         v-model="password">
+                </div>
               </div>
-            </div>
-            <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-              <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
+                <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
-                  <i class="fa fa-lock" style="color: white"></i> </span>
-                <input class="form-control" placeholder="Repite tu contraseña" type="password" id="passwordR2">
+                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
+                  <input class="form-control" placeholder="Repite tu contraseña" type="password" id="passwordR2">
+                </div>
               </div>
-            </div>
-          </form>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #2bc4ed; color: white; border-radius: 0 !important; margin: 0 !important;margin-top: 2rem !important"
-                  type="submit" @click="doRegister" id="btReg"
-          ><b>Crear cuenta</b>
-          </button>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #328399; color: white; border-radius: 0 !important; margin: 0 !important"
-                  type="submit" @click="back2Main" id="btBack"
-          ><b>Volver a página principal</b>
-          </button>
-          <button class="btn my-2 my-sm-0"
-                  style="background-color: #7caca4; color: white; border-radius: 0 !important; margin: 0 !important"
-                  type="submit" @click="toggleRegister" id="btBack2L"
-          ><b>Volver a login</b>
-          </button>
+            </form>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #2bc4ed; color: white; border-radius: 0 !important; margin: 0 !important;margin-top: 2rem !important"
+                    type="submit" @click="doRegister" id="btReg"
+            ><b>Crear cuenta</b>
+            </button>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #328399; color: white; border-radius: 0 !important; margin: 0 !important"
+                    type="submit" @click="back2Main" id="btBack"
+            ><b>Volver a página principal</b>
+            </button>
+            <button class="btn my-2 my-sm-0"
+                    style="background-color: #7caca4; color: white; border-radius: 0 !important; margin: 0 !important"
+                    type="submit" @click="toggleRegister" id="btBack2L"
+            ><b>Volver a login</b>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -123,8 +126,7 @@ import {bus} from '../main.js'
 
 export default {
   name: 'Access',
-  props: {
-  },
+  props: {},
   data() {
     return {
       // eslint-disable-next-line vue/no-dupe-keys
@@ -175,7 +177,12 @@ export default {
               toastr.success('', '¡Hola otra vez!',
                   {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             }
-            bus.emit('has-logged-in', {'logged': this.logged, 'token': String(this.token.toString()), 'type': this.type, 'id': this.id})
+            bus.emit('has-logged-in', {
+              'logged': this.logged,
+              'token': String(this.token.toString()),
+              'type': this.type,
+              'id': this.id
+            })
             this.$router.push({path: '/'})
           })
           .catch((error) => {
