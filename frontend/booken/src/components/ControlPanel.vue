@@ -49,7 +49,7 @@
                      aria-controls="pills-all" aria-selected="false">Todas</a>
                 </li>
                 <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
+                  <a class="nav-link" data-toggle="pill" href="#pills-0" role="tab"
                      aria-controls="pills-0" aria-selected="false">En progreso</a>
                 </li>
                 <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
@@ -551,7 +551,7 @@
               </div>
             </div>
           </div>-->
-             <!-- ORDERS : view order history -->
+          <!-- ORDERS : view order history -->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-orders-tab">
             <div class="container-fluid">
               <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
@@ -752,7 +752,7 @@
               <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
                 <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
                   <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-0" aria-selected="false">Todas</a>
+                     aria-controls="pills-all" aria-selected="false">Todas</a>
                 </li>
                 <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
                   <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
