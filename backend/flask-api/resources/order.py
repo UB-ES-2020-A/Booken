@@ -15,7 +15,7 @@ class Orders(Resource):
         if order:
             return {"orders": order.json()}, 200
         else:
-            return {'message': "The user with id [{}] hasn't got any order".format(id)}, 409
+            return {'message': "Order with id [{}] doesn't exist".format(id)}, 409
 
    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
     def post(self, id):
@@ -34,12 +34,12 @@ class Orders(Resource):
         #if (acc == None):
          #   return {'message': "There isn't a user with this id"}, 409
 
-        new_id = OrdersModel.num_orders()
-        new_order = OrdersModel(new_id,id, data.date, data.total,data.shipping,data.taxes,data.state)
+        #new_id = OrdersModel.num_orders()
+        new_order = OrdersModel(id, data.date, data.total,data.shipping,data.taxes,data.state)
         #acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
-        return new_id, 200
+        return new_order.id, 200
 
 
     # @auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
@@ -69,7 +69,7 @@ class Orders(Resource):
         if ( order ) :
             id_user = order.id_user
             order.delete_from_db()
-            new_order = OrdersModel(id,id_user,data.date, data.total, data.shipping, data.taxes, data.state)
+            new_order = OrdersModel(id_user,data.date, data.total, data.shipping, data.taxes, data.state)
             db.session.add(new_order)
             db.session.commit()
             return new_order.json(), 200
@@ -109,7 +109,7 @@ class OrderArticles(Resource):
             return {"message": "Article with id [{}] Not found in Order with id [{}]".format(id_article, id)}, 404
 
     #@auth.login_required(role='admin')
-    def post(self, id,id_article):
+    def post(self, id):
         order = OrdersModel.find_by_id(id)
         if order is None:
             return {"message": "Order with id [{}] not found ".format(id)}, 404
@@ -118,10 +118,10 @@ class OrderArticles(Resource):
         # define all input parameters need and its type
         parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        article = ArticlesModel(id_article,data.price)
+        article = ArticlesModel(data.price)
         order.add_article(article)
         article.save_to_db()
-        return id_article, 200
+        return article.id, 200
 
 
    # @auth.login_required(role='admin')
@@ -227,9 +227,9 @@ class InProgressOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
     def get(self):
-        order = OrdersModel.find_by_state(0)
-        if order:
-            return {"orders": order.json()}, 200
+        orders = [order.json() for order in OrdersModel.find_by_state(0)]
+        if orders:
+            return {"orders": orders}, 200
         else:
             return {'message': "No orders in progress".format(id)}, 409
 
@@ -237,18 +237,19 @@ class SendOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
     def get(self):
-        order = OrdersModel.find_by_state(1)
-        if order:
-            return {"orders": order.json()}, 200
+        orders = [order.json() for order in OrdersModel.find_by_state(1)]
+        if orders:
+            return {"orders": orders}, 200
         else:
             return {'message': "No orders send".format(id)}, 409
+
 
 class ReceivedOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
     def get(self):
-        order = OrdersModel.find_by_state(2)
-        if order:
-            return {"orders": order.json()}, 200
+        orders = [order.json() for order in OrdersModel.find_by_state(2)]
+        if orders:
+            return {"orders": orders}, 200
         else:
             return {'message': "No orders received".format(id)}, 409

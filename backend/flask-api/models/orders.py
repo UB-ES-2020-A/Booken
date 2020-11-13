@@ -14,7 +14,7 @@ class OrdersModel(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
-    date = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
+    date = db.Column(db.String(30), primary_key=False, unique=False, nullable=False)
     total = db.Column(db.Float, nullable=False)
     shipping = db.Column(db.Float, nullable=False)
     taxes = db.Column(db.Float, nullable=False)
@@ -27,8 +27,7 @@ class OrdersModel(db.Model):
     #Card de pagament
     #card = db.relationship('CardModel', secondary="card", backref='orders', lazy=True)
 
-    def __init__(self, id, id_user ,date, total,shipping, taxes, state):
-        self.id = id
+    def __init__(self, id_user ,date, total,shipping, taxes, state):
         self.id_user = id_user
         self.date = date
         self.total = total
