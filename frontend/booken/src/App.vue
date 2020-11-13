@@ -483,7 +483,7 @@ export default {
       }
     },
     checkout() {
-      const path = `https://booken-dev.herokuapp.com/order/1`
+      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
       const parameters = {
           date: this.date,
           total: this.total,
@@ -492,7 +492,7 @@ export default {
           state: 0
         }
       console.log(path)
-      console.log(parameters)
+      console.log(this.idIn)
       axios.post(path, parameters)
           .then((res) => {
             console.log(res)
