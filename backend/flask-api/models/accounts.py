@@ -25,6 +25,7 @@ class AccountModel(db.Model):
 
 
     addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
+    cards = db.relationship('CardModel', backref='payment_card', cascade="all, delete-orphan", lazy=True)
 
     def __init__(self, email, name, lastname, password):
         self.email = email
