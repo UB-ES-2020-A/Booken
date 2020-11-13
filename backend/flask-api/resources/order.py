@@ -60,12 +60,9 @@ class Orders(Resource):
         parser.add_argument('total', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('state', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-
-        if data.state not in states:
-            return {'message': "Order with state [{}] not supported".format(data.state)}, 400
 
         order = OrdersModel.find_by_id(id)
 
