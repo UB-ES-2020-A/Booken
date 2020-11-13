@@ -8,7 +8,7 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
-  <div>
+  <wrapper class ="d-flex flex-column">
     <div style="background: #2bc4ed;">
 
       <div class="container" style="max-width: 1400px">
@@ -185,6 +185,7 @@
         </div>
       </nav>
     </div>
+    <main class="flex-fill">
     <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn" :id="this.idIn"/>
     <div id="shopping_cart" v-if="viewCart">
       <h1 style="margin-top: 1em">Tu cesta</h1>
@@ -286,6 +287,7 @@
         </div>
       </div>
     </div>
+    </main>
 
     <footer class="site-footer">
       <div class="container">
@@ -336,7 +338,7 @@
         </div>
       </div>
     </footer>
-  </div>
+  </wrapper>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
@@ -646,6 +648,14 @@ export default {
   .buttonList .nav-item .btn {
     width: 180px;
   }
+}
+
+body, wrapper {
+   min-height:100vh;
+}
+
+.flex-fill {
+   flex:1 1 auto;
 }
 
 .categoriestxt {
