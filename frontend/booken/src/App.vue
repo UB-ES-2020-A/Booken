@@ -483,7 +483,7 @@ export default {
       }
     },
     checkout() {
-      const path = `https://booken-dev.herokuapp.com/order/this.idIn`
+      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
       const parameters = {
           date: this.date,
           total: this.total,

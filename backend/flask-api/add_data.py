@@ -5,7 +5,7 @@ from models.book import BookModel
 from models.accounts import AccountModel
 from models.review import ReviewModel
 from models.address import AddressModel
-
+from models.payment_card import CardModel
 
 app = create_app()
 app.app_context().push()

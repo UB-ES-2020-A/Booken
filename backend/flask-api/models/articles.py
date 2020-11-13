@@ -9,8 +9,7 @@ class ArticlesModel(db.Model):
     id = db.Column(db.Integer, unique=False,primary_key=True)
     price = db.Column(db.Float, unique=False, nullable=False)
 
-    def __init__(self, id, price):
-        self.id = id
+    def __init__(self, price):
         self.price = price
 
     def json(self):
