@@ -239,6 +239,7 @@
                           <label for="reviewTitle" class="col-form-label">Título</label>
                           <input type="text" class="form-control" id="reviewTitle"
                                  v-model="ratingTitle">
+
                         </div>
                         <div class="form-group" style="text-align: left">
                           <label class="col-form-label">Tu valoración:</label>
