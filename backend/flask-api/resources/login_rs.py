@@ -20,7 +20,7 @@ class Login(Resource):
         if account:
             if account.verify_password(data["password"]):
                 token = account.generate_auth_token()
-                return {'token': token.decode('ascii')}, 200
+                return {'token': token.decode('ascii'), 'type': account.type, 'id': account.id}, 200
             else:
                 return {'message': "Password is invalid"}, 400
         else:

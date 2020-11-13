@@ -83,7 +83,13 @@
 export default {
   name: 'Front',
   props: {
-    msg: String
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
+  },
+  created(){
+    console.log(this.id)
   },
   data() {
     return {

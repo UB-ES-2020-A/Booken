@@ -11,6 +11,7 @@ from resources.order import *
 from resources.article import *
 from resources.address_rs import *
 from resources.payment_card_rs import *
+from resources.review import *
 from db import db, create_app
 
 
@@ -27,6 +28,7 @@ from models.orders import OrdersModel
 from models.articles import ArticlesModel
 from models.address import AddressModel
 from models.payment_card import CardModel
+from models.review import ReviewModel
 
 migrate = Migrate(app, db)
 
@@ -35,7 +37,7 @@ api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
 api.add_resource(Address, '/account/<int:account_id>/address/<int:id>', '/account/<int:account_id>/address')
-api.add_resource(AddressList, '/account/<int:account_id>/addresses/')
+api.add_resource(AddressList, '/account/<int:account_id>/')
 
 api.add_resource(Card, '/account/<int:account_id>/card/<int:id>', '/account/<int:account_id>/card')
 api.add_resource(CardList, '/account/<int:account_id>/cards/')
@@ -60,6 +62,15 @@ api.add_resource(Articles, '/article/<int:id>', '/article')
 
 api.add_resource(OrderArticlesList, '/articles-order/<int:id>')
 api.add_resource(OrderArticles, '/article-order/<int:id>/<int:id_article>', '/article-order/<int:id>')
+
+api.add_resource(OrderAddressList, '/addresses-order/<int:id>')
+api.add_resource(OrderAddress, '/address-order/<int:id>/<int:id_sub>',
+                 '/address-order/<int:id>/<int:id_sub>/<int:address_id>')
+
+api.add_resource(Review, '/review/<int:id>', '/review')
+api.add_resource(ReviewList, '/reviews')
+api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
+api.add_resource(ReviewListBook, '/reviewsBook/<int:book_id>')
 
 @app.route('/')
 def render_vue():

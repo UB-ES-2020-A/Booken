@@ -25,7 +25,11 @@ class AccountModel(db.Model):
 
 
     addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
+
     cards = db.relationship('CardModel', backref='payment_card', cascade="all, delete-orphan", lazy=True)
+
+    reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
+
 
     def __init__(self, email, name, lastname, password):
         self.email = email
@@ -43,6 +47,20 @@ class AccountModel(db.Model):
             'email': self.email,
             'available_money': self.available_money,
             'type': self.type
+        }
+
+        return body
+
+    def json_with_address(self):
+        address_json = [address.json_with_id() for address in self.addresses]
+        body = {
+            'id': self.id,
+            'name': self.name,
+            'lastname': self.lastname,
+            'email': self.email,
+            'available_money': self.available_money,
+            'type': self.type,
+            "addresses": address_json
         }
 
         return body
@@ -87,6 +105,12 @@ class AccountModel(db.Model):
 
         return user
 
+    def find_addres_by_id(self,address_id):
+        index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
+        if index:
+            return self.addresses[index[0]]
+        else:
+            return None
 
 @auth.verify_password
 def verify_password(id, token):

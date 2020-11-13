@@ -32,7 +32,7 @@
           </select>
           <router-link :to="{name: 'BookInfo', params: {id: 0}}">
             <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
-                    v-if="admin" style="margin-left: 1em"><i class="fas fa-plus"
+                    v-if="this.type == 2" style="margin-left: 1em"><i class="fas fa-plus"
                                                              style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                 class="navbartextbt">Añadir</a></button>
           </router-link>
@@ -67,7 +67,7 @@
                 <span class="badge badge-secondary" v-if="book.genre == 'INFANTIL'">Infantil</span>
                 <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
                 <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
-                <button v-if="admin" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
+                <button v-if="type == 2" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
                         @click="deleteBook(book.id)"><i class="fas fa-times"></i>
                 </button>
               </h4>
@@ -87,6 +87,8 @@ let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
+        console.log(this.id)
+
     this.getBooksFromDB(this.$route.params.category)
   },
   data() {
@@ -95,6 +97,12 @@ export default {
       admin: 1,
       nbooks: 0
     }
+  },
+  props: {
+    logged: Boolean,
+    token: String,
+    id: Number,
+    type: Number
   },
   methods: {
     deleteBook(id) {

@@ -48,6 +48,22 @@ class AddressModel(db.Model):
 
         return body
 
+    def json_with_id(self):
+        body = {
+            'id':self.id,
+            'label_name': self.label_name,
+            'name': self.name,
+            'surnames': self.surnames,
+            'street': self.street,
+            'number': self.number,
+            'cp': self.cp,
+            'city': self.city,
+            'province': self.province,
+            'telf': self.telf
+        }
+
+        return body
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
