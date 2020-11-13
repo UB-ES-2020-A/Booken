@@ -466,8 +466,7 @@ export default {
         var item = this.cart[i]
         console.log(item)
         var price = item.price * item.quant
-        var id = item.id
-        const path = `https://booken-dev.herokuapp.com/article-order/${order_id}/${id}`
+        const path = `http://127.0.0.1:5000/article-order/${order_id}`
         const parameters = {
           price: price
         }
@@ -483,20 +482,21 @@ export default {
       }
     },
     checkout() {
-      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
+      const path = `http://127.0.0.1:5000/order/${this.idIn}`
       const parameters = {
-          date: this.date,
+          date: "hey",
           total: this.total,
           shipping: this.shipping,
           taxes: this.taxes,
           state: 0
         }
       console.log(path)
-      console.log(this.idIn)
+      console.log(parameters)
       axios.post(path, parameters)
           .then((res) => {
             console.log(res)
-            var order_id = res
+            var order_id = res.data
+            console.log(order_id)
             this.finalizePurchase(order_id)
             console.log('Order done')
           })

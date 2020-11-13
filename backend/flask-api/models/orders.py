@@ -13,12 +13,12 @@ class OrdersModel(db.Model):
     __tablename__ = 'orders'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
+    id_user = db.Column(db.String(30), db.ForeignKey('accounts.id'),primary_key=False, nullable=False)
     date = db.Column(db.String(30), primary_key=False, unique=False, nullable=False)
-    total = db.Column(db.Float, nullable=False)
-    shipping = db.Column(db.Float, nullable=False)
-    taxes = db.Column(db.Float, nullable=False)
-    state = db.Column(db.Integer, nullable=False)#0:in progress,1:sending,2:Received
+    total = db.Column(db.Float, primary_key=False,nullable=False)
+    shipping = db.Column(db.Float, primary_key=False,nullable=False)
+    taxes = db.Column(db.Float,primary_key=False, nullable=False)
+    state = db.Column(db.Integer, primary_key=False,nullable=False)#0:in progress,1:sending,2:Received
     #Address de la order
     address = db.relationship('AddressModel', secondary=address, backref=db.backref('orders', lazy='dynamic'))
     #Articles de la order
