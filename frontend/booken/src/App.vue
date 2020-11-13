@@ -468,7 +468,7 @@ export default {
         var item = this.cart[i]
         console.log(item)
         var price = item.price * item.quant
-        const path = `http://127.0.0.1:5000/article-order/${order_id}`
+        const path = `https://booken-dev.herokuapp.com/article-order/${order_id}`
         const parameters = {
           price: price
         }
@@ -484,7 +484,7 @@ export default {
       }
     },
     checkout() {
-      const path = `http://127.0.0.1:5000/order/${this.idIn}`
+      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
       const parameters = {
           date: "hey",
           total: this.total,
