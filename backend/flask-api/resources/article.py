@@ -15,19 +15,14 @@ class Articles(Resource):
             return {'message': "Article with id [{}] Not found".format(id)}, 409
 
     #@auth.login_required(role='admin')
-    def post(self):
+    def post(self,id):
         # Create a new artist with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
         parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-        # The ID is the following to the last one
-        articles = ArticlesModel.get_articles()["articles"]
-        new_id = 1
-        if len(articles) > 0:
-            new_id = articles[-1]["id"] + 1
-        new_article = ArticlesModel(new_id, data.price)
+        new_article = ArticlesModel(id, data.price)
         new_article.save_to_db()
         return {'message': "OK"}, 201
 

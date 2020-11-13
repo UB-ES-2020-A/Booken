@@ -6,7 +6,7 @@ from db import db
 class ArticlesModel(db.Model):
     __tablename__ = 'articles'  # This is table name
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, unique=False,primary_key=True)
     price = db.Column(db.Float, unique=False, nullable=False)
 
     def __init__(self, id, price):

@@ -3,7 +3,6 @@ from models.book import BookModel
 
 from models.address import AddressModel
 
-states = ("In progress", "Received")
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                    db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
 
@@ -19,7 +18,7 @@ class OrdersModel(db.Model):
     total = db.Column(db.Float, nullable=False)
     shipping = db.Column(db.Float, nullable=False)
     taxes = db.Column(db.Float, nullable=False)
-    state = db.Column(db.Enum(*states, name='states_types'), nullable=False)
+    state = db.Column(db.Integer, nullable=False)#0:in progress,1:sending,2:Received
     #Address de la order
     address = db.relationship('AddressModel', secondary=address, backref=db.backref('orders', lazy='dynamic'))
     #Articles de la order
@@ -87,6 +86,14 @@ class OrdersModel(db.Model):
 
     def change_order_state(self, new_state):
         self.state = new_state
+
+    @classmethod
+    def find_by_state(cls, state):
+        try:
+            return OrdersModel.query.filter_by(state=state).all()
+        except:
+            return None
+
 
     @classmethod
     def find_by_id_user(cls, id):

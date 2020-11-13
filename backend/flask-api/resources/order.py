@@ -3,7 +3,6 @@ from models.address import AddressModel
 from models.book import BookModel
 from models.accounts import AccountModel
 from models.articles import ArticlesModel
-from models.orders import OrdersModel,states
 from flask_restful import Resource, reqparse
 from models.accounts import auth, g
 
@@ -26,11 +25,11 @@ class Orders(Resource):
         parser.add_argument('total', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('state', type=str, required=True, help="This field cannot be left blanck")
+        parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        acc = AccountModel.find_by_id(id)
+        #acc = AccountModel.find_by_id(id)
 
-        if data.state not in states:
+        if (data.state < 0 or data.state>2):
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
         #if (acc == None):
          #   return {'message': "There isn't a user with this id"}, 409
@@ -40,7 +39,7 @@ class Orders(Resource):
         #acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
-        return new_order.json(), 200
+        return new_id, 200
 
 
     # @auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
@@ -113,7 +112,7 @@ class OrderArticles(Resource):
             return {"message": "Article with id [{}] Not found in Order with id [{}]".format(id_article, id)}, 404
 
     #@auth.login_required(role='admin')
-    def post(self, id):
+    def post(self, id,id_article):
         order = OrdersModel.find_by_id(id)
         if order is None:
             return {"message": "Order with id [{}] not found ".format(id)}, 404
@@ -122,8 +121,6 @@ class OrderArticles(Resource):
         # define all input parameters need and its type
         parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        #Create article and add to order
-        id_article = ArticlesModel.num_articles()+1
         article = ArticlesModel(id_article,data.price)
         order.add_article(article)
         article.save_to_db()
@@ -228,3 +225,33 @@ class OrderAddress(Resource):
                 return {'message': "OK"}, 201
 
         return {'message': "Address with id [{}] Not found in order with id [{}]".format(id_sub, id)}, 409
+
+class InProgressOrders(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        order = OrdersModel.find_by_state(0)
+        if order:
+            return {"orders": order.json()}, 200
+        else:
+            return {'message': "No orders in progress".format(id)}, 409
+
+class SendOrders(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        order = OrdersModel.find_by_state(1)
+        if order:
+            return {"orders": order.json()}, 200
+        else:
+            return {'message': "No orders send".format(id)}, 409
+
+class ReceivedOrders(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        order = OrdersModel.find_by_state(2)
+        if order:
+            return {"orders": order.json()}, 200
+        else:
+            return {'message': "No orders received".format(id)}, 409
