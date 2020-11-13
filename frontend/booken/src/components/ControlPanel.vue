@@ -1002,7 +1002,6 @@ export default {
   margin: auto;
   margin-top: 2em;
   margin-bottom: 2em;
-  min-height: 60vw;
 }
 
 @media (min-width: 0px) {
