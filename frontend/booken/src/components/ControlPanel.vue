@@ -325,7 +325,8 @@
                 </div>
                 <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-if="cardNumber < 3">
                   <div class="card h-100">
-                    <button style="color: #3b494d; height: 100%" type="submit" data-toggle="modal" data-target="#modalPayment" data-whatever="@getbootstrap">
+                    <button style="color: #3b494d; height: 100%" type="submit" data-toggle="modal"
+                            data-target="#modalPayment" data-whatever="@getbootstrap">
                       <i class="fas fa-plus" style="font-size: 6em; top: 50%"></i>
                     </button>
                     <div class="modal fade" id="modalPayment" tabindex="-1" role="dialog"
@@ -551,58 +552,59 @@
               </div>
             </div>
           </div>-->
-          <!-- ORDERS : view order history -->
-          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-orders-tab">
-            <div class="container-fluid">
-              <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-all" aria-selected="false">Todas</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
-                     aria-controls="pills-0" aria-selected="false">En progreso</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
-                     aria-controls="pills-1" aria-selected="false">Enviado</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
-                     aria-controls="pills-2" aria-selected="false">Recibido</a>
-                </li>
-              </ul>
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: left">
-                  <thead>
-                  <tr>
-                    <th scope="col">Número pedido</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Total</th>
-                    <th scope="col" class="text-right">Estado</th>
-                    <th scope="col" class="text-right">Acciones</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(item) in this.orders" :key="item.id">
-                    <td><b>#{{ item.id }}</b></td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
-                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
-                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
-                    <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span></td>
-                    <td class="text-right" v-if="item.state==0">
-                      <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
-                    </td>
-                    <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <nav aria-label="...">
-                  <ul class="pagination pagination-lg">
+            <!-- ORDERS : view order history -->
+            <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-orders-tab">
+              <div class="container-fluid">
+                <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
+                       aria-controls="pills-all" aria-selected="false">Todas</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
+                       aria-controls="pills-0" aria-selected="false">En progreso</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
+                       aria-controls="pills-1" aria-selected="false">Enviado</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
+                       aria-controls="pills-2" aria-selected="false">Recibido</a>
+                  </li>
+                </ul>
+                <div class="table-responsive">
+                  <table class="table table-striped" style="text-align: left">
+                    <thead>
+                    <tr>
+                      <th scope="col">Número pedido</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Total</th>
+                      <th scope="col" class="text-right">Estado</th>
+                      <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item) in this.orders" :key="item.id">
+                      <td><b>#{{ item.id }}</b></td>
+                      <td>{{ item.date }}</td>
+                      <td>{{ item.total }}€</td>
+                      <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
+                      <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
+                      <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
+                      <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span>
+                      </td>
+                      <td class="text-right" v-if="item.state==0">
+                        <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
+                      </td>
+                      <td class="text-right" v-if="item.state!=0">
+                        <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
                     <span v-for="index in this.sOrders.length" :key="index">
                       <li class="page-item active" aria-current="page" v-if="cIndex == (index-1)">
                     <span class="page-link">
@@ -611,63 +613,64 @@
                       <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
                                                @click="changeViewingOrders(index-1)">{{ index }}</a></li>
                     </span>
-                  </ul>
-                </nav>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
-          </div>
             <!-- ORDERS IN PROGRESS: view order in progress history -->
-          <div class="tab-pane fade show active" id="pills-0" role="tabpanel" aria-labelledby="pills-orders-tab">
-            <div class="container-fluid">
-              <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-all" aria-selected="false">Todas</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
-                     aria-controls="pills-0" aria-selected="false">En progreso</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
-                     aria-controls="pills-1" aria-selected="false">Enviado</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
-                     aria-controls="pills-2" aria-selected="false">Recibido</a>
-                </li>
-              </ul>
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: left">
-                  <thead>
-                  <tr>
-                    <th scope="col">Número pedido</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Total</th>
-                    <th scope="col" class="text-right">Estado</th>
-                    <th scope="col" class="text-right">Acciones</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(item) in this.stateOrdersInProgress" :key="item.id">
-                    <td><b>#{{ item.id }}</b></td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
-                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
-                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
-                    <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span></td>
-                    <td class="text-right" v-if="item.state==0">
-                      <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
-                    </td>
-                    <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <nav aria-label="...">
-                  <ul class="pagination pagination-lg">
+            <div class="tab-pane fade show active" id="pills-0" role="tabpanel" aria-labelledby="pills-orders-tab">
+              <div class="container-fluid">
+                <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
+                       aria-controls="pills-all" aria-selected="false">Todas</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
+                       aria-controls="pills-0" aria-selected="false">En progreso</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
+                       aria-controls="pills-1" aria-selected="false">Enviado</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
+                       aria-controls="pills-2" aria-selected="false">Recibido</a>
+                  </li>
+                </ul>
+                <div class="table-responsive">
+                  <table class="table table-striped" style="text-align: left">
+                    <thead>
+                    <tr>
+                      <th scope="col">Número pedido</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Total</th>
+                      <th scope="col" class="text-right">Estado</th>
+                      <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item) in this.stateOrdersInProgress" :key="item.id">
+                      <td><b>#{{ item.id }}</b></td>
+                      <td>{{ item.date }}</td>
+                      <td>{{ item.total }}€</td>
+                      <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
+                      <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
+                      <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
+                      <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span>
+                      </td>
+                      <td class="text-right" v-if="item.state==0">
+                        <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
+                      </td>
+                      <td class="text-right" v-if="item.state!=0">
+                        <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
                     <span v-for="index in this.sOrders.length" :key="index">
                       <li class="page-item active" aria-current="page" v-if="cIndex == (index-1)">
                     <span class="page-link">
@@ -676,63 +679,64 @@
                       <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
                                                @click="changeViewingOrders(index-1)">{{ index }}</a></li>
                     </span>
-                  </ul>
-                </nav>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
-          </div>
-          <!-- ORDERS SEND: view order send history -->
-          <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-orders-tab">
-            <div class="container-fluid">
-              <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-all" aria-selected="false">Todas</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
-                     aria-controls="pills-0" aria-selected="false">En progreso</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
-                     aria-controls="pills-1" aria-selected="false">Enviado</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
-                     aria-controls="pills-2" aria-selected="false">Recibido</a>
-                </li>
-              </ul>
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: left">
-                  <thead>
-                  <tr>
-                    <th scope="col">Número pedido</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Total</th>
-                    <th scope="col" class="text-right">Estado</th>
-                    <th scope="col" class="text-right">Acciones</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(item) in this.stateOrdersSend" :key="item.id">
-                    <td><b>#{{ item.id }}</b></td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
-                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
-                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
-                    <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span></td>
-                    <td class="text-right" v-if="item.state==0">
-                      <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
-                    </td>
-                    <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <nav aria-label="...">
-                  <ul class="pagination pagination-lg">
+            <!-- ORDERS SEND: view order send history -->
+            <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-orders-tab">
+              <div class="container-fluid">
+                <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
+                       aria-controls="pills-all" aria-selected="false">Todas</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
+                       aria-controls="pills-0" aria-selected="false">En progreso</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
+                       aria-controls="pills-1" aria-selected="false">Enviado</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
+                       aria-controls="pills-2" aria-selected="false">Recibido</a>
+                  </li>
+                </ul>
+                <div class="table-responsive">
+                  <table class="table table-striped" style="text-align: left">
+                    <thead>
+                    <tr>
+                      <th scope="col">Número pedido</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Total</th>
+                      <th scope="col" class="text-right">Estado</th>
+                      <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item) in this.stateOrdersSend" :key="item.id">
+                      <td><b>#{{ item.id }}</b></td>
+                      <td>{{ item.date }}</td>
+                      <td>{{ item.total }}€</td>
+                      <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
+                      <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
+                      <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
+                      <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span>
+                      </td>
+                      <td class="text-right" v-if="item.state==0">
+                        <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
+                      </td>
+                      <td class="text-right" v-if="item.state!=0">
+                        <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
                     <span v-for="index in this.sOrders.length" :key="index">
                       <li class="page-item active" aria-current="page" v-if="cIndex == (index-1)">
                     <span class="page-link">
@@ -741,63 +745,64 @@
                       <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
                                                @click="changeViewingOrders(index-1)">{{ index }}</a></li>
                     </span>
-                  </ul>
-                </nav>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
-          </div>
-        <!-- ORDERS RECEIVED: view order received history -->
-          <div class="tab-pane fade show active" id="pills-2" role="tabpanel" aria-labelledby="pills-orders-tab">
-            <div class="container-fluid">
-              <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-all" aria-selected="false">Todas</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
-                     aria-controls="pills-0" aria-selected="false">En progreso</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
-                     aria-controls="pills-1" aria-selected="false">Enviado</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
-                     aria-controls="pills-2" aria-selected="false">Recibido</a>
-                </li>
-              </ul>
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: left">
-                  <thead>
-                  <tr>
-                    <th scope="col">Número pedido</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Total</th>
-                    <th scope="col" class="text-right">Estado</th>
-                    <th scope="col" class="text-right">Acciones</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(item) in this.stateOrdersReceived" :key="item.id">
-                    <td><b>#{{ item.id }}</b></td>
-                    <td>{{ item.date }}</td>
-                    <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
-                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
-                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
-                    <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span></td>
-                    <td class="text-right" v-if="item.state==0">
-                      <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
-                    </td>
-                    <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <nav aria-label="...">
-                  <ul class="pagination pagination-lg">
+            <!-- ORDERS RECEIVED: view order received history -->
+            <div class="tab-pane fade show active" id="pills-2" role="tabpanel" aria-labelledby="pills-orders-tab">
+              <div class="container-fluid">
+                <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
+                       aria-controls="pills-all" aria-selected="false">Todas</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+                    <a class="nav-link active" data-toggle="pill" href="#pills-0" role="tab"
+                       aria-controls="pills-0" aria-selected="false">En progreso</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
+                       aria-controls="pills-1" aria-selected="false">Enviado</a>
+                  </li>
+                  <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+                    <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
+                       aria-controls="pills-2" aria-selected="false">Recibido</a>
+                  </li>
+                </ul>
+                <div class="table-responsive">
+                  <table class="table table-striped" style="text-align: left">
+                    <thead>
+                    <tr>
+                      <th scope="col">Número pedido</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Total</th>
+                      <th scope="col" class="text-right">Estado</th>
+                      <th scope="col" class="text-right">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item) in this.stateOrdersReceived" :key="item.id">
+                      <td><b>#{{ item.id }}</b></td>
+                      <td>{{ item.date }}</td>
+                      <td>{{ item.total }}€</td>
+                      <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
+                      <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
+                      <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
+                      <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span>
+                      </td>
+                      <td class="text-right" v-if="item.state==0">
+                        <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
+                      </td>
+                      <td class="text-right" v-if="item.state!=0">
+                        <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <nav aria-label="...">
+                    <ul class="pagination pagination-lg">
                     <span v-for="index in this.sOrders.length" :key="index">
                       <li class="page-item active" aria-current="page" v-if="cIndex == (index-1)">
                     <span class="page-link">
@@ -806,15 +811,15 @@
                       <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
                                                @click="changeViewingOrders(index-1)">{{ index }}</a></li>
                     </span>
-                  </ul>
-                </nav>
+                    </ul>
+                  </nav>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -861,7 +866,13 @@ export default {
           "holder": "Borat Led"
         }
       ],
-      addresses: []
+      newAddressUser: '',
+      newAddressRoad: '',
+      newAddressCode: '',
+      newAddressProvince: '',
+      newAddressPhone: '',
+
+      addresses: [{}]
     }
   },
   created() {
@@ -999,9 +1010,7 @@ export default {
 <style scoped>
 .front-container {
   width: 100%;
-  margin: auto;
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin: 2em auto;
 }
 
 @media (min-width: 0px) {
