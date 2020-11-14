@@ -37,10 +37,10 @@ api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
 
 api.add_resource(Address, '/account/<int:account_id>/address/<int:id>', '/account/<int:account_id>/address')
-api.add_resource(AddressList, '/account/<int:account_id>/')
+api.add_resource(AddressList, '/account/<int:account_id>/addresses')
 
 api.add_resource(Card, '/account/<int:account_id>/card/<int:id>', '/account/<int:account_id>/card')
-api.add_resource(CardList, '/account/<int:account_id>/cards/')
+api.add_resource(CardList, '/account/<int:account_id>/cards')
 
 api.add_resource(Login, '/login')
 

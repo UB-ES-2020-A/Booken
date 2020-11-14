@@ -1,0 +1,627 @@
+{
+	"info": {
+		"_postman_id": "38c54a93-426a-4953-abd8-28825714262b",
+		"name": "TEST----Address",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getAddresses",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6456b78b-db6a-41cb-b45d-8c14c33f2e79",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c17e7a61-bb4c-4839-8c22-90853ecfdaf6",
+						"exec": [
+							"var schema = {",
+							"   \"accounts_addresses\": \"array\",",
+							"   \"items\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"label_name\": {\"type\":\"string\"},",
+							"        \"name\": {\"type\":\"string\"},",
+							"        \"surnames\": {\"type\":\"string\"},",
+							"        \"street\": {\"type\":\"string\"},",
+							"        \"number\": {\"type\":\"integer\"},",
+							"        \"cp\": {\"type\":\"string\"},",
+							"        \"city\": {\"type\":\"string\"},",
+							"        \"province\": {\"type\":\"string\"},",
+							"        \"telf\": {\"type\":\"integer\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/addresses",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postAddress",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3d3907bf-7285-4194-8979-4417553b1518",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c78b19a1-bc7c-4e00-aaad-70ffbb3b567c",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "label_name",
+							"value": "Mi casa",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "surnames",
+							"value": "tests",
+							"type": "text"
+						},
+						{
+							"key": "street",
+							"value": "La calle de mi casa",
+							"type": "text"
+						},
+						{
+							"key": "number",
+							"value": "32",
+							"type": "text"
+						},
+						{
+							"key": "cp",
+							"value": "08431",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mi city",
+							"type": "text"
+						},
+						{
+							"key": "province",
+							"value": "Mi provincia",
+							"type": "text"
+						},
+						{
+							"key": "telf",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/address",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAddress",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3d8cca10-fb9a-4562-92a5-e1ec2520aa24",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {",
+							"    ",
+							"    pm.sendRequest({",
+							"        url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"        method: 'GET',",
+							"    }, function (err, res) {",
+							"        var data = res.json().accounts",
+							"        data.forEach(account => {",
+							"            if (account.email === \"postman_test@gmail.com\"){",
+							"                pm.collectionVariables.set(\"account_id\", account.id)",
+							"            }",
+							"        })",
+							"        pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/address\",",
+							"            method: 'POST',",
+							"            body: {",
+							"            mode: 'formdata',",
+							"            formdata: [{\"key\":\"label_name\",\"value\":\"Mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"name\",\"value\":\"test\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"surnames\",\"value\":\"tests\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"street\",\"value\":\"La calle de mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"number\",\"value\":\"32\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"cp\",\"value\":\"08431\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"city\",\"value\":\"Mi city\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"province\",\"value\":\"Mi provincia\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"telf\",\"value\":\"123456789\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+							"            },",
+							"        }, function (err, res) {",
+							"",
+							"            pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/addresses\",",
+							"                method: 'GET',",
+							"            }, function (err, res) {",
+							"                var data = res.json().accounts_addresses",
+							"                pm.collectionVariables.set(\"address_id\", data[0].id)",
+							"            });",
+							"        });",
+							"    });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "87647f61-4160-429d-80b8-c9ef32245521",
+						"exec": [
+							"var schema = {",
+							"   \"address\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"label_name\": {\"type\":\"string\"},",
+							"        \"name\": {\"type\":\"string\"},",
+							"        \"surnamez\": {\"type\":\"string\"},",
+							"        \"street\": {\"type\":\"string\"},",
+							"        \"number\": {\"type\":\"integer\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/address/{{address_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"address",
+						"{{address_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteAddress",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7c4c8465-f14e-4781-8042-e506a42859db",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {",
+							"    ",
+							"    pm.sendRequest({",
+							"        url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"        method: 'GET',",
+							"    }, function (err, res) {",
+							"        var data = res.json().accounts",
+							"        data.forEach(account => {",
+							"            if (account.email === \"postman_test@gmail.com\"){",
+							"                pm.collectionVariables.set(\"account_id\", account.id)",
+							"            }",
+							"        })",
+							"        pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/address\",",
+							"            method: 'POST',",
+							"            body: {",
+							"            mode: 'formdata',",
+							"            formdata: [{\"key\":\"label_name\",\"value\":\"Mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"name\",\"value\":\"test\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"surnames\",\"value\":\"tests\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"street\",\"value\":\"La calle de mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"number\",\"value\":\"32\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"cp\",\"value\":\"08431\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"city\",\"value\":\"Mi city\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"province\",\"value\":\"Mi provincia\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"telf\",\"value\":\"123456789\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+							"            },",
+							"        }, function (err, res) {",
+							"",
+							"            pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/addresses\",",
+							"                method: 'GET',",
+							"            }, function (err, res) {",
+							"                var data = res.json().accounts_addresses",
+							"                pm.collectionVariables.set(\"account_id\", data[0].id)",
+							"            });",
+							"        });",
+							"    });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bca2682-d5e9-4502-9359-025659a6b3ef",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/address/{{address_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"address",
+						"{{address_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "putAddress",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "61ee5d4d-e7e7-4672-8ba5-55aaab07ac18",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {",
+							"    ",
+							"    pm.sendRequest({",
+							"        url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"        method: 'GET',",
+							"    }, function (err, res) {",
+							"        var data = res.json().accounts",
+							"        data.forEach(account => {",
+							"            if (account.email === \"postman_test@gmail.com\"){",
+							"                pm.collectionVariables.set(\"account_id\", account.id)",
+							"            }",
+							"        })",
+							"        pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/address\",",
+							"            method: 'POST',",
+							"            body: {",
+							"            mode: 'formdata',",
+							"            formdata: [{\"key\":\"label_name\",\"value\":\"Mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"name\",\"value\":\"test\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"surnames\",\"value\":\"tests\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"street\",\"value\":\"La calle de mi casa\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"number\",\"value\":\"32\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"cp\",\"value\":\"08431\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"city\",\"value\":\"Mi city\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"province\",\"value\":\"Mi provincia\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"telf\",\"value\":\"123456789\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+							"            },",
+							"        }, function (err, res) {",
+							"",
+							"            pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/addresses\",",
+							"                method: 'GET',",
+							"            }, function (err, res) {",
+							"                var data = res.json().accounts_addresses",
+							"                pm.collectionVariables.set(\"account_id\", data[0].id)",
+							"            });",
+							"        });",
+							"    });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "aa467d2a-de54-4cbb-869b-853a0d852676",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "label_name",
+							"value": "Tu casa",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "surnames",
+							"value": "tests",
+							"type": "text"
+						},
+						{
+							"key": "street",
+							"value": "La calle de mi casa",
+							"type": "text"
+						},
+						{
+							"key": "number",
+							"value": "42",
+							"type": "text"
+						},
+						{
+							"key": "cp",
+							"value": "08431",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Mi city",
+							"type": "text"
+						},
+						{
+							"key": "province",
+							"value": "Mi provincia",
+							"type": "text"
+						},
+						{
+							"key": "telf",
+							"value": "123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/address/{{address_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"address",
+						"{{address_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b0f92b9d-42a2-4495-9d09-f37fc71496aa",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "035da25b-b884-4f26-982c-ef405715de0a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a065430f-4ed3-4c91-a1ca-8be9444c5b19",
+			"key": "base_url",
+			"value": "http://booken-dev.herokuapp.com"
+		},
+		{
+			"id": "0f5166c9-70b3-428b-9827-e97e1e7d94ee",
+			"key": "account_id",
+			"value": "1"
+		},
+		{
+			"id": "eced1077-7455-46fa-a10b-d2886ff31388",
+			"key": "address_id",
+			"value": "1"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

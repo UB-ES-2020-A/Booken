@@ -69,6 +69,9 @@ class AccountModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def db_rollback(self):
+        db.session.rollback()
+
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()

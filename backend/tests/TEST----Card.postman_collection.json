@@ -1,0 +1,442 @@
+{
+	"info": {
+		"_postman_id": "f0c85a5c-3ca2-4efb-9c56-ecd472b540d7",
+		"name": "TEST----Card",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getCards",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e9984f74-2e46-432c-9d28-e9c5182c5422",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "af21b164-5e9a-434b-b251-99a03f2f26d4",
+						"exec": [
+							"var schema = {",
+							"   \"accounts_cards\": \"array\",",
+							"   \"items\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"card_owner\": {\"type\":\"string\"},",
+							"        \"number\": {\"type\":\"integer\"},",
+							"        \"date\": {\"type\":\"string\"},",
+							"        \"method\": {\"type\":\"string\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/cards",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postCard",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e04b1d74-6bed-486a-832e-07b8303ff047",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5d002d1-0784-444a-902c-aae91b9f4c99",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "card_owner",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "number",
+							"value": "123456789",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "12/2025",
+							"type": "text"
+						},
+						{
+							"key": "payment_method",
+							"value": "VISA",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/card",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCard",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9423bcdf-276d-4011-9143-ef907768e280",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {",
+							"    ",
+							"    pm.sendRequest({",
+							"        url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"        method: 'GET',",
+							"    }, function (err, res) {",
+							"        var data = res.json().accounts",
+							"        data.forEach(account => {",
+							"            if (account.email === \"postman_test@gmail.com\"){",
+							"                pm.collectionVariables.set(\"account_id\", account.id)",
+							"            }",
+							"        })",
+							"        pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/card\",",
+							"            method: 'POST',",
+							"            body: {",
+							"            mode: 'formdata',",
+							"            formdata: [{\"key\":\"card_owner\",\"value\":\"test\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"number\",\"value\":\"123456789\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"date\",\"value\":\"12/2025\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"payment_method\",\"value\":\"VISA\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+							"            },",
+							"        }, function (err, res) {",
+							"",
+							"            pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/cards\",",
+							"                method: 'GET',",
+							"            }, function (err, res) {",
+							"                var data = res.json().accounts_cards",
+							"                pm.collectionVariables.set(\"card_id\", data[0].id)",
+							"            });",
+							"        });",
+							"    });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "03dc60dc-2b4e-4575-a242-ff39340ddc5e",
+						"exec": [
+							"var schema = {",
+							"   \"card\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"card_owner\": {\"type\":\"string\"},",
+							"        \"number\": {\"type\":\"integer\"},",
+							"        \"date\": {\"type\":\"string\"},",
+							"        \"method\": {\"type\":\"string\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/card/{{card_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"card",
+						"{{card_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteCard",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7879e457-092a-41b6-bf1a-2171a50f0640",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {",
+							"    ",
+							"    pm.sendRequest({",
+							"        url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"        method: 'GET',",
+							"    }, function (err, res) {",
+							"        var data = res.json().accounts",
+							"        data.forEach(account => {",
+							"            if (account.email === \"postman_test@gmail.com\"){",
+							"                pm.collectionVariables.set(\"account_id\", account.id)",
+							"            }",
+							"        })",
+							"        pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/card\",",
+							"            method: 'POST',",
+							"            body: {",
+							"            mode: 'formdata',",
+							"            formdata: [{\"key\":\"card_owner\",\"value\":\"test\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"number\",\"value\":\"123456789\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"date\",\"value\":\"12/2025\",\"description\":\"\",\"type\":\"text\",\"enabled\":true},{\"key\":\"payment_method\",\"value\":\"VISA\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+							"            },",
+							"        }, function (err, res) {",
+							"",
+							"            pm.sendRequest({",
+							"            url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\")+\"/cards\",",
+							"                method: 'GET',",
+							"            }, function (err, res) {",
+							"                var data = res.json().accounts_cards",
+							"                pm.collectionVariables.set(\"card_id\", data[0].id)",
+							"            });",
+							"        });",
+							"    });",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7dc6a523-13aa-47c4-b837-613d7ef2660b",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/{{account_id}}/card/{{card_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"{{account_id}}",
+						"card",
+						"{{card_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "eb71f56f-5106-4908-9963-168d2a026bc8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c479a3e1-0dc0-4f59-8b3d-f36d258a5190",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "7f4e0bcf-3a5b-4e85-b160-255e5d0463a5",
+			"key": "base_url",
+			"value": "http://booken-dev.herokuapp.com"
+		},
+		{
+			"id": "6aa8e752-9dec-4554-9bd8-37043080d309",
+			"key": "account_id",
+			"value": "1"
+		},
+		{
+			"id": "946463e0-73bf-4fb2-bac6-cf010493cd91",
+			"key": "card_id",
+			"value": "1"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
