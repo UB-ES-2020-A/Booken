@@ -6,106 +6,15 @@
 	},
 	"item": [
 		{
-			"name": "postLogin",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "cf6122c2-f22a-4432-b595-a71620696eb6",
-						"exec": [
-							"var schema = {",
-							"   \"token\": {\"type\":\"string\"}",
-							"};",
-							"",
-							"pm.test(\"Status code 200\", function(){",
-							"    pm.expect(pm.response.code).to.equal(200);",
-							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"})",
-							"",
-							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
-							"    method: 'GET',",
-							"}, function (err, res) {",
-							"    var data = res.json().Accounts",
-							"    data.forEach(account => {",
-							"        if (account.email === \"postman_test@gmail.com\"){",
-							"            pm.collectionVariables.set(\"account_id\", account.id)",
-							"        }",
-							"    })",
-							"});",
-							"",
-							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
-							"    method: 'DELETE',",
-							"}, function (err, res) {});"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"id": "98d11640-b146-471b-b4d1-592ac11d97d2",
-						"exec": [
-							"pm.sendRequest({",
-							"    url: pm.variables.get(\"base_url\") + \"/account\",",
-							"    method: 'POST',",
-							"    body: {",
-							"     mode: 'formdata',",
-							"     formdata: [",
-							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
-							"         {key: \"name\", value: \"test\", disabled: false},",
-							"         {key: \"lastname\", value: \"1\", disabled: false},",
-							"         {key: \"password\", value: \"123\", disabled: false},",
-							"        ]",
-							"    },",
-							"}, function (err, res) {});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "email",
-							"value": "postman_test@gmail.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "123",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{base_url}}/login",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"login"
-					]
-				},
-				"description": "Returns a token that identifies the account succesfully logged"
-			},
-			"response": []
-		},
-		{
 			"name": "getAccounts",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "afb63e02-cdf4-4150-9b5a-ea1c54774a00",
+						"id": "8fde4cc5-0c62-4e7f-ab5e-eabb4f8aac63",
 						"exec": [
 							"var schema = {",
-							"   \"Accounts\": \"array\",",
+							"   \"accounts\": \"array\",",
 							"   \"items\": {",
 							"        \"id\": {\"type\":\"integer\"},",
 							"        \"name\": {\"type\":\"string\"},",
@@ -150,7 +59,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "765bd4e2-51e6-4fac-8113-329a89070b5b",
+						"id": "9e15c397-4ecb-4945-b271-f55e9119997f",
 						"exec": [
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
@@ -160,7 +69,7 @@
 							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
-							"    var data = res.json().Accounts",
+							"    var data = res.json().accounts",
 							"    data.forEach(account => {",
 							"        if (account.email === \"postman_test@gmail.com\"){",
 							"            pm.collectionVariables.set(\"account_id\", account.id)",
@@ -244,7 +153,7 @@
 							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
-							"    var data = res.json().Accounts",
+							"    var data = res.json().accounts",
 							"    data.forEach(account => {",
 							"        if (account.email === \"postman_test@gmail.com\"){",
 							"            pm.collectionVariables.set(\"account_id\", account.id)",
@@ -304,13 +213,105 @@
 			"response": []
 		},
 		{
+			"name": "postLogin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cf6122c2-f22a-4432-b595-a71620696eb6",
+						"exec": [
+							"var schema = {",
+							"   \"token\": {\"type\":\"string\"}",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().accounts",
+							"    data.forEach(account => {",
+							"        if (account.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"account_id\", account.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account/\" + pm.variables.get(\"account_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "98d11640-b146-471b-b4d1-592ac11d97d2",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/account\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"name\", value: \"test\", disabled: false},",
+							"         {key: \"lastname\", value: \"1\", disabled: false},",
+							"         {key: \"password\", value: \"123\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "postman_test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Returns a token that identifies the account succesfully logged"
+			},
+			"response": []
+		},
+		{
 			"name": "deleteAccount",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "96c85ebf-f59b-4c8e-b33b-487c18988f00",
+						"id": "92fd72d7-d359-4dc0-8ea6-9c0aade6e154",
 						"exec": [
+							"",
 							"pm.sendRequest({",
 							"    url: pm.variables.get(\"base_url\") + \"/account\",",
 							"    method: 'POST',",
@@ -325,11 +326,12 @@
 							"    },",
 							"}, function (err, res) {});",
 							"",
+							"",
 							"pm.sendRequest({",
 							"    url: pm.variables.get(\"base_url\") + \"/accounts/\",",
 							"    method: 'GET',",
 							"}, function (err, res) {",
-							"    var data = res.json().Accounts",
+							"    var data = res.json().accounts",
 							"    data.forEach(account => {",
 							"        if (account.email === \"postman_test@gmail.com\"){",
 							"            pm.collectionVariables.set(\"account_id\", account.id)",
@@ -343,7 +345,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8011e1f1-9d7d-4f9f-a0d7-a7c2ce801e7c",
+						"id": "3f1e3b48-19ed-4093-a2a1-340345cce201",
 						"exec": [
 							"pm.test(\"Status code 200\", function(){",
 							"    pm.expect(pm.response.code).to.equal(200);",
@@ -395,14 +397,14 @@
 	],
 	"variable": [
 		{
-			"id": "92215a35-67b3-47cd-aa5c-930607482ad4",
+			"id": "954898b2-6892-4563-9f19-ceeac15f5ff2",
 			"key": "account_id",
 			"value": "1"
 		},
 		{
-			"id": "c1269eaa-3a97-412d-86f7-a4381a6fbec8",
+			"id": "15e53d2a-a5dc-4ad8-b2f5-56798ee80507",
 			"key": "base_url",
-			"value": "http://booken-app.herokuapp.com"
+			"value": "http://booken-dev.herokuapp.com"
 		}
 	],
 	"protocolProfileBehavior": {}

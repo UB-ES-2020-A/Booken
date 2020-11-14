@@ -29,6 +29,7 @@ class Account(Resource):
             account.save_to_db()
             return {"message": "Account saved correctly"}, 200
         except:
+            account.db_rollback()
             return {"message": "Couldn't save changes"}, 500
 
     # Delete: Deletes an account from the database

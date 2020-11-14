@@ -35,6 +35,7 @@ class AddressModel(db.Model):
 
     def json(self):
         body = {
+            'id':self.id,
             'label_name': self.label_name,
             'name': self.name,
             'surnames': self.surnames,
