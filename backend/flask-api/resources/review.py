@@ -55,6 +55,26 @@ class Review(Resource):
         book.reviews.append(new_review)
         return new_review.json(), 200
 
+    def put(self, id):
+        data = self.__parse_request__()
+        review =ReviewModel.find_by_id(id)
+        if not review:
+            return {'message': "There is no review with ['id': {}]".format(id)}, 404
+        review.delete_from_db()
+        user = AccountModel.find_by_id(data.get('user_id'))
+        book = BookModel.find_by_id(data.get('book_id'))
+        if not user or not book:
+            if not user:
+                return {'message': "There is no account with ['id': {}]".format(data.get('user_id'))}, 404
+            if not book:
+                return {'message': "There is no book with ['id': {}]".format(data.get('book_id'))}, 404
+        new_review = ReviewModel(data.get('title'), data.get('user_id'), data.get('book_id'), data.get('date'),
+                                 data.get('valuation'), data.get('comment'))
+        new_review.save_to_db()
+        user.reviews.append(new_review)
+        book.reviews.append(new_review)
+        return new_review.json(), 200
+
     def delete(self, id):
         exists = ReviewModel.find_by_id(id)
         if not exists:
