@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e00cecac7a53
+Revision ID: 963fe8da49fa
 Revises: 
-Create Date: 2020-11-12 23:14:08.671283
+Create Date: 2020-11-14 22:30:36.142342
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e00cecac7a53'
+revision = '963fe8da49fa'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -89,6 +89,17 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
+    op.create_table('card_model',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('account_id', sa.String(length=30), nullable=False),
+    sa.Column('card_owner', sa.String(), nullable=False),
+    sa.Column('number', sa.String(), nullable=False),
+    sa.Column('date', sa.String(), nullable=False),
+    sa.Column('payment_method', sa.Enum('VISA', 'MASTER CARD', 'AMERICAN EXPRESS', 'JCB', 'DISCOVER', name='payment_method'), nullable=False),
+    sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
+    )
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('id_user', sa.String(length=30), nullable=False),
@@ -96,9 +107,9 @@ def upgrade():
     sa.Column('total', sa.Float(), nullable=False),
     sa.Column('shipping', sa.Float(), nullable=False),
     sa.Column('taxes', sa.Float(), nullable=False),
-    sa.Column('state', sa.Enum('In progress', 'Received', name='states_types'), nullable=False),
+    sa.Column('state', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['accounts.id'], ),
-    sa.PrimaryKeyConstraint('id', 'date')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('reviews',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -140,6 +151,7 @@ def downgrade():
     op.drop_table('tags')
     op.drop_table('reviews')
     op.drop_table('orders')
+    op.drop_table('card_model')
     op.drop_table('addresses')
     op.drop_table('contacts')
     op.drop_table('books')
