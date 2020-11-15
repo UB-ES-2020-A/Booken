@@ -82,8 +82,8 @@
 <script>
 import axios from 'axios'
 import * as toastr from "@/assets/toastr";
-
-let api = 'https://booken-dev.herokuapp.com/'
+let api = 'http://127.0.0.1:5000/'
+//let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {

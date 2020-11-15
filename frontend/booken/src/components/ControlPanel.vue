@@ -62,7 +62,7 @@
                 </li>
               </ul>
 
-              <div class="table-responsive" v-bind="this.orders.length">
+              <div class="table-responsive" :key="this.orders.length">
                 <table class="table table-striped" style="text-align: left">
                   <thead>
                   <tr>
@@ -634,9 +634,9 @@ export default {
     this.getOrders()
     this.getAddresses()
     this.getCards()
-    this.stateOrdersInProgress()
-    this.stateOrdersReceived()
-    this.stateOrdersSend()
+    //this.stateOrdersInProgress()
+    //this.stateOrdersReceived()
+    //this.stateOrdersSend()
   },
   methods: {
     getOrders() {
@@ -649,7 +649,7 @@ export default {
             this.splitOrders()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
@@ -675,7 +675,7 @@ export default {
             this.cardNumber = this.cards.length
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar las targetas.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
@@ -688,7 +688,7 @@ export default {
             this.addresses = res.data.accounts_addresses
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar las direcciones.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
@@ -716,15 +716,14 @@ export default {
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            this.getBooksFromDB(this.$route.params.category)
             toastr.success('', '¡Pedido cancelado!',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             this.getOrders()
           })
           .catch((error) => {
+            console.log(error)
             toastr.error('', 'No se ha podido cancelar el pedido.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-            this.toPrint(error)
           })
     },
     viewOrder(id) {
@@ -751,7 +750,7 @@ export default {
             this.OrdersInProgress = res.data.orders
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
@@ -766,7 +765,7 @@ export default {
             console.log(this.OrdersSend)
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
@@ -781,7 +780,7 @@ export default {
             console.log(this.OrdersReceived)
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })

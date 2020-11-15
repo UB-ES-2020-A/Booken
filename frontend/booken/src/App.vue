@@ -352,6 +352,8 @@ import Contact from "@/components/Contact";
 import ControlPanel from "@/components/ControlPanel";
 import ShowBooks from "@/components/ShowBooks";
 
+//let api = 'https://booken-dev.herokuapp.com/'
+let api = 'http://127.0.0.1:5000/'
 export default {
   name: 'App',
   components: {
@@ -469,7 +471,7 @@ export default {
         var item = this.cart[i]
         console.log(item)
         var price = item.price * item.quant
-        const path = `https://booken-dev.herokuapp.com/article-order/${order_id}`
+        const path = api + 'article-order/' + order_id
         const parameters = {
           price: price
         }
@@ -485,7 +487,7 @@ export default {
       }
     },
     checkout() {
-      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
+      const path = api + 'order/' + this.idIn
       const parameters = {
         date: this.getTodayDate(),
         total: this.total,
