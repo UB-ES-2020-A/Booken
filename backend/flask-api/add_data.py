@@ -1,4 +1,4 @@
-from data import books
+from data import books, users
 from db import db, create_app
 from models.author import AuthorModel
 from models.book import BookModel
@@ -17,11 +17,15 @@ for table in reversed(meta.sorted_tables):
     db.session.execute(table.delete())
 db.session.commit()
 
+acc = 0
+for i in users:
+    user = AccountModel(i[0], i[1], i[2], i[3])
+    user.type = i[4]
+    db.session.add(user)
+    acc -= -1
+
 bookss, authorss = 0, 0
 for i in books:
-    book = BookModel.query.filter_by(name=i[1]).first()
-    if book:
-        break;
     authors = []
     for j in i[2]:
         a = AuthorModel(j[0], j[1], j[2], j[3])
@@ -32,6 +36,7 @@ for i in books:
     bookss += 1
     db.session.add(book)
 
+print("add_data> Added {} new accounts".format(acc))
 print("add_data> Added {} new books and {} new authors".format(bookss, authorss))
 
 db.session.commit()
