@@ -89,7 +89,7 @@ class OrdersList(Resource):
 class OrderArticlesList(Resource):
     def get(self, id):
         try:
-            return {"articles": OrdersModel.find_by_id(id).json()["articles"]}
+            return {"articles": OrdersModel.find_by_id(id).json()["articles"]},200
         except:
             return {"message": "Order with id [{}] Not Found".format(id)}, 404
 
@@ -146,7 +146,7 @@ class OrderArticles(Resource):
 class OrderAddressList(Resource):
     def get(self, id):
         try:
-            return {"addresses": OrdersModel.find_by_id(id).json()["address"]}
+            return {"addresses": OrdersModel.find_by_id(id).json()["address"]},200
         except:
             return {"message": "Order with id [{}] Not Found".format(id)}, 404
 

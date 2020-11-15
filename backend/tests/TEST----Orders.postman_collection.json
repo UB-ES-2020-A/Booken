@@ -7,6 +7,20 @@
 	"item": [
 		{
 			"name": "Get Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "09589b66-db33-49cf-ba7e-d7cf70ee7a9d",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -24,30 +38,57 @@
 		},
 		{
 			"name": "Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ed4ec0eb-aecf-44fd-aeb9-766958c18990",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/postman_test@gmail.com?id_book=0&num_books=2&state=Progress",
+					"raw": "{{base_url}}/order/1?date=15-1--2020&total=2.0&shipping=5.0&taxes=5.0&state=2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"postman_test@gmail.com"
+						"1"
 					],
 					"query": [
 						{
-							"key": "id_book",
-							"value": "0"
+							"key": "date",
+							"value": "15-1--2020"
 						},
 						{
-							"key": "num_books",
-							"value": "2"
+							"key": "total",
+							"value": "2.0"
+						},
+						{
+							"key": "shipping",
+							"value": "5.0"
+						},
+						{
+							"key": "taxes",
+							"value": "5.0"
 						},
 						{
 							"key": "state",
-							"value": "Progress"
+							"value": "2"
+						},
+						{
+							"key": "adress",
+							"value": "Carrer Prueba",
+							"disabled": true
 						}
 					]
 				}
@@ -56,17 +97,31 @@
 		},
 		{
 			"name": "Get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aa3492b1-4132-47ad-ab3f-31ac109217e7",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/postman_test@gmail.com",
+					"raw": "{{base_url}}/order/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"postman_test@gmail.com"
+						"1"
 					]
 				}
 			},
@@ -74,30 +129,57 @@
 		},
 		{
 			"name": "Put",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4d4de29-deba-4a30-9f85-6ba3ca5b5c02",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/0?id_book=0&num_books=2&state=End",
+					"raw": "{{base_url}}/order/1?date=15-1--2021&total=2.5&shipping=5.5&taxes=5.5&state=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"0"
+						"1"
 					],
 					"query": [
 						{
-							"key": "id_book",
-							"value": "0"
+							"key": "date",
+							"value": "15-1--2021"
 						},
 						{
-							"key": "num_books",
-							"value": "2"
+							"key": "total",
+							"value": "2.5"
+						},
+						{
+							"key": "shipping",
+							"value": "5.5"
+						},
+						{
+							"key": "taxes",
+							"value": "5.5"
 						},
 						{
 							"key": "state",
-							"value": "End"
+							"value": "1"
+						},
+						{
+							"key": "adress",
+							"value": "Carrer Prueba Modify",
+							"disabled": true
 						}
 					]
 				}
@@ -105,18 +187,499 @@
 			"response": []
 		},
 		{
-			"name": "Delete",
+			"name": "Get article list from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e6239ff-8ba0-4780-b200-7b1cb4c1af45",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/articles-order/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"articles-order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post article from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8395f5b-59e0-44f8-96b7-39299e06e4c1",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/article-order/1?price=1.0",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"article-order",
+						"1"
+					],
+					"query": [
+						{
+							"key": "price",
+							"value": "1.0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get article from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f351534e-27fb-4409-ae1a-fd200c2cea22",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/article-order/1/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"article-order",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get address list from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e2f58ac-891d-4278-a9cf-6fe494e374c0",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/addresses-order/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"addresses-order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a new address from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1a4c3dc0-e99e-45c1-acd6-b4997b702cfe",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/address-order/1/1?label_name=qwqw&name=www&surnames=ww&street=www&number=1221&cp=09032&city=asasa&province=sasa&telf=123",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"address-order",
+						"1",
+						"1"
+					],
+					"query": [
+						{
+							"key": "label_name",
+							"value": "qwqw"
+						},
+						{
+							"key": "name",
+							"value": "www"
+						},
+						{
+							"key": "surnames",
+							"value": "ww"
+						},
+						{
+							"key": "street",
+							"value": "www"
+						},
+						{
+							"key": "number",
+							"value": "1221"
+						},
+						{
+							"key": "cp",
+							"value": "09032"
+						},
+						{
+							"key": "city",
+							"value": "asasa"
+						},
+						{
+							"key": "province",
+							"value": "sasa"
+						},
+						{
+							"key": "telf",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post an existing address from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1f9d473a-8102-4e9c-813c-ac6c83545cde",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/address-order/1/1/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"address-order",
+						"1",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get address from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a267d00-9e6f-4012-aa8e-3f1887b90a08",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/address-order/1/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"address-order",
+						"1",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get order with id user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0344b536-4ca5-46b4-ba88-ad70b2c90912",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order-user/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order-user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get orders in progress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "729658e1-9b35-4683-bd79-6b4d4953ccf2",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orders-state-0/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders-state-0",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get send orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7a70b4bc-80f5-4c00-9107-03c14fcde0d6",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orders-state-1/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders-state-1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get orders received",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b4374e35-eb5e-4c80-b3c9-de4ed2171f47",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/orders-state-1/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"orders-state-1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete article from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a8090129-8cf0-49c0-a55c-fc14488d9eab",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/0",
+					"raw": "{{base_url}}/article-order/1/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"article-order",
+						"1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete address from an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "72777365-16fa-451e-8810-42fceaa3ef03",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(201);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/address-order/1/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"address-order",
+						"1",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "30db31ea-106e-4da0-ab08-0c16431d9759",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"0"
+						"1"
 					]
 				}
 			},
@@ -147,9 +710,9 @@
 	],
 	"variable": [
 		{
-			"id": "add542ee-ce3b-4b2b-bf94-8fbfab1cf068",
+			"id": "cc4a23b3-93ce-49dc-bf11-815ea5a11c32",
 			"key": "base_url",
-			"value": "http://booken-app.herokuapp.com"
+			"value": "https://booken-dev.herokuapp.com/"
 		}
 	],
 	"protocolProfileBehavior": {}
