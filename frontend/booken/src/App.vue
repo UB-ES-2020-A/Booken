@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
+  <wrapper class="d-flex flex-column">
     <!-- First navbar-->
     <div style="background: #2bc4ed;">
 
@@ -340,12 +340,13 @@
         </div>
       </div>
     </footer>
+  </wrapper>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
-import {bus} from './main.js'
+import {bus, api} from './main.js'
 import axios from 'axios'
 import BookInfo from "@/components/BookInfo";
 import Contact from "@/components/Contact";
@@ -393,7 +394,7 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
-      typeIn: 2,
+      typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false
       //toggledNav: false
@@ -469,7 +470,7 @@ export default {
         var item = this.cart[i]
         console.log(item)
         var price = item.price * item.quant
-        const path = `https://booken-dev.herokuapp.com/article-order/${order_id}`
+        const path = api + 'article-order/' + order_id
         const parameters = {
           price: price
         }
@@ -485,9 +486,9 @@ export default {
       }
     },
     checkout() {
-      const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
+      const path = api + 'order/' + this.idIn
       const parameters = {
-        date: "hey",
+        date: this.getTodayDate(),
         total: this.total,
         shipping: this.shipping,
         taxes: this.taxes,
@@ -502,9 +503,14 @@ export default {
             console.log(order_id)
             this.finalizePurchase(order_id)
             console.log('Order done')
+            this.cart = []
+            toastr.success('', '¡Order done!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             // eslint-disable-next-line
+            toastr.error('', 'Order error.',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             console.log(error)
           })
     },
@@ -541,6 +547,15 @@ export default {
       if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/cp'})
+    },
+    getTodayDate() {
+      var today = new Date()
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      today = dd + '/' + mm + '/' + yyyy
+      return today
     }
   }
 

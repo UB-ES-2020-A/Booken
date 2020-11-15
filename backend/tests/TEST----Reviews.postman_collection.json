@@ -23,6 +23,41 @@
 			"response": []
 		},
 		{
+			"name": "postAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account?name=Test&lastname=Test&email=test@test.com&password=123",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Test"
+						},
+						{
+							"key": "lastname",
+							"value": "Test"
+						},
+						{
+							"key": "email",
+							"value": "test@test.com"
+						},
+						{
+							"key": "password",
+							"value": "123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "postReview",
 			"request": {
 				"method": "POST",
@@ -118,6 +153,24 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "deleteAccount",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/account/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"account",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -144,7 +197,7 @@
 	],
 	"variable": [
 		{
-			"id": "cf7fb2c8-3bfd-494b-8ec1-9150fa295798",
+			"id": "5a80c583-17d8-4038-ae8b-ade33ff856ca",
 			"key": "base_url",
 			"value": "https://booken-dev.herokuapp.com/"
 		}

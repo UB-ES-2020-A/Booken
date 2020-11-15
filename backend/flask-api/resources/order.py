@@ -223,33 +223,40 @@ class OrderAddress(Resource):
 
         return {'message': "Address with id [{}] Not found in order with id [{}]".format(id_sub, id)}, 409
 
+
+class OrderUser(Resource):
+    def get(self, id_user):
+
+        orders = [order.json() for order in OrdersModel.find_by_id_user(id_user)]
+        return {"orders": orders}, 200
+
+
+    def delete(self,id_user,id_order):
+        order = OrdersModel.find_by_id_user_and_orderid(id_user,id_order)
+        if order:
+            order.delete_from_db()
+            return {'message': "OK"}, 200
+        else:
+            return {'message': "Order not found".format(id)}, 409
+
 class InProgressOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(0)]
-        if orders:
-            return {"orders": orders}, 200
-        else:
-            return {'message': "No orders in progress".format(id)}, 409
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(0, id_user)]
+        return {"orders": orders}, 200
 
 class SendOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(1)]
-        if orders:
-            return {"orders": orders}, 200
-        else:
-            return {'message': "No orders send".format(id)}, 409
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(1, id_user)]
+        return {"orders": orders}, 200
 
 
 class ReceivedOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(2)]
-        if orders:
-            return {"orders": orders}, 200
-        else:
-            return {'message': "No orders received".format(id)}, 409
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(2, id_user)]
+        return {"orders": orders}, 200

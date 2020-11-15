@@ -43,7 +43,9 @@ class ReviewModel(db.Model):
         db.session.commit()
 
     def json(self):
+        account = AccountModel.find_by_id(self.user_id)
         return {"review": {
+            "name": "" + account.name + " " + account.lastname[0] + ".",
             "id": self.id,
             "title": self.title,
             "user_id": self.user_id,
