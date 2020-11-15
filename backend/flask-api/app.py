@@ -70,7 +70,7 @@ api.add_resource(OrderAddress, '/address-order/<int:id>/<int:id_sub>',
 api.add_resource(InProgressOrders, '/orders-state-0/<int:id_user>')
 api.add_resource(SendOrders, '/orders-state-1/<int:id_user>')
 api.add_resource(ReceivedOrders, '/orders-state-2/<int:id_user>')
-api.add_resource(OrderUser, '/order-user/<int:id_user>')
+api.add_resource(OrderUser, '/order-user/<int:id_user>', '/order-user/<int:id_user>/<int:id_order>')
 
 api.add_resource(Review, '/review/<int:id>', '/review')
 api.add_resource(ReviewList, '/reviews')

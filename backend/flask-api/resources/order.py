@@ -233,6 +233,13 @@ class OrderUser(Resource):
         else:
             return {'message': "This user hasn't got orders".format(id)}, 409
 
+    def delete(self,id_user,id_order):
+        order = OrdersModel.find_by_id_user_and_orderid(id_user,id_order)
+        if order:
+            order.delete_from_db()
+            return {'message': "OK"}, 200
+        else:
+            return {'message': "Order not found".format(id)}, 409
 
 class InProgressOrders(Resource):
 
