@@ -56,13 +56,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/1?date=15-1--2020&total=2.0&shipping=5.0&taxes=5.0&state=2",
+					"raw": "{{base_url}}/order/2?date=15-1--2020&total=2.0&shipping=5.0&taxes=5.0&state=2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"1"
+						"2"
 					],
 					"query": [
 						{
@@ -115,13 +115,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/1",
+					"raw": "{{base_url}}/order/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -147,13 +147,13 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/1?date=15-1--2021&total=2.5&shipping=5.5&taxes=5.5&state=1",
+					"raw": "{{base_url}}/order/2?date=15-1--2021&total=2.5&shipping=5.5&taxes=5.5&state=1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"1"
+						"2"
 					],
 					"query": [
 						{
@@ -206,13 +206,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/articles-order/1",
+					"raw": "{{base_url}}/articles-order/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"articles-order",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -238,13 +238,13 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/article-order/1?price=1.0",
+					"raw": "{{base_url}}/article-order/2?price=1.0",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"article-order",
-						"1"
+						"2"
 					],
 					"query": [
 						{
@@ -276,14 +276,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/article-order/1/1",
+					"raw": "{{base_url}}/article-order/2/17",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"article-order",
-						"1",
-						"1"
+						"2",
+						"17"
 					]
 				}
 			},
@@ -309,13 +309,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/addresses-order/1",
+					"raw": "{{base_url}}/addresses-order/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"addresses-order",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -341,14 +341,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/address-order/1/1?label_name=qwqw&name=www&surnames=ww&street=www&number=1221&cp=09032&city=asasa&province=sasa&telf=123",
+					"raw": "{{base_url}}/address-order/2/2?label_name=qwqw&name=www&surnames=ww&street=www&number=1221&cp=09032&city=asasa&province=sasa&telf=123",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"address-order",
-						"1",
-						"1"
+						"2",
+						"2"
 					],
 					"query": [
 						{
@@ -412,14 +412,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/address-order/1/1/1",
+					"raw": "{{base_url}}/address-order/2/2/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"address-order",
-						"1",
-						"1",
+						"2",
+						"2",
 						"1"
 					]
 				}
@@ -446,14 +446,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/address-order/1/2",
+					"raw": "{{base_url}}/address-order/2/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"address-order",
-						"1",
-						"2"
+						"2",
+						"1"
 					]
 				}
 			},
@@ -479,13 +479,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order-user/1",
+					"raw": "{{base_url}}/order-user/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order-user",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -511,13 +511,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/orders-state-0/1",
+					"raw": "{{base_url}}/orders-state-0/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"orders-state-0",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -543,13 +543,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/orders-state-1/1",
+					"raw": "{{base_url}}/orders-state-1/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"orders-state-1",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -575,13 +575,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/orders-state-1/1",
+					"raw": "{{base_url}}/orders-state-1/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"orders-state-1",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -607,14 +607,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/article-order/1/1",
+					"raw": "{{base_url}}/article-order/2/18",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"article-order",
-						"1",
-						"1"
+						"2",
+						"18"
 					]
 				}
 			},
@@ -640,14 +640,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/address-order/1/3",
+					"raw": "{{base_url}}/address-order/2/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"address-order",
-						"1",
-						"3"
+						"2",
+						"1"
 					]
 				}
 			},
@@ -673,13 +673,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/order/1",
+					"raw": "{{base_url}}/order/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"order",
-						"1"
+						"2"
 					]
 				}
 			},
@@ -710,7 +710,7 @@
 	],
 	"variable": [
 		{
-			"id": "cc4a23b3-93ce-49dc-bf11-815ea5a11c32",
+			"id": "2a51e5c4-ae9d-4383-8afb-e5b637a6b7cd",
 			"key": "base_url",
 			"value": "https://booken-dev.herokuapp.com/"
 		}
