@@ -8,7 +8,7 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
-  <wrapper class ="d-flex flex-column">
+    <!-- First navbar-->
     <div style="background: #2bc4ed;">
 
       <div class="container" style="max-width: 1400px">
@@ -143,7 +143,7 @@
         </nav>
       </div>
     </div>
-
+    <!-- Second navbar -->
     <div class="bg-dark">
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="mynavbar2">
@@ -186,109 +186,111 @@
       </nav>
     </div>
     <main class="flex-fill">
-    <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn" :id="this.idIn"/>
-    <div id="shopping_cart" v-if="viewCart">
-      <h1 style="margin-top: 1em">Tu cesta</h1>
-      <div class="container mb-4" v-if="this.cart.length >= 1">
-        <div class="row">
-          <div class="col-12">
-            <div class="table-responsive">
-              <table class="table table-striped" style="text-align: left">
-                <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Artículo</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col" class="text-center">Cantidad</th>
-                  <th scope="col" class="text-right">Total</th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item,i) in this.cart" :key="i">
-                  <td></td>
-                  <!--<td><img :src="image" style="width: 10%"></td>-->
-                  <td>{{ item.title }}</td>
-                  <td>{{ item.price }} €</td>
-                  <td class="text-center">
-                    <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-right: 0.5rem"
-                            type="submit" @click="decreaseQuant(item.id)"
-                    ><i
-                        class="fas fa-minus" style="color: #FFF"/></button>
-                    {{ item.quant }}
-                    <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-left: 0.5rem"
-                            type="submit" @click="increaseQuant(item.id)"><i
-                        class="fas fa-plus" style="color: #FFF"/></button>
-                  </td>
-                  <td class="text-right">{{ round2Dec(item.price * item.quant) }} €</td>
-                  <td class="text-right">
-                    <button class="btn btn-sm btn-danger" @click="removeBook(item.id)"><i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+      <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
+                   :id="this.idIn" :type="this.typeIn"/>
+      <!-- Cart -->
+      <div id="shopping_cart" v-if="viewCart">
+        <h1 style="margin-top: 1em">Tu cesta</h1>
+        <div class="container mb-4" v-if="this.cart.length >= 1">
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table class="table table-striped" style="text-align: left">
+                  <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Artículo</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col" class="text-center">Cantidad</th>
+                    <th scope="col" class="text-right">Total</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(item,i) in this.cart" :key="i">
+                    <td></td>
+                    <!--<td><img :src="image" style="width: 10%"></td>-->
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.price }} €</td>
+                    <td class="text-center">
+                      <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-right: 0.5rem"
+                              type="submit" @click="decreaseQuant(item.id)"
+                      ><i
+                          class="fas fa-minus" style="color: #FFF"/></button>
+                      {{ item.quant }}
+                      <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-left: 0.5rem"
+                              type="submit" @click="increaseQuant(item.id)"><i
+                          class="fas fa-plus" style="color: #FFF"/></button>
+                    </td>
+                    <td class="text-right">{{ round2Dec(item.price * item.quant) }} €</td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-danger" @click="removeBook(item.id)"><i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>IVA (21%)</td>
-                  <td class="text-right">{{ round2Dec(taxes) }} €</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>Envío</td>
-                  <td class="text-right">{{ round2Dec(shipping) }} €</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><strong>TOTAL</strong></td>
-                  <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="col mb-2">
-            <div class="row">
-              <div class="col-sm-12  col-md-6">
-                <button class="btn btn-lg btn-block"
-                        style="background-color:#3b494d; color: white; margin-top: 0.5rem"
-                        @click="toggleCart">
-                  Continuar comprando
-                </button>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>IVA (21%)</td>
+                    <td class="text-right">{{ round2Dec(taxes) }} €</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Envío</td>
+                    <td class="text-right">{{ round2Dec(shipping) }} €</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>TOTAL</strong></td>
+                    <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
-              <div class="col-sm-12 col-md-6 text-right">
-                <button class="btn btn-lg btn-block"
-                        style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
-                        @click="checkout">
-                  Pagar
-                </button>
+            </div>
+            <div class="col mb-2">
+              <div class="row">
+                <div class="col-sm-12  col-md-6">
+                  <button class="btn btn-lg btn-block"
+                          style="background-color:#3b494d; color: white; margin-top: 0.5rem"
+                          @click="toggleCart">
+                    Continuar comprando
+                  </button>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                  <button class="btn btn-lg btn-block"
+                          style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
+                          @click="checkout">
+                    Pagar
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div style="margin-top: 1rem" v-if="this.cart.length == 0">
-        <div class="row">
-          <div class="col">
-            <h3 style="margin-top: 1.5rem;">Tu cesta está vacía.</h3>
-            <button class="btn btn-lg animate__animated animate__bounce animate__infinite" @click="toggleCart"
-                    style="background-color:#3b494d; color: white; margin-top: 5rem; margin-bottom: 10rem">¿Compras
-              algo?
-            </button>
+        <div style="margin-top: 1rem" v-if="this.cart.length == 0">
+          <div class="row">
+            <div class="col">
+              <h3 style="margin-top: 1.5rem;">Tu cesta está vacía.</h3>
+              <button class="btn btn-lg animate__animated animate__bounce animate__infinite" @click="toggleCart"
+                      style="background-color:#3b494d; color: white; margin-top: 5rem; margin-bottom: 10rem">¿Compras
+                algo?
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </main>
-
+    <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
         <div class="row">
@@ -338,7 +340,6 @@
         </div>
       </div>
     </footer>
-  </wrapper>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
@@ -371,7 +372,7 @@ export default {
     bus.on('has-logged-in', (asd) => {
       this.loggedIn = Boolean(asd.logged)
       this.tokenIn = String(asd.token)
-      this.typeIn = asd.type
+      this.typeIn = parseInt(asd.type)
       this.idIn = parseInt(asd.id)
     })
     bus.on('added-to-cart', (book) => {
@@ -392,7 +393,7 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
-      typeIn: -1,
+      typeIn: 2,
       email: "prueba@gmail.com",
       viewCart: false
       //toggledNav: false
@@ -453,11 +454,11 @@ export default {
           {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getHelp() {
-      if(this.viewCart)
+      if (this.viewCart)
         this.viewCart = false
     },
-    hideCart () {
-      if(this.viewCart)
+    hideCart() {
+      if (this.viewCart)
         this.viewCart = false
     },
     toggleCart() {
@@ -473,25 +474,25 @@ export default {
           price: price
         }
         axios.post(path, parameters)
-          .then(() => {
-            console.log('Article added')
-          })
-          .catch((error) => {
-            // eslint-disable-next-line
-            console.log(error)
-          })
+            .then(() => {
+              console.log('Article added')
+            })
+            .catch((error) => {
+              // eslint-disable-next-line
+              console.log(error)
+            })
 
       }
     },
     checkout() {
       const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
       const parameters = {
-          date: "hey",
-          total: this.total,
-          shipping: this.shipping,
-          taxes: this.taxes,
-          state: 0
-        }
+        date: "hey",
+        total: this.total,
+        shipping: this.shipping,
+        taxes: this.taxes,
+        state: 0
+      }
       console.log(path)
       console.log(parameters)
       axios.post(path, parameters)
@@ -532,12 +533,12 @@ export default {
       return new Date().getFullYear()
     },
     goToAccess() {
-      if(this.viewCart)
+      if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/access'})
     },
     goToCP() {
-      if(this.viewCart)
+      if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/cp'})
     }
@@ -651,11 +652,11 @@ export default {
 }
 
 body, wrapper {
-   min-height:100vh;
+  min-height: 100vh;
 }
 
 .flex-fill {
-   flex:1 1 auto;
+  flex: 1 1 auto;
 }
 
 .categoriestxt {

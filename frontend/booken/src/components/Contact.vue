@@ -107,7 +107,7 @@ export default {
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
-            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+            toastr.error('', 'Algo no salió como se esperaba... prueba de nuevo mas tarde.',
                 {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             this.$router.push({path: '/'})
           })

@@ -8,6 +8,7 @@
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   <div class="front-container">
     <div class="container" style="max-width: 1400px">
+
       <div class="jumbotron" style="background-image: url('https://w.wallhaven.cc/full/x1/wallhaven-x1kd1d.jpg')">
         <h1 class="display-4" style="color: white">¡Todos los libros a un clic de ti!</h1>
         <p class="lead" style="color: white">¿Preparándote para otro confinamiento? En <span
@@ -18,6 +19,7 @@
         <p style="font-size: 0.6em; color: white">*Para compras de más de 49€. Se aplican otras restricciones.</p>
       </div>
       <h2>Los libros de los que todos hablan</h2>
+      <!-- First row of recommended books -->
       <div class="row row-cols-1 row-cols-sm-6">
         <div class="col mb-4">
           <div class="card h-100">
@@ -42,6 +44,7 @@
 
       </div>
       <h2>Las novelas más populares</h2>
+      <!-- Second row of recommended books -->
       <div class="row row-cols-1 row-cols-sm-6">
         <div class="col mb-4">
           <div class="card h-100">
@@ -65,6 +68,7 @@
         </div>
 
       </div>
+      <!-- Customizable jumbotron -->
       <div class="jumbotron jumbotron-fluid" style="background-color: #2bc4ed; text-align: left !important;">
         <div class="container">
           <h1 class="display-4">¿No encuentras lo que buscas?</h1>
@@ -88,8 +92,7 @@ export default {
     id: Number,
     type: Number
   },
-  created(){
-    console.log(this.id)
+  created() {
   },
   data() {
     return {

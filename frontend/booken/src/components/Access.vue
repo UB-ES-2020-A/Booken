@@ -6,9 +6,9 @@
 <template>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-
   <div>
     <div class="container" style="max-width: 1400px">
+      <!-- Login form -->
       <div class="logincontainer" id="loginform">
         <div class="loginform">
           <div class="card animate__animated animate__slideInRight" style="background-color: #3b494d">
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-
+      <!-- Register form -->
       <div class="logincontainer" id="registerform" style="display: none">
         <div class="loginform">
           <div class="card  animate__animated animate__slideInRight" style="background-color: #3b494d">
@@ -180,7 +180,7 @@ export default {
             bus.emit('has-logged-in', {
               'logged': this.logged,
               'token': String(this.token.toString()),
-              'type': this.type,
+              'type': parseInt(this.type),
               'id': this.id
             })
             this.$router.push({path: '/'})

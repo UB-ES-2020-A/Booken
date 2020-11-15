@@ -9,7 +9,7 @@
   <div class="front-container">
     <div class="container" style="max-width: 1400px">
       <div class="row justify-content-md-between justify-content-sm-start">
-
+        <!-- Set title correctly -->
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
           <h2 v-if="$route.params.category == 'HUMANIDADES'">Humanidades</h2>
           <h2 v-if="$route.params.category == 'TECNICO Y FORMACION'">Técnico y formación</h2>
@@ -20,8 +20,8 @@
           <h2 v-if="$route.params.category == 'INFANTIL'">Infantil</h2>
           <h2 v-if="$route.params.category == 'OTRAS CATEGORIAS'">Otras categorías</h2>
           <h2 v-if="$route.params.category == 'TODO'">Todos los libros</h2>
-          <!--Viendo todos los resultados para-->
         </div>
+        <!-- Sort by div -->
         <div class="col-12 col-md-6 my-auto filterBox">
           <label>Ordenar por: </label>
           <select class="form-control-sm " style="width: 180px; margin-left:10px">
@@ -33,14 +33,14 @@
           <router-link :to="{name: 'BookInfo', params: {id: 0}}">
             <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
                     v-if="this.type == 2" style="margin-left: 1em"><i class="fas fa-plus"
-                                                             style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                                                                      style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                 class="navbartextbt">Añadir</a></button>
           </router-link>
         </div>
       </div>
       <hr>
-
       <div class="row row-cols-1 row-cols-md-5" :key="nbooks">
+        <!-- Book card -->
         <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
           <div class="card h-100">
             <img
@@ -87,8 +87,6 @@ let api = 'https://booken-dev.herokuapp.com/'
 export default {
   name: "ShowBooks",
   created() {
-        console.log(this.id)
-
     this.getBooksFromDB(this.$route.params.category)
   },
   data() {

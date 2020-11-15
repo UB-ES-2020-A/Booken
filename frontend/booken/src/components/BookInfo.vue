@@ -15,6 +15,7 @@
     <div class="container">
       <div class="card" style="margin-top: 1em">
         <div class="card-body" style="text-align: left">
+          <!-- Book title and author -->
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col" v-if="book_found">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
@@ -59,6 +60,7 @@
                   class="navbartextbt" @click="saveChanges">Guardar</a></button>
             </div>
           </div>
+          <!-- Book images/found -->
           <div class="col" v-if="book_found">
             <div class="row">
               <div ref="images" class="col" style="margin-bottom: 2rem">
@@ -201,6 +203,7 @@
               </div>
             </div>
           </div>
+          <!-- Book images/not found -->
           <div class="col" v-else style="text-align: center">
             <h1>No se ha encontrado el libro</h1>
             <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
