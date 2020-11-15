@@ -39,28 +39,20 @@
                aria-controls="pills-economy" aria-selected="false">Rendimiento</a>
           </li>
         </ul>
+        <div class="row">
+          <div class="col col-md mr-auto" style="text-align: right">
+            <label>Filtrar: </label>
+            <select class="form-control-sm " style="width: 180px; margin-left:10px; margin-right: 0.5em">
+              <option @click="console.log('lel')">En progreso</option>
+              <option @click="this.stateOrdersReceived">Recibidos</option>
+              <option @click="this.stateOrdersSend">Enviados</option>
+            </select>
+          </div>
+        </div>
         <div class="tab-content mt-3" id="pills-tabContent">
           <!-- ORDERS: view order history -->
           <div class="tab-pane fade show active" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
             <div class="container-fluid">
-              <ul class="nav nav-pills flex-column flex-sm-row" role="tablist">
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link active" data-toggle="pill" href="#pills-all" role="tab"
-                     aria-controls="pills-all" aria-selected="false">Todas</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-0" role="tab"
-                     aria-controls="pills-0" aria-selected="false">En progreso</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-1" role="tab"
-                     aria-controls="pills-1" aria-selected="false">Enviado</a>
-                </li>
-                <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
-                  <a class="nav-link" data-toggle="pill" href="#pills-2" role="tab"
-                     aria-controls="pills-2" aria-selected="false">Recibido</a>
-                </li>
-              </ul>
 
               <div class="table-responsive">
                 <table class="table table-striped" style="text-align: left" :key="this.orders.length">
@@ -319,7 +311,8 @@
                       </li>
                     </ul>
                     <div class="card-header" style="text-align: right !important">
-                      <p style="cursor: pointer; text-align: right; margin-bottom: 0em; color: red" @click="deleteCard(item.id)"><i class="fas fa-trash-alt"></i></p>
+                      <p style="cursor: pointer; text-align: right; margin-bottom: 0em; color: red"
+                         @click="deleteCard(item.id)"><i class="fas fa-trash-alt"></i></p>
                     </div>
                   </div>
                 </div>
@@ -361,8 +354,8 @@
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
                                 <select class="form-group"
-                                  style="text-align: left; width:100%; height: 2.5em" id="paymentMethod"
-                                         v-model="newPaymentMethod">
+                                        style="text-align: left; width:100%; height: 2.5em" id="paymentMethod"
+                                        v-model="newPaymentMethod">
                                   <option>VISA</option>
                                   <option>JCB</option>
                                   <option>DISCOVER</option>
@@ -656,17 +649,17 @@ export default {
           .then((res) => {
             this.cards = []
             var data = res.data.accounts_cards
-            for(var i = 0; i < data.length; i++){
-                var tmp = {
-                  "id": data[i].id,
-                  "vendor": data[i].method,
-                  "expires": data[i].date,
-                  "number": data[i].number,
-                  "end_number": data[i].number,
-                  "cvc": "",
-                  "holder": data[i].card_owner
-                }
-                this.cards.push(tmp)
+            for (var i = 0; i < data.length; i++) {
+              var tmp = {
+                "id": data[i].id,
+                "vendor": data[i].method,
+                "expires": data[i].date,
+                "number": data[i].number,
+                "end_number": data[i].number,
+                "cvc": "",
+                "holder": data[i].card_owner
+              }
+              this.cards.push(tmp)
             }
             this.cardNumber = this.cards.length
           })
@@ -740,12 +733,13 @@ export default {
       this.editPass = false
     },
     stateOrdersInProgress() {
-      var path = api + 'orders-state-0/'+ this.id
+      var path = api + 'orders-state-0/' + this.id
 
       axios.get(path)
           .then((res) => {
             console.log(res.data.orders)
-            this.OrdersInProgress = res.data.orders
+            this.orders = res.data.orders
+            this.splitOrders()
           })
           .catch((error) => {
             console.log(error)
@@ -755,12 +749,12 @@ export default {
 
     },
     stateOrdersSend() {
-      var path = api + 'orders-state-1/'+ this.id
+      var path = api + 'orders-state-1/' + this.id
 
       axios.get(path)
           .then((res) => {
-            this.OrdersSend = res.data.orders
-            console.log(this.OrdersSend)
+            this.orders = res.data.orders
+            this.splitOrders()
           })
           .catch((error) => {
             console.log(error)
@@ -770,12 +764,12 @@ export default {
 
     },
     stateOrdersReceived() {
-      var path = api + 'orders-state-2/'+ this.id
+      var path = api + 'orders-state-2/' + this.id
 
       axios.get(path)
           .then((res) => {
-            this.OrdersReceived = res.data.orders
-            console.log(this.OrdersReceived)
+            this.orders = res.data.orders
+            this.splitOrders()
           })
           .catch((error) => {
             console.log(error)
@@ -784,32 +778,32 @@ export default {
           })
 
     },
-    addCard(){
-        this.addCardForm.card_owner = document.getElementById('paymentTitular').value
-        this.addCardForm.number = document.getElementById('paymentNumber').value
-        this.addCardForm.date = document.getElementById('paymentEndDate').value
-        this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+    addCard() {
+      this.addCardForm.card_owner = document.getElementById('paymentTitular').value
+      this.addCardForm.number = document.getElementById('paymentNumber').value
+      this.addCardForm.date = document.getElementById('paymentEndDate').value
+      this.addCardForm.payment_method = document.getElementById('paymentMethod').value
 
-        if (this.addCardForm.card_owner == '' || this.addCardForm.numger == '' || this.addCardForm.date == ''
-            || this.addCardForm.payment_method == ''){
-                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        } else if (!this.validateEndDate(this.addCardForm.date)) {
-            toastr.error('', 'Fecha de caducidad no valida.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        } else{
-            this.cardToDB()
-        }
+      if (this.addCardForm.card_owner == '' || this.addCardForm.numger == '' || this.addCardForm.date == ''
+          || this.addCardForm.payment_method == '') {
+        toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else if (!this.validateEndDate(this.addCardForm.date)) {
+        toastr.error('', 'Fecha de caducidad no valida.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else {
+        this.cardToDB()
+      }
     },
-    cardToDB(){
-        const path = api + 'account/' + this.id + '/card'
-        console.log(this.addCardForm)
+    cardToDB() {
+      const path = api + 'account/' + this.id + '/card'
+      console.log(this.addCardForm)
       axios.post(path, this.addCardForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Targeta guardada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getCards()
+            toastr.success('', '¡Targeta guardada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -819,15 +813,15 @@ export default {
             this.getCards()
           })
     },
-    deleteCard(card_id){
-        console.log(card_id)
-        const path = api + 'account/' + this.id + '/card/' + card_id
+    deleteCard(card_id) {
+      console.log(card_id)
+      const path = api + 'account/' + this.id + '/card/' + card_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Targeta eliminada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getCards()
+            toastr.success('', '¡Targeta eliminada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -838,26 +832,25 @@ export default {
           })
     },
     validateEndDate(date) {
-        if(date.length == 7){
-            var count = 0
-            for(var i = 0; i<date.length; i++){
-                try{
-                    if(count == 2){
-                        if(date[i] != '/')
-                            return false
-                        count += 1
-                    }
-                    else{
-                        parseInt(date[i])
-                        count += 1
-                    }
-                }catch(error){
-                    return false
-                }
+      if (date.length == 7) {
+        var count = 0
+        for (var i = 0; i < date.length; i++) {
+          try {
+            if (count == 2) {
+              if (date[i] != '/')
+                return false
+              count += 1
+            } else {
+              parseInt(date[i])
+              count += 1
             }
-            return true
-        }else
+          } catch (error) {
             return false
+          }
+        }
+        return true
+      } else
+        return false
     }
   }
 }
