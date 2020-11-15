@@ -1003,7 +1003,7 @@ export default {
       this.editPass = false
     },
     stateOrdersInProgress() {
-      var path = api + 'orders-state-0'
+      var path = api + 'orders-state-0'+ this.id
 
       axios.get(path)
           .then((res) => {
@@ -1017,7 +1017,7 @@ export default {
 
     },
     stateOrdersSend() {
-      var path = api + 'orders-state-1'
+      var path = api + 'orders-state-1'+ this.id
 
       axios.get(path)
           .then((res) => {
@@ -1031,7 +1031,7 @@ export default {
 
     },
     stateOrdersReceived() {
-      var path = api + 'orders-state-2'
+      var path = api + 'orders-state-2'+ this.id
 
       axios.get(path)
           .then((res) => {
