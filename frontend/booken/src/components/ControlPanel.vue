@@ -973,7 +973,7 @@ export default {
       this.viewOrders = this.sOrders[0]
     },
     cancelOrder(id) {
-      var path = api + 'order/' + id
+      var path = api + 'order-user/' + id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
@@ -1003,7 +1003,7 @@ export default {
       this.editPass = false
     },
     stateOrdersInProgress() {
-      var path = api + 'orders-state-0'+ this.id
+      var path = api + 'orders-state-0/'+ this.id
 
       axios.get(path)
           .then((res) => {
@@ -1017,7 +1017,7 @@ export default {
 
     },
     stateOrdersSend() {
-      var path = api + 'orders-state-1'+ this.id
+      var path = api + 'orders-state-1/'+ this.id
 
       axios.get(path)
           .then((res) => {
@@ -1031,7 +1031,7 @@ export default {
 
     },
     stateOrdersReceived() {
-      var path = api + 'orders-state-2'+ this.id
+      var path = api + 'orders-state-2/'+ this.id
 
       axios.get(path)
           .then((res) => {
