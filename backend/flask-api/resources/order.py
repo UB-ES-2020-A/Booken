@@ -223,11 +223,22 @@ class OrderAddress(Resource):
 
         return {'message': "Address with id [{}] Not found in order with id [{}]".format(id_sub, id)}, 409
 
+
+class OrderUser(Resource):
+    def get(self, id_user):
+
+        orders = [order.json() for order in OrdersModel.find_by_id_user(id_user)]
+        if orders:
+            return {"orders": orders}, 200
+        else:
+            return {'message': "This user hasn't got orders".format(id)}, 409
+
+
 class InProgressOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(0)]
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(0, id_user)]
         if orders:
             return {"orders": orders}, 200
         else:
@@ -236,8 +247,8 @@ class InProgressOrders(Resource):
 class SendOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(1)]
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(1, id_user)]
         if orders:
             return {"orders": orders}, 200
         else:
@@ -247,8 +258,8 @@ class SendOrders(Resource):
 class ReceivedOrders(Resource):
 
     #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
-    def get(self):
-        orders = [order.json() for order in OrdersModel.find_by_state(2)]
+    def get(self, id_user):
+        orders = [order.json() for order in OrdersModel.find_by_state(2, id_user)]
         if orders:
             return {"orders": orders}, 200
         else:

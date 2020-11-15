@@ -87,9 +87,9 @@ class OrdersModel(db.Model):
         self.state = new_state
 
     @classmethod
-    def find_by_state(cls, state):
+    def find_by_state(cls, state,id):
         try:
-            return OrdersModel.query.filter_by(state=state).all()
+            return OrdersModel.query.filter_by(state=state, id_user=id).all()
         except:
             return None
 
