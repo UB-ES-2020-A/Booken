@@ -62,8 +62,8 @@
                 </li>
               </ul>
 
-              <div class="table-responsive" :key="this.orders.length">
-                <table class="table table-striped" style="text-align: left">
+              <div class="table-responsive">
+                <table class="table table-striped" style="text-align: left" :key="this.orders.length">
                   <thead>
                   <tr>
                     <th scope="col">Número pedido</th>
@@ -572,9 +572,7 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
-import {bus} from '../main.js'
-// eslint-disable-next-line no-unused-vars
-let api = 'https://booken-dev.herokuapp.com/'
+import {bus, api} from '../main.js'
 import axios from 'axios'
 import * as toastr from "@/assets/toastr";
 
@@ -626,7 +624,6 @@ export default {
       newAddressCode: '',
       newAddressProvince: '',
       newAddressPhone: '',
-
       addresses: [{}]
     }
   },
@@ -641,11 +638,10 @@ export default {
   methods: {
     getOrders() {
       var path = api + 'order-user/' + this.id
-
+      console.log('lel2')
       axios.get(path)
           .then((res) => {
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
           })
           .catch((error) => {
@@ -681,7 +677,7 @@ export default {
           })
     },
     getAddresses() {
-      var path = api + 'account/' + this.id + '/addresses/'
+      var path = api + 'account/' + this.id + '/addresses'
 
       axios.get(path)
           .then((res) => {
@@ -699,6 +695,8 @@ export default {
       this.cIndex = index
     },
     splitOrders() {
+      this.sOrders = []
+      this.viewOrders = []
       this.numberOfOrders = this.orders.length
       this.numberOfPages = Math.ceil(this.orders.length / this.maxPerPage)
       let i

@@ -345,15 +345,13 @@
 import * as toastr from './assets/toastr.js'
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
-import {bus} from './main.js'
+import {bus, api} from './main.js'
 import axios from 'axios'
 import BookInfo from "@/components/BookInfo";
 import Contact from "@/components/Contact";
 import ControlPanel from "@/components/ControlPanel";
 import ShowBooks from "@/components/ShowBooks";
 
-//let api = 'https://booken-dev.herokuapp.com/'
-let api = 'http://127.0.0.1:5000/'
 export default {
   name: 'App',
   components: {

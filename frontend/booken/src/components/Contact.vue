@@ -50,7 +50,7 @@
 <script>
 import * as toastr from '../assets/toastr.js'
 import axios from 'axios'
-let api = 'https://booken-dev.herokuapp.com/'
+import {api} from '../main.js'
 
 export default {
   name: 'Location',
