@@ -487,7 +487,7 @@ export default {
     checkout() {
       const path = `https://booken-dev.herokuapp.com/order/${this.idIn}`
       const parameters = {
-        date: "hey",
+        date: this.getTodayDate(),
         total: this.total,
         shipping: this.shipping,
         taxes: this.taxes,
@@ -502,6 +502,7 @@ export default {
             console.log(order_id)
             this.finalizePurchase(order_id)
             console.log('Order done')
+            this.cart = []
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -541,6 +542,15 @@ export default {
       if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/cp'})
+    },
+    getTodayDate() {
+      var today = new Date()
+      var dd = String(today.getDate()).padStart(2, '0')
+      var mm = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+
+      today = dd + '/' + mm + '/' + yyyy
+      return today
     }
   }
 
