@@ -42,10 +42,8 @@
         <div class="row">
           <div class="col col-md mr-auto" style="text-align: right">
             <label>Filtrar: </label>
-            <select class="form-control-sm " style="width: 180px; margin-left:10px; margin-right: 0.5em">
-              <option @click="console.log('lel')">En progreso</option>
-              <option @click="this.stateOrdersReceived">Recibidos</option>
-              <option @click="this.stateOrdersSend">Enviados</option>
+            <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType" class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+              <option v-for="item in sortOptions" :key="item" :value="item.value" >{{item.text}}</option>
             </select>
           </div>
         </div>
@@ -635,7 +633,14 @@ export default {
       newAddressCity: '',
       newAddressProvince: '',
       newAddressPhone: '',
-      addresses: [{}]
+      addresses: [{}],
+      sortType: 'sort',
+      sortOptions: [
+        { text: 'Todos', value: '-1' },
+        { text: 'En progreso', value: '0' },
+        { text: 'Enviados', value: '1' },
+        { text: 'Recibidos', value: '2' }
+      ]
     }
   },
   created() {
@@ -941,6 +946,21 @@ export default {
                 this.addressToDB(tmp)
         }
     },
+    sortBy(type) {
+      if(type == "-1") {
+        this.getOrders()
+      }
+      if(type == "0") {
+        this.stateOrdersInProgress()
+      }
+      if(type == "1") {
+        this.stateOrdersSend()
+      }
+      if(type == "2") {
+        this.stateOrdersReceived()
+      }
+
+    },
     addressToDB(parameters){
         const path = api + 'account/' + this.id + '/address'
 
@@ -993,6 +1013,7 @@ export default {
                 {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             this.getAddresses()
           })
+
     }
   }
 }
