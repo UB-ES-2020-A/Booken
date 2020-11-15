@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
+  <wrapper class="d-flex flex-column">
     <!-- First navbar-->
     <div style="background: #2bc4ed;">
 
@@ -340,6 +340,7 @@
         </div>
       </div>
     </footer>
+  </wrapper>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
@@ -506,7 +507,7 @@ export default {
             console.log('Order done')
             this.cart = []
             toastr.success('', '¡Order done!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             // eslint-disable-next-line
