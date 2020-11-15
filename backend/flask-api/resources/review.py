@@ -22,7 +22,7 @@ class ReviewListBook(Resource):
         book = BookModel.find_by_id(book_id)
         if not book:
             return {'message': "Book with ['id': {}] not found".format(book_id)}, 404
-        return {'reviews': [i.json()['review'] for i in ReviewModel.find_by_user(book_id)]}, 200
+        return {'reviews': [i.json()['review'] for i in ReviewModel.find_by_book(book_id)]}, 200
 
 
 class ReviewList(Resource):

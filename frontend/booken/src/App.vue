@@ -393,7 +393,7 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
-      typeIn: 2,
+      typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false
       //toggledNav: false

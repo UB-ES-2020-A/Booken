@@ -241,58 +241,58 @@
                         <div class="form-group" style="text-align: left">
                           <label for="reviewTitle" class="col-form-label">Título</label>
                           <input type="text" class="form-control" id="reviewTitle"
-                                 v-model="ratingTitle">
+                                 v-model="valuationTitle">
 
                         </div>
                         <div class="form-group" style="text-align: left">
                           <label class="col-form-label">Tu valoración:</label>
-                          <div class="Rating" style="margin-left: 0.1em">
+                          <div class="valuation" style="margin-left: 0.1em">
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(1)"
-                                  v-if="addRatingNumber <= 0"></span>
+                                  v-if="addvaluationNumber <= 0"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
-                                  @click="updateStars(1)" v-if="addRatingNumber >= 1"></span>
+                                  @click="updateStars(1)" v-if="addvaluationNumber >= 1"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(2)"
-                                  v-if="addRatingNumber <= 1"></span>
+                                  v-if="addvaluationNumber <= 1"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
-                                  @click="updateStars(2)" v-if="addRatingNumber >= 2"></span>
+                                  @click="updateStars(2)" v-if="addvaluationNumber >= 2"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(3)"
-                                  v-if="addRatingNumber <= 2"></span>
+                                  v-if="addvaluationNumber <= 2"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
-                                  @click="updateStars(3)" v-if="addRatingNumber >= 3"></span>
+                                  @click="updateStars(3)" v-if="addvaluationNumber >= 3"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(4)"
-                                  v-if="addRatingNumber <= 3"></span>
+                                  v-if="addvaluationNumber <= 3"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
-                                  @click="updateStars(4)" v-if="addRatingNumber >= 4"></span>
+                                  @click="updateStars(4)" v-if="addvaluationNumber >= 4"></span>
 
                             <span class="fa fa-star" style="color: gray; font-size: 2em" @click="updateStars(5)"
-                                  v-if="addRatingNumber <= 4"></span>
+                                  v-if="addvaluationNumber <= 4"></span>
                             <span class="fa fa-star" style="color: orange; font-size: 2em"
-                                  @click="updateStars(5)" v-if="addRatingNumber >= 5"></span>
+                                  @click="updateStars(5)" v-if="addvaluationNumber >= 5"></span>
                           </div>
                         </div>
                         <div class="form-group" style="text-align: left">
                           <label for="reviewText" class="col-form-label">Explayate (si quieres 😉):</label>
                           <textarea class="form-control" id="reviewText" rows="5" maxlength="250"
                                     placeholder="¿Qué te ha parecido el libro? ¿A quién se lo recomendarias?"
-                                    v-model="ratingText"></textarea>
+                                    v-model="valuationText"></textarea>
                           <div id="charNum"></div>
                         </div>
                         <div class="form-group" style="text-align: center">
                           <span class="badge badge-danger animate__animated animate__rubberBand"
-                                style="font-size: 1.5em" v-if="ratingText != ''">¡NO NOS HAGAS SPOILER!</span>
+                                style="font-size: 1.5em" v-if="valuationText != ''">¡NO NOS HAGAS SPOILER!</span>
                         </div>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addRatingNumber = 0">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addvaluationNumber = 0">
                         Cancelar
                       </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
                               @click="postReview"
-                              :disabled="ratingTitle == '' || ratingText == '' || addRatingNumber == 0">
+                              :disabled="valuationTitle == '' || valuationText == '' || addvaluationNumber == 0">
                         Enviar
                       </button>
                     </div>
@@ -305,34 +305,34 @@
           <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{ item.user }} - {{ item.date }}</div>
+                <div class="card-header">{{item.name}} - {{ item.date }}</div>
                 <div class="card-body">
                   <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
-                  <div class="ReviewsRating" style="margin-left: 0.1em; margin-top: 0.5em">
+                  <div class="Reviewsvaluation" style="margin-left: 0.1em; margin-top: 0.5em">
                   <span class="fa fa-star" style="color: gray; font-size: 2em"
-                        v-if="item.rating <= 0"></span>
+                        v-if="item.valuation <= 0"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="item.rating >= 1"></span>
+                          v-if="item.valuation >= 1"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="item.rating <= 1"></span>
+                          v-if="item.valuation <= 1"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="item.rating >= 2"></span>
+                          v-if="item.valuation >= 2"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="item.rating <= 2"></span>
+                          v-if="item.valuation <= 2"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="item.rating >= 3"></span>
+                          v-if="item.valuation >= 3"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="item.rating <= 3"></span>
+                          v-if="item.valuation <= 3"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="item.rating >= 4"></span>
+                          v-if="item.valuation >= 4"></span>
                     <span class="fa fa-star" style="color: gray; font-size: 2em"
-                          v-if="item.rating <= 4"></span>
+                          v-if="item.valuation <= 4"></span>
                     <span class="fa fa-star" style="color: orange; font-size: 2em"
-                          v-if="item.rating >= 5"></span>
+                          v-if="item.valuation >= 5"></span>
                   </div>
                   <h6 class="card-subtitle" style="margin-top: 1em">Comentario</h6>
-                  <p class="card-text" style="margin-top: 0.5em">{{ item.desc }}</p>
+                  <p class="card-text" style="margin-top: 0.5em">{{ item.comment }}</p>
                 </div>
               </div>
             </div>
@@ -442,7 +442,6 @@ export default {
       this.initBookInfo()
       //this.getBooksFromDB()
       this.getReviewsFromDB()
-      this.splitReviews()
     }
   },
 
@@ -452,9 +451,9 @@ export default {
       loggedIn: false,
       book_found: 0,
       newAutor: 0,
-      addRatingNumber: 0,
-      ratingTitle: '',
-      ratingText: '',
+      addvaluationNumber: 0,
+      valuationTitle: '',
+      valuationText: '',
       nAutor: {
         id: 0,
         c: '',
@@ -495,20 +494,19 @@ export default {
       nReviews: 0,
       nPages: 0,
       sReviews: [],
-      reviews: [],
-
-
+      reviews: []
     }
   },
   methods: {
     getReviewsFromDB() {
-      var path = api + 'reviewsBook/' + this.bookInfo.id
+      var path = api + 'reviewsBook/' + this.$route.params.id
       axios.get(path)
           .then((res) => {
             this.reviews = res.data.reviews
+            this.splitReviews()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     },
     changeViewingReviews() {
@@ -524,6 +522,7 @@ export default {
       }
     },
     splitReviews() {
+      console.log(this.reviews)
       if (this.reviews.length <= 2) {
         this.viewingReviews = this.reviews
       } else {
@@ -552,12 +551,13 @@ export default {
       var path = api + 'review'
 
       axios.post(path, {
-        "user_id": this.id, "book_id": this.bookInfo.id, "title": this.ratingTitle, "valuation": this.addRatingNumber,
-        "comment": this.ratingText, "date": this.getTodayDate()})
+        "user_id": this.id, "book_id": this.bookInfo.id, "title": this.valuationTitle, "valuation": this.addvaluationNumber,
+        "comment": this.valuationText, "date": this.getTodayDate()})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getReviewsFromDB()
           })
           .catch((error) => {
             this.toPrint(error)
@@ -575,7 +575,7 @@ export default {
       return -1
     },
     updateStars(index) {
-      this.addRatingNumber = index
+      this.addvaluationNumber = index
     },
     editInfo() {
       if (this.admin) {
