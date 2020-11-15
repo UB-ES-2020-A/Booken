@@ -857,19 +857,25 @@ export default {
           })
     },
     validateEndDate(date) {
-      if (date.length == 7) {
-        var count = 0
-        for (var i = 0; i < date.length; i++) {
-          try {
-            if (count == 2) {
-              if (date[i] != '/')
-                return false
-              count += 1
-            } else {
-              parseInt(date[i])
-              count += 1
+        if(date.length == 7){
+            var count = 0
+            for(var i = 0; i<date.length; i++){
+                try{
+                    if(count == 2){
+                        if(date[i] != '/')
+                            return false
+                        count += 1
+                    }
+                    else{
+                        parseInt(date[i])
+                        count += 1
+                    }
+                }catch(error){
+                    return false
+                }
             }
-          } catch (error) {
+            return true
+        }else
             return false
     },
     updateAddressModal(address_id){
