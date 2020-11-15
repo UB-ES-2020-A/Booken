@@ -129,13 +129,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/5",
+					"raw": "{{base_url}}/book/17",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"book",
-						"5"
+						"17"
 					]
 				}
 			},
@@ -147,13 +147,13 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/5?isbn=12345&name=Book test (PUT)&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test_put.com&back_cover_image_url=www.url_test_put.com",
+					"raw": "{{base_url}}/book/17?isbn=12345&name=Book test (PUT)&author_name=Author name test (PUT)&author_bd=10/10/1990&author_city=Barcelona&author_country=Spain&genre=LITERATURA&year=2020&editorial=Editorial test (PUT)&language=spanish&price=9.90&synopsis=Book synopsis test (PUT)&description=Book description test (PUT)&num_pages=100&cover_type=0&num_sales=0&total_available=12&cover_image_url=www.url_test_put.com&back_cover_image_url=www.url_test_put.com",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"book",
-						"5"
+						"17"
 					],
 					"query": [
 						{
@@ -248,13 +248,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/book/5",
+					"raw": "{{base_url}}/book/17",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"book",
-						"5"
+						"17"
 					]
 				}
 			},
@@ -285,7 +285,7 @@
 	],
 	"variable": [
 		{
-			"id": "0bf29d38-27fd-4b1f-9314-b2d2cd164fd7",
+			"id": "535030cd-a873-489c-9ce4-b64d95f65977",
 			"key": "base_url",
 			"value": "http://booken-dev.herokuapp.com"
 		}
