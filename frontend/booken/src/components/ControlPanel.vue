@@ -904,7 +904,7 @@ export default {
   },
   methods: {
     getOrders() {
-      var path = api + 'order/' + this.id
+      var path = api + 'order-user/' + this.id
 
       axios.get(path)
           .then((res) => {
@@ -973,7 +973,7 @@ export default {
       this.viewOrders = this.sOrders[0]
     },
     cancelOrder(id) {
-      var path = api + 'order-user/' + id
+      var path = api + 'order/' + id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {

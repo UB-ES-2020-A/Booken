@@ -503,9 +503,13 @@ export default {
             this.finalizePurchase(order_id)
             console.log('Order done')
             this.cart = []
+            toastr.success('', '¡Order done!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
           .catch((error) => {
             // eslint-disable-next-line
+            toastr.error('', 'Order error.',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             console.log(error)
           })
     },
