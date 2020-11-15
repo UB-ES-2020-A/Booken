@@ -945,9 +945,6 @@ export default {
             else
                 this.addressToDB(tmp)
         }
-        return true
-      } else
-        return false
     },
     sortBy(type) {
       if(type == "-1") {
