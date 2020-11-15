@@ -8,22 +8,28 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 
 auth = HTTPBasicAuth()
 
+
 class AccountModel(db.Model):
     __tablename__ = 'accounts'
 
-    id = db.Column(db.Integer, primary_key = True, unique = True)
-    email = db.Column(db.String(30), unique = True, nullable = False)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    email = db.Column(db.String(30), unique=True, nullable=False)
 
     name = db.Column(db.String(), nullable=False)
     lastname = db.Column(db.String(), nullable=False)
 
-    password = db.Column(db.String(), nullable = False)
+    password = db.Column(db.String(), nullable=False)
 
-    type = db.Column(db.Integer, nullable = False) # 0 = client / 1 = develop-manager / 2 = stock-manager
+    type = db.Column(db.Integer, nullable=False)  # 0 = client / 1 = develop-manager / 2 = stock-manager
     available_money = db.Column(db.Integer)
 
-    #orders = db.relationship('OrdersModel', backref='orders, lazy = True)
-    #wish_list = db.relationship('BookModel', backref='books', lazy = True)
+
+    addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
+
+    cards = db.relationship('CardModel', backref='payment_card', cascade="all, delete-orphan", lazy=True)
+
+    reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
+
 
     def __init__(self, email, name, lastname, password):
         self.email = email
@@ -45,9 +51,26 @@ class AccountModel(db.Model):
 
         return body
 
+    def json_with_address(self):
+        address_json = [address.json_with_id() for address in self.addresses]
+        body = {
+            'id': self.id,
+            'name': self.name,
+            'lastname': self.lastname,
+            'email': self.email,
+            'available_money': self.available_money,
+            'type': self.type,
+            "addresses": address_json
+        }
+
+        return body
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+
+    def db_rollback(self):
+        db.session.rollback()
 
     def delete_from_db(self):
         db.session.delete(self)
@@ -67,9 +90,9 @@ class AccountModel(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)
 
-    def generate_auth_token(self, expiration = 600):
+    def generate_auth_token(self, expiration=600):
         s = Serializer(secret_key, expires_in=expiration)
-        return s.dumps({'email':self.email})
+        return s.dumps({'email': self.email})
 
     @classmethod
     def verify_auth_token(cls, token):
@@ -85,14 +108,21 @@ class AccountModel(db.Model):
 
         return user
 
+    def find_addres_by_id(self,address_id):
+        index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
+        if index:
+            return self.addresses[index[0]]
+        else:
+            return None
 
 @auth.verify_password
 def verify_password(id, token):
     id = int(id)
     user = AccountModel.verify_auth_token(token)
-    if(user and user.id == id):
+    if (user and user.id == id):
         g.user = user
         return user
+
 
 @auth.get_user_roles
 def get_user_roles(user):

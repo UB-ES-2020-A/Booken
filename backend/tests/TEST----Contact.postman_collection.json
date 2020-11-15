@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "ab106696-0217-48ae-a66b-c3c5f1be8e92",
+		"name": "TEST----Contact",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getContacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f0058dac-476f-45a3-a0fe-4c4da595bd75",
+						"exec": [
+							"var schema = {",
+							"   \"contacts\": \"array\",",
+							"   \"items\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"full_name\": {\"type\":\"string\"},",
+							"        \"email\": {\"type\":\"string\"},",
+							"        \"phone_number\": {\"type\":\"integer\"},",
+							"        \"contact_query\": {\"type\":\"string\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/contact_list/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"contact_list",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postContact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1abec3dc-098b-4b1e-95cf-05a103a5b345",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().contacts",
+							"    data.forEach(contact => {",
+							"        if (contact.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"contact_id\", contact.id)",
+							"        }",
+							"    })",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info/\" + pm.variables.get(\"contact_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "full_name",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "postman_test@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "phone_number",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "contact_query",
+							"value": "Esto es una consulta de prueba",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/contact_info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"contact_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getContact",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ebff8aa6-7b0f-404a-b20c-4ba7c337dab3",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"full_name\", value: \"test\", disabled: false},",
+							"         {key: \"phone_number\", value: \"123456\", disabled: false},",
+							"         {key: \"contact_query\", value: \"Esto es una consulta de prueba\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().contacts",
+							"    data.forEach(contact => {",
+							"        if (contact.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"contact_id\", contact.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3dcf922b-bd3b-4859-9db9-0ea7cc74627b",
+						"exec": [
+							"var schema = {",
+							"   \"contact\": {",
+							"        \"id\": {\"type\":\"integer\"},",
+							"        \"full_name\": {\"type\":\"string\"},",
+							"        \"email\": {\"type\":\"string\"},",
+							"        \"phone_number\": {\"type\":\"integer\"},",
+							"        \"contact_query\": {\"type\":\"string\"}",
+							"    }",
+							"",
+							"};",
+							"",
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+							"})",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info/\" + pm.variables.get(\"contact_id\"),",
+							"    method: 'DELETE',",
+							"}, function (err, res) {});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/contact_info/{{contact_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"contact_info",
+						"{{contact_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteContact",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bd67e861-a546-47ec-94ad-9429916d1c24",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_info\",",
+							"    method: 'POST',",
+							"    body: {",
+							"     mode: 'formdata',",
+							"     formdata: [",
+							"         {key: \"email\", value: \"postman_test@gmail.com\", disabled: false, description: \"\"},",
+							"         {key: \"full_name\", value: \"test\", disabled: false},",
+							"         {key: \"phone_number\", value: \"123456\", disabled: false},",
+							"         {key: \"contact_query\", value: \"Esto es una consulta de prueba\", disabled: false},",
+							"        ]",
+							"    },",
+							"}, function (err, res) {});",
+							"",
+							"pm.sendRequest({",
+							"    url: pm.variables.get(\"base_url\") + \"/contact_list/\",",
+							"    method: 'GET',",
+							"}, function (err, res) {",
+							"    var data = res.json().contacts",
+							"    data.forEach(contact => {",
+							"        if (contact.email === \"postman_test@gmail.com\"){",
+							"            pm.collectionVariables.set(\"contact_id\", contact.id)",
+							"        }",
+							"    })",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7cbb49cc-0ea4-4a51-b030-77726b159ee9",
+						"exec": [
+							"pm.test(\"Status code 200\", function(){",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/contact_info/{{contact_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"contact_info",
+						"{{contact_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ff7ca198-002f-4106-83a7-feeb364e86fb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "931446b6-d6b1-4445-8141-8f96f35f7acb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3cc06e53-e457-4199-abf5-9f342a049a53",
+			"key": "base_url",
+			"value": "http://booken-app.herokuapp.com"
+		},
+		{
+			"id": "ba71262d-ebdc-4cc0-bd0f-40d4082e2861",
+			"key": "contact_id",
+			"value": "1"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

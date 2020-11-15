@@ -3,16 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 from db import db
 from flask import g, current_app
 
+
 class AuthorModel(db.Model):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    name = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
-    birth_date = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
-    city = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
-    country = db.Column(db.String(30), primary_key=True, unique=False, nullable=False)
+    name = db.Column(db.String(30), unique=False, nullable=False)
+    birth_date = db.Column(db.String(30), unique=False, nullable=False)
+    city = db.Column(db.String(30), unique=False, nullable=False)
+    country = db.Column(db.String(30), unique=False, nullable=False)
 
-    def __init__(self, id, name, birth_date, city, country):
-        self.id = id
+    def __init__(self, name, birth_date, city, country):
         self.name = name
         self.birth_date = birth_date
         self.city = city
@@ -25,7 +25,6 @@ class AuthorModel(db.Model):
             "birth_date": self.birth_date,
             "country": self.country,
             "city": self.city
-
         }
 
     def save_to_db(self):
@@ -40,6 +39,13 @@ class AuthorModel(db.Model):
     def find_by_id(cls, id):
         try:
             return AuthorModel.query.filter_by(id=id).first()
+        except:
+            return None
+
+    @classmethod
+    def find_by_name(cls, name):
+        try:
+            return AuthorModel.query.filter_by(name=name).first()
         except:
             return None
 

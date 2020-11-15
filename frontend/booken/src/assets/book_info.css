@@ -6,7 +6,6 @@
     font-family: Helvetica;
     font-weight: bold;
     font-size: 52px;
-    text-transform: uppercase;
 }
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
@@ -41,6 +40,11 @@
     background: #292b2c;
 }
 
+select {
+    -webkit-appearance: menulist !important;
+    -moz-appearance: menulist !important;
+}
+
 .label-info-not-selected {
     text-transform: uppercase;
     cursor: pointer;
@@ -68,7 +72,7 @@
     padding-right: 200px
 }
 .navbartextbt {
-  color: white;
+  color: white !important;
   font-size: 1.2em
 }
 

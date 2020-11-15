@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "3a4fbcd9-0fba-4bdc-8dd3-33914ee39070",
+		"name": "TEST----Reviews",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getReviews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/reviews",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postReview",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/review?title=Me encanta!&user_id=1&book_id=1&date=12/11/2020&valuation=5&comment=Muy interesante",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"review"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Me encanta!"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						},
+						{
+							"key": "book_id",
+							"value": "1"
+						},
+						{
+							"key": "date",
+							"value": "12/11/2020"
+						},
+						{
+							"key": "valuation",
+							"value": "5"
+						},
+						{
+							"key": "comment",
+							"value": "Muy interesante"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getReviewBook",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/reviewsBook/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviewsBook",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getReviewUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/reviewsUser/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reviewsUser",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteReview",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/review/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"review",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "10071b73-1ff3-486b-8bb3-6f50abf36c6a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f739ad5e-390f-4a4c-8b16-969139ece734",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "687bddbb-6d75-429c-8418-482e078ca196",
+			"key": "base_url",
+			"value": "https://booken-dev.herokuapp.com/"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

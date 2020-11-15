@@ -1,10 +1,11 @@
 language: node_js
+sudo: required
 node_js:
     - node
 cache: npm
 install:
     - npm install newman
-script: 
+script:
     - cd frontend/booken
     - npm install
     - npm run build
@@ -27,3 +28,8 @@ after_deploy:
     - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
     - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Reviews.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Address.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Card.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Orders.postman_collection.json
+    - node_modules/.bin/newman run backend/tests/TEST----Articles.postman_collection.json
