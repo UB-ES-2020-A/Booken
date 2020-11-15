@@ -39,19 +39,18 @@
                aria-controls="pills-economy" aria-selected="false">Rendimiento</a>
           </li>
         </ul>
-        <div class="row">
-          <div class="col col-md mr-auto" style="text-align: right">
-            <label>Filtrar: </label>
-            <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType" class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
-              <option v-for="item in sortOptions" :key="item" :value="item.value" >{{item.text}}</option>
-            </select>
-          </div>
-        </div>
         <div class="tab-content mt-3" id="pills-tabContent">
           <!-- ORDERS: view order history -->
           <div class="tab-pane fade show active" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
             <div class="container-fluid">
-
+              <div class="row">
+                <div class="col col-md mr-auto" style="text-align: right">
+                  <label>Filtrar: </label>
+                  <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType" class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+                    <option v-for="item in sortOptions" :key="item" :value="item.value" >{{item.text}}</option>
+                  </select>
+                </div>
+              </div>
               <div class="table-responsive">
                 <table class="table table-striped" style="text-align: left" :key="this.orders.length">
                   <thead>
@@ -68,10 +67,9 @@
                     <td><b>#{{ item.id }}</b></td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">Recibido</span></td>
-                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Preparado</span></td>
-                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Enviado</span></td>
-                    <td class="text-right" v-if="item.state==3"><span class="badge badge-success">Entregado</span></td>
+                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">En progreso</span></td>
+                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Enviado</span></td>
+                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Recibido</span></td>
                     <td class="text-right" v-if="item.state==0">
                       <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
                     </td>
