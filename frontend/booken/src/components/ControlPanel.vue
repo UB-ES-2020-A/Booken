@@ -209,76 +209,92 @@
                         {{ item.telf }}
                       </li>
                     </ul>
-                    <div class="card-header" style="text-align: right !important">
-                      <a href="" style="text-align: right; color: #3b494d; margin-right: 1.5em"><i
-                          class="fas fa-pen"></i></a>
-                      <a href="" style="text-align: right; color: red"><i class="fas fa-trash-alt"></i></a>
+                    <div class="card-header">
+                        <div style="display: flex; float:right;">
+                          <p style="cursor: pointer; margin-bottom: 0em; text-align: right; margin-right: 1em; color: #3b494d;"
+                              data-toggle="modal" data-target="#modalAddress" @click="updateAddressModal(item.id)"><i
+                              class="fas fa-pen"></i></p>
+                          <p style="cursor: pointer; margin-bottom: 0em; text-align: right; color: red" @click="deleteAddress(item.id)">
+                             <i class="fas fa-trash-alt"></i></p>
+                        </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 mb-4 myAddressCard" v-if="addressNumber < 4">
+                <div class="col-12 col-lg-4 mb-4 myAddressCard" v-if="this.addressNumber < 3">
                   <div class="card h-100" style="text-align: center">
                     <button style="color: #3b494d; height: 100%" type="submit"
-                            data-toggle="modal" data-target="#modalAddress" data-whatever="@getbootstrap">
+                            data-toggle="modal" data-target="#modalAddress" data-whatever="@getbootstrap"
+                            @click="updateAddressModal(-1)">
                       <i class="fas fa-plus" style="font-size: 6em; top: 50%"></i>
                     </button>
-
-                    <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
+                  </div>
+                </div>
+                <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
                          aria-labelledby="modalAddressLabel"
                          aria-hidden="true">
-                      <div class="modal-dialog" role="document"
-                           style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="modalAddressLabel">Añadir dirección</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
+                  <div class="modal-dialog" role="document"
+                       style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalAddressLabel">Añadir dirección</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
-                          <div class="modal-body">
-                            <form>
-                              <div class="form-group" style="text-align: left">
-                                <label for="addressUser" class="col-form-label">Nombre</label>
-                                <input type="text" class="form-control" id="addressUser"
-                                       v-model="newAddressUser">
-                              </div>
-                              <div class="form-group" style="text-align: left">
-                                <label for="addressRoad" class="col-form-label">Dirección</label>
-                                <input type="text" class="form-control" id="addressRoad"
-                                       v-model="newAddressRoad">
-                              </div>
-                              <div class="form-group" style="text-align: left">
-                                <label for="addressCode" class="col-form-label">Código postal</label>
-                                <input type="text" class="form-control" id="addressCode"
-                                       v-model="newAddressCode">
-                              </div>
-                              <div class="form-group" style="text-align: left">
-                                <label for="addressProvince" class="col-form-label">Provincia</label>
-                                <input type="text" class="form-control" id="addressProvince"
-                                       v-model="newAddressProvince">
-                              </div>
-                              <div class="form-group" style="text-align: left">
-                                <label for="addressPhone" class="col-form-label">Telefono</label>
-                                <input type="text" class="form-control" id="addressPhone"
-                                       v-model="newAddressPhone">
-                              </div>
-                            </form>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <div style="display:flex;">
+                                <input type="text" class="form-control"
+                                       v-model="newAddressName" placeHolder="Nombre">
+                                <input type="text" class="form-control"
+                                       v-model="newAddressSurname" placeHolder="Apellidos">
+                            </div>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                              Cancelar
-                            </button>
-                            <button type="button" class="btn" style="background: #2bc4ed; color: white"
-                                    data-dismiss="modal">
-                              Enviar
-                            </button>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <div style="display:flex">
+                                <input type="text" class="form-control" style="width:80%;"
+                                       v-model="newAddressRoad" placeHolder="Calle">
+                                <input type="number" class="form-control" style="width:20%;"
+                                       v-model="newAddressNumber" placeHolder="Nº">
+                            </div>
                           </div>
-                        </div>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <input type="number" class="form-control" v-model="newAddressCode">
+                          </div>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <div style="display:flex">
+                                <input type="text" class="form-control"
+                                       v-model="newAddressCity" placeHolder="Ciudad">
+                                <input type="text" class="form-control"
+                                       v-model="newAddressProvince" placeHolder="Provincia">
+                            </div>
+                          </div>
+                          <div class="form-group" style="text-align: left">
+                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <input type="number" class="form-control" v-model="newAddressPhone">
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                          Cancelar
+                        </button>
+                        <button type="button" class="btn" style="background: #2bc4ed; color: white"
+                                data-dismiss="modal" @click="addAddress">
+                          Enviar
+                        </button>
                       </div>
                     </div>
-
                   </div>
-
                 </div>
               </div>
             </div>
@@ -329,7 +345,7 @@
                            style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="modalPaymentLabel">Añadir targeta</h5>
+                            <h5 class="modal-title" id="modalPaymentLabel">Añadir tarjeta</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -338,24 +354,20 @@
                             <form>
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentTitular" class="col-form-label">Nombre de titular</label>
-                                <input type="text" class="form-control" id="paymentTitular"
-                                       v-model="newPaymentTitular">
+                                <input type="text" class="form-control" id="paymentTitular">
                               </div>
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentNumber" class="col-form-label">Número de tarjeta</label>
-                                <input type="text" class="form-control" id="paymentNumber"
-                                       v-model="newPaymentNumber">
+                                <input type="number" class="form-control" id="paymentNumber">
                               </div>
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentEndDate" class="col-form-label">Fecha de vencimiento</label>
-                                <input type="text" class="form-control" id="paymentEndDate"
-                                       v-model="newPaymentEndDate" placeholder="mm/yyyy">
+                                <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/yyyy">
                               </div>
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
                                 <select class="form-group"
-                                        style="text-align: left; width:100%; height: 2.5em" id="paymentMethod"
-                                        v-model="newPaymentMethod">
+                                  style="text-align: left; width:100%; height: 2.5em" id="paymentMethod">
                                   <option>VISA</option>
                                   <option>JCB</option>
                                   <option>DISCOVER</option>
@@ -612,9 +624,15 @@ export default {
         "payment_method": ''
       },
 
-      newAddressUser: '',
+      address_edit: -1,
+      
+      newAddressLabel: '',
+      newAddressName: '',
+      newAddressSurname: '',
       newAddressRoad: '',
+      newAddressNumber: '',
       newAddressCode: '',
+      newAddressCity: '',
       newAddressProvince: '',
       newAddressPhone: '',
       addresses: [{}]
@@ -664,8 +682,8 @@ export default {
             this.cardNumber = this.cards.length
           })
           .catch((error) => {
-            console.log(error)
-            toastr.error('', 'No se ha podido recuperar las targetas.',
+            this.toPrint(error)
+            toastr.error('', 'No se ha podido recuperar las tarjetas.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
     },
@@ -675,13 +693,13 @@ export default {
       axios.get(path)
           .then((res) => {
             this.addresses = res.data.accounts_addresses
+            this.addressNumber = this.addresses.length
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las direcciones.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
-      this.addressNumber = this.addresses.length
     },
     changeViewingOrders(index) {
       this.viewOrders = this.sOrders[index]
@@ -778,32 +796,40 @@ export default {
           })
 
     },
-    addCard() {
-      this.addCardForm.card_owner = document.getElementById('paymentTitular').value
-      this.addCardForm.number = document.getElementById('paymentNumber').value
-      this.addCardForm.date = document.getElementById('paymentEndDate').value
-      this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+    addCard(){
+        this.addCardForm.card_owner = document.getElementById('paymentTitular').value
+        this.addCardForm.number = document.getElementById('paymentNumber').value
+        this.addCardForm.date = document.getElementById('paymentEndDate').value
+        this.addCardForm.payment_method = document.getElementById('paymentMethod').value
 
-      if (this.addCardForm.card_owner == '' || this.addCardForm.numger == '' || this.addCardForm.date == ''
-          || this.addCardForm.payment_method == '') {
-        toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-      } else if (!this.validateEndDate(this.addCardForm.date)) {
-        toastr.error('', 'Fecha de caducidad no valida.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-      } else {
-        this.cardToDB()
-      }
+        if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
+            || this.addCardForm.payment_method == ''){
+                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        } else if(this.addCardForm.number.length != 24){
+                toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+        } else if (!this.validateEndDate(this.addCardForm.date)) {
+            toastr.error('', 'Fecha de caducidad no valida.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        } else{
+            this.cardToDB()
+        }
+
+        document.getElementById('paymentTitular').value = ''
+        document.getElementById('paymentNumber').value = ''
+        document.getElementById('paymentEndDate').value = ''
+        document.getElementById('paymentMethod').value = ''
     },
-    cardToDB() {
-      const path = api + 'account/' + this.id + '/card'
-      console.log(this.addCardForm)
+    cardToDB(){
+        const path = api + 'account/' + this.id + '/card'
       axios.post(path, this.addCardForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            toastr.success('', '¡Targeta guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-            this.getCards()
+                toastr.success('', '¡Tarjeta guardada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -813,15 +839,14 @@ export default {
             this.getCards()
           })
     },
-    deleteCard(card_id) {
-      console.log(card_id)
-      const path = api + 'account/' + this.id + '/card/' + card_id
+    deleteCard(card_id){
+        const path = api + 'account/' + this.id + '/card/' + card_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            toastr.success('', '¡Targeta eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-            this.getCards()
+                toastr.success('', '¡Tarjeta eliminada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -832,25 +857,142 @@ export default {
           })
     },
     validateEndDate(date) {
-      if (date.length == 7) {
-        var count = 0
-        for (var i = 0; i < date.length; i++) {
-          try {
-            if (count == 2) {
-              if (date[i] != '/')
-                return false
-              count += 1
-            } else {
-              parseInt(date[i])
-              count += 1
+        if(date.length == 7){
+            var count = 0
+            for(var i = 0; i<date.length; i++){
+                try{
+                    if(count == 2){
+                        if(date[i] != '/')
+                            return false
+                        count += 1
+                    }
+                    else{
+                        parseInt(date[i])
+                        count += 1
+                    }
+                }catch(error){
+                    return false
+                }
             }
-          } catch (error) {
+            return true
+        }else
             return false
-          }
+    },
+    updateAddressModal(address_id){
+        this.address_edit = address_id
+        
+        if(this.address_edit == -1){
+            this.newAddressLabel = ''
+            this.newAddressName = ''  
+            this.newAddressSurname = ''  
+            this.newAddressRoad = ''
+            this.newAddressNumber= ''
+            this.newAddressCode= ''  
+            this.newAddressCity= ''
+            this.newAddressProvince= ''
+            this.newAddressPhone = ''
         }
-        return true
-      } else
-        return false
+        else{
+            for( var i = 0; i<this.addresses.length; i++){
+                var address = this.addresses[i]
+
+                if(address.id == this.address_edit){
+                    this.newAddressLabel = address.label_name
+                    this.newAddressName = address.name
+                    this.newAddressSurname = address.surnames
+                    this.newAddressRoad = address.street
+                    this.newAddressNumber= address.number
+                    this.newAddressCode= address.cp
+                    this.newAddressCity= address.city
+                    this.newAddressProvince= address.province
+                    this.newAddressPhone = address.telf
+                }
+            }
+        }
+    },
+    addAddress(){
+        if (this.newAddressName == '' || this.newAddressSurname == '' || this.newAddressRoad == ''
+            || this.newAddressNumber== '' || this.newAddressCode== '' || this.newAddressCity== ''
+            || this.newAddressProvince== '' || this.newAddressPhone == ''){
+                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        }
+        else if(this.newAddressCode.length!=5){
+            toastr.info('', 'El codigo postal debe contener 4 digitos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        }else if(this.newAddressPhone.length!=9){
+            toastr.info('', 'El numero de telefono debe contener 9 digitos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        }else{
+            var tmp = {
+                "label_name": this.newAddressLabel,
+                "name": this.newAddressName,
+                "surnames": this.newAddressSurname,
+                "street": this.newAddressRoad,
+                "number": this.newAddressNumber,
+                "cp": this.newAddressCode,
+                "city": this.newAddressCity,
+                "province": this.newAddressProvince,
+                "telf": this.newAddressPhone
+            }
+            if(this.address_edit!=-1)
+                this.addressUpdateToDB(tmp)
+            else
+                this.addressToDB(tmp)
+        }
+    },
+    addressToDB(parameters){
+        const path = api + 'account/' + this.id + '/address'
+
+      axios.post(path, parameters)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+                toastr.success('', '¡Dirección guardada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getAddresses()
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
+          })
+    },
+    addressUpdateToDB(parameters){
+        const path = api + 'account/' + this.id + '/address/' + this.address_edit
+
+      axios.put(path, parameters)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+                toastr.success('', '¡Dirección guardada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getAddresses()
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
+          })
+    },
+    deleteAddress(address_id){
+        const path = api + 'account/' + this.id + '/address/' + address_id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+                toastr.success('', '¡Dirección eliminada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getAddresses()
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
+          })
     }
   }
 }
