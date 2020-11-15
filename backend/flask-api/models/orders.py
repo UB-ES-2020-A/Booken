@@ -93,6 +93,12 @@ class OrdersModel(db.Model):
         except:
             return None
 
+    @classmethod
+    def find_by_id_user_and_orderid(cls, id_user,order_id):
+        try:
+            return OrdersModel.query.filter_by(id_user=id_user, id = order_id).all()
+        except:
+            return None
 
     @classmethod
     def find_by_id_user(cls, id):
