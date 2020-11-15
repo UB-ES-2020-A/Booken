@@ -1090,7 +1090,6 @@ export default {
     },
     cardToDB(){
         const path = api + 'account/' + this.id + '/card'
-        console.log(this.addCardForm)
       axios.post(path, this.addCardForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
@@ -1107,7 +1106,6 @@ export default {
           })
     },
     deleteCard(card_id){
-        console.log(card_id)
         const path = api + 'account/' + this.id + '/card/' + card_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
@@ -1211,7 +1209,6 @@ export default {
     },
     addressToDB(parameters){
         const path = api + 'account/' + this.id + '/address'
-        console.log(parameters)
 
       axios.post(path, parameters)
           // eslint-disable-next-line no-unused-vars
@@ -1230,7 +1227,6 @@ export default {
     },
     addressUpdateToDB(parameters){
         const path = api + 'account/' + this.id + '/address/' + this.address_edit
-        console.log(parameters)
 
       axios.put(path, parameters)
           // eslint-disable-next-line no-unused-vars
@@ -1248,7 +1244,6 @@ export default {
           })
     },
     deleteAddress(address_id){
-        console.log(address_id)
         const path = api + 'account/' + this.id + '/address/' + address_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
