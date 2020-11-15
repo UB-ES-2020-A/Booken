@@ -319,11 +319,11 @@
                       </li>
                     </ul>
                     <div class="card-header" style="text-align: right !important">
-                      <a href="" style="text-align: right; color: red"><i class="fas fa-trash-alt"></i></a>
+                      <p style="cursor: pointer; text-align: right; margin-bottom: 0em; color: red" @click="deleteCard(item.id)"><i class="fas fa-trash-alt"></i></p>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-if="cardNumber < 3">
+                <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-if="this.cardNumber < 2">
                   <div class="card h-100">
                     <button style="color: #3b494d; height: 100%" type="submit" data-toggle="modal"
                             data-target="#modalPayment" data-whatever="@getbootstrap">
@@ -336,7 +336,7 @@
                            style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="modalPaymentLabel">Añadir tarjeta</h5>
+                            <h5 class="modal-title" id="modalPaymentLabel">Añadir targeta</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -356,7 +356,17 @@
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentEndDate" class="col-form-label">Fecha de vencimiento</label>
                                 <input type="text" class="form-control" id="paymentEndDate"
-                                       v-model="newPaymentEndDate" placeholder="00/00">
+                                       v-model="newPaymentEndDate" placeholder="mm/yyyy">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
+                                <select class="form-group"
+                                  style="text-align: left; width:100%; height: 2.5em" id="paymentMethod"
+                                         v-model="newPaymentMethod">
+                                  <option>VISA</option>
+                                  <option>JCB</option>
+                                  <option>DISCOVER</option>
+                                </select>
                               </div>
                             </form>
                           </div>
@@ -365,7 +375,7 @@
                               Cancelar
                             </button>
                             <button type="button" class="btn" style="background: #2bc4ed; color: white"
-                                    data-dismiss="modal">
+                                    data-dismiss="modal" @click="addCard">
                               Enviar
                             </button>
                           </div>
@@ -866,6 +876,14 @@ export default {
           "holder": "Borat Led"
         }
       ],
+
+      addCardForm: {
+        "card_owner": '',
+        "number": '',
+        "date": '',
+        "payment_method": ''
+      },
+
       newAddressUser: '',
       newAddressRoad: '',
       newAddressCode: '',
@@ -899,7 +917,30 @@ export default {
           })
     },
     getCards() {
-      this.cardNumber = this.cards.length
+      var path = api + 'account/' + this.id + '/cards'
+      axios.get(path)
+          .then((res) => {
+            this.cards = []
+            var data = res.data.accounts_cards
+            for(var i = 0; i < data.length; i++){
+                var tmp = {
+                  "id": data[i].id,
+                  "vendor": data[i].method,
+                  "expires": data[i].date,
+                  "number": data[i].number,
+                  "end_number": data[i].number,
+                  "cvc": "",
+                  "holder": data[i].card_owner
+                }
+                this.cards.push(tmp)
+            }
+            this.cardNumber = this.cards.length
+          })
+          .catch((error) => {
+            this.toPrint(error)
+            toastr.error('', 'No se ha podido recuperar las targetas.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
     },
     getAddresses() {
       var path = api + 'account/' + this.id + '/addresses/'
@@ -1002,6 +1043,81 @@ export default {
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
           })
 
+    },
+    addCard(){
+        this.addCardForm.card_owner = document.getElementById('paymentTitular').value
+        this.addCardForm.number = document.getElementById('paymentNumber').value
+        this.addCardForm.date = document.getElementById('paymentEndDate').value
+        this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+
+        if (this.addCardForm.card_owner == '' || this.addCardForm.numger == '' || this.addCardForm.date == ''
+            || this.addCardForm.payment_method == ''){
+                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        } else if (!this.validateEndDate(this.addCardForm.date)) {
+            toastr.error('', 'Fecha de caducidad no valida.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        } else{
+            this.cardToDB()
+        }
+    },
+    cardToDB(){
+        const path = api + 'account/' + this.id + '/card'
+        console.log(this.addCardForm)
+      axios.post(path, this.addCardForm)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+                toastr.success('', '¡Targeta guardada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getCards()
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
+          })
+    },
+    deleteCard(card_id){
+        console.log(card_id)
+        const path = api + 'account/' + this.id + '/card/' + card_id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+                toastr.success('', '¡Targeta eliminada con éxito!',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                this.getCards()
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
+          })
+    },
+    validateEndDate(date) {
+        if(date.length == 7){
+            var count = 0
+            for(var i = 0; i<date.length; i++){
+                try{
+                    if(count == 2){
+                        if(date[i] != '/')
+                            return false
+                        count += 1
+                    }
+                    else{
+                        parseInt(date[i])
+                        count += 1
+                    }
+                }catch(error){
+                    return false
+                }
+            }
+            return true
+        }else
+            return false
     }
   }
 }
