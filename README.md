@@ -7,7 +7,6 @@
   </a>
 
   <h3 align="center">booken app</h3>
-
   <p align="center">
     An awesome web app to buy books!
     <br /> 
