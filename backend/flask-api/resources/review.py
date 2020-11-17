@@ -79,6 +79,10 @@ class Review(Resource):
         exists = ReviewModel.find_by_id(id)
         if not exists:
             return {'message': "There is no review with ['id': {}], therefore it cannot be deleted".format(id)}, 404
+        user = AccountModel.find_by_id(exists.user_id)
+        book = BookModel.find_by_id(exists.book_id)
+        user.reviews.remove(exists)
+        book.reviews.remove(exists)
         exists.delete_from_db()
         return {'message': "Review with ['id': {}] has successfully been deleted".format(id)}, 200
 
