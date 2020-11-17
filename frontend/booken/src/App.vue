@@ -18,21 +18,6 @@
           <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
               class="badge badge-light" style="font-size: 0.3em; letter-spacing: normal">alpha</span></a>
 
-          <!--<div class="navbar-nav navbar-expand-md ml-2">
-            <div class="nav-item">
-              <div class="searchBarOutside ">
-                <form class="form">
-                  <input class="form-control" type="search"
-                         placeholder="Busca por autor, título, ISBN"
-                         aria-label="Search">
-                  <button class="btn" style="background-color: #3b494d;" type="submit"><i
-                      class="fas fa-search"
-                      style="color: #FFF"/>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>-->
           <form class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search"
                    placeholder="Busca por autor, título, ISBN"
@@ -43,22 +28,6 @@
             </button>
           </form>
 
-          <!--<ul class="navbar-nav navbar-expand-md ml-lg-2 ">
-            <li class="nav-item ">
-              <div class="searchBarOutside ">
-                <form class="form-inline ">
-                  <input class="form-control " type="search"
-                         placeholder="Busca por autor, título, ISBN"
-                         aria-label="Search">
-                  <button class="btn " style="background-color: #3b494d" type="submit"><i
-                      class="fas fa-search"
-                      style="color: #FFF"/>
-                  </button>
-                </form>
-              </div>
-            </li>
-          </ul>-->
-
           <!-- Links Button -->
           <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
                   data-target="#mynavbar, #mynavbar2"
@@ -66,26 +35,8 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
-
           <!-- Links -->
           <div class="collapse navbar-collapse my-3" id="mynavbar">
-            <!--
-                        <ul class="navbar-nav ">
-                          <li class="nav-item my-xl-auto my-2">
-                            <form class="form-inline">
-                              <input class="form-control mr-sm-2" type="search"
-                                     placeholder="Busca por autor, título, ISBN"
-                                     aria-label="Search">
-                              <button class="btn" style="background-color: #3b494d" type="submit"><i
-                                  class="fas fa-search"
-                                  style="color: #FFF"/>
-                              </button>
-                            </form>
-                          </li>
-                        </ul>
-                        -->
-
-
             <ul class="navbar-nav ml-xl-auto buttonList ml-lg-auto">
               <li class="nav-item my-xl-auto my-3 mx-2 mx-md-0 ">
                 <div class="searchBarInside mx-auto mb-md-3 my-xl-auto ">
@@ -683,6 +634,7 @@ body, wrapper {
   color: white !important;
   font-size: 1.2em
 }
+
 
 .mainlogo {
   font-family: LogoFont;
