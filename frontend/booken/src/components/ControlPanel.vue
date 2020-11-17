@@ -15,7 +15,30 @@
       <link rel="stylesheet" href="https://unpkg.com/@fracto/vue-credit-card/dist/VueCreditCard.css">
       <div class="card">
         <div class="card-header">
-          <h3>Panel de control</h3>
+          <div class="row justify-content-md-center">
+            <h3 class="col-10 offset-1 align-middle my-auto">Panel de control</h3>
+            <button class="col-1 btn" type="submit" data-toggle="modal" data-target="#exampleModalCenter">
+              <i class="fas fa-sign-out-alt fa-lg" style="color: #3b494d; font-size: 1.5em"/>
+              <!--<a class="navbartextbtdark">Cerrar sesión</a>-->
+            </button>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header" style="border-bottom: 0 none;">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Quieres cerrar la sesión?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-footer" style="border-top: 0 none;">
+                    <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal">Sí</button>
+                    <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
           <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
@@ -46,8 +69,9 @@
               <div class="row">
                 <div class="col col-md mr-auto" style="text-align: right">
                   <label>Filtrar: </label>
-                  <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType" class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
-                    <option v-for="item in sortOptions" :key="item" :value="item.value" >{{item.text}}</option>
+                  <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType"
+                          class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+                    <option v-for="item in sortOptions" :key="item" :value="item.value">{{ item.text }}</option>
                   </select>
                 </div>
               </div>
@@ -67,7 +91,8 @@
                     <td><b>#{{ item.id }}</b></td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.total }}€</td>
-                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">En progreso</span></td>
+                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">En progreso</span>
+                    </td>
                     <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Enviado</span></td>
                     <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Recibido</span></td>
                     <td class="text-right" v-if="item.state==0">
@@ -206,13 +231,14 @@
                       </li>
                     </ul>
                     <div class="card-header">
-                        <div style="display: flex; float:right;">
-                          <p style="cursor: pointer; margin-bottom: 0em; text-align: right; margin-right: 1em; color: #3b494d;"
-                              data-toggle="modal" data-target="#modalAddress" @click="updateAddressModal(item.id)"><i
-                              class="fas fa-pen"></i></p>
-                          <p style="cursor: pointer; margin-bottom: 0em; text-align: right; color: red" @click="deleteAddress(item.id)">
-                             <i class="fas fa-trash-alt"></i></p>
-                        </div>
+                      <div style="display: flex; float:right;">
+                        <p style="cursor: pointer; margin-bottom: 0em; text-align: right; margin-right: 1em; color: #3b494d;"
+                           data-toggle="modal" data-target="#modalAddress" @click="updateAddressModal(item.id)"><i
+                            class="fas fa-pen"></i></p>
+                        <p style="cursor: pointer; margin-bottom: 0em; text-align: right; color: red"
+                           @click="deleteAddress(item.id)">
+                          <i class="fas fa-trash-alt"></i></p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -226,8 +252,8 @@
                   </div>
                 </div>
                 <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
-                         aria-labelledby="modalAddressLabel"
-                         aria-hidden="true">
+                     aria-labelledby="modalAddressLabel"
+                     aria-hidden="true">
                   <div class="modal-dialog" role="document"
                        style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                     <div class="modal-content">
@@ -246,19 +272,19 @@
                           <div class="form-group" style="text-align: left">
                             <label for="addressName" class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
-                                <input type="text" class="form-control"
-                                       v-model="newAddressName" placeHolder="Nombre">
-                                <input type="text" class="form-control"
-                                       v-model="newAddressSurname" placeHolder="Apellidos">
+                              <input type="text" class="form-control"
+                                     v-model="newAddressName" placeHolder="Nombre">
+                              <input type="text" class="form-control"
+                                     v-model="newAddressSurname" placeHolder="Apellidos">
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
                             <label for="addressRoad" class="col-form-label">Dirección</label>
                             <div style="display:flex">
-                                <input type="text" class="form-control" style="width:80%;"
-                                       v-model="newAddressRoad" placeHolder="Calle">
-                                <input type="number" class="form-control" style="width:20%;"
-                                       v-model="newAddressNumber" placeHolder="Nº">
+                              <input type="text" class="form-control" style="width:80%;"
+                                     v-model="newAddressRoad" placeHolder="Calle">
+                              <input type="number" class="form-control" style="width:20%;"
+                                     v-model="newAddressNumber" placeHolder="Nº">
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
@@ -268,10 +294,10 @@
                           <div class="form-group" style="text-align: left">
                             <label for="addressProvince" class="col-form-label">Residencia</label>
                             <div style="display:flex">
-                                <input type="text" class="form-control"
-                                       v-model="newAddressCity" placeHolder="Ciudad">
-                                <input type="text" class="form-control"
-                                       v-model="newAddressProvince" placeHolder="Provincia">
+                              <input type="text" class="form-control"
+                                     v-model="newAddressCity" placeHolder="Ciudad">
+                              <input type="text" class="form-control"
+                                     v-model="newAddressProvince" placeHolder="Provincia">
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
@@ -363,7 +389,7 @@
                               <div class="form-group" style="text-align: left">
                                 <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
                                 <select class="form-group"
-                                  style="text-align: left; width:100%; height: 2.5em" id="paymentMethod">
+                                        style="text-align: left; width:100%; height: 2.5em" id="paymentMethod">
                                   <option>VISA</option>
                                   <option>JCB</option>
                                   <option>DISCOVER</option>
@@ -621,7 +647,7 @@ export default {
       },
 
       address_edit: -1,
-      
+
       newAddressLabel: '',
       newAddressName: '',
       newAddressSurname: '',
@@ -634,10 +660,10 @@ export default {
       addresses: [{}],
       sortType: 'sort',
       sortOptions: [
-        { text: 'Todos', value: '-1' },
-        { text: 'En progreso', value: '0' },
-        { text: 'Enviados', value: '1' },
-        { text: 'Recibidos', value: '2' }
+        {text: 'Todos', value: '-1'},
+        {text: 'En progreso', value: '0'},
+        {text: 'Enviados', value: '1'},
+        {text: 'Recibidos', value: '2'}
       ]
     }
   },
@@ -799,40 +825,40 @@ export default {
           })
 
     },
-    addCard(){
-        this.addCardForm.card_owner = document.getElementById('paymentTitular').value
-        this.addCardForm.number = document.getElementById('paymentNumber').value
-        this.addCardForm.date = document.getElementById('paymentEndDate').value
-        this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+    addCard() {
+      this.addCardForm.card_owner = document.getElementById('paymentTitular').value
+      this.addCardForm.number = document.getElementById('paymentNumber').value
+      this.addCardForm.date = document.getElementById('paymentEndDate').value
+      this.addCardForm.payment_method = document.getElementById('paymentMethod').value
 
-        if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
-            || this.addCardForm.payment_method == ''){
-                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        } else if(this.addCardForm.number.length != 24){
-                toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
+          || this.addCardForm.payment_method == '') {
+        toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else if (this.addCardForm.number.length != 24) {
+        toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
 
-        } else if (!this.validateEndDate(this.addCardForm.date)) {
-            toastr.error('', 'Fecha de caducidad no valida.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        } else{
-            this.cardToDB()
-        }
+      } else if (!this.validateEndDate(this.addCardForm.date)) {
+        toastr.error('', 'Fecha de caducidad no valida.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else {
+        this.cardToDB()
+      }
 
-        document.getElementById('paymentTitular').value = ''
-        document.getElementById('paymentNumber').value = ''
-        document.getElementById('paymentEndDate').value = ''
-        document.getElementById('paymentMethod').value = ''
+      document.getElementById('paymentTitular').value = ''
+      document.getElementById('paymentNumber').value = ''
+      document.getElementById('paymentEndDate').value = ''
+      document.getElementById('paymentMethod').value = ''
     },
-    cardToDB(){
-        const path = api + 'account/' + this.id + '/card'
+    cardToDB() {
+      const path = api + 'account/' + this.id + '/card'
       axios.post(path, this.addCardForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Tarjeta guardada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getCards()
+            toastr.success('', '¡Tarjeta guardada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -842,14 +868,14 @@ export default {
             this.getCards()
           })
     },
-    deleteCard(card_id){
-        const path = api + 'account/' + this.id + '/card/' + card_id
+    deleteCard(card_id) {
+      const path = api + 'account/' + this.id + '/card/' + card_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Tarjeta eliminada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getCards()
+            toastr.success('', '¡Tarjeta eliminada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -860,114 +886,111 @@ export default {
           })
     },
     validateEndDate(date) {
-        if(date.length == 7){
-            var count = 0
-            for(var i = 0; i<date.length; i++){
-                try{
-                    if(count == 2){
-                        if(date[i] != '/')
-                            return false
-                        count += 1
-                    }
-                    else{
-                        parseInt(date[i])
-                        count += 1
-                    }
-                }catch(error){
-                    return false
-                }
+      if (date.length == 7) {
+        var count = 0
+        for (var i = 0; i < date.length; i++) {
+          try {
+            if (count == 2) {
+              if (date[i] != '/')
+                return false
+              count += 1
+            } else {
+              parseInt(date[i])
+              count += 1
             }
-            return true
-        }else
+          } catch (error) {
             return false
-    },
-    updateAddressModal(address_id){
-        this.address_edit = address_id
-        
-        if(this.address_edit == -1){
-            this.newAddressLabel = ''
-            this.newAddressName = ''  
-            this.newAddressSurname = ''  
-            this.newAddressRoad = ''
-            this.newAddressNumber= ''
-            this.newAddressCode= ''  
-            this.newAddressCity= ''
-            this.newAddressProvince= ''
-            this.newAddressPhone = ''
+          }
         }
-        else{
-            for( var i = 0; i<this.addresses.length; i++){
-                var address = this.addresses[i]
+        return true
+      } else
+        return false
+    },
+    updateAddressModal(address_id) {
+      this.address_edit = address_id
 
-                if(address.id == this.address_edit){
-                    this.newAddressLabel = address.label_name
-                    this.newAddressName = address.name
-                    this.newAddressSurname = address.surnames
-                    this.newAddressRoad = address.street
-                    this.newAddressNumber= address.number
-                    this.newAddressCode= address.cp
-                    this.newAddressCity= address.city
-                    this.newAddressProvince= address.province
-                    this.newAddressPhone = address.telf
-                }
-            }
+      if (this.address_edit == -1) {
+        this.newAddressLabel = ''
+        this.newAddressName = ''
+        this.newAddressSurname = ''
+        this.newAddressRoad = ''
+        this.newAddressNumber = ''
+        this.newAddressCode = ''
+        this.newAddressCity = ''
+        this.newAddressProvince = ''
+        this.newAddressPhone = ''
+      } else {
+        for (var i = 0; i < this.addresses.length; i++) {
+          var address = this.addresses[i]
+
+          if (address.id == this.address_edit) {
+            this.newAddressLabel = address.label_name
+            this.newAddressName = address.name
+            this.newAddressSurname = address.surnames
+            this.newAddressRoad = address.street
+            this.newAddressNumber = address.number
+            this.newAddressCode = address.cp
+            this.newAddressCity = address.city
+            this.newAddressProvince = address.province
+            this.newAddressPhone = address.telf
+          }
         }
+      }
     },
-    addAddress(){
-        if (this.newAddressName == '' || this.newAddressSurname == '' || this.newAddressRoad == ''
-            || this.newAddressNumber== '' || this.newAddressCode== '' || this.newAddressCity== ''
-            || this.newAddressProvince== '' || this.newAddressPhone == ''){
-                toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+    addAddress() {
+      if (this.newAddressName == '' || this.newAddressSurname == '' || this.newAddressRoad == ''
+          || this.newAddressNumber == '' || this.newAddressCode == '' || this.newAddressCity == ''
+          || this.newAddressProvince == '' || this.newAddressPhone == '') {
+        toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else if (this.newAddressCode.length != 5) {
+        toastr.info('', 'El codigo postal debe contener 4 digitos.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else if (this.newAddressPhone.length != 9) {
+        toastr.info('', 'El numero de telefono debe contener 9 digitos.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      } else {
+        var tmp = {
+          "label_name": this.newAddressLabel,
+          "name": this.newAddressName,
+          "surnames": this.newAddressSurname,
+          "street": this.newAddressRoad,
+          "number": this.newAddressNumber,
+          "cp": this.newAddressCode,
+          "city": this.newAddressCity,
+          "province": this.newAddressProvince,
+          "telf": this.newAddressPhone
         }
-        else if(this.newAddressCode.length!=5){
-            toastr.info('', 'El codigo postal debe contener 4 digitos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        }else if(this.newAddressPhone.length!=9){
-            toastr.info('', 'El numero de telefono debe contener 9 digitos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-        }else{
-            var tmp = {
-                "label_name": this.newAddressLabel,
-                "name": this.newAddressName,
-                "surnames": this.newAddressSurname,
-                "street": this.newAddressRoad,
-                "number": this.newAddressNumber,
-                "cp": this.newAddressCode,
-                "city": this.newAddressCity,
-                "province": this.newAddressProvince,
-                "telf": this.newAddressPhone
-            }
-            if(this.address_edit!=-1)
-                this.addressUpdateToDB(tmp)
-            else
-                this.addressToDB(tmp)
-        }
+        if (this.address_edit != -1)
+          this.addressUpdateToDB(tmp)
+        else
+          this.addressToDB(tmp)
+      }
     },
     sortBy(type) {
-      if(type == "-1") {
+      if (type == "-1") {
         this.getOrders()
       }
-      if(type == "0") {
+      if (type == "0") {
         this.stateOrdersInProgress()
       }
-      if(type == "1") {
+      if (type == "1") {
         this.stateOrdersSend()
       }
-      if(type == "2") {
+      if (type == "2") {
         this.stateOrdersReceived()
       }
 
     },
-    addressToDB(parameters){
-        const path = api + 'account/' + this.id + '/address'
+    addressToDB(parameters) {
+      const path = api + 'account/' + this.id + '/address'
 
       axios.post(path, parameters)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Dirección guardada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getAddresses()
+            toastr.success('', '¡Dirección guardada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -977,15 +1000,15 @@ export default {
             this.getAddresses()
           })
     },
-    addressUpdateToDB(parameters){
-        const path = api + 'account/' + this.id + '/address/' + this.address_edit
+    addressUpdateToDB(parameters) {
+      const path = api + 'account/' + this.id + '/address/' + this.address_edit
 
       axios.put(path, parameters)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Dirección guardada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getAddresses()
+            toastr.success('', '¡Dirección guardada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -995,14 +1018,14 @@ export default {
             this.getAddresses()
           })
     },
-    deleteAddress(address_id){
-        const path = api + 'account/' + this.id + '/address/' + address_id
+    deleteAddress(address_id) {
+      const path = api + 'account/' + this.id + '/address/' + address_id
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
-                toastr.success('', '¡Dirección eliminada con éxito!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                this.getAddresses()
+            toastr.success('', '¡Dirección eliminada con éxito!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -1050,5 +1073,10 @@ export default {
   .myPaymentCard {
     height: auto;
   }
+}
+
+.navbartextbtdark {
+  color: #3b494d !important;
+  font-size: 1.2em
 }
 </style>
