@@ -30,6 +30,8 @@ class AccountModel(db.Model):
 
     reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
 
+    orders = db.relationship('OrdersModel', backref='orders', lazy=True)
+
 
     def __init__(self, email, name, lastname, password):
         self.email = email

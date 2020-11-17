@@ -38,7 +38,10 @@ class Account(Resource):
         if not account:
             return {'message': 'Account with id [{}] not found'.format(id)}, 404
 
-        # TODO: remove orders as well
+        [add.delete_from_db() for add in account.addresses]
+        [rev.delete_from_db() for rev in account.reviews]
+        [c.delete_from_db() for c in account.cards]
+        [o.delete_from_db() for o in account.orders]
         # TODO: remove wish list as well
 
         account.delete_from_db()
