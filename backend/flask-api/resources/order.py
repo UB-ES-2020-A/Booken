@@ -27,16 +27,16 @@ class Orders(Resource):
         parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        #acc = AccountModel.find_by_id(id)
+        acc = AccountModel.find_by_id(id)
 
         if (data.state < 0 or data.state>2):
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
-        #if (acc == None):
-         #   return {'message': "There isn't a user with this id"}, 409
+        if not acc:
+            return {'message': "There isn't a user with this id"}, 409
 
         #new_id = OrdersModel.num_orders()
-        new_order = OrdersModel(id, data.date, data.total,data.shipping,data.taxes,data.state)
-        #acc.orders.append(new_order)
+        new_order = OrdersModel(id, data.date, data.total, data.shipping, data.taxes, data.state)
+        acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
         return new_order.id, 200
