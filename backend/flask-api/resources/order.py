@@ -260,3 +260,28 @@ class ReceivedOrders(Resource):
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_state(2, id_user)]
         return {"orders": orders}, 200
+
+class InProgressOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 0]
+        return {'orders':orders_list}, 200
+
+class SendOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 1]
+        return {'orders': orders_list}, 200
+
+
+class ReceivedOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 2]
+        return {'orders': orders_list}, 200

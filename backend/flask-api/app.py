@@ -77,6 +77,10 @@ api.add_resource(ReviewList, '/reviews')
 api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
 api.add_resource(ReviewListBook, '/reviewsBook/<int:book_id>')
 
+api.add_resource(InProgressOrdersList, '/orders-list-state-0')
+api.add_resource(SendOrdersList, '/orders-list-state-1')
+api.add_resource(ReceivedOrdersList, '/orders-list-state-2')
+
 @app.route('/')
 def render_vue():
     return render_template("index.html")
