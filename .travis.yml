@@ -4,6 +4,9 @@ node_js:
     - node
 cache: npm
 install:
+    - pip install pytest
+    - pip install pytest-cov
+    - pip install coveralls
     - npm install newman
 script:
     - cd frontend/booken
@@ -11,6 +14,9 @@ script:
     - npm run build
 before_deploy:
     - cd ../../backend/flask-api
+    - pytest
+after_success:
+    - coveralls
 deploy:
   skip_cleanup: true
   provider: heroku
