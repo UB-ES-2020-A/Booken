@@ -160,8 +160,8 @@
                       <b>Pedido recibido</b>
                     </td>
                     <td class="text-right" v-if="item.state!=2">
-                      <select name={{item.id}} id="sortByStateHist" @change="changeState(sortState,item.id)" v-model="sortState"
-                              class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+                      <select name={{item.id}} id="sortByStateHist" @change="changeState(sortState[item.id],item.id)" v-model="sortState[item.id]"
+                              class="form-control-sm" style="width: 120px;text-align: center">
                         <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}</option>
                       </select>
                     </td>
@@ -170,9 +170,6 @@
                     </td>
                     <td class="text-right" v-if="item.state==0">
                       <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
-                    </td>
-                    <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
                     </td>
                   </tr>
                   </tbody>
@@ -733,9 +730,9 @@ export default {
       newAddressProvince: '',
       newAddressPhone: '',
       addresses: [{}],
-      sortType: 'sort',
-      sortTypeHist: 'sort',
-      sortState: 'sort',
+      sortType: 'Todos',
+      sortTypeHist: 'Todos',
+      sortState: [],
       sortOptions: [
         {text: 'Todos', value: '-1'},
         {text: 'En progreso', value: '0'},
@@ -754,6 +751,8 @@ export default {
     this.getOrdersList()
     this.getAddresses()
     this.getCards()
+    this.sortType = 'Todos'
+    this.sortTypeHist = 'Todos'
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
@@ -856,6 +855,9 @@ export default {
       }
       this.sOrders.push(this.ordersHist.slice(-(this.ordersHist.length % this.maxPerPage)))
       this.viewOrdersList = this.sOrders[0]
+      for (i = 0; i < this.viewOrdersList.length; i++) {
+        this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
+      }
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
@@ -895,7 +897,7 @@ export default {
           .then((res) => {
             console.log(res.data.orders)
             this.orders = res.data.orders
-            this.splitOrders()
+            this.splitOrdersList()
           })
           .catch((error) => {
             console.log(error)
@@ -1153,15 +1155,29 @@ export default {
 
     },
     changeState(type,order_id) {
-      var order = this.searchOrder(order_id)
-      console.log(order)
+      console.log(type)
+      const path = api + 'order/' + order_id
+      const parameters = {
+        state: type
+      }
+      axios.put(path, parameters)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
       if (type == "0") {
         this.stateOrdersInProgress()
       }
       if (type == "1") {
+        console.log(type)
         this.stateOrdersSend()
       }
       if (type == "2") {
+        console.log(type)
         this.stateOrdersReceived()
       }
 

@@ -3,6 +3,8 @@ from db import db, create_app
 from models.author import AuthorModel
 from models.book import BookModel
 from models.accounts import AccountModel
+from models.orders import OrdersModel
+from models.articles import ArticlesModel
 from models.review import ReviewModel
 from models.address import AddressModel
 from models.payment_card import CardModel

@@ -56,10 +56,6 @@ class Orders(Resource):
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
 
-        parser.add_argument('date', type=str, required=True, help="This field cannot be left blanck")
-        parser.add_argument('total', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
@@ -69,7 +65,7 @@ class Orders(Resource):
         if ( order ) :
             id_user = order.id_user
             order.delete_from_db()
-            new_order = OrdersModel(id_user,data.date, data.total, data.shipping, data.taxes, data.state)
+            new_order = OrdersModel(id_user,order.date, order.total, order.shipping, order.taxes, data.state)
             db.session.add(new_order)
             db.session.commit()
             return new_order.json(), 200
