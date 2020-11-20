@@ -1,5 +1,6 @@
 <style>
 @import url("./assets/animate.min.css");
+@import url("./assets/wish_list.css");
 </style>
 <template>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -239,6 +240,46 @@
             </div>
           </div>
         </div>
+
+        <!-- Wish_list -->
+        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item.id">
+
+         <div class="row">
+
+            <div class="col-md-3" style="margin:auto">
+              <img style="max-height:10em;" :src="wish_item.cover_image_url" :alt="wish_item.name">
+            </div>
+
+
+            <div class="col-md" style="margin:auto">
+              <div style="text-align:left;">
+                <h5 class="card-title">{{wish_item.name}}</h5>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-8">
+                    <p class="card-text" style="text-align:left;">{{wish_item.description}}</p>
+                </div>
+                <div class="col-md"  style="margin:auto; margin-right:0; max-width:9.8em">
+                    <div style="display:flex; flex-direction: horizontal; background-color: #6E6E6E; margin-bottom:auto;
+                            border-color:#6E6E6E; border-style:solid; border-radius:0.2em; max-height:3em;">
+                        <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
+                        <button class="btn btn-success">Añadir</button>
+                    </div>
+                </div>
+              </div>
+
+
+              <div class="wish_footer" style="margin-top:1em !important;">
+                    <p class="wish_genre"><small class="text-muted">{{wish_item.genre}}</small></p>
+                    <p><small class="text-muted" style="text-decoration-line: underline; border-bottom:2px;
+                        text-decoration-style:dotted;">eliminar</small></p>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </main>
     <!-- Footer -->
@@ -345,6 +386,46 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
+      wish_list: [
+        {
+            ISBN: 9788431690656,
+            author: ["Maria Angelidou"],
+            back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
+            cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+            cover_type: 0,
+            description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
+            editorial: "Vicens Vives",
+            genre: "HUMANIDADES",
+            id: 1,
+            language: "Castellano",
+            name: "Mitos griegos",
+            num_pages: 128,
+            num_sales: 0,
+            price: 7.5,
+            synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
+            total_available: 28,
+            year: 2013
+        },
+        {
+            ISBN: 9788431690656,
+            author: ["Maria Angelidou"],
+            back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
+            cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+            cover_type: 0,
+            description: "Una inmejorable introducción al universo de la mitología",
+            editorial: "Vicens Vives",
+            genre: "HUMANIDADES",
+            id: 1,
+            language: "Castellano",
+            name: "Mitos griegos",
+            num_pages: 128,
+            num_sales: 0,
+            price: 7.5,
+            synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
+            total_available: 28,
+            year: 2013
+        }
+      ],
       typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false
