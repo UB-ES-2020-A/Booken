@@ -118,7 +118,7 @@ class AccountModel(db.Model):
             return None
 
 @auth.verify_password
-def verify_password(id, token):
+def verify_account(id, token):
     id = int(id)
     user = AccountModel.verify_auth_token(token)
     if (user and user.id == id):

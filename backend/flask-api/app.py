@@ -35,6 +35,7 @@ migrate = Migrate(app, db)
 # EndPoints configuration
 api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
+api.add_resource(PasswordChange, "/account/<int:id>/change_password")
 
 api.add_resource(Address, '/account/<int:account_id>/address/<int:id>', '/account/<int:account_id>/address')
 api.add_resource(AddressList, '/account/<int:account_id>/addresses')
