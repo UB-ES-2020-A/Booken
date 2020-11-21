@@ -346,7 +346,6 @@ export default {
       typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false,
-      lapse: false,
       //toggledNav: false
     }
   },
@@ -506,13 +505,7 @@ export default {
 
       today = dd + '/' + mm + '/' + yyyy
       return today
-    },
-    lap(){
-        document.getElementById('mynavbar').collapse('toggle')
-        document.getElementById('mynavbar2').collapse('toggle')
-
     }
-
   }
 
 }
