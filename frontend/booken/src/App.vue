@@ -29,7 +29,7 @@
           </form>
 
           <!-- Links Button -->
-          <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+          <button class="navbar-toggler ml-auto lapse" type="button" data-toggle="collapse"
                   data-target="#mynavbar, #mynavbar2"
                   aria-controls="mynavbar, mynavbar2" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
@@ -52,14 +52,14 @@
                 </div>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-0 mr-md-auto ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d" type="submit"
                         v-if="!loggedIn"
                         @click="goToAccess">
                   <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
                   <a class="navbartextbt">Identíficate</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit"
                         v-if="loggedIn" @click="goToCP">
                   <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/>
@@ -68,7 +68,7 @@
               </li>
 
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt" @click="getHelp">Ayuda</a>
@@ -76,12 +76,12 @@
               </li>
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="!viewCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Cesta</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="viewCart">
                   <i class="fas fa-arrow-left " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Volver</a>
@@ -101,7 +101,6 @@
           <div class="nav navbar-nav mx-auto" @click="hideCart">
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-
             >Humanidades
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
@@ -129,7 +128,6 @@
             </router-link>
 
             <router-link class="nav-link categoriestxt" active-class="active"
-
                          :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
             </router-link>
           </div>
@@ -347,7 +345,8 @@ export default {
       cart: [],
       typeIn: -1,
       email: "prueba@gmail.com",
-      viewCart: false
+      viewCart: false,
+      lapse: false,
       //toggledNav: false
     }
   },
@@ -507,7 +506,13 @@ export default {
 
       today = dd + '/' + mm + '/' + yyyy
       return today
+    },
+    lap(){
+        document.getElementById('mynavbar').collapse('toggle')
+        document.getElementById('mynavbar2').collapse('toggle')
+
     }
+
   }
 
 }
