@@ -746,12 +746,7 @@ export default {
   },
   methods: {
     logout() {
-      bus.emit('has-logged-out', {
-        'logged': false,
-        'token': '',
-        'type': -1,
-        'id': -1
-      })
+      bus.emit('has-logged-out')
       this.$router.push({path: '/'})
     },
     getOrders() {
