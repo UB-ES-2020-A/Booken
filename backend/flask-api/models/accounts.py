@@ -2,9 +2,9 @@ from db import db, secret_key
 from flask import g
 
 from flask_httpauth import HTTPBasicAuth
-
-from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from passlib.hash import pbkdf2_sha512
+# from passlib.apps import custom_app_context as pwd_context
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 
 auth = HTTPBasicAuth()
 
@@ -23,15 +23,13 @@ class AccountModel(db.Model):
     type = db.Column(db.Integer, nullable=False)  # 0 = client / 1 = develop-manager / 2 = stock-manager
     available_money = db.Column(db.Integer)
 
-
-    addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy = True)
+    addresses = db.relationship('AddressModel', backref='addresses', cascade="all, delete-orphan", lazy=True)
 
     cards = db.relationship('CardModel', backref='payment_card', cascade="all, delete-orphan", lazy=True)
 
     reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
 
     orders = db.relationship('OrdersModel', backref='orders', lazy=True)
-
 
     def __init__(self, email, name, lastname, password):
         self.email = email
@@ -87,10 +85,10 @@ class AccountModel(db.Model):
         return self.query.filter_by(email=email).first()
 
     def hash_password(self, password):
-        self.password = pwd_context.encrypt(password)
+        self.password = pbkdf2_sha512.hash(password)
 
     def verify_password(self, password):
-        return pwd_context.verify(password, self.password)
+        return pbkdf2_sha512.verify(password, self.password)
 
     def generate_auth_token(self, expiration=600):
         s = Serializer(secret_key, expires_in=expiration)
@@ -110,12 +108,14 @@ class AccountModel(db.Model):
 
         return user
 
-    def find_addres_by_id(self,address_id):
-        index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
+    def find_addres_by_id(self, address_id):
+        index = [i for i in range(len(self.json_with_address()["addresses"])) if
+                 self.json_with_address()["addresses"][i]["id"] == int(address_id)]
         if index:
             return self.addresses[index[0]]
         else:
             return None
+
 
 @auth.verify_password
 def verify_account(id, token):

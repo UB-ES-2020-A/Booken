@@ -87,7 +87,7 @@ class PasswordChange(Resource):
     def put(self,id):
         account = AccountModel.find_by_id(id)
         if account:
-            if (g.user != account):
+            if g.user != account:
                 return {"error: ": "You cannot modify an account which you are not log with"}, 401
         else:
             return {"error: ": "Account not found"}, 400
