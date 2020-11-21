@@ -242,6 +242,7 @@
         </div>
 
         <!-- Wish_list -->
+        <h1 style="margin-top: 1em" v-if="this.wish_list.length != 0">Deseados</h1>
         <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item.id">
 
          <div class="row">
@@ -253,7 +254,11 @@
 
             <div class="col-md" style="margin:auto">
               <div style="text-align:left;">
-                <h5 class="card-title">{{wish_item.name}}</h5>
+                <h5 class="card-title" @click="this.viewCart=0">
+                    <router-link :to="{name: 'BookInfo', params: {id: wish_item.id}}" style="color:#424242;">
+                        {{ wish_item.name }}
+                    </router-link>
+                </h5>
               </div>
 
 
@@ -265,16 +270,19 @@
                     <div style="display:flex; flex-direction: horizontal; background-color: #6E6E6E; margin-bottom:auto;
                             border-color:#6E6E6E; border-style:solid; border-radius:0.2em; max-height:3em;">
                         <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
-                        <button class="btn btn-success">Añadir</button>
+                        <button class="btn btn-success" @click="addToCart(wish_item)">Añadir</button>
                     </div>
                 </div>
               </div>
 
 
               <div class="wish_footer" style="margin-top:1em !important;">
-                    <p class="wish_genre"><small class="text-muted">{{wish_item.genre}}</small></p>
-                    <p><small class="text-muted" style="text-decoration-line: underline; border-bottom:2px;
-                        text-decoration-style:dotted;">eliminar</small></p>
+                    <div style="display:flex;">
+                        <p class="wish_property" style="margin-right:1em"><small class="text-muted">{{wish_item.genre}}</small></p>
+                        <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA DURA</small></p>
+                        <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA BLANDA</small></p>
+                    </div>
+                    <p class="wish_delete"><small class="text-muted">eliminar</small></p>
               </div>
             </div>
 
@@ -407,23 +415,23 @@ export default {
             year: 2013
         },
         {
-            ISBN: 9788431690656,
-            author: ["Maria Angelidou"],
-            back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
-            cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+            ISBN: 9788466668545,
+            author: ["Arturo Pérez-Reverte"],
+            back_cover_image_url: "",
+            cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
             cover_type: 0,
-            description: "Una inmejorable introducción al universo de la mitología",
-            editorial: "Vicens Vives",
-            genre: "HUMANIDADES",
-            id: 1,
+            description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
+            editorial: "S.A. Ediciones B",
+            genre: "LITERATURA",
+            id: 6,
             language: "Castellano",
-            name: "Mitos griegos",
-            num_pages: 128,
-            num_sales: 0,
-            price: 7.5,
-            synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-            total_available: 28,
-            year: 2013
+            name: "Rey Blanco",
+            num_pages: 528,
+            num_sales: 10,
+            price: 20,
+            synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
+            total_available: 100,
+            year: 2020,
         }
       ],
       typeIn: -1,
@@ -561,8 +569,10 @@ export default {
     },
     checkAddToCart(book) {
       var b = this.searchInCart(book.id)
+      console.log("holi")
       if (b == null) {
         this.cart.push(book)
+        console.log("holi")
       } else {
         b.quant += 1
       }
@@ -588,6 +598,18 @@ export default {
 
       today = dd + '/' + mm + '/' + yyyy
       return today
+    },
+    addToCart(book) {
+      toastr.success('', 'Libro añadido a tu cesta.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      console.log(book)
+      bus.emit('added-to-cart', {
+        'id': book.id,
+        'title': book.name,
+        'price': book.price,
+        'cover': book.cover_image_url,
+        'quant': 1
+      })
     }
   }
 

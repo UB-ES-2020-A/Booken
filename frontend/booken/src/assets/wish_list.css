@@ -14,7 +14,14 @@
     justify-content: space-between !important;
 }
 
-.wish_genre {
+.wish_delete {
+    text-decoration-line: underline;
+    text-underline-position:under;
+    text-decoration-style:dotted;
+    cursor:pointer;
+}
+
+.wish_property {
     font-size: 0.8em;
     padding: 0.2em;
     border-style: solid;
