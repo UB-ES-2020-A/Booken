@@ -16,7 +16,7 @@
       <div class="card">
         <div class="card-header">
           <div class="row justify-content-md-center">
-            <div class="col-1 btn mr-auto" type="submit" data-toggle="modal" data-target="#configAccount">
+            <div class="col-2 btn mr-auto" type="submit" data-toggle="modal" data-target="#configAccount">
               <i class="fas fa-user-cog fa-lg" style="color: #3b494d; font-size: 1.5em"/>
               <!--<a class="navbartextbtdark">Cerrar sesión</a>-->
             </div>
@@ -31,7 +31,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <div class="row align-items-center mt-1 md-3">
+                    <!--<div class="row align-items-center mt-1 md-3">
                       <div class="col-8 text-left">
                         <div>Deseas recibir notificaciones?</div>
                       </div>
@@ -45,7 +45,7 @@
                           </label>
                         </div>
                       </div>
-                    </div>
+                    </div>-->
 
                     <div class="row align-items-center mt-3 md-1">
                       <div class="col-8 text-left">
@@ -59,7 +59,7 @@
                       </div>
                       <div class="modal-lg fade" id="deleteAccount" tabindex="-1" role="dialog"
                            aria-labelledby="logOutTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document" >
+                        <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header" style="border-bottom: 0 none;">
                               <h5 class="modal-title" id="deleteAccountTitle">Estás seguro de eliminar la cuenta?</h5>
@@ -68,7 +68,7 @@
                               </button>
                             </div>
                             <div class="modal-footer" style="border-top: 0 none;">
-                              <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal">Sí
+                              <button type="submit" class="btn btn-secondary" style="width:50px">Sí
                               </button>
                               <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
                               </button>
@@ -86,7 +86,7 @@
               </div>
             </div>
             <h3 class="col-8 align-middle my-auto">Panel de control</h3>
-            <div class="col-1 btn ml-auto" type="submit" data-toggle="modal" data-target="#logOut">
+            <div class="col-2 btn ml-auto" type="submit" data-toggle="modal" data-target="#logOut">
               <i class="fas fa-sign-out-alt fa-lg" style="color: #3b494d; font-size: 1.5em"/>
               <!--<a class="navbartextbtdark">Cerrar sesión</a>-->
             </div>
@@ -101,7 +101,7 @@
                     </button>
                   </div>
                   <div class="modal-footer" style="border-top: 0 none;">
-                    <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal">Sí</button>
+                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout">Sí</button>
                     <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
                   </div>
                 </div>
@@ -745,6 +745,15 @@ export default {
     //this.stateOrdersSend()
   },
   methods: {
+    logout() {
+      bus.emit('has-logged-out', {
+        'logged': false,
+        'token': '',
+        'type': -1,
+        'id': -1
+      })
+      this.$router.push({path: '/'})
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
       console.log('lel2')
