@@ -52,14 +52,16 @@
                 </div>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-0 mr-md-auto ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d" type="submit"
                         v-if="!loggedIn"
                         @click="goToAccess">
                   <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
                   <a class="navbartextbt">Identíficate</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit"
                         v-if="loggedIn" @click="goToCP">
                   <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/>
@@ -68,7 +70,8 @@
               </li>
 
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt" @click="getHelp">Ayuda</a>
@@ -76,12 +79,14 @@
               </li>
 
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="!viewCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Cesta</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="viewCart">
                   <i class="fas fa-arrow-left " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Volver</a>
@@ -331,6 +336,12 @@ export default {
     })
     bus.on('cart-updated', () => {
       this.computeTotals()
+    })
+    bus.on('has-logged-out', () => {
+      this.loggedIn = false
+      this.tokenIn = ''
+      this.typeIn = -1
+      this.idIn = -1
     })
   },
   data() {
