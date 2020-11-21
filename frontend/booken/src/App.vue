@@ -141,6 +141,7 @@
         </div>
       </nav>
     </div>
+
     <main class="flex-fill">
       <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
                    :id="this.idIn" :type="this.typeIn"/>
