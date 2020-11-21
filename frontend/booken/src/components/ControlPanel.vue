@@ -101,7 +101,7 @@
                     </button>
                   </div>
                   <div class="modal-footer" style="border-top: 0 none;">
-                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout">Sí</button>
+                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout" data-dismiss="modal">Sí</button>
                     <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
                   </div>
                 </div>
@@ -746,6 +746,7 @@ export default {
   },
   methods: {
     logout() {
+
       bus.emit('has-logged-out')
       this.$router.push({path: '/'})
     },

@@ -68,7 +68,6 @@
                   <a class="navbartextbt">Tu cuenta</a>
                 </button>
               </li>
-
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
                         data-target="#mynavbar, #mynavbar2"
@@ -77,7 +76,6 @@
                     class="navbartextbt" @click="getHelp">Ayuda</a>
                 </button>
               </li>
-
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
                         data-target="#mynavbar, #mynavbar2"
@@ -92,8 +90,6 @@
                     class="navbartextbt">Volver</a>
                 </button>
               </li>
-
-
             </ul>
           </div>
         </nav>
@@ -104,36 +100,42 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="mynavbar2">
           <div class="nav navbar-nav mx-auto" @click="hideCart">
+
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            >Humanidades
+            ><span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Humanidades</span>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            >Técnico y formación
+            ><span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Técnico y formación</span>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            >Métodos de idiomas
+            ><span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Métodos de idiomas</span>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura
+                         :to="{name: 'books', params: {category: 'LITERATURA'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Literatura</span>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'INFANTIL'}}">Infantil
+                         :to="{name: 'books', params: {category: 'INFANTIL'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Infantil</span>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">Cómics y manga
+                         :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Cómics y manga</span>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
+                         :to="{name: 'books', params: {category: 'JUVENIL'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Juvenil</span>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
+                         :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Otras categorías</span>
             </router-link>
-
             <router-link class="nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
+                         :to="{name: 'books', params: {category: 'TODO'}}">
+              <span data-toggle="collapse" data-target="#mynavbar, #mynavbar2" style="color: yellow">Ver todo</span>
             </router-link>
           </div>
         </div>
