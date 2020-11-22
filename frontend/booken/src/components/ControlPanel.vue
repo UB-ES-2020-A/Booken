@@ -169,13 +169,13 @@
                 </table>
                 <nav aria-label="...">
                   <ul class="pagination pagination-lg">
-                    <span v-for="index in this.sOrders.length" :key="index">
-                      <li class="page-item active" aria-current="page" v-if="cIndex == (index-1)">
+                    <span v-for="index in this.sOrdersList.length" :key="index">
+                      <li class="page-item active" aria-current="page" v-if="cIndexList == (index-1)">
                     <span class="page-link">
                       {{ index }}</span>
                     </li>
-                      <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
-                                               @click="changeViewingOrders(index-1)">{{ index }}</a></li>
+                      <li class="page-item"><a class="page-link" v-if="cIndexList != (index-1)"
+                                               @click="changeViewingOrdersList(index-1)">{{ index }}</a></li>
                     </span>
                   </ul>
                 </nav>
@@ -681,6 +681,7 @@ export default {
       orders: [],
       ordersHist:[],
       sOrders: [],
+      sOrdersList:[],
       viewOrders: [],
       viewOrdersList:[],
       OrdersInProgress: [],
@@ -690,6 +691,7 @@ export default {
       numberOfPages: 0,
       maxPerPage: 10,
       cIndex: 0,
+      cIndexList:0,
       addressNumber: 0,
       cardNumber: 0,
       cards: [
@@ -770,6 +772,7 @@ export default {
           .then((res) => {
             console.log(this.ordersHist.length)
             this.ordersHist = res.data.orders
+            console.log(this.ordersHist.length)
             this.splitOrdersList()
             console.log(this.ordersHist.length)
           })
@@ -823,6 +826,13 @@ export default {
       this.viewOrders = this.sOrders[index]
       this.cIndex = index
     },
+    changeViewingOrdersList(index) {
+      console.log(this.viewOrdersList)
+      this.viewOrdersList = []
+      this.viewOrdersList = this.sOrdersList[index]
+      console.log(this.viewOrdersList)
+      this.cIndexList = index
+    },
     splitOrders() {
       this.sOrders = []
       this.viewOrders = []
@@ -838,7 +848,7 @@ export default {
       this.viewOrders = this.sOrders[0]
     },
     splitOrdersList() {
-      this.sOrders = []
+      this.sOrdersList = []
       this.viewOrdersList = []
       this.numberOfOrders = this.ordersHist.length
       this.numberOfPages = Math.ceil(this.ordersHist.length / this.maxPerPage)
@@ -846,10 +856,11 @@ export default {
       let arr = []
       for (i = 0; i < (this.numberOfPages - 1); i++) {
         arr = this.ordersHist.slice(i * this.maxPerPage, this.maxPerPage * (i + 1))
-        this.sOrders.push(arr)
+        this.sOrdersList.push(arr)
       }
-      this.sOrders.push(this.ordersHist.slice(-(this.ordersHist.length % this.maxPerPage)))
-      this.viewOrdersList = this.sOrders[0]
+      this.sOrdersList.push(this.ordersHist.slice(-(this.ordersHist.length % this.maxPerPage)))
+      this.viewOrdersList = this.sOrdersList[0]
+      console.log(this.viewOrdersList)
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
@@ -1128,6 +1139,7 @@ export default {
       }
     },
     sortBy(type) {
+      this.cIndex = 0
       if (type == "-1") {
         this.getOrders()
       }
@@ -1143,6 +1155,7 @@ export default {
 
     },
     sortByHist(type) {
+      this.cIndexList = 0
       if (type == "-1") {
         this.getOrdersList()
       }
