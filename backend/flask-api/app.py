@@ -13,7 +13,7 @@ from resources.address_rs import *
 from resources.payment_card_rs import *
 from resources.review import *
 from db import db, create_app
-
+from resources.wishlist import Wishlist
 
 app = create_app()
 app.app_context().push()
@@ -29,6 +29,7 @@ from models.articles import ArticlesModel
 from models.address import AddressModel
 from models.payment_card import CardModel
 from models.review import ReviewModel
+from models.wishlist import WishlistModel
 
 migrate = Migrate(app, db)
 
@@ -77,6 +78,8 @@ api.add_resource(Review, '/review/<int:id>', '/review')
 api.add_resource(ReviewList, '/reviews')
 api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
 api.add_resource(ReviewListBook, '/reviewsBook/<int:book_id>')
+
+api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
 
 @app.route('/')
 def render_vue():
