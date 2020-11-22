@@ -159,7 +159,7 @@
                       <b>Pedido recibido</b>
                     </td>
                     <td class="text-right" v-if="item.state!=2">
-                      <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id,item)" v-model="sortState[item.id]"
+                      <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)" v-model="sortState[item.id]"
                               class="form-control-sm" style="width: 120px;text-align: center">
                         <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}</option>
                       </select>
@@ -891,7 +891,7 @@ export default {
       axios.get(path)
           .then((res) => {
             console.log(this.ordersHist.length)
-            this.ordersHist = res.data.orders
+            this.orders = res.data.orders
             console.log(this.orders)
             this.splitOrders()
             console.log(this.ordersHist.length)
@@ -909,7 +909,7 @@ export default {
       axios.get(path)
           .then((res) => {
             console.log(this.ordersHist.length)
-            this.ordersHist = res.data.orders
+            this.orders = res.data.orders
             console.log(this.orders)
             this.splitOrders()
             console.log(this.ordersHist.length)
@@ -927,7 +927,7 @@ export default {
       axios.get(path)
           .then((res) => {
             console.log(this.ordersHist.length)
-            this.ordersHist = res.data.orders
+            this.orders = res.data.orders
             console.log(this.orders)
             this.splitOrders()
             console.log(this.ordersHist.length)
@@ -1157,7 +1157,7 @@ export default {
       }
 
     },
-    changeState(type,order_id,item) {
+    changeState(type,order_id) {
       console.log(this.sortTypeHist)
       const path = api + 'order/' + order_id
       const parameters = {
@@ -1168,24 +1168,18 @@ export default {
             console.log(res)
             if (this.sortTypeHist == "-1") {
               this.getOrdersList()
-              item.state=type
 
             }
             if (this.sortTypeHist == "0") {
-              this.stateOrdersInProgress()
-              item.state=type
+              this.stateOrdersListInProgress()
 
             }
             if (this.sortTypeHist == "1") {
-              console.log(type)
-              this.stateOrdersSend()
-              item.state=type
+              this.stateOrdersListSend()
 
             }
             if (this.sortTypeHist == "2") {
-              console.log(type)
-              this.stateOrdersReceived()
-              item.state=type
+              this.stateOrdersListReceived()
 
             }
           })
