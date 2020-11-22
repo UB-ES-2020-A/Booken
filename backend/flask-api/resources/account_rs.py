@@ -68,7 +68,7 @@ class Account(Resource):
         [rev.delete_from_db() for rev in account.reviews]
         [c.delete_from_db() for c in account.cards]
         [o.delete_from_db() for o in account.orders]
-        # TODO: remove wish list as well
+        [wl.delete_from_db() for wl in account.wishlist]
 
         account.delete_from_db()
 
