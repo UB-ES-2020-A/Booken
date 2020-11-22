@@ -86,10 +86,10 @@
               </div>
               <div class="col-sm">
                 <div class="row">
-                  <div class="col-sm">
+                  <div class="col-6">
                     <p ref="label_summary" class="label-info-selected" @click="change_info('summary')">Sinopsis</p>
                   </div>
-                  <div class="col-sm">
+                  <div class="col-6">
                     <p ref="label_details" class="label-info-not-selected" @click="change_info('details')">Detalles</p>
                   </div>
                 </div>
@@ -287,7 +287,8 @@
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addvaluationNumber = 0">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                              @click="addvaluationNumber = 0">
                         Cancelar
                       </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
@@ -305,7 +306,7 @@
           <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{item.name}} - {{ item.date }}</div>
+                <div class="card-header">{{ item.name }} - {{ item.date }}</div>
                 <div class="card-body">
                   <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
@@ -338,8 +339,9 @@
             </div>
           </div>
           <div class="row" v-if="reviews.length == 0">
-            <div class="col-12" style="text-align: center;">
-              <img src="https://i.ibb.co/kDmqZRz/asd.png">
+            <div class="col-12 text-center my-5">
+              <img src="https://i.ibb.co/kDmqZRz/asd.png" style="object-fit:cover;
+  max-width: 100%; ">
             </div>
           </div>
         </div>
@@ -550,8 +552,13 @@ export default {
       var path = api + 'review'
 
       axios.post(path, {
-        "user_id": this.id, "book_id": this.bookInfo.id, "title": this.valuationTitle, "valuation": this.addvaluationNumber,
-        "comment": this.valuationText, "date": this.getTodayDate()})
+        "user_id": this.id,
+        "book_id": this.bookInfo.id,
+        "title": this.valuationTitle,
+        "valuation": this.addvaluationNumber,
+        "comment": this.valuationText,
+        "date": this.getTodayDate()
+      })
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
@@ -646,7 +653,7 @@ export default {
               .catch((error) => {
                 this.toPrint(error)
                 toastr.error('', 'No se ha podido guardar los cambios en el libro.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
         } else {
           path = api + 'book'
@@ -680,7 +687,7 @@ export default {
               .catch((error) => {
                 console.log(error)
                 toastr.error('', 'No se ha podido añadir el libro.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
               })
         }
       }
