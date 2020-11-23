@@ -68,8 +68,8 @@
                               </button>
                             </div>
                             <div class="modal-footer" style="border-top: 0 none;">
-                              <button type="submit" class="btn btn-secondary" style="width:50px">Sí
-                              </button>
+                              <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal"
+                              @click="deleteAccount" href="/">Sí</button>
                               <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
                               </button>
                             </div>
@@ -1352,6 +1352,23 @@ export default {
             this.getAddresses()
           })
 
+    },
+    deleteAccount(){
+        var path = api + 'account/' + this.id
+        console.log(this.id)
+        axios.delete(path)
+          .then((res) => {
+            console.log(res.data)
+            toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            bus.emit('has-logged-out')
+            this.$router.push({ path: '/' })
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba, inténtelo de nuevo mas tarde...',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
     },
     searchOrder(order_id) {
       console.log(order_id)
