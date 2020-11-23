@@ -13,17 +13,17 @@
         <div class="loginform">
           <div class="card animate__animated animate__slideInRight" style="background-color: #3b494d">
             <h2 style="margin-top: 2rem; color: white">Iniciar sesión</h2>
-            <form>
-              <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+            <form style=" margin-left: 10%; margin-right: 10%">
+              <div class="form-group" style="margin-top: 2rem;">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed; "><i
                     class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
                   <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailL"
                          v-model="email">
                 </div>
               </div>
-              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; ">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordL"
@@ -54,44 +54,52 @@
         <div class="loginform">
           <div class="card  animate__animated animate__slideInRight" style="background-color: #3b494d">
             <h2 style="margin-top: 2rem; color: white">Registro</h2>
-            <form>
-              <div class="form-group" style="margin-top: 2rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+            <form style=" margin-left: 10%; margin-right: 10%">
+              <div class="form-group" style="margin-top: 2rem;">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
                 ><i class="fas fa-user" style="color: white; width: 20px"></i> </span>
                   <input name="" class="form-control" placeholder="Nombre" type="text" id="nameR"
                          v-model="name">
                 </div>
               </div>
-              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem;">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
                 ><i class="fas fa-signature" style="color: white; width: 20px"></i> </span>
                   <input name="" class="form-control" placeholder="Apellidos" type="text" id="lastnameR"
                          v-model="lastname">
                 </div>
               </div>
-              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; ">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
                 ><i class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
                   <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailR"
                          v-model="email">
                 </div>
               </div>
-              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+              <div class="form-group" style="margin-top: 1rem; ">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
-                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
+                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
-                         v-model="password">
+                         v-model="password" @change="scorePassword">
+
+                </div>
+                <div class="progress" style=" width:100%">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                       aria-valuemin="0" aria-valuemax="100" id="myprogressbar">{{ this.checkPasswordStrength() }}
+                  </div>
                 </div>
               </div>
-              <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
-                <div class="input-group" style="margin-left: 10%;">
+
+              <div class="form-group" style="margin-top: 1rem;">
+                <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
-                  <input class="form-control" placeholder="Repite tu contraseña" type="password" id="passwordR2">
+                  <input class="form-control" placeholder="Repite tu contraseña" type="password"
+                         id="passwordR2">
                 </div>
               </div>
             </form>
@@ -135,7 +143,7 @@ export default {
       logged: false,
       type: -1,
       token: '',
-      id: -1
+      id: -1,
     }
   }, methods: {
     getYear() {
@@ -230,8 +238,60 @@ export default {
           })
     },
     validateEmail(email) {
-      var re = /\S+@\S+\.\S+/;
-      return re.test(email);
+      return /\S+@\S+\.\S+/.test(email);
+    },
+    checkPasswordSymbol() {
+      return /\W/.test(this.password);
+    },
+    checkPasswordLower() {
+      return /[a-z]/.test(this.password);
+    },
+    checkPasswordUpper() {
+      return /[A-Z]/.test(this.password);
+    },
+    checkPasswordNumber() {
+      return /\d/.test(this.password);
+    },
+    scorePassword() {
+      let score = 0;
+      const pass = this.password;
+      if (!pass) return score;
+      // award every unique letter until 5 repetitions
+      const letters = {};
+      for (let i = 0; i < pass.length; i++) {
+        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+        score += 5.0 / letters[pass[i]];
+      }
+      // bonus points for mixing it up
+      const variations = {
+        digits: /\d/.test(pass),
+        lower: /[a-z]/.test(pass),
+        upper: /[A-Z]/.test(pass),
+        nonWords: /\W/.test(pass),
+      };
+
+      let variationCount = 0;
+      for (const check in variations) {
+        variationCount += (variations[check] === true) ? 1 : 0;
+      }
+      score += (variationCount - 1) * 10;
+
+      document.getElementById("myprogressbar").style.width = score + '%';
+      return score
+    },
+    checkPasswordStrength() {
+      const pass = this.password;
+      const score = this.scorePassword(pass);
+      if (score > 80)
+        return "Fuerte";
+      if (score > 60)
+        return "Regular";
+      if (score >= 30)
+        return "Débil";
+      return "";
+    },
+    validatePassword(pwd) {
+      return this.checkPasswordSymbol(pwd) && this.checkPasswordLower(pwd) && this.checkPasswordUpper(pwd) && this.checkPasswordNumber(pwd)
     },
     doRegister() {
       if (document.getElementById('nameR').value == '' || document.getElementById('lastnameR').value == '' ||
@@ -240,11 +300,27 @@ export default {
         toastr.info('', 'Rellena todos los campos para acceder.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       } else {
-        if (document.getElementById('passwordR1').value != document.getElementById('passwordR2').value) {
-          toastr.error('', 'Las contraseñas no coniciden.',
+        if (!this.checkPasswordSymbol(this.password)) {
+          toastr.error('', 'La contraseña debe contener símbolo.',
               {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+        } else if (!this.checkPasswordLower(this.password)) {
+          toastr.error('', 'La contraseña debe contener carácteres minúsculas.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+        } else if (!this.checkPasswordUpper(this.password)) {
+          toastr.error('', 'La contraseña debe contener carácteres mayúsculas.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+        } else if (!this.checkPasswordNumber(this.password)) {
+          toastr.error('', 'La contraseña debe contener número.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
         } else if (!this.validateEmail(this.email)) {
           toastr.error('', 'Dirección de correo electrónico no válida.',
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        } else if (document.getElementById('passwordR1').value !== document.getElementById('passwordR2').value) {
+          toastr.error('', 'Las contraseñas no coniciden.',
               {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
         } else {
           this.toggleInputsRegister()
@@ -253,6 +329,7 @@ export default {
       }
     }
     ,
+
 
     back2Main() {
       this.$router.push({path: '/'})
@@ -275,9 +352,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .loginform {
-  margin: 0 auto;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  margin: 5% auto;
 }
 
 .logincontainer {

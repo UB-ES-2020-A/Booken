@@ -830,7 +830,6 @@ export default {
   },
   methods: {
     logout() {
-
       bus.emit('has-logged-out')
       this.$router.push({path: '/'})
     },
