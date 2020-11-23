@@ -115,6 +115,10 @@
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
           <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+            <a class="nav-link" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list" role="tab"
+               aria-controls="pills-orders-list" aria-selected="false">Lista de pedidos</a>
+          </li>
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
@@ -140,7 +144,7 @@
                   <label>Filtrar: </label>
                   <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType"
                           class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
-                    <option v-for="item in sortOptions" :key="item" :value="item.value">{{ item.text }}</option>
+                    <option v-for="item in sortOptions" :key="item" :selected="sortType == '-1'" :value="item.value">{{ item.text }}</option>
                   </select>
                 </div>
               </div>
@@ -182,6 +186,65 @@
                     </li>
                       <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
                                                @click="changeViewingOrders(index-1)">{{ index }}</a></li>
+                    </span>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <!-- ORDERS LIST: view order list history -->
+          <div class="tab-pane" id="pills-orders-list" role="tabpanel" aria-labelledby="pills-orders-list-tab">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col col-md mr-auto" style="text-align: right">
+                  <label>Filtrar: </label>
+                  <select id="sortByHist" @change="sortByHist(sortTypeHist)" v-model="sortTypeHist"
+                          class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+                    <option v-for="item in sortOptions" :key="item" :value="item.value">{{ item.text }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="table-responsive" >
+                <table class="table table-striped" style="text-align: left" :key="this.ordersHist.length" >
+                  <thead>
+                  <tr>
+                    <th scope="col">Número pedido</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Total</th>
+                    <th scope="col" class="text-right">Estado</th>
+                    <th scope="col" class="text-right">Editar pedido</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="(item) in this.viewOrdersList" :key="item.state">
+                    <td><b>#{{ item.id }}</b></td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.total }}€</td>
+                    <td class="text-right" v-if="item.state==0"><span class="badge badge-primary">En progreso</span>
+                    </td>
+                    <td class="text-right" v-if="item.state==1"><span class="badge badge-light">Enviado</span></td>
+                    <td class="text-right" v-if="item.state==2"><span class="badge badge-info">Recibido</span></td>
+                    <td class="text-right" v-if="item.state==2">
+                      <b>Pedido recibido</b>
+                    </td>
+                    <td class="text-right" v-if="item.state!=2">
+                      <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)" v-model="sortState[item.id]"
+                              class="form-control-sm" style="width: 120px;text-align: center">
+                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}</option>
+                      </select>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <nav aria-label="...">
+                  <ul class="pagination pagination-lg">
+                    <span v-for="index in this.sOrdersList.length" :key="index">
+                      <li class="page-item active" aria-current="page" v-if="cIndexList == (index-1)">
+                    <span class="page-link">
+                      {{ index }}</span>
+                    </li>
+                      <li class="page-item"><a class="page-link" v-if="cIndexList != (index-1)"
+                                               @click="changeViewingOrdersList(index-1)">{{ index }}</a></li>
                     </span>
                   </ul>
                 </nav>
@@ -685,8 +748,11 @@ export default {
       editProfile: false,
       editPass: false,
       orders: [],
+      ordersHist:[],
       sOrders: [],
+      sOrdersList:[],
       viewOrders: [],
+      viewOrdersList:[],
       OrdersInProgress: [],
       OrdersSend: [],
       OrdersReceived: [],
@@ -694,6 +760,7 @@ export default {
       numberOfPages: 0,
       maxPerPage: 10,
       cIndex: 0,
+      cIndexList:0,
       addressNumber: 0,
       cardNumber: 0,
       cards: [
@@ -727,9 +794,16 @@ export default {
       newAddressProvince: '',
       newAddressPhone: '',
       addresses: [{}],
-      sortType: 'sort',
+      sortType: '-1',
+      sortTypeHist: '-1',
+      sortState: [],
       sortOptions: [
         {text: 'Todos', value: '-1'},
+        {text: 'En progreso', value: '0'},
+        {text: 'Enviados', value: '1'},
+        {text: 'Recibidos', value: '2'}
+      ],
+      sortEditOptions: [
         {text: 'En progreso', value: '0'},
         {text: 'Enviados', value: '1'},
         {text: 'Recibidos', value: '2'}
@@ -738,8 +812,11 @@ export default {
   },
   created() {
     this.getOrders()
+    this.getOrdersList()
     this.getAddresses()
     this.getCards()
+    this.sortType = '-1'
+    this.sortTypeHist = '-1'
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
@@ -752,11 +829,26 @@ export default {
     },
     getOrders() {
       var path = api + 'order-user/' + this.id
-      console.log('lel2')
       axios.get(path)
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+    },
+    getOrdersList() {
+      var path = api + 'orders'
+      axios.get(path)
+          .then((res) => {
+            console.log(this.ordersHist.length)
+            this.ordersHist = res.data.orders
+            console.log(this.ordersHist.length)
+            this.splitOrdersList()
+            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -808,6 +900,13 @@ export default {
       this.viewOrders = this.sOrders[index]
       this.cIndex = index
     },
+    changeViewingOrdersList(index) {
+      console.log(this.viewOrdersList)
+      this.viewOrdersList = []
+      this.viewOrdersList = this.sOrdersList[index]
+      console.log(this.viewOrdersList)
+      this.cIndexList = index
+    },
     splitOrders() {
       this.sOrders = []
       this.viewOrders = []
@@ -821,6 +920,24 @@ export default {
       }
       this.sOrders.push(this.orders.slice(-(this.orders.length % this.maxPerPage)))
       this.viewOrders = this.sOrders[0]
+    },
+    splitOrdersList() {
+      this.sOrdersList = []
+      this.viewOrdersList = []
+      this.numberOfOrders = this.ordersHist.length
+      this.numberOfPages = Math.ceil(this.ordersHist.length / this.maxPerPage)
+      let i
+      let arr = []
+      for (i = 0; i < (this.numberOfPages - 1); i++) {
+        arr = this.ordersHist.slice(i * this.maxPerPage, this.maxPerPage * (i + 1))
+        this.sOrdersList.push(arr)
+      }
+      this.sOrdersList.push(this.ordersHist.slice(-(this.ordersHist.length % this.maxPerPage)))
+      this.viewOrdersList = this.sOrdersList[0]
+      console.log(this.viewOrdersList)
+      for (i = 0; i < this.viewOrdersList.length; i++) {
+        this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
+      }
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
@@ -858,9 +975,11 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log(res.data.orders)
+            console.log(this.ordersHist.length)
             this.orders = res.data.orders
+            console.log(this.orders)
             this.splitOrders()
+            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -874,8 +993,11 @@ export default {
 
       axios.get(path)
           .then((res) => {
+            console.log(this.ordersHist.length)
             this.orders = res.data.orders
+            console.log(this.orders)
             this.splitOrders()
+            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -889,8 +1011,57 @@ export default {
 
       axios.get(path)
           .then((res) => {
+            console.log(this.ordersHist.length)
             this.orders = res.data.orders
+            console.log(this.orders)
             this.splitOrders()
+            console.log(this.ordersHist.length)
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+
+    },
+    stateOrdersListInProgress() {
+      var path = api + 'orders-list-state-0'
+
+      axios.get(path)
+          .then((res) => {
+            console.log(res.data.orders)
+            this.ordersHist = res.data.orders
+            this.splitOrdersList()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+
+    },
+    stateOrdersListSend() {
+      var path = api + 'orders-list-state-1'
+
+      axios.get(path)
+          .then((res) => {
+            this.ordersHist = res.data.orders
+            this.splitOrdersList()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+
+    },
+    stateOrdersListReceived() {
+      var path = api + 'orders-list-state-2'
+
+      axios.get(path)
+          .then((res) => {
+            this.ordersHist = res.data.orders
+            this.splitOrdersList()
           })
           .catch((error) => {
             console.log(error)
@@ -1042,6 +1213,7 @@ export default {
       }
     },
     sortBy(type) {
+      this.cIndex = 0
       if (type == "-1") {
         this.getOrders()
       }
@@ -1054,6 +1226,55 @@ export default {
       if (type == "2") {
         this.stateOrdersReceived()
       }
+
+    },
+    sortByHist(type) {
+      this.cIndexList = 0
+      if (type == "-1") {
+        this.getOrdersList()
+      }
+      if (type == "0") {
+        this.stateOrdersListInProgress()
+      }
+      if (type == "1") {
+        this.stateOrdersListSend()
+      }
+      if (type == "2") {
+        this.stateOrdersListReceived()
+      }
+
+    },
+    changeState(type,order_id) {
+      console.log(this.sortTypeHist)
+      const path = api + 'order/' + order_id
+      const parameters = {
+        state: type
+      }
+      axios.put(path, parameters)
+          .then((res) => {
+            console.log(res)
+            if (this.sortTypeHist == "-1") {
+              this.getOrdersList()
+
+            }
+            if (this.sortTypeHist == "0") {
+              this.stateOrdersListInProgress()
+
+            }
+            if (this.sortTypeHist == "1") {
+              this.stateOrdersListSend()
+
+            }
+            if (this.sortTypeHist == "2") {
+              this.stateOrdersListReceived()
+
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los pedidos.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
 
     },
     addressToDB(parameters) {
@@ -1109,6 +1330,9 @@ export default {
             this.getAddresses()
           })
 
+    },
+    searchOrder(order_id) {
+      console.log(order_id)
     }
   }
 }

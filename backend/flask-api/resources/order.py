@@ -56,10 +56,6 @@ class Orders(Resource):
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
 
-        parser.add_argument('date', type=str, required=True, help="This field cannot be left blanck")
-        parser.add_argument('total', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
-        parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
@@ -69,7 +65,7 @@ class Orders(Resource):
         if ( order ) :
             id_user = order.id_user
             order.delete_from_db()
-            new_order = OrdersModel(id_user,data.date, data.total, data.shipping, data.taxes, data.state)
+            new_order = OrdersModel(id_user,order.date, order.total, order.shipping, order.taxes, data.state)
             db.session.add(new_order)
             db.session.commit()
             return new_order.json(), 200
@@ -260,3 +256,28 @@ class ReceivedOrders(Resource):
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_state(2, id_user)]
         return {"orders": orders}, 200
+
+class InProgressOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 0]
+        return {'orders':orders_list}, 200
+
+class SendOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 1]
+        return {'orders': orders_list}, 200
+
+
+class ReceivedOrdersList(Resource):
+
+    #@auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    def get(self):
+        orders = OrdersModel.get_orders()['orders']
+        orders_list = [order for order in orders if order['state'] == 2]
+        return {'orders': orders_list}, 200
