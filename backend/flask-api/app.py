@@ -13,7 +13,7 @@ from resources.address_rs import *
 from resources.payment_card_rs import *
 from resources.review import *
 from db import db, create_app
-
+from resources.wishlist import Wishlist
 
 app = create_app()
 app.app_context().push()
@@ -29,12 +29,14 @@ from models.articles import ArticlesModel
 from models.address import AddressModel
 from models.payment_card import CardModel
 from models.review import ReviewModel
+from models.wishlist import WishlistModel
 
 migrate = Migrate(app, db)
 
 # EndPoints configuration
 api.add_resource(Account, '/account/<int:id>', '/account')
 api.add_resource(Accounts, '/accounts/')
+api.add_resource(PasswordChange, "/account/<int:id>/change_password")
 
 api.add_resource(Address, '/account/<int:account_id>/address/<int:id>', '/account/<int:account_id>/address')
 api.add_resource(AddressList, '/account/<int:account_id>/addresses')
@@ -77,9 +79,13 @@ api.add_resource(ReviewList, '/reviews')
 api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
 api.add_resource(ReviewListBook, '/reviewsBook/<int:book_id>')
 
+
 api.add_resource(InProgressOrdersList, '/orders-list-state-0')
 api.add_resource(SendOrdersList, '/orders-list-state-1')
 api.add_resource(ReceivedOrdersList, '/orders-list-state-2')
+
+api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
+
 
 @app.route('/')
 def render_vue():

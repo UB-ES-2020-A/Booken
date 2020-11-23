@@ -16,13 +16,82 @@
       <div class="card">
         <div class="card-header">
           <div class="row justify-content-md-center">
-            <h3 class="col-10 offset-1 align-middle my-auto">Panel de control</h3>
-            <button class="col-1 btn" type="submit" data-toggle="modal" data-target="#exampleModalCenter">
+            <div class="col-2 btn mr-auto" type="submit" data-toggle="modal" data-target="#configAccount">
+              <i class="fas fa-user-cog fa-lg" style="color: #3b494d; font-size: 1.5em"/>
+              <!--<a class="navbartextbtdark">Cerrar sesión</a>-->
+            </div>
+            <div class="modal fade" id="configAccount" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="configAccountTitle">Configuración de la cuenta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!--<div class="row align-items-center mt-1 md-3">
+                      <div class="col-8 text-left">
+                        <div>Deseas recibir notificaciones?</div>
+                      </div>
+                      <div class="col-4 text-right">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                          <label class="btn btn-secondary active" style="width: 50px">
+                            <input type="radio" name="options" id="option1" checked> Sí
+                          </label>
+                          <label class="btn btn-secondary" style="width: 50px">
+                            <input type="radio" name="options" id="option2"> No
+                          </label>
+                        </div>
+                      </div>
+                    </div>-->
+
+                    <div class="row align-items-center mt-3 md-1">
+                      <div class="col-8 text-left">
+                        <div>Deseas eliminar tu cuenta?</div>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-secondary" style="width: 50px" type="submit"
+                                data-toggle="modal" data-target="#deleteAccount">Sí
+                        </button>
+
+                      </div>
+                      <div class="modal-lg fade" id="deleteAccount" tabindex="-1" role="dialog"
+                           aria-labelledby="logOutTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header" style="border-bottom: 0 none;">
+                              <h5 class="modal-title" id="deleteAccountTitle">Estás seguro de eliminar la cuenta?</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-footer" style="border-top: 0 none;">
+                              <button type="submit" class="btn btn-secondary" style="width:50px">Sí
+                              </button>
+                              <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3 class="col-8 align-middle my-auto">Panel de control</h3>
+            <div class="col-2 btn ml-auto" type="submit" data-toggle="modal" data-target="#logOut">
               <i class="fas fa-sign-out-alt fa-lg" style="color: #3b494d; font-size: 1.5em"/>
               <!--<a class="navbartextbtdark">Cerrar sesión</a>-->
-            </button>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            </div>
+            <div class="modal fade" id="logOut" tabindex="-1" role="dialog"
+                 aria-labelledby="logOutTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header" style="border-bottom: 0 none;">
@@ -32,7 +101,7 @@
                     </button>
                   </div>
                   <div class="modal-footer" style="border-top: 0 none;">
-                    <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal">Sí</button>
+                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout" data-dismiss="modal">Sí</button>
                     <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
                   </div>
                 </div>
@@ -753,6 +822,11 @@ export default {
     //this.stateOrdersSend()
   },
   methods: {
+    logout() {
+
+      bus.emit('has-logged-out')
+      this.$router.push({path: '/'})
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
       axios.get(path)

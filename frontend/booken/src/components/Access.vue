@@ -25,7 +25,7 @@
               <div class="form-group" style="margin-top: 1rem; margin-right: 20%">
                 <div class="input-group" style="margin-left: 10%;">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
-                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
+                  <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordL"
                          v-model="password">
                 </div>

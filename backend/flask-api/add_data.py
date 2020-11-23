@@ -8,6 +8,9 @@ from models.articles import ArticlesModel
 from models.review import ReviewModel
 from models.address import AddressModel
 from models.payment_card import CardModel
+from models.wishlist import WishlistModel
+from models.orders import OrdersModel
+from models.articles import ArticlesModel
 
 app = create_app()
 app.app_context().push()

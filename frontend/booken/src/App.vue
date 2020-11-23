@@ -1,5 +1,6 @@
 <style>
 @import url("./assets/animate.min.css");
+@import url("./assets/wish_list.css");
 </style>
 <template>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -29,7 +30,7 @@
           </form>
 
           <!-- Links Button -->
-          <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
+          <button class="navbar-toggler ml-auto lapse" type="button" data-toggle="collapse"
                   data-target="#mynavbar, #mynavbar2"
                   aria-controls="mynavbar, mynavbar2" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
@@ -52,43 +53,44 @@
                 </div>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-0 mr-md-auto ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d" type="submit"
                         v-if="!loggedIn"
                         @click="goToAccess">
                   <i class="fas fa-user" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
                   <a class="navbartextbt">Identíficate</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit"
                         v-if="loggedIn" @click="goToCP">
                   <i class="fas fa-user-circle" style="color: white; font-size: 1.5em; margin-right: 0.5em"/>
                   <a class="navbartextbt">Tu cuenta</a>
                 </button>
               </li>
-
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit">
                   <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt" @click="getHelp">Ayuda</a>
                 </button>
               </li>
-
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="!viewCart">
                   <i class="fas fa-shopping-basket " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Cesta</a>
                 </button>
-                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse" data-target=".mynavbar"
+                <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
+                        data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="viewCart">
                   <i class="fas fa-arrow-left " style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                     class="navbartextbt">Volver</a>
                 </button>
               </li>
-
-
             </ul>
           </div>
         </nav>
@@ -99,43 +101,48 @@
       <nav class="navbar navbar-expand-lg navbar-light">
         <div class="collapse navbar-collapse" id="mynavbar2">
           <div class="nav navbar-nav mx-auto" @click="hideCart">
+
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-
-            >Humanidades
+            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Humanidades</div>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            >Técnico y formación
+            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Técnico y formación</div>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            >Métodos de idiomas
+            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Métodos de idiomas</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'LITERATURA'}}">Literatura
+                         :to="{name: 'books', params: {category: 'LITERATURA'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Literatura</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'INFANTIL'}}">Infantil
+                         :to="{name: 'books', params: {category: 'INFANTIL'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Infantil</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">Cómics y manga
+                         :to="{name: 'books', params: {category: 'COMICS Y MANGA'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Cómics y manga</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'JUVENIL'}}">Juvenil
+                         :to="{name: 'books', params: {category: 'JUVENIL'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Juvenil</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
-                         :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">Otras categorías
+                         :to="{name: 'books', params: {category: 'OTRAS CATEGORIAS'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Otras categorías</div>
             </router-link>
-
             <router-link class="nav-link categoriestxt" active-class="active"
-
-                         :to="{name: 'books', params: {category: 'TODO'}}"><b style="color: yellow">Ver todo</b>
+                         :to="{name: 'books', params: {category: 'TODO'}}">
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2" style="color: yellow">Ver todo</div>
             </router-link>
           </div>
         </div>
       </nav>
     </div>
+
     <main class="flex-fill">
       <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
                    :id="this.idIn" :type="this.typeIn"/>
@@ -239,6 +246,54 @@
             </div>
           </div>
         </div>
+
+        <!-- Wish_list -->
+        <h1 style="margin-top: 1em" v-if="this.wish_list.length != 0">Deseados</h1>
+        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item.id">
+
+         <div class="row">
+
+            <div class="col-md-3" style="margin:auto">
+              <img style="max-height:10em;" :src="wish_item.cover_image_url" :alt="wish_item.name">
+            </div>
+
+
+            <div class="col-md" style="margin:auto">
+              <div style="text-align:left;">
+                <h5 class="card-title" @click="this.viewCart=0">
+                    <router-link :to="{name: 'BookInfo', params: {id: wish_item.id}}" style="color:#424242;">
+                        {{ wish_item.name }}
+                    </router-link>
+                </h5>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md-8">
+                    <p class="card-text" style="text-align:left;">{{wish_item.description}}</p>
+                </div>
+                <div class="col-md"  style="margin:auto; margin-right:0; max-width:9.8em">
+                    <div style="display:flex; flex-direction: horizontal; background-color: #6E6E6E; margin-bottom:auto;
+                            border-color:#6E6E6E; border-style:solid; border-radius:0.2em; max-height:3em;">
+                        <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
+                        <button class="btn btn-success" @click="addToCart(wish_item)">Añadir</button>
+                    </div>
+                </div>
+              </div>
+
+
+              <div class="wish_footer" style="margin-top:1em !important;">
+                    <div style="display:flex;">
+                        <p class="wish_property" style="margin-right:1em"><small class="text-muted">{{wish_item.genre}}</small></p>
+                        <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA DURA</small></p>
+                        <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA BLANDA</small></p>
+                    </div>
+                    <p class="wish_delete"><small class="text-muted">eliminar</small></p>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </main>
     <!-- Footer -->
@@ -334,6 +389,12 @@ export default {
     bus.on('cart-updated', () => {
       this.computeTotals()
     })
+    bus.on('has-logged-out', () => {
+      this.loggedIn = false
+      this.tokenIn = ''
+      this.typeIn = -1
+      this.idIn = -1
+    })
   },
   data() {
     return {
@@ -345,9 +406,49 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
+      wish_list: [
+        {
+            ISBN: 9788431690656,
+            author: ["Maria Angelidou"],
+            back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
+            cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+            cover_type: 0,
+            description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
+            editorial: "Vicens Vives",
+            genre: "HUMANIDADES",
+            id: 1,
+            language: "Castellano",
+            name: "Mitos griegos",
+            num_pages: 128,
+            num_sales: 0,
+            price: 7.5,
+            synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
+            total_available: 28,
+            year: 2013
+        },
+        {
+            ISBN: 9788466668545,
+            author: ["Arturo Pérez-Reverte"],
+            back_cover_image_url: "",
+            cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
+            cover_type: 0,
+            description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
+            editorial: "S.A. Ediciones B",
+            genre: "LITERATURA",
+            id: 6,
+            language: "Castellano",
+            name: "Rey Blanco",
+            num_pages: 528,
+            num_sales: 10,
+            price: 20,
+            synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
+            total_available: 100,
+            year: 2020,
+        }
+      ],
       typeIn: -1,
       email: "prueba@gmail.com",
-      viewCart: false
+      viewCart: false,
       //toggledNav: false
     }
   },
@@ -480,8 +581,10 @@ export default {
     },
     checkAddToCart(book) {
       var b = this.searchInCart(book.id)
+      console.log("holi")
       if (b == null) {
         this.cart.push(book)
+        console.log("holi")
       } else {
         b.quant += 1
       }
@@ -507,6 +610,18 @@ export default {
 
       today = dd + '/' + mm + '/' + yyyy
       return today
+    },
+    addToCart(book) {
+      toastr.success('', 'Libro añadido a tu cesta.',
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      console.log(book)
+      bus.emit('added-to-cart', {
+        'id': book.id,
+        'title': book.name,
+        'price': book.price,
+        'cover': book.cover_image_url,
+        'quant': 1
+      })
     }
   }
 
