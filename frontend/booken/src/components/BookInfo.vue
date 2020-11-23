@@ -199,7 +199,7 @@
                         v-if="bookInfo.available <= 0" disabled><a
                     class="navbartextbt" v-if="!edit">Agotado</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
-                    class="navbartextbt" v-if="!edit" @click="addToWishList(book)">Añadir a lista de deseos</a></button>
+                    class="navbartextbt" v-if="!edit" @click="addToWishList(bookInfo)">Añadir a lista de deseos</a></button>
               </div>
             </div>
           </div>
@@ -734,12 +734,35 @@ export default {
         }
         return (check == str[str.length - 1].toUpperCase());
       }
-    }
-    ,
+    },
     addToWishList(book) {
-      console.log(book)
-      toastr.success('', 'Añadido a tu lista de deseos.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      if(this.logged){
+            this.wish_list = []
+            var path = api + 'wishlist/' + this.id + '/' + book.id
+            axios.post(path)
+                .then((res) => {
+                  console.log(res.data)
+                  toastr.success('', 'Añadido a tu lista de deseos.',
+                      {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                })
+                .catch((error) => {
+                  console.log(error)
+                  if(error.response){
+                    if(error.response.status == 400){
+                        toastr.info('', 'Este libro ya pertenece a tu lista de deseados.',
+                          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    }
+                  }
+                  else{
+                      toastr.error('', 'No se ha podido añadir el libro a deseados, intentelo de nuevo mas tarde.',
+                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  }
+                })
+      }
+      else{
+        toastr.info('', 'Debe estar registrado para añadir un libro a deseados.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      }
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
