@@ -68,8 +68,8 @@
                               </button>
                             </div>
                             <div class="modal-footer" style="border-top: 0 none;">
-                              <button type="submit" class="btn btn-secondary" style="width:50px">Sí
-                              </button>
+                              <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal"
+                              @click="deleteAccount" href="/">Sí</button>
                               <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
                               </button>
                             </div>
@@ -830,7 +830,6 @@ export default {
   },
   methods: {
     logout() {
-
       bus.emit('has-logged-out')
       this.$router.push({path: '/'})
     },
@@ -1102,8 +1101,8 @@ export default {
           || this.addCardForm.payment_method == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-      } else if (this.addCardForm.number.length != 24) {
-        toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
+      } else if (this.addCardForm.number.length != 16) {
+        toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
@@ -1352,6 +1351,23 @@ export default {
             this.getAddresses()
           })
 
+    },
+    deleteAccount(){
+        var path = api + 'account/' + this.id
+        console.log(this.id)
+        axios.delete(path)
+          .then((res) => {
+            console.log(res.data)
+            toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            bus.emit('has-logged-out')
+            this.$router.push({ path: '/' })
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba, inténtelo de nuevo mas tarde...',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
     },
     searchOrder(order_id) {
       console.log(order_id)

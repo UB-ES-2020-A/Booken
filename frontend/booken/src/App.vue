@@ -145,7 +145,8 @@
 
     <main class="flex-fill">
       <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
-                   :id="this.idIn" :type="this.typeIn"/>
+                   :id="this.idIn" :type="this.typeIn" :total="this.total" :taxes="this.taxes" :subtotal="this.subtotal"
+      :cart="this.cart"/>
       <!-- Cart -->
       <div id="shopping_cart" v-if="viewCart">
         <h1 style="margin-top: 1em">Tu cesta</h1>
@@ -200,14 +201,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>Envío</td>
-                    <td class="text-right">{{ round2Dec(shipping) }} €</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td><strong>TOTAL</strong></td>
                     <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
                   </tr>
@@ -228,7 +221,7 @@
                   <button class="btn btn-lg btn-block"
                           style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
                           @click="checkout">
-                    Pagar
+                    Tramitar pedido
                   </button>
                 </div>
               </div>
@@ -249,7 +242,7 @@
 
         <!-- Wish_list -->
         <h1 style="margin-top: 1em" v-if="this.wish_list.length != 0">Deseados</h1>
-        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item.id">
+        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item">
 
          <div class="row">
 
@@ -288,7 +281,7 @@
                         <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA DURA</small></p>
                         <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA BLANDA</small></p>
                     </div>
-                    <p class="wish_delete"><small class="text-muted">eliminar</small></p>
+                    <p class="wish_delete" @click="deleteFromWishList(wish_item)"><small class="text-muted">eliminar</small></p>
               </div>
             </div>
 
@@ -459,7 +452,7 @@ export default {
     computeTotals() {
       this.getSubTotal()
       this.taxes = Math.round((0.21 * this.subtotal) * 100) / 100
-      this.total = Math.round((this.subtotal + this.taxes + this.shipping) * 100) / 100
+      this.total = Math.round((this.subtotal + this.taxes) * 100) / 100
     },
     increaseQuant(id) {
       var b = this.searchInCart(id)
@@ -509,6 +502,7 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
+      this.$router.push({path: '/cfm'})
     },
     hideCart() {
       if (this.viewCart)
@@ -516,71 +510,16 @@ export default {
     },
     toggleCart() {
       this.viewCart = !this.viewCart
-    },
-    finalizePurchase(order_id) {
-      console.log(this.cart)
-      for (let i = 0; i < this.cart.length; i += 1) {
-        var item = this.cart[i]
-        console.log(item)
-        var price = item.price * item.quant
-        const path = api + 'article-order/' + order_id
-        const parameters = {
-          price: price,
-          id_book: item.id,
-          quant: item.quant
-        }
-        axios.post(path, parameters)
-                .then(() => {
-                  toastr.success('', '¡Order done!',
-                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                  console.log('Order done')
-                  console.log('Article added')
-                })
-                .catch((error) => {
-                  // eslint-disable-next-line
-                  toastr.error('', 'Not enought books.',
-                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                  console.log(error)
-                  const path_del = api + 'order/' + order_id
-                  axios.delete(path_del)
-                          .then(() => {
-                            console.log('Bad Order deleted')
-                            return
-                          })
-                          .catch((error) => {
-                            console.log(error)
-                            return
-                          })
-                })
-
-      }
+      if (this.viewCart)
+        this.getWishList()
     },
     checkout() {
-      const path = api + 'order/' + this.idIn
-      const parameters = {
-        date: this.getTodayDate(),
-        total: this.total,
-        shipping: this.shipping,
-        taxes: this.taxes,
-        state: 0
-      }
-      console.log(path)
-      console.log(parameters)
-      axios.post(path, parameters)
-              .then((res) => {
-                console.log(res)
-                var order_id = res.data
-                console.log(order_id)
-                this.finalizePurchase(order_id)
-                this.cart = []
+      this.viewCart = false
+      if(this.loggedIn)
+        this.$router.push({path: '/cfm'})
+      else
+        this.$router.push({path: '/access'})
 
-              })
-              .catch((error) => {
-                // eslint-disable-next-line
-                toastr.error('', 'Order error.',
-                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                console.log(error)
-              })
     },
     searchInCart(id) {
       var i, item
@@ -636,6 +575,37 @@ export default {
         'cover': book.cover_image_url,
         'quant': 1
       })
+    },
+    getWishList() {
+        if(this.loggedIn){
+            this.wish_list = []
+            var path = api + 'wishlist/' + this.idIn
+            axios.get(path)
+                .then((res) => {
+                  this.wish_list=res.data.List.Wishlist.books
+                })
+                .catch((error) => {
+                  console.log(error)
+                })
+        }
+    },
+    deleteFromWishList(book) {
+        var path = api + 'wishlist/' + this.idIn + '/' + book.id
+        axios.delete(path)
+            .then((res) => {
+              console.log(res)
+              toastr.success('', 'Lista de deseados actualizada correctamente.',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+              this.getWishList();
+            })
+            .catch((error) => {
+              console.log(error)
+              toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+              this.getWishList();
+            })
     }
   }
 }
