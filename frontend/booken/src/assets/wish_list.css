@@ -1,0 +1,30 @@
+.wish_container {
+    background-color:#E6E6E6;
+    margin:2em;
+    padding:1em;
+    max-width:50em !important;
+    border-style: solid;
+    border-width: 0.05em;
+    border-radius: 1em;
+    border-color:#E6E6E6;
+}
+
+.wish_footer {
+    display:flex;
+    justify-content: space-between !important;
+}
+
+.wish_delete {
+    text-decoration-line: underline;
+    text-underline-position:under;
+    text-decoration-style:dotted;
+    cursor:pointer;
+}
+
+.wish_property {
+    font-size: 0.8em;
+    padding: 0.2em;
+    border-style: solid;
+    border-width: 0.05em;
+    border-radius: 0.2em;
+}
