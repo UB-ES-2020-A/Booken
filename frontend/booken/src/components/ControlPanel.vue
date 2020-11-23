@@ -213,6 +213,7 @@
                     <th scope="col">Total</th>
                     <th scope="col" class="text-right">Estado</th>
                     <th scope="col" class="text-right">Editar pedido</th>
+                    <th scope="col" class="text-right">Acciones</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -232,6 +233,12 @@
                               class="form-control-sm" style="width: 120px;text-align: center">
                         <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}</option>
                       </select>
+                    </td>
+                    <td class="text-right" v-if="item.state==0">
+                      <button class="btn btn-danger" @click="cancelOrderList(item.id)">Cancelar</button>
+                    </td>
+                    <td class="text-right" v-if="item.state!=0">
+                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
                     </td>
                   </tr>
                   </tbody>
@@ -902,7 +909,6 @@ export default {
     },
     changeViewingOrdersList(index) {
       console.log(this.viewOrdersList)
-      this.viewOrdersList = []
       this.viewOrdersList = this.sOrdersList[index]
       console.log(this.viewOrdersList)
       this.cIndexList = index
@@ -948,6 +954,22 @@ export default {
             toastr.success('', '¡Pedido cancelado!',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
             this.getOrders()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido cancelar el pedido.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          })
+    },
+    cancelOrderList(id) {
+      var path = api + 'order/' + id
+      console.log(id)
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            toastr.success('', '¡Pedido cancelado!',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getOrdersList()
           })
           .catch((error) => {
             console.log(error)
