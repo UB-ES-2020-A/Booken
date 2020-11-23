@@ -145,7 +145,8 @@
 
     <main class="flex-fill">
       <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
-                   :id="this.idIn" :type="this.typeIn"/>
+                   :id="this.idIn" :type="this.typeIn" :total="this.total" :taxes="this.taxes" :subtotal="this.subtotal"
+      :cart="this.cart"/>
       <!-- Cart -->
       <div id="shopping_cart" v-if="viewCart">
         <h1 style="margin-top: 1em">Tu cesta</h1>
@@ -200,14 +201,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>Envío</td>
-                    <td class="text-right">{{ round2Dec(shipping) }} €</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td><strong>TOTAL</strong></td>
                     <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
                   </tr>
@@ -228,7 +221,7 @@
                   <button class="btn btn-lg btn-block"
                           style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
                           @click="checkout">
-                    Pagar
+                    Tramitar pedido
                   </button>
                 </div>
               </div>
@@ -459,7 +452,7 @@ export default {
     computeTotals() {
       this.getSubTotal()
       this.taxes = Math.round((0.21 * this.subtotal) * 100) / 100
-      this.total = Math.round((this.subtotal + this.taxes + this.shipping) * 100) / 100
+      this.total = Math.round((this.subtotal + this.taxes) * 100) / 100
     },
     increaseQuant(id) {
       var b = this.searchInCart(id)
@@ -509,6 +502,7 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
+      this.$router.push({path: '/cfm'})
     },
     hideCart() {
       if (this.viewCart)
@@ -520,54 +514,12 @@ export default {
         this.getWishList()
 
     },
-    finalizePurchase(order_id) {
-      for (let i = 0; i < this.cart.length; i += 1) {
-        var item = this.cart[i]
-        console.log(item)
-        var price = item.price * item.quant
-        const path = api + 'article-order/' + order_id
-        const parameters = {
-          price: price
-        }
-        axios.post(path, parameters)
-            .then(() => {
-              console.log('Article added')
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(error)
-            })
-
-      }
-    },
     checkout() {
-      const path = api + 'order/' + this.idIn
-      const parameters = {
-        date: this.getTodayDate(),
-        total: this.total,
-        shipping: this.shipping,
-        taxes: this.taxes,
-        state: 0
-      }
-      console.log(path)
-      console.log(parameters)
-      axios.post(path, parameters)
-          .then((res) => {
-            console.log(res)
-            var order_id = res.data
-            console.log(order_id)
-            this.finalizePurchase(order_id)
-            console.log('Order done')
-            this.cart = []
-            toastr.success('', '¡Order done!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-          })
-          .catch((error) => {
-            // eslint-disable-next-line
-            toastr.error('', 'Order error.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-            console.log(error)
-          })
+      this.viewCart = false
+      if(this.loggedIn)
+        this.$router.push({path: '/cfm'})
+      else
+        this.$router.push({path: '/access'})
     },
     searchInCart(id) {
       var i, item
