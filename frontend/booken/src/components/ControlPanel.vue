@@ -1102,8 +1102,8 @@ export default {
           || this.addCardForm.payment_method == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-      } else if (this.addCardForm.number.length != 24) {
-        toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
+      } else if (this.addCardForm.number.length != 16) {
+        toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
             {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
