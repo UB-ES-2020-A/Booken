@@ -459,7 +459,7 @@ export default {
       b.quant += 1
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getSubTotal() {
       this.subtotal = 0
@@ -491,13 +491,13 @@ export default {
       }
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getHelp() {
       if (this.viewCart)
@@ -512,7 +512,6 @@ export default {
       this.viewCart = !this.viewCart
       if (this.viewCart)
         this.getWishList()
-
     },
     checkout() {
       this.viewCart = false
@@ -520,6 +519,7 @@ export default {
         this.$router.push({path: '/cfm'})
       else
         this.$router.push({path: '/access'})
+
     },
     searchInCart(id) {
       var i, item
@@ -536,10 +536,8 @@ export default {
     },
     checkAddToCart(book) {
       var b = this.searchInCart(book.id)
-      console.log("holi")
       if (b == null) {
         this.cart.push(book)
-        console.log("holi")
       } else {
         b.quant += 1
       }
@@ -568,7 +566,7 @@ export default {
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       console.log(book)
       bus.emit('added-to-cart', {
         'id': book.id,
@@ -610,7 +608,6 @@ export default {
             })
     }
   }
-
 }
 
 </script>

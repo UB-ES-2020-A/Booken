@@ -24,11 +24,9 @@
         <!-- Sort by div -->
         <div class="col-12 col-md-6 my-auto filterBox">
           <label>Ordenar por: </label>
-          <select class="form-control-sm " style="width: 180px; margin-left:10px">
-            <option>Recomendado</option>
-            <option>Precio ascendente</option>
-            <option>Precio descendente</option>
-            <option>Más vendidos</option>
+          <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType"
+                  class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
+            <option v-for="item in sortOptions" :key="item" :selected="sortType == '-1'" :value="item.value">{{ item.text }}</option>
           </select>
           <router-link :to="{name: 'BookInfo', params: {id: 0}}">
             <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit"
@@ -93,7 +91,13 @@ export default {
     return {
       books: [],
       admin: 1,
-      nbooks: 0
+      nbooks: 0,
+      sortType: '-1',
+      sortOptions: [
+        {text: 'Más vendidos', value: '-1'},
+        {text: 'Precio ascendente', value: '0'},
+        {text: 'Precio descendente', value: '1'},
+      ],
     }
   },
   props: {
@@ -101,6 +105,44 @@ export default {
     token: String,
     id: Number,
     type: Number
+  },
+  computed: {
+    ascendArray: function() {
+      function compare(a, b) {
+        if (a.price < b.price)
+          return -1;
+        if (a.price > b.price)
+          return 1;
+        return 0;
+      }
+
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.books.sort(compare);
+    },
+    descendArray: function() {
+      function compare(a, b) {
+        if (a.price < b.price)
+          return 1;
+        if (a.price > b.price)
+          return -1;
+        return 0;
+      }
+
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.books.sort(compare);
+    },
+    freqArray: function() {
+      function compare(a, b) {
+        if (a.num_sales < b.num_sales)
+          return 1;
+        if (a.num_sales > b.num_sales)
+          return -1;
+        return 0;
+      }
+
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.books.sort(compare);
+    }
   },
   methods: {
     deleteBook(id) {
@@ -141,12 +183,34 @@ export default {
       axios.get(path)
           .then((res) => {
             this.books = res.data.books
+            this.books = this.freqArray
             this.nbooks = this.books.length
           })
           .catch((error) => {
             this.toPrint(error)
           })
-    }
+    },
+    sortBy(type) {
+      if (type == "-1") {
+        this.freqSort()
+      }
+      if (type == "0") {
+        this.ascendSort()
+      }
+      if (type == "1") {
+        this.descendSort()
+      }
+    },
+    freqSort() {
+      this.books = this.freqArray
+      console.log(this.books)
+    },
+    ascendSort() {
+      this.books = this.ascendArray
+    },
+    descendSort() {
+      this.books = this.descendArray
+    },
   }
 }
 </script>
