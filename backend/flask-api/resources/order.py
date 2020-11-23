@@ -113,11 +113,26 @@ class OrderArticles(Resource):
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
         parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
+        parser.add_argument('id_book', type=int, required=True, help="This field cannot be left blanck")
+        parser.add_argument('quant', type=int, required=True, help="This field cannot be left blanck")
         data = parser.parse_args()
-        article = ArticlesModel(data.price)
-        order.add_article(article)
-        article.save_to_db()
-        return article.id, 200
+        print(data)
+        book = BookModel.find_by_id(data.id_book)
+        if(book):
+            print(book.total_available)
+            print(data.quant)
+            if(book.total_available > data.quant):
+                book.num_sales += data.quant
+                book.total_available -= data.quant
+                book.save_to_db()
+                article = ArticlesModel(data.price)
+                order.add_article(article)
+                article.save_to_db()
+                return article.id, 200
+            else:
+                return {"message": "Not enought books with id [{}] for the order".format(data.id_book)}, 404
+        else:
+            return {"message": "Book with id [{}] not found ".format(data.id_book)}, 404
 
 
    # @auth.login_required(role='admin')

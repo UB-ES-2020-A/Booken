@@ -466,7 +466,7 @@ export default {
       b.quant += 1
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getSubTotal() {
       this.subtotal = 0
@@ -498,13 +498,13 @@ export default {
       }
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getHelp() {
       if (this.viewCart)
@@ -518,22 +518,40 @@ export default {
       this.viewCart = !this.viewCart
     },
     finalizePurchase(order_id) {
+      console.log(this.cart)
       for (let i = 0; i < this.cart.length; i += 1) {
         var item = this.cart[i]
         console.log(item)
         var price = item.price * item.quant
         const path = api + 'article-order/' + order_id
         const parameters = {
-          price: price
+          price: price,
+          id_book: item.id,
+          quant: item.quant
         }
         axios.post(path, parameters)
-            .then(() => {
-              console.log('Article added')
-            })
-            .catch((error) => {
-              // eslint-disable-next-line
-              console.log(error)
-            })
+                .then(() => {
+                  toastr.success('', '¡Order done!',
+                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  console.log('Order done')
+                  console.log('Article added')
+                })
+                .catch((error) => {
+                  // eslint-disable-next-line
+                  toastr.error('', 'Not enought books.',
+                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  console.log(error)
+                  const path_del = api + 'order/' + order_id
+                  axios.delete(path_del)
+                          .then(() => {
+                            console.log('Bad Order deleted')
+                            return
+                          })
+                          .catch((error) => {
+                            console.log(error)
+                            return
+                          })
+                })
 
       }
     },
@@ -549,22 +567,20 @@ export default {
       console.log(path)
       console.log(parameters)
       axios.post(path, parameters)
-          .then((res) => {
-            console.log(res)
-            var order_id = res.data
-            console.log(order_id)
-            this.finalizePurchase(order_id)
-            console.log('Order done')
-            this.cart = []
-            toastr.success('', '¡Order done!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-          })
-          .catch((error) => {
-            // eslint-disable-next-line
-            toastr.error('', 'Order error.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-            console.log(error)
-          })
+              .then((res) => {
+                console.log(res)
+                var order_id = res.data
+                console.log(order_id)
+                this.finalizePurchase(order_id)
+                this.cart = []
+
+              })
+              .catch((error) => {
+                // eslint-disable-next-line
+                toastr.error('', 'Order error.',
+                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                console.log(error)
+              })
     },
     searchInCart(id) {
       var i, item
@@ -581,10 +597,8 @@ export default {
     },
     checkAddToCart(book) {
       var b = this.searchInCart(book.id)
-      console.log("holi")
       if (b == null) {
         this.cart.push(book)
-        console.log("holi")
       } else {
         b.quant += 1
       }
@@ -613,7 +627,7 @@ export default {
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       console.log(book)
       bus.emit('added-to-cart', {
         'id': book.id,
@@ -624,7 +638,6 @@ export default {
       })
     }
   }
-
 }
 
 </script>

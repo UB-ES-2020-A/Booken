@@ -134,9 +134,9 @@ export default {
     freqArray: function() {
       function compare(a, b) {
         if (a.num_sales < b.num_sales)
-          return -1;
-        if (a.num_sales > b.num_sales)
           return 1;
+        if (a.num_sales > b.num_sales)
+          return -1;
         return 0;
       }
 
