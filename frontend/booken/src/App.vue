@@ -249,7 +249,7 @@
 
         <!-- Wish_list -->
         <h1 style="margin-top: 1em" v-if="this.wish_list.length != 0">Deseados</h1>
-        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item.id">
+        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item">
 
          <div class="row">
 
@@ -288,7 +288,7 @@
                         <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA DURA</small></p>
                         <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA BLANDA</small></p>
                     </div>
-                    <p class="wish_delete"><small class="text-muted">eliminar</small></p>
+                    <p class="wish_delete" @click="deleteFromWishList(wish_item)"><small class="text-muted">eliminar</small></p>
               </div>
             </div>
 
@@ -516,6 +516,9 @@ export default {
     },
     toggleCart() {
       this.viewCart = !this.viewCart
+      if (this.viewCart)
+        this.getWishList()
+
     },
     finalizePurchase(order_id) {
       for (let i = 0; i < this.cart.length; i += 1) {
@@ -622,6 +625,37 @@ export default {
         'cover': book.cover_image_url,
         'quant': 1
       })
+    },
+    getWishList() {
+        if(this.loggedIn){
+            this.wish_list = []
+            var path = api + 'wishlist/' + this.idIn
+            axios.get(path)
+                .then((res) => {
+                  this.wish_list=res.data.List.Wishlist.books
+                })
+                .catch((error) => {
+                  console.log(error)
+                })
+        }
+    },
+    deleteFromWishList(book) {
+        var path = api + 'wishlist/' + this.idIn + '/' + book.id
+        axios.delete(path)
+            .then((res) => {
+              console.log(res)
+              toastr.success('', 'Lista de deseados actualizada correctamente.',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+              this.getWishList();
+            })
+            .catch((error) => {
+              console.log(error)
+              toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+              this.getWishList();
+            })
     }
   }
 

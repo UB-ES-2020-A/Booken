@@ -34,5 +34,5 @@ class WishlistModel(db.Model):
         return {"Wishlist": {
             "id": self.id,
             "id_account": self.id_account,
-            "books": [a.name for a in self.books]
+            "books": [a.json()['book'] for a in self.books]
         }}
