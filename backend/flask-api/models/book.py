@@ -108,4 +108,4 @@ class BookModel(db.Model):
     def search_by_author(self, author):
         aut = AuthorModel.find_by_name(author)
         return db.session.query(BookModel).filter_by(
-            name=" ".join(w.capitalize() for w in [aut.name for a in self.author].split(" ")))
+            name=" ".join(w.capitalize() for w in [a.name for a in self.aut].split(" ")))
