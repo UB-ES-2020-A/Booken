@@ -1,6 +1,7 @@
-<style>
+<style scoped>
 @import url("./assets/animate.min.css");
 @import url("./assets/wish_list.css");
+@import url("./assets/shopping-cart.css");
 </style>
 <template>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -104,15 +105,18 @@
 
             <router-link :to="{name: 'books', params: {category: 'HUMANIDADES'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Humanidades</div>
+            >
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Humanidades</div>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'TECNICO Y FORMACION'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Técnico y formación</div>
+            >
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Técnico y formación</div>
             </router-link>
             <router-link :to="{name: 'books', params: {category: 'METODOS DE IDIOMAS'}}"
                          class="nav-item nav-link categoriestxt" active-class="active"
-            ><div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Métodos de idiomas</div>
+            >
+              <div data-toggle="collapse" data-target="#mynavbar, #mynavbar2">Métodos de idiomas</div>
             </router-link>
             <router-link class="nav-item nav-link categoriestxt" active-class="active"
                          :to="{name: 'books', params: {category: 'LITERATURA'}}">
@@ -146,67 +150,46 @@
     <main class="flex-fill">
       <router-view :key="$route.fullPath" v-if="!viewCart" :logged="this.loggedIn" :token="this.tokenIn"
                    :id="this.idIn" :type="this.typeIn" :total="this.total" :taxes="this.taxes" :subtotal="this.subtotal"
-      :cart="this.cart"/>
+                   :cart="this.cart"/>
       <!-- Cart -->
       <div id="shopping_cart" v-if="viewCart">
         <h1 style="margin-top: 1em">Tu cesta</h1>
-        <div class="container mb-4" v-if="this.cart.length >= 1">
-          <div class="row">
-            <div class="col-12">
-              <div class="table-responsive">
-                <table class="table table-striped" style="text-align: left">
-                  <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Artículo</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col" class="text-center">Cantidad</th>
-                    <th scope="col" class="text-right">Total</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(item,i) in this.cart" :key="i">
-                    <td></td>
-                    <!--<td><img :src="image" style="width: 10%"></td>-->
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.price }} €</td>
-                    <td class="text-center">
-                      <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-right: 0.5rem"
-                              type="submit" @click="decreaseQuant(item.id)"
-                      ><i
-                          class="fas fa-minus" style="color: #FFF"/></button>
-                      {{ item.quant }}
-                      <button class="btn my-2 my-sm-0" style="background-color: #3b494d; margin-left: 0.5rem"
-                              type="submit" @click="increaseQuant(item.id)"><i
-                          class="fas fa-plus" style="color: #FFF"/></button>
-                    </td>
-                    <td class="text-right">{{ round2Dec(item.price * item.quant) }} €</td>
-                    <td class="text-right">
-                      <button class="btn btn-sm btn-danger" @click="removeBook(item.id)"><i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
+        <section class="shopping-cart" v-if="this.cart.length >= 1">
+          <ol class="ui-list shopping-cart--list" id="shopping-cart--list">
 
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>IVA (21%)</td>
-                    <td class="text-right">{{ round2Dec(taxes) }} €</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><strong>TOTAL</strong></td>
-                    <td class="text-right"><strong>{{ round2Dec(total) }} €</strong></td>
-                  </tr>
-                  </tbody>
-                </table>
+
+            <li class="_grid shopping-cart--list-item" v-for="(item,i) in this.cart" :key="i">
+              <div class="_column product-image" id="#image">
+                <img class="product-image--img" :src="item.cover" alt="Item image" style="max-width: 110px"/>
               </div>
+              <div class="_column product-info">
+                <h4 class="product-name">{{ item.title }}</h4>
+                <p class="product-desc">{{ item.desc }}</p>
+                <div class="price product-single-price">{{ item.price }}€</div>
+              </div>
+              <div class="_column product-modifiers">
+                <div class="_grid">
+                  <button class="_btn _column product-subtract" @click="decreaseQuant(item.id)">&minus;</button>
+                  <div class="_column product-qty">{{ item.quant }}</div>
+                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)">&plus;</button>
+                </div>
+                <button class="_btn entypo-trash product-remove" @click="removeBook(item.id)">Quitar</button>
+                <div class="price product-total-price">{{ item.quant * item.price }}€</div>
+              </div>
+            </li>
+          </ol>
+          <footer class="_grid cart-totals">
+            <div class="_column subtotal" id="subtotalCtr">
+              <div class="cart-totals-key">Subtotal</div>
+              <div class="cart-totals-value">{{ subtotal }}€</div>
+            </div>
+            <div class="_column taxes" id="taxesCtr">
+              <div class="cart-totals-key">IVA (21%)</div>
+              <div class="cart-totals-value">{{ taxes }}€</div>
+            </div>
+            <div class="_column total" id="totalCtr">
+              <div class="cart-totals-key">Total</div>
+              <div class="cart-totals-value">{{ total }}€</div>
             </div>
             <div class="col mb-2">
               <div class="row">
@@ -226,8 +209,9 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </footer>
+
+        </section>
         <div style="margin-top: 1rem" v-if="this.cart.length == 0">
           <div class="row">
             <div class="col">
@@ -241,51 +225,62 @@
         </div>
 
         <!-- Wish_list -->
-        <h1 style="margin-top: 1em" v-if="this.wish_list.length != 0">Deseados</h1>
-        <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item">
+        <h1 style="margin-top: 1em" v-if="this.loggedIn">Deseados</h1>
+        <div v-if="this.wish_list.length > 0 && this.loggedIn">
+          <div class="container wish_container" v-for="(wish_item) in this.wish_list" :key="wish_item">
 
-         <div class="row">
+            <div class="row">
 
-            <div class="col-md-3" style="margin:auto">
-              <img style="max-height:10em;" :src="wish_item.cover_image_url" :alt="wish_item.name">
-            </div>
-
-
-            <div class="col-md" style="margin:auto">
-              <div style="text-align:left;">
-                <h5 class="card-title" @click="this.viewCart=0">
-                    <router-link :to="{name: 'BookInfo', params: {id: wish_item.id}}" style="color:#424242;">
-                        {{ wish_item.name }}
-                    </router-link>
-                </h5>
+              <div class="col-md-3" style="margin:auto">
+                <img style="max-height:10em;" :src="wish_item.cover_image_url" :alt="wish_item.name">
               </div>
 
 
-              <div class="row">
-                <div class="col-md-8">
-                    <p class="card-text" style="text-align:left;">{{wish_item.description}}</p>
+              <div class="col-md" style="margin:auto">
+                <div style="text-align:left;">
+                  <h5 class="card-title" @click="this.viewCart=0">
+                    <router-link :to="{name: 'BookInfo', params: {id: wish_item.id}}" style="color:#424242;">
+                      {{ wish_item.title }}
+                    </router-link>
+                  </h5>
                 </div>
-                <div class="col-md"  style="margin:auto; margin-right:0; max-width:9.8em">
+
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <p class="card-text" style="text-align:left;">{{ wish_item.description }}</p>
+                  </div>
+                  <div class="col-md" style="margin:auto; margin-right:0; max-width:9.8em">
                     <div style="display:flex; flex-direction: horizontal; background-color: #6E6E6E; margin-bottom:auto;
                             border-color:#6E6E6E; border-style:solid; border-radius:0.2em; max-height:3em;">
-                        <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
-                        <button class="btn btn-success" @click="addToCart(wish_item)">Añadir</button>
+                      <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
+                      <button class="btn btn-success" @click="addToCart(wish_item)">Añadir</button>
                     </div>
+                  </div>
+                </div>
+
+
+                <div class="wish_footer" style="margin-top:1em !important;">
+                  <div style="display:flex;">
+                    <p class="wish_property" style="margin-right:1em"><small
+                        class="text-muted">{{ wish_item.genre }}</small></p>
+                    <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA
+                      DURA</small>
+                    </p>
+                    <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA
+                      BLANDA</small></p>
+                  </div>
+                  <p class="wish_delete" @click="deleteFromWishList(wish_item)"><small
+                      class="text-muted">eliminar</small>
+                  </p>
                 </div>
               </div>
 
-
-              <div class="wish_footer" style="margin-top:1em !important;">
-                    <div style="display:flex;">
-                        <p class="wish_property" style="margin-right:1em"><small class="text-muted">{{wish_item.genre}}</small></p>
-                        <p v-if="wish_item.cover_type == 0" class="wish_property"><small class="text-muted">TAPA DURA</small></p>
-                        <p v-if="wish_item.cover_type == 1" class="wish_property"><small class="text-muted">TAPA BLANDA</small></p>
-                    </div>
-                    <p class="wish_delete" @click="deleteFromWishList(wish_item)"><small class="text-muted">eliminar</small></p>
-              </div>
             </div>
-
           </div>
+        </div>
+        <div v-if="this.wish_list.length == 0 && this.loggedIn">
+          <h3 style="margin-bottom: 5em; margin-top: 1.5em">¡Vaya! No hay nada por aquí 👀.</h3>
         </div>
       </div>
     </main>
@@ -401,42 +396,42 @@ export default {
       cart: [],
       wish_list: [
         {
-            ISBN: 9788431690656,
-            author: ["Maria Angelidou"],
-            back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
-            cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
-            cover_type: 0,
-            description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
-            editorial: "Vicens Vives",
-            genre: "HUMANIDADES",
-            id: 1,
-            language: "Castellano",
-            name: "Mitos griegos",
-            num_pages: 128,
-            num_sales: 0,
-            price: 7.5,
-            synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-            total_available: 28,
-            year: 2013
+          ISBN: 9788431690656,
+          author: ["Maria Angelidou"],
+          back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
+          cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
+          cover_type: 0,
+          description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
+          editorial: "Vicens Vives",
+          genre: "HUMANIDADES",
+          id: 1,
+          language: "Castellano",
+          name: "Mitos griegos",
+          num_pages: 128,
+          num_sales: 0,
+          price: 7.5,
+          synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
+          total_available: 28,
+          year: 2013
         },
         {
-            ISBN: 9788466668545,
-            author: ["Arturo Pérez-Reverte"],
-            back_cover_image_url: "",
-            cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
-            cover_type: 0,
-            description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
-            editorial: "S.A. Ediciones B",
-            genre: "LITERATURA",
-            id: 6,
-            language: "Castellano",
-            name: "Rey Blanco",
-            num_pages: 528,
-            num_sales: 10,
-            price: 20,
-            synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
-            total_available: 100,
-            year: 2020,
+          ISBN: 9788466668545,
+          author: ["Arturo Pérez-Reverte"],
+          back_cover_image_url: "",
+          cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
+          cover_type: 0,
+          description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
+          editorial: "S.A. Ediciones B",
+          genre: "LITERATURA",
+          id: 6,
+          language: "Castellano",
+          name: "Rey Blanco",
+          num_pages: 528,
+          num_sales: 10,
+          price: 20,
+          synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
+          total_available: 100,
+          year: 2020,
         }
       ],
       typeIn: -1,
@@ -459,7 +454,7 @@ export default {
       b.quant += 1
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getSubTotal() {
       this.subtotal = 0
@@ -468,6 +463,7 @@ export default {
         item = this.cart[i]
         this.subtotal += (item.price * item.quant)
       }
+      this.subtotal = Math.round((this.subtotal) * 100) / 100
     },
     getBookIndex(id) {
       var i, item
@@ -491,13 +487,13 @@ export default {
       }
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
     },
     getHelp() {
       if (this.viewCart)
@@ -515,7 +511,7 @@ export default {
     },
     checkout() {
       this.viewCart = false
-      if(this.loggedIn)
+      if (this.loggedIn)
         this.$router.push({path: '/cfm'})
       else
         this.$router.push({path: '/access'})
@@ -566,7 +562,7 @@ export default {
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
       console.log(book)
       bus.emit('added-to-cart', {
         'id': book.id,
@@ -577,35 +573,35 @@ export default {
       })
     },
     getWishList() {
-        if(this.loggedIn){
-            this.wish_list = []
-            var path = api + 'wishlist/' + this.idIn
-            axios.get(path)
-                .then((res) => {
-                  this.wish_list=res.data.List.Wishlist.books
-                })
-                .catch((error) => {
-                  console.log(error)
-                })
-        }
-    },
-    deleteFromWishList(book) {
-        var path = api + 'wishlist/' + this.idIn + '/' + book.id
-        axios.delete(path)
+      if (this.loggedIn) {
+        this.wish_list = []
+        var path = api + 'wishlist/' + this.idIn
+        axios.get(path)
             .then((res) => {
-              console.log(res)
-              toastr.success('', 'Lista de deseados actualizada correctamente.',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-
-              this.getWishList();
+              this.wish_list = res.data.List.Wishlist.books
             })
             .catch((error) => {
               console.log(error)
-              toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
+            })
+      }
+    },
+    deleteFromWishList(book) {
+      var path = api + 'wishlist/' + this.idIn + '/' + book.id
+      axios.delete(path)
+          .then((res) => {
+            console.log(res)
+            toastr.success('', 'Lista de deseados actualizada correctamente.',
                 {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
 
-              this.getWishList();
-            })
+            this.getWishList();
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+
+            this.getWishList();
+          })
     }
   }
 }

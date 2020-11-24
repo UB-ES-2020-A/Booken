@@ -771,6 +771,7 @@ export default {
         'id': book.id,
         'title': book.name,
         'price': book.price,
+        'desc': book.desc,
         'cover': book.cover_image_url,
         'quant': 1
       })
