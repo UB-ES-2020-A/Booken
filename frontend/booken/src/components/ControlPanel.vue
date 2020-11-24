@@ -1060,7 +1060,9 @@ export default {
     saveProfile() {
       this.editProfile = false
       var path = api + 'account/' + this.id
-      axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email})
+      var currentUser = {username: this.id, password: this.token}
+
+      axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email}, { auth: currentUser})
           .then((res) => {
             path = res
             toastr.success('', 'Datos de usuario actualizados.',
