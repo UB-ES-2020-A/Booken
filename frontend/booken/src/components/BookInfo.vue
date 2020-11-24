@@ -77,7 +77,7 @@
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em"
                          :src="bookInfo.cover_image_url" v-if="bookInfo.cover_image_url != ''">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" style="max-height: 20em"
-                         src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png" v-if="bookInfo.cover_image_url == ''">
+                         src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png" v-if="bookInfo.cover_image_url == ''" id="displayPic3">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2"
                          style="max-height: 20em; display: none" :src="bookInfo.back_cover_image_url"
                          v-if="bookInfo.back_cover_image_url != ''">

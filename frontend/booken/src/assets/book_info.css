@@ -12,6 +12,13 @@
     background-color: #72d6f1;
 }
 
+@media (max-width: 500px) {
+
+    #displayPic, #displayPic2, #displayPic3 {
+        width: 12em;
+    }
+}
+
 /*.bookTitle:before {
     content: '';
     display: block;
@@ -22,7 +29,6 @@
     width: 6px;
     background: #2bc4ed;
 }*/
-
 .label-info-selected {
     text-transform: uppercase;
     cursor: pointer;
@@ -71,9 +77,10 @@ select {
     padding-bottom: 10px;
     padding-right: 200px
 }
+
 .navbartextbt {
-  color: white !important;
-  font-size: 1.2em
+    color: white !important;
+    font-size: 1.2em
 }
 
 .sel-picture {
