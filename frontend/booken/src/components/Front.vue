@@ -20,53 +20,69 @@
       </div>
       <h2>Los libros de los que todos hablan</h2>
       <!-- First row of recommended books -->
-      <div class="row row-cols-1 row-cols-sm-6">
-        <div class="col mb-4">
+      <div class="row row-cols-1 row-cols-sm-5">
+        <div class="col mb-4" v-for="(item, index) in this.booksRR" :key="index">
           <div class="card h-100">
             <img
-                src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+                :src="item.cover_image_url"
                 class="card-img-top" alt="...">
             <div class="card-body">
-              <h6 class="card-subtitle">J. D. Barker</h6>
+              <h6 class="card-subtitle">{{ item.author[0] }}</h6>
               <h4 class="card-title">
-                <router-link to="/book">El Cuarto Mono</router-link>
+                <router-link :to="{name: 'BookInfo', params: {id: item.id}}">{{ item.name }}</router-link>
               </h4>
-
-              <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
+              <p class="card-text">{{ item.description }}</p>
             </div>
             <div class="card-footer">
-              <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span>
-                <span
-                    class="badge badge-dark">Tapa dura</span></h4>
+              <h4>
+                <span class="badge badge-info">{{ item.price }}€</span>&nbsp;
+                <span class="badge badge-secondary" v-if="item.genre == 'HUMANIDADES'">Humanidades</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'LITERATURA'">Literatura</span>
+                <span class="badge badge-secondary"
+                      v-if="item.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'COMICS Y MANGA'">Cómics y manga</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'INFANTIL'">Infantil</span>
+                <span class="badge badge-dark" v-if="item.cover_type == 0">Tapa dura</span>
+                <span class="badge badge-dark" v-else-if="item.cover_type == 1">Tapa blanda</span>
+              </h4>
             </div>
           </div>
         </div>
-
       </div>
       <h2>Las novelas más populares</h2>
       <!-- Second row of recommended books -->
-      <div class="row row-cols-1 row-cols-sm-6">
-        <div class="col mb-4">
+      <div class="row row-cols-1 row-cols-sm-5">
+        <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
           <div class="card h-100">
             <img
-                src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+                :src="item.cover_image_url"
                 class="card-img-top" alt="...">
             <div class="card-body">
-              <h6 class="card-subtitle">J. D. Barker</h6>
+              <h6 class="card-subtitle">{{ item.author[0] }}</h6>
               <h4 class="card-title">
-                <router-link to="/book">El Cuarto Mono</router-link>
+                <router-link :to="{name: 'BookInfo', params: {id: item.id}}">{{ item.name }}</router-link>
               </h4>
-
-              <p class="card-text">El Cuarto Mono, de J.D. Barker. Llega el relevo de El silencio de los corderos</p>
+              <p class="card-text">{{ item.description }}</p>
             </div>
             <div class="card-footer">
-              <h4><span class="badge badge-info">29.99€</span> <span class="badge badge-secondary">Literatura</span>
-                <span
-                    class="badge badge-dark">Tapa dura</span></h4>
+              <h4>
+                <span class="badge badge-info">{{ item.price }}€</span>&nbsp;
+                <span class="badge badge-secondary" v-if="item.genre == 'HUMANIDADES'">Humanidades</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'LITERATURA'">Literatura</span>
+                <span class="badge badge-secondary"
+                      v-if="item.genre == 'TECNICO Y FORMACION'">Técnico y formación</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'COMICS Y MANGA'">Cómics y manga</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
+                <span class="badge badge-secondary" v-if="item.genre == 'INFANTIL'">Infantil</span>
+                <span class="badge badge-dark" v-if="item.cover_type == 0">Tapa dura</span>
+                <span class="badge badge-dark" v-else-if="item.cover_type == 1">Tapa blanda</span>
+              </h4>
             </div>
           </div>
         </div>
-
       </div>
       <!-- Customizable jumbotron -->
       <div class="jumbotron jumbotron-fluid" style="background-color: #2bc4ed; text-align: left !important;">
@@ -84,6 +100,9 @@
 
 <script>
 
+import {api} from "@/main";
+import axios from "axios";
+
 export default {
   name: 'Front',
   props: {
@@ -93,14 +112,74 @@ export default {
     type: Number
   },
   created() {
+    this.getBooksFromDBL('LITERATURA')
   },
   data() {
     return {
-      loggedIn: false
+      loggedIn: false,
+      books: [],
+      booksR: [],
+      booksRR: [],
+      booksRM: []
     }
   }, methods: {
+    compare(a, b) {
+      if (a.num_sales < b.num_sales)
+        return 1;
+      if (a.num_sales > b.num_sales)
+        return -1;
+      return 0;
+    },
     getYear() {
       return new Date().getFullYear()
+    },
+    getBooksFromDBL(req) {
+      var path = api + 'books/' + req
+      if (req === 'TODO') {
+        path = api + 'books'
+      }
+      axios.get(path)
+          .then((res) => {
+            this.books = res.data.books
+            this.recommendBooks()
+            this.getBooksFromDBR('TODO')
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    }, getBooksFromDBR(req) {
+      var path = api + 'books/' + req
+      if (req === 'TODO') {
+        path = api + 'books'
+      }
+      axios.get(path)
+          .then((res) => {
+            this.booksR = res.data.books
+            this.booksRR = this.booksR.sort(this.compare).slice(0, 5)
+          })
+          .catch((error) => {
+            this.toPrint(error)
+          })
+    },
+    recommendBooks() {
+      var min = 0, max = this.books.length - 1
+      var r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0
+      while (r1 == r2 || r1 == r3 || r1 == r4 || r1 == r5 ||
+      r2 == r1 || r2 == r3 || r2 == r4 || r2 == r5 ||
+      r3 == r1 || r3 == r2 || r3 == r4 || r3 == r5 ||
+      r4 == r1 || r4 == r2 || r4 == r3 || r4 == r5 ||
+      r5 == r1 || r5 == r2 || r5 == r3 || r5 == r4) {
+        r1 = Math.floor(Math.random() * (max - min + 1) + min)
+        r2 = Math.floor(Math.random() * (max - min + 1) + min)
+        r3 = Math.floor(Math.random() * (max - min + 1) + min)
+        r4 = Math.floor(Math.random() * (max - min + 1) + min)
+        r5 = Math.floor(Math.random() * (max - min + 1) + min)
+      }
+      this.booksRM.push(this.books[r1])
+      this.booksRM.push(this.books[r2])
+      this.booksRM.push(this.books[r3])
+      this.booksRM.push(this.books[r4])
+      this.booksRM.push(this.books[r5])
     }
   }
 }
