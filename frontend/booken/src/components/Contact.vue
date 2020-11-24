@@ -62,7 +62,9 @@ export default {
     id: Number,
     type: Number
   },
-
+  created() {
+    scrollTo(0,0)
+  },
   data() {
     return {
         addContactForm:{
