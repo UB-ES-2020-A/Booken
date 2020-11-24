@@ -85,13 +85,13 @@ export default {
         var check_box = document.getElementById('check_box').checked
         if (this.addContactForm.full_name == '' || this.addContactForm.email == '' || this.addContactForm.contact_query == ''){
             toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
         } else if (!this.validateEmail(this.addContactForm.email)) {
             toastr.error('', 'Dirección de correo electrónico no válida.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
         } else if (!check_box){
             toastr.info('', 'Debe aceptar la politica de privacidad',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
         } else{
             this.contactQuery()
         }
@@ -103,14 +103,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
                 toastr.success('', '¡Tu consulta ha sido enviada!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
                 this.$router.push({path: '/'})
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... prueba de nuevo mas tarde.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.$router.push({path: '/'})
           })
     },

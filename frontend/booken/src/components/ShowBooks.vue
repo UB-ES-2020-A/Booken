@@ -152,7 +152,7 @@ export default {
           .then((res) => {
             this.getBooksFromDB(this.$route.params.category)
             toastr.success('', '¡Libro borrado!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
           })
           .catch((error) => {
             this.toPrint(error)

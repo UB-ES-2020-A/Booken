@@ -178,10 +178,10 @@ export default {
             this.id = res.data.id
             if (register) {
               toastr.success('', '¡Bienvenido a booken!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             } else {
               toastr.success('', '¡Hola otra vez!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             }
             bus.emit('has-logged-in', {
               'logged': this.logged,
@@ -197,16 +197,16 @@ export default {
             this.user = ''
             this.toggleInputsSignIn()
             toastr.error('', 'Usuario o contraseña incorrectos.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           })
     },
     doLogin() {
       if (document.getElementById('emailL').value == '' || document.getElementById('passwordL').value == '') {
         toastr.info('', 'Rellena todos los campos para acceder.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else if (!this.validateEmail(this.email)) {
         toastr.error('', 'Dirección de correo electrónico no válida.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else {
         const param = {
           email: this.email,
@@ -234,7 +234,7 @@ export default {
             console.log(error)
             this.toggleInputsRegister()
             toastr.error('', 'No se puede crear la cuenta.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           })
     },
     validateEmail(email) {
@@ -298,30 +298,30 @@ export default {
           document.getElementById('emailL').value == '' || document.getElementById('passwordR1').value == '' ||
           document.getElementById('passwordR2').value == '') {
         toastr.info('', 'Rellena todos los campos para acceder.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else {
         if (!this.checkPasswordSymbol(this.password)) {
           toastr.error('', 'La contraseña debe contener símbolo.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
 
         } else if (!this.checkPasswordLower(this.password)) {
           toastr.error('', 'La contraseña debe contener carácteres minúsculas.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
 
         } else if (!this.checkPasswordUpper(this.password)) {
           toastr.error('', 'La contraseña debe contener carácteres mayúsculas.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
 
         } else if (!this.checkPasswordNumber(this.password)) {
           toastr.error('', 'La contraseña debe contener número.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
 
         } else if (!this.validateEmail(this.email)) {
           toastr.error('', 'Dirección de correo electrónico no válida.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
         } else if (document.getElementById('passwordR1').value !== document.getElementById('passwordR2').value) {
           toastr.error('', 'Las contraseñas no coniciden.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
         } else {
           this.toggleInputsRegister()
           this.register()
