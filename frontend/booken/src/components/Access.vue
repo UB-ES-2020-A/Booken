@@ -84,12 +84,12 @@
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
-                         v-model="password" @change="scorePassword">
+                         v-model="password" @change="scorePassword(this.password)">
 
                 </div>
                 <div class="progress" style=" width:100%">
                   <div class="progress-bar" role="progressbar" aria-valuenow="0"
-                       aria-valuemin="0" aria-valuemax="100" id="myprogressbar">{{ this.checkPasswordStrength() }}
+                       aria-valuemin="0" aria-valuemax="100" id="myprogressbar">{{ this.checkPasswordStrength(this.password) }}
                   </div>
                 </div>
               </div>
@@ -240,22 +240,23 @@ export default {
     validateEmail(email) {
       return /\S+@\S+\.\S+/.test(email);
     },
-    checkPasswordSymbol() {
-      return /\W/.test(this.password);
+    checkPasswordSymbol(pwd) {
+      return /\W/.test(pwd);
     },
-    checkPasswordLower() {
-      return /[a-z]/.test(this.password);
+    checkPasswordLower(pwd) {
+      return /[a-z]/.test(pwd);
     },
-    checkPasswordUpper() {
-      return /[A-Z]/.test(this.password);
+    checkPasswordUpper(pwd) {
+      return /[A-Z]/.test(pwd);
     },
-    checkPasswordNumber() {
-      return /\d/.test(this.password);
+    checkPasswordNumber(pwd) {
+      return /\d/.test(pwd);
     },
-    scorePassword() {
+    scorePassword(pass) {
       let score = 0;
-      const pass = this.password;
-      if (!pass) return score;
+      if (!pass) {
+        return score;
+      }
       // award every unique letter until 5 repetitions
       const letters = {};
       for (let i = 0; i < pass.length; i++) {
@@ -279,8 +280,7 @@ export default {
       document.getElementById("myprogressbar").style.width = score + '%';
       return score
     },
-    checkPasswordStrength() {
-      const pass = this.password;
+    checkPasswordStrength(pass) {
       const score = this.scorePassword(pass);
       if (score > 80)
         return "Fuerte";

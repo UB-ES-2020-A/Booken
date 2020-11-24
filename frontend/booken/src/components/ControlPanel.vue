@@ -69,7 +69,8 @@
                             </div>
                             <div class="modal-footer" style="border-top: 0 none;">
                               <button type="button" class="btn btn-secondary" style="width:50px" data-dismiss="modal"
-                              @click="deleteAccount" href="/">Sí</button>
+                                      @click="deleteAccount" href="/">Sí
+                              </button>
                               <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
                               </button>
                             </div>
@@ -101,7 +102,9 @@
                     </button>
                   </div>
                   <div class="modal-footer" style="border-top: 0 none;">
-                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout" data-dismiss="modal">Sí</button>
+                    <button type="button" class="btn btn-secondary" style="width:50px" @click="logout"
+                            data-dismiss="modal">Sí
+                    </button>
                     <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
                   </div>
                 </div>
@@ -144,7 +147,9 @@
                   <label>Filtrar: </label>
                   <select name="sortBy" id="sortBy" @change="sortBy(sortType)" v-model="sortType"
                           class="form-control-sm" style="width: 180px; margin-left:10px; margin-right: 0.5em">
-                    <option v-for="item in sortOptions" :key="item" :selected="sortType == '-1'" :value="item.value">{{ item.text }}</option>
+                    <option v-for="item in sortOptions" :key="item" :selected="sortType == '-1'" :value="item.value">
+                      {{ item.text }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -204,8 +209,8 @@
                   </select>
                 </div>
               </div>
-              <div class="table-responsive" >
-                <table class="table table-striped" style="text-align: left" :key="this.ordersHist.length" >
+              <div class="table-responsive">
+                <table class="table table-striped" style="text-align: left" :key="this.ordersHist.length">
                   <thead>
                   <tr>
                     <th scope="col">Número pedido</th>
@@ -229,9 +234,13 @@
                       <b>Pedido recibido</b>
                     </td>
                     <td class="text-right" v-if="item.state!=2">
-                      <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)" v-model="sortState[item.id]"
+                      <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)"
+                              v-model="sortState[item.id]"
                               class="form-control-sm" style="width: 120px;text-align: center">
-                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}</option>
+                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{
+                            state.text
+                          }}
+                        </option>
                       </select>
                     </td>
                     <td class="text-right" v-if="item.state==0">
@@ -329,10 +338,11 @@
                   <div class="form-group">
                     <label for="exampleFormControlInput1">Contraseña nueva</label>
                     <input type="password" class="form-control"
-                           placeholder="" :disabled="!editPass">
+                           placeholder="" :disabled="!editPass"
+                           v-model="newPassword" @change="this.scoreNewPassword(this.newPassword)">
                     <div class="progress">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="25"
-                           aria-valuemin="0" aria-valuemax="100"> Todavía no funciona xD
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0"
+                           aria-valuemin="0" aria-valuemax="100" id="mynewprogressbar">{{ this.checkNewPasswordStrength(this.newPassword) }}
                       </div>
                     </div>
                   </div>
@@ -758,11 +768,11 @@ export default {
       editProfile: false,
       editPass: false,
       orders: [],
-      ordersHist:[],
+      ordersHist: [],
       sOrders: [],
-      sOrdersList:[],
+      sOrdersList: [],
       viewOrders: [],
-      viewOrdersList:[],
+      viewOrdersList: [],
       OrdersInProgress: [],
       OrdersSend: [],
       OrdersReceived: [],
@@ -770,7 +780,7 @@ export default {
       numberOfPages: 0,
       maxPerPage: 10,
       cIndex: 0,
-      cIndexList:0,
+      cIndexList: 0,
       addressNumber: 0,
       cardNumber: 0,
       cards: [
@@ -817,7 +827,8 @@ export default {
         {text: 'En progreso', value: '0'},
         {text: 'Enviados', value: '1'},
         {text: 'Recibidos', value: '2'}
-      ]
+      ],
+      newPassword: ''
     }
   },
   created() {
@@ -859,7 +870,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getOrdersList() {
@@ -875,7 +892,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getCards() {
@@ -901,7 +924,13 @@ export default {
           .catch((error) => {
             this.toPrint(error)
             toastr.error('', 'No se ha podido recuperar las tarjetas.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getAddresses() {
@@ -915,7 +944,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las direcciones.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     changeViewingOrders(index) {
@@ -967,13 +1002,25 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getOrders()
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido cancelar el pedido.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     cancelOrderList(id) {
@@ -983,13 +1030,25 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getOrdersList()
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido cancelar el pedido.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     viewOrder(id) {
@@ -1005,12 +1064,24 @@ export default {
           .then((res) => {
             path = res
             toastr.success('', 'Datos de usuario actualizados.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido guardar los cambios.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     changePassword() {
@@ -1018,6 +1089,44 @@ export default {
     },
     savePassword() {
       this.editPass = false
+    },
+    scoreNewPassword(pass) {
+      let score = 0;
+      if (!pass) {
+        return score;
+      }
+      // award every unique letter until 5 repetitions
+      const letters = {};
+      for (let i = 0; i < pass.length; i++) {
+        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+        score += 5.0 / letters[pass[i]];
+      }
+      // bonus points for mixing it up
+      const variations = {
+        digits: /\d/.test(pass),
+        lower: /[a-z]/.test(pass),
+        upper: /[A-Z]/.test(pass),
+        nonWords: /\W/.test(pass),
+      };
+
+      let variationCount = 0;
+      for (const check in variations) {
+        variationCount += (variations[check] === true) ? 1 : 0;
+      }
+      score += (variationCount - 1) * 10;
+
+      document.getElementById("mynewprogressbar").style.width = score + '%';
+      return score
+    },
+     checkNewPasswordStrength(pass) {
+      const score = this.scoreNewPassword(pass);
+      if (score > 80)
+        return "Fuerte";
+      if (score > 60)
+        return "Regular";
+      if (score >= 30)
+        return "Débil";
+      return "";
     },
     stateOrdersInProgress() {
       var path = api + 'orders-state-0/' + this.id
@@ -1033,7 +1142,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1051,7 +1166,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1069,7 +1190,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1085,7 +1212,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1100,7 +1233,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1115,7 +1254,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1128,14 +1273,32 @@ export default {
       if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
           || this.addCardForm.payment_method == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (this.addCardForm.number.length != 16) {
         toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
         toastr.error('', 'Fecha de caducidad no valida.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else {
         this.cardToDB()
       }
@@ -1151,14 +1314,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
     },
@@ -1168,14 +1343,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
     },
@@ -1236,13 +1423,31 @@ export default {
           || this.newAddressNumber == '' || this.newAddressCode == '' || this.newAddressCity == ''
           || this.newAddressProvince == '' || this.newAddressPhone == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (this.newAddressCode.length != 5) {
         toastr.info('', 'El codigo postal debe contener 4 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (this.newAddressPhone.length != 9) {
         toastr.info('', 'El numero de telefono debe contener 9 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else {
         var tmp = {
           "label_name": this.newAddressLabel,
@@ -1293,7 +1498,7 @@ export default {
       }
 
     },
-    changeState(type,order_id) {
+    changeState(type, order_id) {
       console.log(this.sortTypeHist)
       const path = api + 'order/' + order_id
       const parameters = {
@@ -1322,7 +1527,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar los pedidos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
 
     },
@@ -1333,14 +1544,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
     },
@@ -1351,14 +1574,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
     },
@@ -1368,33 +1603,57 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
 
     },
-    deleteAccount(){
-        var path = api + 'account/' + this.id
-        console.log(this.id)
-        axios.delete(path)
+    deleteAccount() {
+      var path = api + 'account/' + this.id
+      console.log(this.id)
+      axios.delete(path)
           .then((res) => {
             console.log(res.data)
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             bus.emit('has-logged-out')
-            this.$router.push({ path: '/' })
+            this.$router.push({path: '/'})
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba, inténtelo de nuevo mas tarde...',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     searchOrder(order_id) {
