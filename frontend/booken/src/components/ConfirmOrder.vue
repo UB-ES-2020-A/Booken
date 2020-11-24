@@ -551,14 +551,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getCards()
           })
     },
@@ -568,20 +568,20 @@ export default {
       this.addCardForm.date = document.getElementById('paymentEndDate').value
       this.addCardForm.payment_method = document.getElementById('paymentMethod').value
 
-      /*if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
+      if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
           || this.addCardForm.payment_method == ''){
               toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-      } else if(this.addCardForm.number.length != 24){
-              toastr.info('', 'El numero de cuenta debe contener 24 digitos.',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+      } else if(this.addCardForm.number.length != 16){
+              toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
+                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
           toastr.error('', 'Fecha de caducidad no valida.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else{
           this.cardToDB()
-      }*/
+      }
       this.cardToDB()
       document.getElementById('paymentTitular').value = ''
       document.getElementById('paymentNumber').value = ''
@@ -594,14 +594,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getCards()
           })
     },
@@ -662,13 +662,13 @@ export default {
           || this.newAddressNumber == '' || this.newAddressCode == '' || this.newAddressCity == ''
           || this.newAddressProvince == '' || this.newAddressPhone == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else if (this.newAddressCode.length != 5) {
         toastr.info('', 'El codigo postal debe contener 4 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else if (this.newAddressPhone.length != 9) {
         toastr.info('', 'El numero de telefono debe contener 9 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       } else {
         var tmp = {
           "label_name": this.newAddressLabel,
@@ -694,14 +694,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.getAddresses()
           })
     },
@@ -712,14 +712,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.getAddresses()
           })
     },
@@ -729,14 +729,14 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
             this.getAddresses()
           })
 
@@ -764,7 +764,7 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las tarjetas.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
           })
     },
     getAddresses() {
@@ -778,7 +778,7 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las direcciones.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
           })
     },
     getDatePlus(days) {

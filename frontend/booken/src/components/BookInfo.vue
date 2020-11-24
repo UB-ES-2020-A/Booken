@@ -562,13 +562,13 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             this.getReviewsFromDB()
           })
           .catch((error) => {
             this.toPrint(error)
             toastr.error('', 'No se ha guardar la reseña.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           })
     },
     getAuthorId(name) {
@@ -595,25 +595,25 @@ export default {
             this.bookInfo.price == '' || this.bookInfo.synopsis == '' || this.bookInfo.desc == '' || this.bookInfo.num_pages == ''
             || this.bookInfo.cover_type == -1 || this.bookInfo.num_sales.toString() == '' || this.bookInfo.available == '') {
           toastr.info('', 'Por favor, rellena todos los campos.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           return 0
         }
         if (this.bookInfo.year < 0 || this.bookInfo.price < 0 || this.bookInfo.available < 0 || this.bookInfo.num_sales < 0
             || this.bookInfo.num_pages < 0) {
           toastr.warning('', 'No se admiten valores negativos',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           return 0
         }
         if (this.bookInfo.author == 0) {
           if (this.nAutor.name == '' || this.nAutor.birth_date == '' || this.nAutor.country == '' || this.nAutor.city == '') {
             toastr.info('', 'Por favor, rellena todos los campos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
             return 0
           }
         }
         if (!this.isValidIsbn(this.bookInfo.isbn)) {
           toastr.warning('', 'El ISBN introducido no tiene el formato correcto.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
           return 0
         }
         this.edit = 0
@@ -648,12 +648,12 @@ export default {
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro actualizado correctamente!',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
               })
               .catch((error) => {
                 this.toPrint(error)
                 toastr.error('', 'No se ha podido guardar los cambios en el libro.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
               })
         } else {
           path = api + 'book'
@@ -682,12 +682,12 @@ export default {
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro añadido correctamente!',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
               })
               .catch((error) => {
                 console.log(error)
                 toastr.error('', 'No se ha podido añadir el libro.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
               })
         }
       }
@@ -743,30 +743,30 @@ export default {
                 .then((res) => {
                   console.log(res.data)
                   toastr.success('', 'Añadido a tu lista de deseos.',
-                      {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                      {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
                 })
                 .catch((error) => {
                   console.log(error)
                   if(error.response){
                     if(error.response.status == 400){
-                        toastr.info('', 'Este libro ya pertenece a tu lista de deseados.',
-                          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                        toastr.info('', 'Este libro ya está a tu lista de deseados.',
+                          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
                     }
                   }
                   else{
-                      toastr.error('', 'No se ha podido añadir el libro a deseados, intentelo de nuevo mas tarde.',
-                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                      toastr.error('', 'No se ha podido añadir el libro a deseados, intentálo de nuevo más tarde.',
+                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
                   }
                 })
       }
       else{
-        toastr.info('', 'Debe estar registrado para añadir un libro a deseados.',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+        toastr.info('', 'Debes estar registrado para añadir un libro a deseados.',
+                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       }
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
       bus.emit('added-to-cart', {
         'id': book.id,
         'title': book.name,
