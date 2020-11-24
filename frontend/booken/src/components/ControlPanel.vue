@@ -283,13 +283,13 @@
                   <div class="form-group">
                     <label for="exampleFormControlInput1">Nombre</label>
                     <input type="text" class="form-control"
-                           placeholder="Aitor" :disabled="!editProfile">
+                           placeholder="Aitor" :disabled="!editProfile" v-model="fname">
                   </div>
                 </div>
                 <div class="col">
                   <label for="exampleFormControlInput1">Apellidos</label>
                   <input type="text" class="form-control" id="exampleFormControlInput1"
-                         placeholder="Tilla Seca" :disabled="!editProfile">
+                         placeholder="Tilla Seca" :disabled="!editProfile" v-model="lname">
                 </div>
               </div>
               <div class="row" style="text-align: left">
@@ -297,7 +297,7 @@
                   <div class="form-group">
                     <label for="exampleFormControlInput1">Correo electrónico</label>
                     <input type="email" class="form-control"
-                           placeholder="aitortilla@usa.gov.us" :disabled="!editProfile">
+                           placeholder="aitortilla@usa.gov.us" :disabled="!editProfile" v-model="email">
                   </div>
                 </div>
               </div>
@@ -752,6 +752,9 @@ export default {
   },
   data() {
     return {
+      fname: '',
+      lname: '',
+      email: '',
       editProfile: false,
       editPass: false,
       orders: [],
@@ -822,6 +825,7 @@ export default {
     this.getOrdersList()
     this.getAddresses()
     this.getCards()
+    this.getAccount()
     this.sortType = '-1'
     this.sortTypeHist = '-1'
     //this.stateOrdersInProgress()
@@ -832,6 +836,18 @@ export default {
     logout() {
       bus.emit('has-logged-out')
       this.$router.push({path: '/'})
+    },
+    getAccount() {
+      var path = api + 'account/' + this.id
+      axios.get(path)
+          .then((res) => {
+            this.email = res.data.account.email
+            this.fname = res.data.account.name
+            this.lname = res.data.account.lastname
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     },
     getOrders() {
       var path = api + 'order-user/' + this.id
@@ -984,6 +1000,18 @@ export default {
     },
     saveProfile() {
       this.editProfile = false
+      var path = api + 'account/' + this.id
+      axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email})
+          .then((res) => {
+            path = res
+            toastr.success('', 'Datos de usuario actualizados.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido guardar los cambios.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+          })
     },
     changePassword() {
       this.editPass = true

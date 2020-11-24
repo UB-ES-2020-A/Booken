@@ -47,9 +47,10 @@ class Account(Resource):
         # define the input parameters need and its type
         parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blank")
+        parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()
-        account.name, account.lastname = data['name'], data['lastname']
+        account.name, account.lastname, account.email = data['name'], data['lastname'], data['email']
 
         try:
             account.save_to_db()
