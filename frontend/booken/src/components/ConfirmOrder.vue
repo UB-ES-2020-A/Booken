@@ -122,7 +122,8 @@
                   </div>
                 </div>
               </div>
-              <div class="card" style="text-align: left;  border-color: black; border-width: 2px" v-if="selectedAdd==index">
+              <div class="card" style="text-align: left;  border-color: black; border-width: 2px"
+                   v-if="selectedAdd==index">
                 <div class="card-header">
                   {{ item.label_name }}
                 </div>
@@ -153,9 +154,7 @@
                         @click="updateAddressModal(-1)">
                   <i class="fas fa-plus" style="font-size: 6em; top: 50%"></i>
                 </button>
-              </div>
-            </div>
-            <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
+                <div class="modal fade" id="modalAddress" tabindex="-1" role="dialog"
                      aria-labelledby="modalAddressLabel"
                      aria-hidden="true">
                   <div class="modal-dialog" role="document"
@@ -222,6 +221,9 @@
                     </div>
                   </div>
                 </div>
+
+              </div>
+            </div>
           </div>
           <h3 class="card-title" style="text-align: left; margin-top: 1em">Por último, ¿con que pagarás?</h3>
           <div class="row row-cols-1 row-cols-md-4">
@@ -248,7 +250,8 @@
                      @click="deleteCard(item.id)"><i class="fas fa-trash-alt"></i></p>
                 </div>
               </div>
-              <div class="card" style=" text-align: left;  border-color: black; border-width: 2px" v-if="selectedCard==index">
+              <div class="card" style=" text-align: left;  border-color: black; border-width: 2px"
+                   v-if="selectedCard==index">
                 <div class="card-header">
                       <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
@@ -280,7 +283,7 @@
                 <div class="modal fade" id="modalPayment" tabindex="-1" role="dialog"
                      aria-labelledby="modalAddressLabel"
                      aria-hidden="true">
-                  <div class="modal-dialog" role="document"
+                  <div class="modal-dialog " role="document"
                        style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -343,13 +346,15 @@
           </div>
           <div class="col" id="completed" style="display: none">
             <h1>Pago completado</h1>
-            <h3 style="margin-top: 2em">Tu pedido será entregado el día {{dateAprox}} por Correos. Recibirás un correo
-            electrónico cuando sea enviado.</h3>
-            <h4 style="margin-top: 1em">Gracias por comprar en <span style="font-family: LogoFont; font-size: 1.3em">booken</span>.</h4>
+            <h3 style="margin-top: 2em">Tu pedido será entregado el día {{ dateAprox }} por Correos. Recibirás un correo
+              electrónico cuando sea enviado.</h3>
+            <h4 style="margin-top: 1em">Gracias por comprar en <span style="font-family: LogoFont; font-size: 1.3em">booken</span>.
+            </h4>
           </div>
         </div>
       </div>
-      <button class="truck-button" style="width: 100%; text-align: center" :disabled="selectedCard==-1 || selectedAdd==-1 || selected==0">
+      <button class="truck-button" style="width: 100%; text-align: center"
+              :disabled="selectedCard==-1 || selectedAdd==-1 || selected==0">
         <span class="default">Pagar pedido</span>
         <span class="success">
         Pedido completado
@@ -492,7 +497,7 @@ export default {
             y: -6
           });
         }
-        setTimeout( () => {
+        setTimeout(() => {
           this.$router.push({path: '/cp'})
         }, 6000)
       });
@@ -533,7 +538,7 @@ export default {
     }
   },
   methods: {
-    checkout(){
+    checkout() {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
     },
     changeSend(w) {
@@ -542,7 +547,7 @@ export default {
     changeCard(w) {
       this.selectedCard = w
     },
-    changeAdd(w){
+    changeAdd(w) {
       this.selectedAdd = w
     },
     cardToDB() {
@@ -551,14 +556,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
     },
@@ -569,18 +586,36 @@ export default {
       this.addCardForm.payment_method = document.getElementById('paymentMethod').value
 
       if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
-          || this.addCardForm.payment_method == ''){
-              toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-      } else if(this.addCardForm.number.length != 16){
-              toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+          || this.addCardForm.payment_method == '') {
+        toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      } else if (this.addCardForm.number.length != 16) {
+        toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
-          toastr.error('', 'Fecha de caducidad no valida.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-      } else{
-          this.cardToDB()
+        toastr.error('', 'Fecha de caducidad no valida.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      } else {
+        this.cardToDB()
       }
       this.cardToDB()
       document.getElementById('paymentTitular').value = ''
@@ -594,14 +629,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getCards()
           })
     },
@@ -662,13 +709,31 @@ export default {
           || this.newAddressNumber == '' || this.newAddressCode == '' || this.newAddressCity == ''
           || this.newAddressProvince == '' || this.newAddressPhone == '') {
         toastr.info('', 'Rellena los campos obligatorios para generar la consulta.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (this.newAddressCode.length != 5) {
         toastr.info('', 'El codigo postal debe contener 4 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (this.newAddressPhone.length != 9) {
         toastr.info('', 'El numero de telefono debe contener 9 digitos.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else {
         var tmp = {
           "label_name": this.newAddressLabel,
@@ -694,14 +759,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
     },
@@ -712,14 +789,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
     },
@@ -729,14 +818,26 @@ export default {
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
           .catch((error) => {
             // eslint-disable-next-line
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getAddresses()
           })
 
@@ -764,7 +865,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las tarjetas.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getAddresses() {
@@ -778,7 +885,13 @@ export default {
           .catch((error) => {
             console.log(error)
             toastr.error('', 'No se ha podido recuperar las direcciones.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getDatePlus(days) {
