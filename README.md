@@ -11,7 +11,7 @@
     An awesome web app to buy books!
     <br /> 
     <br />
-    <img src="https://travis-ci.com/UB-ES-2020/Booken.svg?branch=main"><a href='https://coveralls.io/github/UB-ES-2020/Booken?branch=main'><img src='https://coveralls.io/repos/github/UB-ES-2020/Booken/badge.svg?branch=main' alt='Coverage Status' /></a>
+    <img src="https://travis-ci.com/UB-ES-2020-A/Booken.svg?branch=dev"><a href='https://coveralls.io/github/UB-ES-2020/Booken?branch=main'><img src='https://coveralls.io/repos/github/UB-ES-2020/Booken/badge.svg?branch=main' alt='Coverage Status' /></a>
     <br />
     <br/>
     <a href="http://booken-app.herokuapp.com/">View Demo</a>
