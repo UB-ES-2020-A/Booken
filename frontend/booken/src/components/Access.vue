@@ -73,8 +73,8 @@
               </div>
               <div class="form-group" style="margin-top: 1rem; ">
                 <div class="input-group">
-                <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed"
-                ><i class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
+                <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
+                  <i class="fas fa-envelope" style="color: white; width: 20px"></i> </span>
                   <input name="" class="form-control" placeholder="Correo electrónico" type="text" id="emailR"
                          v-model="email">
                 </div>
@@ -84,16 +84,55 @@
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
-                         v-model="password" @change="scorePassword(this.password)">
-
+                         v-model="password" @change="scorePassword">
                 </div>
-                <div class="progress" style=" width:100%">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="0"
-                       aria-valuemin="0" aria-valuemax="100" id="myprogressbar">{{ this.checkPasswordStrength(this.password) }}
+                <div class="progress" style="width:100%; margin-top:1rem">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="1"
+                       aria-valuemin="0" aria-valuemax="100" id="myprobar"
+                       style="background: red; color: black">{{ checkPasswordStrength() }}
                   </div>
                 </div>
               </div>
+              <div class="rounded" style="background: white; text-align: left">
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter símbolo</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordSymbol(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter mayúscula</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordUpper(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter minúscula</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordLower(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter numérico</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordNumber(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Mínimo 8 carácteres</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordLength(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
 
+                </ul>
+              </div>
               <div class="form-group" style="margin-top: 1rem;">
                 <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
@@ -178,10 +217,22 @@ export default {
             this.id = res.data.id
             if (register) {
               toastr.success('', '¡Bienvenido a booken!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                  {
+                    timeOut: 2500,
+                    progressBar: true,
+                    newestOnTop: true,
+                    positionClass: 'toast-bottom-right',
+                    preventDuplicates: true
+                  })
             } else {
               toastr.success('', '¡Hola otra vez!',
-                  {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                  {
+                    timeOut: 2500,
+                    progressBar: true,
+                    newestOnTop: true,
+                    positionClass: 'toast-bottom-right',
+                    preventDuplicates: true
+                  })
             }
             bus.emit('has-logged-in', {
               'logged': this.logged,
@@ -197,16 +248,34 @@ export default {
             this.user = ''
             this.toggleInputsSignIn()
             toastr.error('', 'Usuario o contraseña incorrectos.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     doLogin() {
       if (document.getElementById('emailL').value == '' || document.getElementById('passwordL').value == '') {
         toastr.info('', 'Rellena todos los campos para acceder.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else if (!this.validateEmail(this.email)) {
         toastr.error('', 'Dirección de correo electrónico no válida.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else {
         const param = {
           email: this.email,
@@ -234,11 +303,72 @@ export default {
             console.log(error)
             this.toggleInputsRegister()
             toastr.error('', 'No se puede crear la cuenta.',
-                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 1500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     validateEmail(email) {
       return /\S+@\S+\.\S+/.test(email);
+    },
+    scorePassword() {
+      let score = 0;
+      const pass = this.password;
+
+      const variations = {
+        digits: /\d/.test(pass),
+        lower: /[a-z]/.test(pass),
+        upper: /[A-Z]/.test(pass),
+        symbols: /\W/.test(pass),
+      };
+      const variations_2 = {
+        digits: /(.*\d){2}/.test(pass),
+        lower: /(.*[a-z]){2}/.test(pass),
+        upper: /(.*[A-Z]){2}/.test(pass),
+        symbols: /(.*\W){2}/.test(pass),
+      };
+      const variations_3 = {
+        digits: /(.*\d){3}/.test(pass),
+        lower: /(.*[a-z]){3}/.test(pass),
+        upper: /(.*[A-Z]){3}/.test(pass),
+        symbols: /(.*\W){3}/.test(pass),
+      };
+
+      let variationCount = 0;
+      for (const check in variations) variationCount += (variations[check] === true) ? 2 : 0;
+      for (const check in variations_2) variationCount += (variations_2[check] === true) ? 1 : 0;
+      for (const check in variations_3) variationCount += (variations_3[check] === true) ? 1 : 0;
+
+      score += (pass.length <= 12) ? variationCount * 5 + pass.length * 2 : variationCount * 5 + 25;
+
+      const elem = document.getElementById("myprobar");
+      if (elem != null) elem.style.width = score + '%';
+
+      return score
+    },
+    checkPasswordStrength() {
+      const score = this.scorePassword();
+      if (score >= 80) {
+        document.getElementById("myprobar").style.background = "green";
+        return "Muy seguro";
+      }
+      if (score >= 60) {
+        document.getElementById("myprobar").style.background = "lime";
+        return "Seguro";
+      }
+      if (score >= 30) {
+        document.getElementById("myprobar").style.background = "orange";
+        return "Regular";
+      }
+      if (score) {
+        document.getElementById("myprobar").style.background = "red";
+        return "Débil"
+      }
+      return ""
     },
     checkPasswordSymbol(pwd) {
       return /\W/.test(pwd);
@@ -252,76 +382,53 @@ export default {
     checkPasswordNumber(pwd) {
       return /\d/.test(pwd);
     },
-    scorePassword(pass) {
-      let score = 0;
-      if (!pass) {
-        return score;
-      }
-      // award every unique letter until 5 repetitions
-      const letters = {};
-      for (let i = 0; i < pass.length; i++) {
-        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
-        score += 5.0 / letters[pass[i]];
-      }
-      // bonus points for mixing it up
-      const variations = {
-        digits: /\d/.test(pass),
-        lower: /[a-z]/.test(pass),
-        upper: /[A-Z]/.test(pass),
-        nonWords: /\W/.test(pass),
-      };
-
-      let variationCount = 0;
-      for (const check in variations) {
-        variationCount += (variations[check] === true) ? 1 : 0;
-      }
-      score += (variationCount - 1) * 10;
-
-      document.getElementById("myprogressbar").style.width = score + '%';
-      return score
-    },
-    checkPasswordStrength(pass) {
-      const score = this.scorePassword(pass);
-      if (score > 80)
-        return "Fuerte";
-      if (score > 60)
-        return "Regular";
-      if (score >= 30)
-        return "Débil";
-      return "";
+    checkPasswordLength(pwd) {
+      return /^[a-zA-Z\d\W]{8,}$/.test(pwd);
     },
     validatePassword(pwd) {
-      return this.checkPasswordSymbol(pwd) && this.checkPasswordLower(pwd) && this.checkPasswordUpper(pwd) && this.checkPasswordNumber(pwd)
+      return this.checkPasswordSymbol(pwd) && this.checkPasswordLower(pwd) &&
+          this.checkPasswordUpper(pwd) && this.checkPasswordNumber(pwd) && this.checkPasswordLength(pwd)
     },
     doRegister() {
       if (document.getElementById('nameR').value == '' || document.getElementById('lastnameR').value == '' ||
           document.getElementById('emailL').value == '' || document.getElementById('passwordR1').value == '' ||
           document.getElementById('passwordR2').value == '') {
         toastr.info('', 'Rellena todos los campos para acceder.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
       } else {
-        if (!this.checkPasswordSymbol(this.password)) {
-          toastr.error('', 'La contraseña debe contener símbolo.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-
-        } else if (!this.checkPasswordLower(this.password)) {
-          toastr.error('', 'La contraseña debe contener carácteres minúsculas.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-
-        } else if (!this.checkPasswordUpper(this.password)) {
-          toastr.error('', 'La contraseña debe contener carácteres mayúsculas.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-
-        } else if (!this.checkPasswordNumber(this.password)) {
-          toastr.error('', 'La contraseña debe contener número.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
-
+        if (!this.validatePassword(this.password)) {
+          toastr.error('', 'La contraseña no cumple los requisitos de seguridad.',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
         } else if (!this.validateEmail(this.email)) {
           toastr.error('', 'Dirección de correo electrónico no válida.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
         } else if (document.getElementById('passwordR1').value !== document.getElementById('passwordR2').value) {
           toastr.error('', 'Las contraseñas no coniciden.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
         } else {
           this.toggleInputsRegister()
           this.register()
