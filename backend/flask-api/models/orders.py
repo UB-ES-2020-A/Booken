@@ -1,7 +1,6 @@
 from db import db
 from models.book import BookModel
 
-from models.address import AddressModel
 from models.payment_card import CardModel
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                     db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))

@@ -4,9 +4,7 @@ from models.book import BookModel
 from models.accounts import AccountModel
 from models.articles import ArticlesModel
 from flask_restful import Resource, reqparse
-from models.accounts import auth, g
 from models.orders import OrdersModel
-from models.payment_card import CardModel
 
 class Orders(Resource):
 
