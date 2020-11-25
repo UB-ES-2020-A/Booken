@@ -4,7 +4,6 @@ from models.book import BookModel
 from models.accounts import AccountModel
 from models.articles import ArticlesModel
 from flask_restful import Resource, reqparse
-from models.accounts import auth, g
 from models.orders import OrdersModel
 
 class Orders(Resource):
@@ -26,16 +25,21 @@ class Orders(Resource):
         parser.add_argument('shipping', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('taxes', type=float, required=True, help="This field cannot be left blanck")
         parser.add_argument('state', type=int, required=True, help="This field cannot be left blanck")
+        parser.add_argument('send_type', type=int, required=True, help="This field cannot be left blanck")
+        parser.add_argument('card_id', type=int, required=True, help="This field cannot be left blanck")
+
         data = parser.parse_args()
         acc = AccountModel.find_by_id(id)
 
         if (data.state < 0 or data.state>2):
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
+        if (data.send_type < 0 or data.send_type>2):
+            return {'message': "Order with send type [{}] not supported".format(data.state)}, 400
         if not acc:
             return {'message': "There isn't a user with this id"}, 409
 
         #new_id = OrdersModel.num_orders()
-        new_order = OrdersModel(id, data.date, data.total, data.shipping, data.taxes, data.state)
+        new_order = OrdersModel(id, data.date, data.total, data.shipping, data.taxes, data.state,data.send_type,data.card_id)
         acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
@@ -65,7 +69,7 @@ class Orders(Resource):
         if ( order ) :
             id_user = order.id_user
             order.delete_from_db()
-            new_order = OrdersModel(id_user,order.date, order.total, order.shipping, order.taxes, data.state)
+            new_order = OrdersModel(id_user,order.date, order.total, order.shipping, order.taxes, data.state,order.send_type,order.card_id)
             db.session.add(new_order)
             db.session.commit()
             return new_order.json(), 200
@@ -296,3 +300,4 @@ class ReceivedOrdersList(Resource):
         orders = OrdersModel.get_orders()['orders']
         orders_list = [order for order in orders if order['state'] == 2]
         return {'orders': orders_list}, 200
+
