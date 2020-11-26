@@ -189,8 +189,9 @@
                     <span class="page-link">
                       {{ index }}</span>
                     </li>
-                      <li class="page-item"><a class="page-link" v-if="cIndex != (index-1)"
-                                               @click="changeViewingOrders(index-1)">{{ index }}</a></li>
+                      <li class="page-item">
+                        <a class="page-link" v-if="cIndex != (index-1)" @click="changeViewingOrders(index-1)">
+                          {{ index }}</a></li>
                     </span>
                   </ul>
                 </nav>
@@ -271,16 +272,16 @@
           <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="container-fluid">
               <div class="row">
-                <div class="col" style="text-align: left">
+                <div class="col-6 my-auto" style="text-align: left">
                   <h5>Tus datos</h5>
                 </div>
-                <div class="col" style="text-align: right">
-                  <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit" style="width: auto"
+                <div class="col-6" style="text-align: right">
+                  <button class="btn btn-warning  mr-2" type="submit" style="width: auto"
                           v-if="!editProfile"><i
                       class="fas fa-edit"
                       style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt" @click="modifyProfile">Modificar</a></button>
-                  <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit" style="width: auto"
+                  <button class="btn btn-success mr-2" type="submit" style="width: auto"
                           v-if="editProfile"><i
                       class="fas fa-save"
                       style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
@@ -288,71 +289,103 @@
                 </div>
               </div>
               <div class="row" style="text-align: left">
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Nombre</label>
-                    <input type="text" class="form-control"
-                           placeholder="Aitor" :disabled="!editProfile" v-model="fname">
-                  </div>
+                <div class="col-12 col-md-6 mt-3">
+                  <label for="exampleFormControlInput1">Nombre</label>
+                  <input type="text" class="form-control"
+                         placeholder="Aitor" :disabled="!editProfile" v-model="fname">
+
                 </div>
-                <div class="col">
+                <div class="col-12 col-md-6 mt-3">
                   <label for="exampleFormControlInput1">Apellidos</label>
                   <input type="text" class="form-control" id="exampleFormControlInput1"
                          placeholder="Tilla Seca" :disabled="!editProfile" v-model="lname">
                 </div>
-              </div>
-              <div class="row" style="text-align: left">
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Correo electrónico</label>
-                    <input type="email" class="form-control"
-                           placeholder="aitortilla@usa.gov.us" :disabled="!editProfile" v-model="email">
-                  </div>
+                <div class="col-12 mt-3">
+                  <label for="exampleFormControlInput1">Correo electrónico</label>
+                  <input type="email" class="form-control"
+                         placeholder="aitortilla@usa.gov.us" :disabled="!editProfile" v-model="email">
+
                 </div>
               </div>
-              <div class="row">
-                <div class="col" style="text-align: left">
+              <div class="row mt-5">
+                <div class="col-6 my-auto" style="text-align: left">
                   <h5>Cambiar contraseña</h5>
                 </div>
-                <div class="col" style="text-align: right">
-                  <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit" style="width: auto" v-if="!editPass">
+                <div class="col-6" style="text-align: right">
+                  <button class="btn btn-warning mr-2" type="submit" style="width: auto" v-if="!editPass">
                     <i
                         class="fas fa-edit"
                         style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt" @click="changePassword">Cambiar</a></button>
-                  <button class="btn btn-success my-2 my-sm-0 mr-2" type="submit" style="width: auto" v-if="editPass"><i
+                  <button class="btn btn-success mr-2" type="submit" style="width: auto" v-if="editPass"><i
                       class="fas fa-save"
                       style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                       class="navbartextbt" @click="savePassword">Guardar</a></button>
                 </div>
               </div>
               <div class="row" style="text-align: left">
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Contraseña actual</label>
-                    <input type="password" class="form-control"
-                           placeholder="" :disabled="!editPass">
-                  </div>
+                <div class="col-12 col-md-4 mt-3">
+                  <label for="exampleFormControlInput1">Contraseña actual</label>
+                  <input type="password" class="form-control"
+                         placeholder="" :disabled="!editPass">
                 </div>
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Contraseña nueva</label>
-                    <input type="password" class="form-control"
-                           placeholder="" :disabled="!editPass"
-                           v-model="newPassword" @change="this.scoreNewPassword(this.newPassword)">
-                    <div class="progress">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0"
-                           aria-valuemin="0" aria-valuemax="100" id="mynewprogressbar">{{ this.checkNewPasswordStrength(this.newPassword) }}
+                <div class="col-12 col-md-4 mt-3">
+                  <label for="exampleFormControlInput1">Contraseña nueva</label>
+                  <input type="password" class="form-control"
+                         placeholder="" :disabled="!editPass"
+                         v-model="newPassword" @change="this.scoreNewPassword">
+                  <div class="myVisibleStat" v-if="editPass">
+                    <div class="progress" style="width:100%; margin-top:1rem">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                           aria-valuemin="0" aria-valuemax="100" id="mynewprobar" style="color: black">
+                        {{ this.checkNewPasswordStrength() }}
                       </div>
+                    </div>
+                    <div class="rounded" style="background: white; text-align: left; margin-top: 1rem">
+                      <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span style="font-size: 0.9em">Contiene carácter símbolo</span>
+                          <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                             v-if="this.checkNewPasswordSymbol(this.newPassword)"></i>
+                          <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                             v-else></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span style="font-size: 0.9em">Contiene carácter mayúscula</span>
+                          <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                             v-if="this.checkNewPasswordUpper(this.newPassword)"></i>
+                          <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                             v-else></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span style="font-size: 0.9em">Contiene carácter minúscula</span>
+                          <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                             v-if="this.checkNewPasswordLower(this.newPassword)"></i>
+                          <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                             v-else></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span style="font-size: 0.9em">Contiene carácter numérico</span>
+                          <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                             v-if="this.checkNewPasswordNumber(this.newPassword)"></i>
+                          <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                             v-else></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                          <span style="font-size: 0.9em">Mínimo 8 carácteres</span>
+                          <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                             v-if="this.checkNewPasswordLength(this.newPassword)"></i>
+                          <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                             v-else></i>
+                        </li>
+
+                      </ul>
                     </div>
                   </div>
                 </div>
-                <div class="col">
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Repite contraseña nueva</label>
-                    <input type="password" class="form-control"
-                           placeholder="" :disabled="!editPass">
-                  </div>
+                <div class="col-12 col-md-4 my-3">
+                  <label for="exampleFormControlInput1">Repite contraseña nueva</label>
+                  <input type="password" class="form-control" placeholder="" :disabled="!editPass">
                 </div>
               </div>
             </div>
@@ -828,7 +861,7 @@ export default {
         {text: 'Enviados', value: '1'},
         {text: 'Recibidos', value: '2'}
       ],
-      newPassword: ''
+      newPassword: '',
     }
   },
   created() {
@@ -1062,7 +1095,7 @@ export default {
       var path = api + 'account/' + this.id
       var currentUser = {username: this.id, password: this.token}
 
-      axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email}, { auth: currentUser})
+      axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email}, {auth: currentUser})
           .then((res) => {
             path = res
             toastr.success('', 'Datos de usuario actualizados.',
@@ -1092,43 +1125,79 @@ export default {
     savePassword() {
       this.editPass = false
     },
-    scoreNewPassword(pass) {
+    checkNewPasswordSymbol(pwd) {
+      return /\W/.test(pwd);
+    },
+    checkNewPasswordLower(pwd) {
+      return /[a-z]/.test(pwd);
+    },
+    checkNewPasswordUpper(pwd) {
+      return /[A-Z]/.test(pwd);
+    },
+    checkNewPasswordNumber(pwd) {
+      return /\d/.test(pwd);
+    },
+    checkNewPasswordLength(pwd) {
+      return /^[a-zA-Z\d\W]{8,}$/.test(pwd);
+    },
+    validatePassword(pwd) {
+      return this.checkNewPasswordSymbol(pwd) && this.checkNewPasswordLower(pwd) &&
+          this.checkNewPasswordUpper(pwd) && this.checkNewPasswordNumber(pwd) && this.checkNewPasswordLength(pwd)
+    },
+    scoreNewPassword() {
       let score = 0;
-      if (!pass) {
-        return score;
-      }
-      // award every unique letter until 5 repetitions
-      const letters = {};
-      for (let i = 0; i < pass.length; i++) {
-        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
-        score += 5.0 / letters[pass[i]];
-      }
-      // bonus points for mixing it up
+      const pass = this.newPassword;
+
       const variations = {
         digits: /\d/.test(pass),
         lower: /[a-z]/.test(pass),
         upper: /[A-Z]/.test(pass),
-        nonWords: /\W/.test(pass),
+        symbols: /\W/.test(pass),
+      };
+      const variations_2 = {
+        digits: /(.*\d){2}/.test(pass),
+        lower: /(.*[a-z]){2}/.test(pass),
+        upper: /(.*[A-Z]){2}/.test(pass),
+        symbols: /(.*\W){2}/.test(pass),
+      };
+      const variations_3 = {
+        digits: /(.*\d){3}/.test(pass),
+        lower: /(.*[a-z]){3}/.test(pass),
+        upper: /(.*[A-Z]){3}/.test(pass),
+        symbols: /(.*\W){3}/.test(pass),
       };
 
       let variationCount = 0;
-      for (const check in variations) {
-        variationCount += (variations[check] === true) ? 1 : 0;
-      }
-      score += (variationCount - 1) * 10;
+      for (const check in variations) variationCount += (variations[check] === true) ? 2 : 0;
+      for (const check in variations_2) variationCount += (variations_2[check] === true) ? 1 : 0;
+      for (const check in variations_3) variationCount += (variations_3[check] === true) ? 1 : 0;
 
-      document.getElementById("mynewprogressbar").style.width = score + '%';
+      score += (pass.length <= 12) ? variationCount * 5 + pass.length * 2 : variationCount * 5 + 25;
+
+      const elem = document.getElementById("mynewprobar");
+      if (elem != null) elem.style.width = score + '%';
+
       return score
     },
-     checkNewPasswordStrength(pass) {
-      const score = this.scoreNewPassword(pass);
-      if (score > 80)
-        return "Fuerte";
-      if (score > 60)
+    checkNewPasswordStrength() {
+      const score = this.scoreNewPassword();
+      if (score >= 80) {
+        document.getElementById("mynewprobar").style.background = "forestgreen";
+        return "Muy seguro";
+      }
+      if (score >= 60) {
+        document.getElementById("mynewprobar").style.background = "limegreen";
+        return "Seguro";
+      }
+      if (score >= 30) {
+        document.getElementById("mynewprobar").style.background = "orange";
         return "Regular";
-      if (score >= 30)
-        return "Débil";
-      return "";
+      }
+      if (score) {
+        document.getElementById("mynewprobar").style.background = "red";
+        return "Débil"
+      }
+      return ""
     },
     stateOrdersInProgress() {
       var path = api + 'orders-state-0/' + this.id

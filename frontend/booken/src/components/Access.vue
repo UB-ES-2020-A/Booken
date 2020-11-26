@@ -87,9 +87,9 @@
                          v-model="password" @change="scorePassword">
                 </div>
                 <div class="progress" style="width:100%; margin-top:1rem">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="1"
+                  <div class="progress-bar" role="progressbar" aria-valuenow="0"
                        aria-valuemin="0" aria-valuemax="100" id="myprobar"
-                       style="background: red; color: black">{{ checkPasswordStrength() }}
+                       style="color: black">{{ checkPasswordStrength() }}
                   </div>
                 </div>
               </div>
@@ -353,11 +353,11 @@ export default {
     checkPasswordStrength() {
       const score = this.scorePassword();
       if (score >= 80) {
-        document.getElementById("myprobar").style.background = "green";
+        document.getElementById("myprobar").style.background = "forestgreen";
         return "Muy seguro";
       }
       if (score >= 60) {
-        document.getElementById("myprobar").style.background = "lime";
+        document.getElementById("myprobar").style.background = "limegreen";
         return "Seguro";
       }
       if (score >= 30) {
