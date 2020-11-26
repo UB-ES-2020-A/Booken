@@ -7,7 +7,7 @@ from app import setupApp
 from db import db
 
 
-class AccountTests(unittest.TestCase):
+class AddressTests(unittest.TestCase):
 
     address_info = {
         "id":1,
