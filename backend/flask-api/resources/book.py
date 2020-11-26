@@ -133,11 +133,9 @@ class SearchBook(Resource):
                 for a in book.author:
                     if a == author:
                         books.append(book)
-            # books = BookModel.query.filter_by(a.like(author) for a in BookModel.author).all()
             return {'Search Books': [a.json() for a in books]}, 200
         return {'message': 'Empty list'}, 200
 
-    # search_by_name(name=data.get('name'))
     def __parse_request__(self):
         parser = reqparse.RequestParser()
         parser.add_argument('isbn', type=int, required=False, help="Operation not valid: 'ISBN' not provided")
