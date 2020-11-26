@@ -98,14 +98,3 @@ class BookModel(db.Model):
             "cover_image_url": self.cover_image_url,
             "back_cover_image_url": self.back_cover_image_url
         }}
-
-    def search_by_isbn(self, isbn):
-        return db.session.query(BookModel).filter_by(isbn=" ".join(w.capitalize() for w in isbn.split(" "))).first()
-
-    def search_by_name(self, name):
-        return db.session.query(BookModel).filter_by(name=name).all()
-
-    def search_by_author(self, author):
-        aut = AuthorModel.find_by_name(author)
-        return db.session.query(BookModel).filter_by(
-            name=" ".join(w.capitalize() for w in [a.name for a in self.aut].split(" ")))

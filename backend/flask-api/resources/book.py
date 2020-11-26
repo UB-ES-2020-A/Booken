@@ -122,13 +122,22 @@ class SearchBook(Resource):
     def get(self):
         data = self.__parse_request__()
         if data.get('name'):
-            return {'Search Books': [a.json() for a in BookModel.search_by_name(name=data.get('name'))]}, 200
+            return {'Search Books': [a.json() for a in
+                                     BookModel.query.filter(BookModel.name.like(data.get('name'))).all()]}, 200
         elif data.get('isbn'):
-            return {'Search Books': [a.json() for a in BookModel.search_by_isbn(isbn=data.get('isbn'))]}, 200
+            return {'Search Books': [a.json() for a in BookModel.query.filter_by(isbn=data.get('isbn')).all()]}, 200
         elif data.get('author_name'):
-            return {'Search Books': [a.json() for a in BookModel.search_by_author(author=data.get('author_name'))]}, 200
+            author = AuthorModel.find_by_name(data.get('author_name'))
+            books = []
+            for book in BookModel.query:
+                for a in book.author:
+                    if a == author:
+                        books.append(book)
+            # books = BookModel.query.filter_by(a.like(author) for a in BookModel.author).all()
+            return {'Search Books': [a.json() for a in books]}, 200
         return {'message': 'Empty list'}, 200
 
+    # search_by_name(name=data.get('name'))
     def __parse_request__(self):
         parser = reqparse.RequestParser()
         parser.add_argument('isbn', type=int, required=False, help="Operation not valid: 'ISBN' not provided")
