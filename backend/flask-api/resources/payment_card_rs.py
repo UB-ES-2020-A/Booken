@@ -7,18 +7,17 @@ from models.accounts import AccountModel
 
 class Card(Resource):
 
-    def get(self, account_id, id):
+    def get(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
-        card = CardModel.find_by_id(id)
+        card = CardModel.find_by_id(idd)
 
         if card is not None and account is not None:
             if card in account.cards:
                 return {'card': card.json()}, 200
-            return {'message': "This account doesn't have a card with id [{}] ".format(id)}, 409
+            return {'message': "This account doesn't have a card with id [{}] ".format(idd)}, 409
         elif card is None:
-            return {'message': "Card with id [{}] Not found".format(id)}, 404
-        else:
-            return {'message': "Account with id [{}] Not found".format(id)}, 404
+            return {'message': "Card with id [{}] Not found".format(idd)}, 404
+        return {'message': "Account with id [{}] Not found".format(idd)}, 404
 
     def post(self, account_id, idd=None):
         parser = reqparse.RequestParser()

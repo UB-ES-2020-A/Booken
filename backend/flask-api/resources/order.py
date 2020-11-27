@@ -47,12 +47,12 @@ class Orders(Resource):
         return new_order.id, 200
 
     # @auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
-    def delete(self, id):
-        order = OrdersModel.find_by_id(id)
+    def delete(self, idd):
+        order = OrdersModel.find_by_id(idd)
         if order:
             order.delete_from_db()
             return {'message': "OK"}, 200
-        return {'message': "Order with id [{}] Not found".format(id)}, 409
+        return {'message': "Order with id [{}] Not found".format(idd)}, 409
 
     # @auth.login_required(role=['dev_manager', 'stock_manager'])
     def put(self, idd):
@@ -210,8 +210,7 @@ class OrderAddress(Resource):
             order.add_address(address)
             order.save_to_db()
             return {'message': "OK"}, 200
-        else:
-            return {'message': "Address with id [{}] Not found".format(address_id)}, 404
+        return {'message': "Address with id [{}] Not found".format(address_id)}, 404
 
     # @auth.login_required(role='admin')
     def delete(self, idd, id_sub):
@@ -220,7 +219,7 @@ class OrderAddress(Resource):
                  range(len(order.json()["address"]))]
         if len(listt) == 0:
             return {"message": "Address with id [{}] not in Order with id [{}]".format(id_sub, idd)}
-        if not True in list:
+        if True not in listt:
             return {"message": "Address with id [{}] not in Order with id [{}]".format(id_sub, idd)}
         index = listt.index(True)
         if index is not None:
