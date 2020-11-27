@@ -1,5 +1,6 @@
 import unittest
 import sys
+import json
 
 sys.path.append('../')
 from app import setupApp, AuthorModel, BookModel
@@ -7,6 +8,28 @@ from db import db
 
 
 class BookTests(unittest.TestCase):
+
+    book_info = {
+        "isbn": 12345678910,
+        "name": 'Book Test',
+        "author_name": 'Kim Follet',
+        "author_bd": '10/10/1979',
+        "author_city": "BCN",
+        "author_country": "Spain",
+        "genre": 'HUMANIDADES',
+        "year": 2020,
+        "editorial": 'Santillana',
+        "language": 'Castellano',
+        "price": 10.9,
+        "synopsis": 'Synopsis',
+        "description": 'Descripcion',
+        "num_pages": 130,
+        "cover_type": 0,
+        "num_sales": 0,
+        "total_available": 15,
+        "cover_image_url": 'asd',
+        "back_cover_image_url": 'asd'
+    }
 
     def setUp(self):
         self.app = setupApp().test_client()
@@ -17,42 +40,43 @@ class BookTests(unittest.TestCase):
         # Executed after each test
         pass
 
-    def test_add_book(self):
-        response = self.addBook(12345678910, 'Book A', 'Kim Follet', '10/10/1979', 'BCN', 'Spain', 'HUMANIDADES', 2020,
-                                'Santillana', 'Castellano', 10.9, 'Synopsis', 'Descripcion', 130, 0, 0, 15, 'asd',
-                                'asd')
+    def test_post_book(self):
+        response = self.postBook(self.book_info)
         self.assertEqual(response.status_code, 200)
-        assert b'Book A' in response.data
 
-    def test_getBook(self):
+    def test_get_Book(self):
+        self.postBook(self.book_info)
         response = self.getBook()
-        #print(response.data)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.name, 'Book A')
 
-    def test_deleteBook(self):
-        response = self.app.delete('/book/1', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        assert b'Book Test' in response.data
+
+    def test_put_book(self):
+        self.postBook(self.book_info)
+
+        put_info = self.book_info.copy()
+        put_info["name"] = 'Book Test modified'
+
+        response = self.putBook(put_info)
+        self.assertEqual(response.status_code, 200)
+        assert b'Book Test modified' in response.data
+
+    def test_delete_Book(self):
+        self.postBook(self.book_info)
+        response = self.deleteBook()
         self.assertEqual(response.status_code, 200)
 
-    def addBook(self, isbn, name, author_n, author_bd, author_c, author_co, genre, year, editorial, language, price,
-                synopsis, description, num_pages, cover_type, num_sales, total_available, cover_image_url,
-                back_cover_image_url):
-        # author = AuthorModel(author_n, author_bd, author_c, author_co)
-        # book = BookModel(isbn, name, [author], genre, year, editorial, language, price,
-        #                 synopsis, description, num_pages, cover_type, num_sales, total_available, cover_image_url,
-        #                 back_cover_image_url)
-        # book.save_to_db()
-        return self.app.post('/book',
-                             data=dict(isbn=isbn, name=name, author_name=author_n, author_bd=author_bd,
-                                       author_city=author_c, author_country=author_co, genre=genre, year=year,
-                                       editorial=editorial, language=language, price=price, synopsis=synopsis,
-                                       description=description, num_pages=num_pages, cover_type=cover_type,
-                                       num_sales=num_sales, total_available=total_available,
-                                       cover_image_url=cover_image_url, back_cover_image_url=back_cover_image_url),
-                             follow_redirects=True)
+    def postBook(self, info):
+        return self.app.post('/book', data=info, follow_redirects=True)
 
     def getBook(self):
         return self.app.get('/book/1', follow_redirects=True)
+
+    def putBook(self, info):
+        return self.app.put('/book/1', data=info, follow_redirects=True)
+
+    def deleteBook(self):
+        return self.app.delete('/book/1', follow_redirects=True)
 
 
 if __name__ == '__main__':
