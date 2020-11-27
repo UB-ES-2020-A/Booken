@@ -1,7 +1,6 @@
 from flask import render_template
 from flask_migrate import Migrate
-
-# resourcers
+from flask_restful import Api
 from resources.account_rs import Account, Accounts, PasswordChange
 from resources.author import AuthorList, Author
 from resources.login_rs import Login
