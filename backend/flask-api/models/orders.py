@@ -98,9 +98,9 @@ class OrdersModel(db.Model):
         self.state = new_state
 
     @classmethod
-    def find_by_state(cls, state, id):
+    def find_by_state(cls, state, idd):
         try:
-            return OrdersModel.query.filter_by(state=state, id_user=id).all()
+            return OrdersModel.query.filter_by(state=state, id_user=idd).all()
         except:
             return None
 
@@ -112,16 +112,16 @@ class OrdersModel(db.Model):
             return None
 
     @classmethod
-    def find_by_id_user(cls, id):
+    def find_by_id_user(cls, idd):
         try:
-            return OrdersModel.query.filter_by(id_user=id).all()
+            return OrdersModel.query.filter_by(id_user=idd).all()
         except:
             return None
 
     @classmethod
-    def find_by_id(cls, id):
+    def find_by_id(cls, idd):
         try:
-            return OrdersModel.query.filter_by(id=id).first()
+            return OrdersModel.query.filter_by(id=idd).first()
         except:
             return None
 
@@ -139,29 +139,27 @@ class OrdersModel(db.Model):
         self.articles += [article]
         self.save_to_db()
 
-    def delete_article(self, id):
-        index = [i for i in range(len(self.json()["articles"])) if self.json()["articles"][i]["id"] == int(id)]
+    def delete_article(self, idd):
+        index = [i for i in range(len(self.json()["articles"])) if self.json()["articles"][i]["id"] == int(idd)]
         if index:
             self.articles.pop(index[0])
             db.session.add(self)
             db.session.commit()
             return 1
-        else:
-            return 0
+        return 0
 
     def add_address(self, address):
         self.address += [address]
         self.save_to_db()
 
-    def delete_address(self, id):
-        index = [i for i in range(len(self.json()["address"])) if self.json()["address"][i]["id"] == int(id)]
+    def delete_address(self, idd):
+        index = [i for i in range(len(self.json()["address"])) if self.json()["address"][i]["id"] == int(idd)]
         if index:
             self.address.pop(index[0])
             db.session.add(self)
             db.session.commit()
             return 1
-        else:
-            return 0
+        return 0
 
     def get_card(self):
         card = CardModel.find_by_id(self.card_id)

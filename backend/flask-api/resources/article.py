@@ -7,19 +7,18 @@ from models.accounts import auth, g
 
 class Articles(Resource):
 
-    def get(self, id):
+    def get(self, idd):
         article = ArticlesModel.find_by_id(id)
         if article:
             return {"article": article.json()}, 200
-        else:
-            return {'message': "Article with id [{}] Not found".format(id)}, 409
+        return {'message': "Article with id [{}] Not found".format(idd)}, 409
 
     #@auth.login_required(role='admin')
     def post(self):
         # Create a new artist with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
-        parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
+        parser.add_argument('price', type=float, required=True, help="This field cannot be left blank")
 
         data = parser.parse_args()
         new_article = ArticlesModel(data.price)
@@ -27,13 +26,12 @@ class Articles(Resource):
         return {'message': "OK"}, 201
 
     #@auth.login_required(role='admin')
-    def delete(self, id):
+    def delete(self, idd):
         article = ArticlesModel.find_by_id(id)
         if article:
             article.delete_from_db()
             return {'message': "OK"}, 201
-        else:
-            return {'message': "Article with id [{}] Not found".format(id)}, 409
+        return {'message': "Article with id [{}] Not found".format(idd)}, 409
 
 
 

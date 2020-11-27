@@ -1,8 +1,5 @@
 from flask_restful import Resource, reqparse
 from db import db
-from models.book import BookModel
-from flask_restful import Resource, reqparse
-from db import db
 from models.author import AuthorModel
 from models.book import BookModel
 
@@ -17,20 +14,20 @@ class BookList(Resource):
 
 class BookArtist(Resource):
 
-    def get(self, id):
-        book = BookModel.find_by_id(id)
+    def get(self, idd):
+        book = BookModel.find_by_id(idd)
         if book:
             return {'Book': book.author.json()}, 200
-        return {'message': "Book with ['id': {}] not found".format(id)}, 404
+        return {'message': "Book with ['id': {}] not found".format(idd)}, 404
 
 
 class Book(Resource):
 
-    def get(self, id):
-        book = BookModel.find_by_id(id)
+    def get(self, idd):
+        book = BookModel.find_by_id(idd)
         if book:
             return book.json(), 200
-        return {'message': "Book with ['id': {}] not found".format(id)}, 404
+        return {'message': "Book with ['id': {}] not found".format(idd)}, 404
 
     def post(self):
         data = self.__parse_request__()
@@ -54,19 +51,19 @@ class Book(Resource):
         new_book.save_to_db()
         return new_book.json(), 200
 
-    def delete(self, id):
+    def delete(self, idd):
         book = BookModel.find_by_id(id)
         if not book:
-            return {'message': "There is no book with ['id': {}], therefore it cannot be deleted".format(id)}, 404
+            return {'message': "There is no book with ['id': {}], therefore it cannot be deleted".format(idd)}, 404
         book.delete_from_db()
         return {'message': "Book with ['id': {}, 'name': {}] has successfully been"
-                           " deleted".format(id, book.name)}, 200
+                           " deleted".format(idd, book.name)}, 200
 
-    def put(self, id):
+    def put(self, idd):
         data = self.__parse_request__()
         exists = BookModel.find_by_id(id)
         if not exists:
-            return {'message': "A book with ['id': {}] not found".format(id)}, 404
+            return {'message': "A book with ['id': {}] not found".format(idd)}, 404
         authors = []
         a = AuthorModel.find_by_name(data.get('author_name'))
         if a:
@@ -133,7 +130,6 @@ class SearchBook(Resource):
                     if a == author:
                         books.append(book)
             return {'Search Books': [a.json() for a in books]}, 200
-        return {'Search Books': []}, 200
 
     def __parse_request__(self):
         parser = reqparse.RequestParser()

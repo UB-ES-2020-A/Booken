@@ -1,12 +1,11 @@
 from flask_restful import Resource, reqparse
-
 from models.contact import ContactModel
 
 
 class Contact(Resource):
     # Get: Returns a contact_query information
-    def get(self, id):
-        contact = ContactModel.find_by_id(id)
+    def get(self, idd):
+        contact = ContactModel.find_by_id(idd)
         if contact:
             return {"contact": contact.json()}, 200
 
@@ -32,12 +31,12 @@ class Contact(Resource):
             return {"Message": "Couldn't save changes"}, 500
 
     # Delete: Deletes an account from the database
-    def delete(self, id):
-        contact = ContactModel.find_by_id(id)
+    def delete(self, idd):
+        contact = ContactModel.find_by_id(idd)
         if not contact:
-            return {'Message': 'Contact with id [{}] not found'.format(id)}, 404
+            return {'Message': 'Contact with id [{}] not found'.format(idd)}, 404
         contact.delete_from_db()
-        return {'Message': 'Contact with id[{}] deleted correctly'.format(id)}, 200
+        return {'Message': 'Contact with id[{}] deleted correctly'.format(idd)}, 200
 
 
 class ContactList(Resource):
