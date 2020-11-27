@@ -84,63 +84,63 @@
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i></span>
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
-                         v-model="password" @change="scorePassword" >
+                         v-model="password" @change="scorePassword">
                 </div>
               </div>
-              <div class="myshow" v-if="editPassword">
-                <div class="progress" style="width:100%; margin-top:1rem">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="0"
-                       aria-valuemin="0" aria-valuemax="100" id="myprobar"
-                       style="color: black">{{ checkPasswordStrength() }}
-                  </div>
+              <!--              <div class="myshow" v-if="editPassword">-->
+              <div class="progress" style="width:100%; margin-top:1rem">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                     aria-valuemin="0" aria-valuemax="100" id="myprobar"
+                     style="color: black">{{ checkPasswordStrength() }}
                 </div>
-                <div class="rounded" style="background: white; text-align: left; margin-top:1rem">
-                  <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span style="font-size: 0.9em">Contiene carácter símbolo</span>
-                      <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
-                         v-if="this.checkPasswordSymbol(this.password)"></i>
-                      <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
-                         v-else></i>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span style="font-size: 0.9em">Contiene carácter mayúscula</span>
-                      <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
-                         v-if="this.checkPasswordUpper(this.password)"></i>
-                      <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
-                         v-else></i>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span style="font-size: 0.9em">Contiene carácter minúscula</span>
-                      <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
-                         v-if="this.checkPasswordLower(this.password)"></i>
-                      <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
-                         v-else></i>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span style="font-size: 0.9em">Contiene carácter numérico</span>
-                      <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
-                         v-if="this.checkPasswordNumber(this.password)"></i>
-                      <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
-                         v-else></i>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                      <span style="font-size: 0.9em">Mínimo 8 carácteres</span>
-                      <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
-                         v-if="this.checkPasswordLength(this.password)"></i>
-                      <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
-                         v-else></i>
-                    </li>
+              </div>
+              <div class="rounded" style="background: white; text-align: left; margin-top:1rem">
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter símbolo</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordSymbol(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter mayúscula</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordUpper(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter minúscula</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordLower(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Contiene carácter numérico</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordNumber(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <span style="font-size: 0.9em">Mínimo 8 carácteres</span>
+                    <i class="fa fa-check fa-lg my-auto" style="color: green; width: 20px"
+                       v-if="this.checkPasswordLength(this.password)"></i>
+                    <i class="fa fa-times fa-lg my-auto" style="color: red; width: 20px"
+                       v-else></i>
+                  </li>
 
-                  </ul>
-                </div>
+                </ul>
               </div>
+              <!--              </div>-->
               <div class="form-group" style="margin-top: 1rem;">
                 <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
                   <i class="fa fa-lock fa-lg" style="color: white; width: 20px"></i> </span>
                   <input class="form-control" placeholder="Repite tu contraseña" type="password"
-                         id="passwordR2" >
+                         id="passwordR2">
                 </div>
               </div>
             </form>
