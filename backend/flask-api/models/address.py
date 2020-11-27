@@ -1,11 +1,11 @@
 from db import db
-
 from models.accounts import AccountModel
+
 
 class AddressModel(db.Model):
     __tablename__ = 'addresses'
 
-    id = db.Column(db.Integer, primary_key = True, unique = True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     account_id = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
 
     label_name = db.Column(db.String(), nullable=False)
@@ -15,14 +15,14 @@ class AddressModel(db.Model):
     street = db.Column(db.String(), nullable=False)
     number = db.Column(db.Integer, nullable=False)
 
-    #codigo postal
+    # codigo postal
     cp = db.Column(db.String(), nullable=False)
     city = db.Column(db.String(), nullable=False)
     province = db.Column(db.String(), nullable=False)
 
     telf = db.Column(db.Integer)
 
-    def __init__(self, label_name,name,surnames,street,number,cp,city,province,telf):
+    def __init__(self, label_name, name, surnames, street, number, cp, city, province, telf):
         self.label_name = label_name
         self.name = name
         self.surnames = surnames
@@ -35,7 +35,7 @@ class AddressModel(db.Model):
 
     def json(self):
         body = {
-            'id':self.id,
+            'id': self.id,
             'label_name': self.label_name,
             'name': self.name,
             'surnames': self.surnames,
@@ -51,7 +51,7 @@ class AddressModel(db.Model):
 
     def json_with_id(self):
         body = {
-            'id':self.id,
+            'id': self.id,
             'label_name': self.label_name,
             'name': self.name,
             'surnames': self.surnames,
@@ -74,8 +74,8 @@ class AddressModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
+    def find_by_id(self, idd):
+        return self.query.filter_by(id=idd).first()
 
     @classmethod
     def find_by_account_id(self, account_id):

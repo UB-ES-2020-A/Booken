@@ -84,8 +84,8 @@ class AccountModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
+    def find_by_id(self, idd):
+        return self.query.filter_by(id=idd).first()
 
     @classmethod
     def find_by_email(self, email):
@@ -119,14 +119,12 @@ class AccountModel(db.Model):
         index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
         if index:
             return self.addresses[index[0]]
-        else:
-            return None
+        return None
 
 @auth.verify_password
 def verify_account(id, token):
-    id = int(id)
     user = AccountModel.verify_auth_token(token)
-    if (user and user.id == id):
+    if user and user.id == int(id):
         g.user = user
         return user
 

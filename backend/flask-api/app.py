@@ -2,18 +2,18 @@ from flask import render_template
 from flask_migrate import Migrate
 
 # resourcers
-from resources.account_rs import *
-from resources.author import *
-from resources.login_rs import *
-from resources.book import *
-from resources.contact_rs import *
-from resources.order import *
-from resources.article import *
-from resources.address_rs import *
-from resources.payment_card_rs import *
-from resources.review import *
-from db import db, create_app
+from resources.account_rs import Account, Accounts, PasswordChange
+from resources.author import AuthorList, Author
+from resources.login_rs import Login
+from resources.book import BookArtist, BookList, Book, SearchBook
+from resources.contact_rs import Contact, ContactList
+from resources.order import OrdersList, OrderUser, OrderArticlesList, OrderAddress, OrderArticles, OrderAddressList, InProgressOrders, InProgressOrdersList, Orders, ReceivedOrdersList, ReceivedOrders, SendOrders, SendOrdersList
+from resources.article import Articles, ArticlesList
+from resources.address_rs import Address, AddressList
+from resources.payment_card_rs import Card, CardList
+from resources.review import ReviewList, ReviewListBook, ReviewListUser, Review
 from resources.wishlist import Wishlist
+from db import db, create_app
 
 app = create_app()
 app.app_context().push()
@@ -79,7 +79,6 @@ api.add_resource(Review, '/review/<int:id>', '/review')
 api.add_resource(ReviewList, '/reviews')
 api.add_resource(ReviewListUser, '/reviewsUser/<int:user_id>')
 api.add_resource(ReviewListBook, '/reviewsBook/<int:book_id>')
-
 
 api.add_resource(InProgressOrdersList, '/orders-list-state-0')
 api.add_resource(SendOrdersList, '/orders-list-state-1')
