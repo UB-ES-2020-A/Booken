@@ -1,6 +1,5 @@
 import unittest
 import sys
-import json
 
 sys.path.append('../')
 from app import setupApp, AuthorModel, BookModel
