@@ -327,7 +327,7 @@
                 <div class="col-12 col-md-4 mt-3">
                   <label for="exampleFormControlInput1">Contraseña actual</label>
                   <input type="password" class="form-control"
-                         placeholder="" :disabled="!editPass">
+                         placeholder="" :disabled="!editPass" v-model="oldPassword">
                 </div>
                 <div class="col-12 col-md-4 mt-3">
                   <label for="exampleFormControlInput1">Contraseña nueva</label>
@@ -385,7 +385,7 @@
                 </div>
                 <div class="col-12 col-md-4 my-3">
                   <label for="exampleFormControlInput1">Repite contraseña nueva</label>
-                  <input type="password" class="form-control" placeholder="" :disabled="!editPass">
+                  <input type="password" class="form-control" placeholder="" :disabled="!editPass" v-model="newPassword2">
                 </div>
               </div>
             </div>
@@ -798,6 +798,9 @@ export default {
       fname: '',
       lname: '',
       email: '',
+      oldPassword: '',
+      newPassword: '',
+      newPassword2: '',
       editProfile: false,
       editPass: false,
       orders: [],
@@ -860,8 +863,7 @@ export default {
         {text: 'En progreso', value: '0'},
         {text: 'Enviados', value: '1'},
         {text: 'Recibidos', value: '2'}
-      ],
-      newPassword: '',
+      ]
     }
   },
   created() {
@@ -1122,8 +1124,67 @@ export default {
     changePassword() {
       this.editPass = true
     },
+
     savePassword() {
       this.editPass = false
+
+      if(this.newPassword == '' || this.newPassword2 == '' || this.oldPassword == ''){
+        toastr.info('', 'Por favor rellene todos los campos gracias.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+      }else if(this.newPassword != this.newPassword2){
+        toastr.info('', 'La nueva contraseña no coincide, intentelo de nuevo.',
+            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
+      }else if (!this.validatePassword(this.newPassword)) {
+          toastr.error('', 'La contraseña no cumple los requisitos de seguridad.',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+      }else{
+          var path = api + 'account/' + this.id + "/change_password"
+          var currentUser = {username: this.id, password: this.token}
+          axios.put(path, {'old_password': this.oldPassword, 'new_password': this.newPassword}, {auth: currentUser})
+              .then((res) => {
+                path = res
+                toastr.success('', 'Datos de usuario actualizados.',
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
+              })
+              .catch((error) => {
+                console.log(error)
+                if(error.response.status == 406){
+                    toastr.info('', 'La contraseña actual no coincide con la de la cuenta.',
+                        {
+                          timeOut: 2500,
+                          progressBar: true,
+                          newestOnTop: true,
+                          positionClass: 'toast-bottom-right',
+                          preventDuplicates: true
+                        })
+                }else{
+                    toastr.error('', 'No se ha podido guardar los cambios.',
+                        {
+                          timeOut: 2500,
+                          progressBar: true,
+                          newestOnTop: true,
+                          positionClass: 'toast-bottom-right',
+                          preventDuplicates: true
+                        })
+                }
+              })
+      }
+
+      this.oldPassword = ''
+      this.newPassword = ''
+      this.newPassword2 = ''
     },
     checkNewPasswordSymbol(pwd) {
       return /\W/.test(pwd);
