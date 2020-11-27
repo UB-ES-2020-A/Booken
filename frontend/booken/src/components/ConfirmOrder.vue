@@ -353,8 +353,10 @@
           </div>
         </div>
       </div>
-      <button class="truck-button" style="width: 100%; text-align: center"
-              :disabled="selectedCard==-1 || selectedAdd==-1 || selected==0">
+      <button class="truck-button a" style="width: 100%; text-align: center" id="nocanpay" disabled>
+        <span class="default">Completa todos los campos para continuar</span>
+      </button>
+      <button class="truck-button" style="width: 100%; text-align: center; display: none" id="canpay">
         <span class="default">Pagar pedido</span>
         <span class="success">
         Pedido completado
@@ -499,7 +501,7 @@ export default {
         }
         setTimeout(() => {
           this.$router.push({path: '/cp'})
-        }, 6000)
+        }, 8000)
       });
     });
 
@@ -540,15 +542,28 @@ export default {
   methods: {
     checkout() {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
+      // POST DE ORDERS AQUI
     },
     changeSend(w) {
       this.selected = w
+      this.showPayButtonChk()
     },
     changeCard(w) {
       this.selectedCard = w
+      this.showPayButtonChk()
     },
     changeAdd(w) {
       this.selectedAdd = w
+      this.showPayButtonChk()
+    },
+    showPayButtonChk(){
+      if(this.selectedCard!=-1 && this.selectedAdd!=-1 && this.selected!=0){
+        document.getElementById('canpay').style.display = 'block'
+        document.getElementById('nocanpay').style.display = 'none'
+      }else{
+        document.getElementById('nocanpay').style.display = 'block'
+        document.getElementById('canpay').style.display = 'none'
+      }
     },
     cardToDB() {
       const path = api + 'account/' + this.id + '/card'
@@ -606,7 +621,7 @@ export default {
             })
 
       } else if (!this.validateEndDate(this.addCardForm.date)) {
-        toastr.error('', 'Fecha de caducidad no valida.',
+        toastr.error('', 'Fecha de caducidad no válida.',
             {
               timeOut: 2500,
               progressBar: true,
@@ -617,7 +632,6 @@ export default {
       } else {
         this.cardToDB()
       }
-      this.cardToDB()
       document.getElementById('paymentTitular').value = ''
       document.getElementById('paymentNumber').value = ''
       document.getElementById('paymentEndDate').value = ''
@@ -637,6 +651,7 @@ export default {
                   preventDuplicates: true
                 })
             this.getCards()
+            this.changeCard(-1)
           })
           .catch((error) => {
             // eslint-disable-next-line
@@ -826,6 +841,7 @@ export default {
                   preventDuplicates: true
                 })
             this.getAddresses()
+            this.changeAdd(-1)
           })
           .catch((error) => {
             // eslint-disable-next-line
