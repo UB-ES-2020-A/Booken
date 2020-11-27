@@ -112,4 +112,4 @@ class PasswordChange(Resource):
                 return {"message": "Couldn't save changes"}, 500
 
         else:
-            return {'message': "Incorrect password"}, 400
+            return {'message': "Incorrect password"}, 406
