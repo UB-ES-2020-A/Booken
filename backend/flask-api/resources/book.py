@@ -115,3 +115,30 @@ class Book(Resource):
         parser.add_argument('back_cover_image_url', type=str, required=True, help="Operation not valid: "
                                                                                   "'back_cover_image_url' not provided")
         return parser.parse_args()
+
+class SearchBook(Resource):
+
+    def get(self):
+        data = self.__parse_request__()
+        if data.get('name'):
+            return {'Search Books': [a.json() for a in
+                                     BookModel.query.filter(BookModel.name.like(data.get('name'))).all()]}, 200
+        elif data.get('isbn'):
+            return {'Search Books': [a.json() for a in BookModel.query.filter_by(isbn=data.get('isbn')).all()]}, 200
+        elif data.get('author_name'):
+            author = AuthorModel.find_by_name(data.get('author_name'))
+            books = []
+            for book in BookModel.query:
+                for a in book.author:
+                    if a == author:
+                        books.append(book)
+            return {'Search Books': [a.json() for a in books]}, 200
+        return {'Search Books': []}, 200
+
+    def __parse_request__(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('isbn', type=int, required=False, help="Operation not valid: 'ISBN' not provided")
+        parser.add_argument('name', type=str, required=False, help="Operation not valid: 'name' not provided")
+        parser.add_argument('author_name', type=str, required=False, help="Operation not valid: "
+                                                                          "'author_name' not provided")
+        return parser.parse_args()
