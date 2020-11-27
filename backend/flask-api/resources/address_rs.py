@@ -7,29 +7,25 @@ from models.accounts import AccountModel
 
 class Address(Resource):
 
-    def get(self, account_id, id):
+    def get(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
-        address = AddressModel.find_by_id(id)
+        address = AddressModel.find_by_id(idd)
 
         if address is not None and account is not None:
             if address in account.addresses:
                 return {'address': address.json()}, 200
 
-            return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
+            return {'message': "This account doesn't have an address with id [{}] ".format(idd)}, 409
+        return {'message': "Address with id [{}] Not found".format(idd)}, 404
 
-        elif address is None:
-            return {'message': "Address with id [{}] Not found".format(id)}, 404
-        else:
-            return {'message': "Account with id [{}] Not found".format(id)}, 404
-
-    def post(self, account_id, id=None):
+    def post(self, account_id, idd=None):
         parser = reqparse.RequestParser()
 
         account = AccountModel.find_by_id(account_id)
-        if (account == None):
+        if account is None:
             return {'message': "Account with id [{}] Not found".format(account_id)}, 404
 
-        if (len(account.addresses) == 3):
+        if len(account.addresses) == 3:
             return {'message': "Account with id [{}] cannot have more addresses".format(account_id)}, 404
 
         # define the input parameters need and its type
@@ -55,19 +51,17 @@ class Address(Resource):
         except:
             return {"Message": "Coudln't save changes"}, 500
 
-    def put(self, account_id, id):
+    def put(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
-        address = AddressModel.find_by_id(id)
+        address = AddressModel.find_by_id(idd)
 
-        if (address != None and account != None):
-            if (address not in account.addresses):
-                return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
-
-        elif (address == None):
-            return {'message': "Address with id [{}] Not found".format(id)}, 404
-
+        if address is not None and account is not None:
+            if address not in account.addresses:
+                return {'message': "This account doesn't have an address with id [{}] ".format(idd)}, 409
+        elif address is None:
+            return {'message': "Address with id [{}] Not found".format(idd)}, 404
         else:
-            return {'message': "Account with id [{}] Not found".format(id)}, 404
+            return {'message': "Account with id [{}] Not found".format(idd)}, 404
 
         parser = reqparse.RequestParser()
         # define the input parameters need and its type
@@ -99,24 +93,20 @@ class Address(Resource):
         except:
             return {"Message": "Coudln't save changes"}, 500
 
-    def delete(self, account_id, id):
+    def delete(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
-        address = AddressModel.find_by_id(id)
-
-        if (address != None and account != None):
-            if (address in account.addresses):
+        address = AddressModel.find_by_id(idd)
+        if address is not None and account is not None:
+            if address in account.addresses:
                 try:
                     address.delete_from_db()
                     return {"Message": "Address deleted correctly"}, 200
                 except:
                     return {"Message": "Coudln't save changes"}, 500
-
             else:
                 return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
-
-        elif (address == None):
+        elif address is None:
             return {'message': "Address with id [{}] Not found".format(id)}, 404
-
         else:
             return {'message': "Account with id [{}] Not found".format(id)}, 404
 

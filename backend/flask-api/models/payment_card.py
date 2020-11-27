@@ -41,5 +41,5 @@ class CardModel(db.Model):
 
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
+    def find_by_id(self, idd):
+        return self.query.filter_by(id=idd).first()

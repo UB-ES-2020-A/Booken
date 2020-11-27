@@ -122,9 +122,9 @@ class AccountModel(db.Model):
         return None
 
 @auth.verify_password
-def verify_account(id, token):
+def verify_account(idd, token):
     user = AccountModel.verify_auth_token(token)
-    if user and user.id == int(id):
+    if user and user.id == int(idd):
         g.user = user
         return user
 

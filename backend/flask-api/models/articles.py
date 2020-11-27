@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 from db import db
 
+
 class ArticlesModel(db.Model):
     __tablename__ = 'articles'  # This is table name
 
-    id = db.Column(db.Integer, unique=False,primary_key=True)
+    id = db.Column(db.Integer, unique=False, primary_key=True)
     price = db.Column(db.Float, unique=False, nullable=False)
 
     def __init__(self, price):
@@ -19,8 +20,8 @@ class ArticlesModel(db.Model):
         }
 
     def save_to_db(self):
-            db.session.add(self)
-            db.session.commit()
+        db.session.add(self)
+        db.session.commit()
 
     def delete_from_db(self):
 
@@ -28,9 +29,9 @@ class ArticlesModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(cls, id):
+    def find_by_id(cls, idd):
         try:
-            return ArticlesModel.query.filter_by(id=id).first()
+            return ArticlesModel.query.filter_by(id=idd).first()
         except:
             return None
 
