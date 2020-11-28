@@ -382,9 +382,8 @@ import axios from 'axios'
 import IMask from 'imask'
 // eslint-disable-next-line no-unused-vars
 import * as toastr from '../assets/toastr.js'
-import {api} from "@/main";
 import gsap from 'gsap'
-
+import {bus, api} from '../main.js'
 export default {
   name: "ConfirmOrder",
   props: {
@@ -453,6 +452,8 @@ export default {
               onComplete() {
                 gsap.timeline({
                   onComplete() {
+                    toastr.success('', '¡Order done!',
+                        {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
                     button.classList.add('done');
                     document.getElementById('processing').style.display = 'none'
                     document.getElementById('completed').style.display = 'block'
@@ -542,7 +543,65 @@ export default {
   methods: {
     checkout() {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
-      // POST DE ORDERS AQUI
+      const path = api + 'order/' + this.id
+      const parameters = {
+        date: this.dateAprox,
+        total: this.total,
+        shipping: this.prices[this.selected],
+        taxes: this.taxes,
+        state: 0,
+        send_type: this.send,
+        card_id: this.selectedCard
+      }
+      console.log(path)
+      console.log(parameters)
+      axios.post(path, parameters)
+              .then((res) => {
+                console.log(res)
+                var order_id = res.data
+                console.log(order_id)
+                this.finalizePurchase(order_id)
+              })
+              .catch((error) => {
+                // eslint-disable-next-line
+                toastr.error('', 'Order error.',
+                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                console.log(error)
+              })
+    },
+    finalizePurchase(order_id) {
+      console.log(this.cart)
+      for (let i = 0; i < this.cart.length; i += 1) {
+        var item = this.cart[i]
+        console.log(item)
+        var price = item.price * item.quant
+        const path = api + 'article-order/' + order_id
+        const parameters = {
+          price: price,
+          id_book: item.id,
+          quant: item.quant
+        }
+        axios.post(path, parameters)
+                .then(() => {
+                  console.log('Order done')
+                  console.log('Article added')
+                  bus.emit('empty_cart')
+                })
+                .catch((error) => {
+                  // eslint-disable-next-line
+                  console.log(error)
+                  const path_del = api + 'order/' + order_id
+                  axios.delete(path_del)
+                          .then(() => {
+                            console.log('Bad Order deleted')
+                            return
+                          })
+                          .catch((error) => {
+                            console.log(error)
+                            return
+                          })
+                })
+      }
     },
     changeSend(w) {
       this.selected = w

@@ -835,7 +835,8 @@ export default {
         'price': book.price,
         'desc': book.desc,
         'cover': book.cover_image_url,
-        'quant': 1
+        'quant': 1,
+        'quant_t': book.available
       })
     }
     ,

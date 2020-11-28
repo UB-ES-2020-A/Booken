@@ -18,7 +18,10 @@ class Articles(Resource):
         # Create a new artist with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
-        parser.add_argument('price', type=float, required=True, help="This field cannot be left blank")
+
+        parser.add_argument('price', type=float, required=True, help="This field cannot be left blanck")
+        parser.add_argument('categoria', type=float, required=True, help="This field cannot be left blanck")
+        parser.add_argument('quant', type=float, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
         new_article = ArticlesModel(data.price)

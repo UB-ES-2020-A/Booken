@@ -171,7 +171,7 @@
                 <div class="_grid">
                   <button class="_btn _column product-subtract" @click="decreaseQuant(item.id)">&minus;</button>
                   <div class="_column product-qty">{{ item.quant }}</div>
-                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)">&plus;</button>
+                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)" :disabled="item.quant>=item.quant_t">&plus;</button>
                 </div>
                 <button class="_btn entypo-trash product-remove" @click="removeBook(item.id)">Quitar</button>
                 <div class="price product-total-price">{{ item.quant * item.price }}€</div>
@@ -382,6 +382,10 @@ export default {
       this.tokenIn = ''
       this.typeIn = -1
       this.idIn = -1
+    })
+    bus.on('empty_cart', () => {
+      this.cart = []
+      bus.emit('cart-updated')
     })
   },
   data() {
