@@ -18,7 +18,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark ">
           <!-- Brand -->
           <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
-              class="badge badge-light" style="font-size: 0.3em; letter-spacing: normal">alpha</span></a>
+              class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></a>
 
           <form class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search"
@@ -502,7 +502,6 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
-      this.$router.push({path: '/cfm'})
     },
     hideCart() {
       if (this.viewCart)

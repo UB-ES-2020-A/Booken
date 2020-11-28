@@ -6,12 +6,11 @@ from models.accounts import AccountModel, auth
 
 class Account(Resource):
     # Get: Returns the account information
-    def get(self, id):
-        account = AccountModel.find_by_id(id)
+    def get(self, idd):
+        account = AccountModel.find_by_id(idd)
         if account:
             return {"account": account.json()}, 200
-        else:
-            return {"error: ": "Account not found"}, 400
+        return {"error: ": "Account not found"}, 400
 
     # Post: Adds an account to our database
     def post(self):
@@ -34,10 +33,10 @@ class Account(Resource):
             return {"message": "Couldn't save changes"}, 500
 
     @auth.login_required
-    def put(self, id):
-        account = AccountModel.find_by_id(id)
+    def put(self, idd):
+        account = AccountModel.find_by_id(idd)
         if account:
-            if(g.user != account):
+            if g.user != account:
                 return {"error: ": "You cannot modify an account which you are not log with"}, 401
         else:
             return {"error: ": "Account not found"}, 400
@@ -60,20 +59,20 @@ class Account(Resource):
             return {"message": "Couldn't save changes"}, 500
 
     # Delete: Deletes an account from the database
-    def delete(self, id):
-        account = AccountModel.find_by_id(id)
+    def delete(self, idd):
+        account = AccountModel.find_by_id(idd)
         if not account:
-            return {'message': 'Account with id [{}] not found'.format(id)}, 404
+            return {'message': 'Account with id [{}] not found'.format(idd)}, 404
 
-        [add.delete_from_db() for add in account.addresses]
-        [rev.delete_from_db() for rev in account.reviews]
-        [c.delete_from_db() for c in account.cards]
-        [o.delete_from_db() for o in account.orders]
-        [wl.delete_from_db() for wl in account.wishlist]
+        tmp = [add.delete_from_db() for add in account.addresses]
+        tmp = [rev.delete_from_db() for rev in account.reviews]
+        tmp = [c.delete_from_db() for c in account.cards]
+        tmp = [o.delete_from_db() for o in account.orders]
+        tmp = [wl.delete_from_db() for wl in account.wishlist]
 
         account.delete_from_db()
 
-        return {'message': 'Account with id[{}] deleted correctly'.format(id)}, 200
+        return {'message': 'Account with id[{}] deleted correctly'.format(idd)}, 200
 
 
 class Accounts(Resource):
@@ -85,10 +84,10 @@ class Accounts(Resource):
 
 class PasswordChange(Resource):
     @auth.login_required
-    def put(self,id):
-        account = AccountModel.find_by_id(id)
+    def put(self, idd):
+        account = AccountModel.find_by_id(idd)
         if account:
-            if (g.user != account):
+            if g.user != account:
                 return {"error: ": "You cannot modify an account which you are not log with"}, 401
         else:
             return {"error: ": "Account not found"}, 400
@@ -112,4 +111,4 @@ class PasswordChange(Resource):
                 return {"message": "Couldn't save changes"}, 500
 
         else:
-            return {'message': "Incorrect password"}, 400
+            return {'message': "Incorrect password"}, 406

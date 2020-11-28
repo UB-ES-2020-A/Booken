@@ -86,14 +86,15 @@
                   <input class="form-control" placeholder="Contraseña" type="password" id="passwordR1"
                          v-model="password" @change="scorePassword">
                 </div>
-                <div class="progress" style="width:100%; margin-top:1rem">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="1"
-                       aria-valuemin="0" aria-valuemax="100" id="myprobar"
-                       style="background: red; color: black">{{ checkPasswordStrength() }}
-                  </div>
+              </div>
+              <!--              <div class="myshow" v-if="editPassword">-->
+              <div class="progress" style="width:100%; margin-top:1rem">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0"
+                     aria-valuemin="0" aria-valuemax="100" id="myprobar"
+                     style="color: black">{{ checkPasswordStrength() }}
                 </div>
               </div>
-              <div class="rounded" style="background: white; text-align: left">
+              <div class="rounded" style="background: white; text-align: left; margin-top:1rem">
                 <ul class="list-group">
                   <li class="list-group-item d-flex justify-content-between">
                     <span style="font-size: 0.9em">Contiene carácter símbolo</span>
@@ -133,6 +134,7 @@
 
                 </ul>
               </div>
+              <!--              </div>-->
               <div class="form-group" style="margin-top: 1rem;">
                 <div class="input-group">
                 <span class="input-group-text" style="background-color: #2bc4ed; border-color: #2bc4ed">
@@ -183,6 +185,7 @@ export default {
       type: -1,
       token: '',
       id: -1,
+      editPassword: false
     }
   }, methods: {
     getYear() {
@@ -315,6 +318,12 @@ export default {
     validateEmail(email) {
       return /\S+@\S+\.\S+/.test(email);
     },
+    editPasswordToTrue() {
+      this.editPassword = true;
+    },
+    editPasswordToFalse() {
+      this.editPassword = false;
+    },
     scorePassword() {
       let score = 0;
       const pass = this.password;
@@ -353,11 +362,11 @@ export default {
     checkPasswordStrength() {
       const score = this.scorePassword();
       if (score >= 80) {
-        document.getElementById("myprobar").style.background = "green";
+        document.getElementById("myprobar").style.background = "forestgreen";
         return "Muy seguro";
       }
       if (score >= 60) {
-        document.getElementById("myprobar").style.background = "lime";
+        document.getElementById("myprobar").style.background = "limegreen";
         return "Seguro";
       }
       if (score >= 30) {

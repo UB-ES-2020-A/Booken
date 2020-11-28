@@ -80,13 +80,13 @@ jobs:
     script:
     - cd ../../backend/flask-api
     after_success:
-    - coveralls
+    - coveralls #DCA
   - stage: build
     name: Project build
     script:
     - cd frontend/booken
     - npm install
-    - npm run build
+    - npm run lint #SCA
 notifications:
   slack:
     secure: aTbGa5ESd04A0MrqCeM+Vc/yzBDjoArQMDWHqsBshhrCh72TP9rUdsoikB7bPW21dggUnmlmmKZeoXD9UYUP0IyY/9i7hTtxh4ijlt9jgdtLmFblZLYWhkndcmMlIfwFknXz2N3rfeRYsem3c74P+9CtcgN4p+DgDF13Ji+g0rKXC+rn/6eB4oGwLwUi+hpB5UgcfTUgsq1HVYK+SX5o4oKZOUbwUcfHFU3BPA8umqXeH0t756z4cObrhFjS+6+fbcN7Awx8ChqSvGV+1morIzVe7jIjwmVurdqitAq9ZWI3E1jLS/qLyfi/vq+D5pY25eMvC3xX2lK09arKz0atBe6GYDuDiZMmMmzApBDSy6BhQuZeeXINrQy0O2aNUmc6TiZ13zT1Pk8d5N0sH6wC06I+pEfCsZUzHBkbQdGK4b3bnMCbnFnCaMPOzQ741ioswxip5ux7b3ts/KQRE4jOiQeOb5qtYJk1qhbXAyaqJT0SfLKdH/nVHhJ6+7OPJX0cRn1GSsRE8RAuNqgzstkSZ8y02jSalZT7gPDNet89K/6VPTseMCiBt2JETQ6bEQB/9cFYfUa3oqUnl+d0iGv4gfDFB4Tsr5wW6HVPt8LY5X/KOi+uyvSI4G9fGlfU4LwQOutp62WsITUrQLUJDbLtIVJ8oFNAuDJmSxUDLuIcEBo=
