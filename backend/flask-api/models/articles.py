@@ -8,14 +8,20 @@ class ArticlesModel(db.Model):
 
     id = db.Column(db.Integer, unique=False,primary_key=True)
     price = db.Column(db.Float, unique=False, nullable=False)
+    categoria = db.Column(db.String, unique=False, nullable=False)
+    quant = db.Column(db.Integer, unique=False, nullable=False)
 
-    def __init__(self, price):
+    def __init__(self, price,categoria,quant):
         self.price = price
+        self.categoria = categoria
+        self.quant = quant
 
     def json(self):
         return {
             "id": self.id,
             "price": self.price,
+            "categoria": self.categoria,
+            "quant": self.quant
         }
 
     def save_to_db(self):

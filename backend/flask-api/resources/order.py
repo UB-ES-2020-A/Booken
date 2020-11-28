@@ -30,7 +30,7 @@ class Orders(Resource):
 
         data = parser.parse_args()
         acc = AccountModel.find_by_id(id)
-
+        card = acc.cards[data.card_id].id
         if (data.state < 0 or data.state>2):
             return {'message': "Order with state [{}] not supported".format(data.state)}, 400
         if (data.send_type < 0 or data.send_type>2):
@@ -38,8 +38,8 @@ class Orders(Resource):
         if not acc:
             return {'message': "There isn't a user with this id"}, 409
 
-        #new_id = OrdersModel.num_orders()
-        new_order = OrdersModel(id, data.date, data.total, data.shipping, data.taxes, data.state,data.send_type,data.card_id)
+
+        new_order = OrdersModel(id, data.date, data.total, data.shipping, data.taxes, data.state,data.send_type,card)
         acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()
@@ -125,11 +125,11 @@ class OrderArticles(Resource):
         if(book):
             print(book.total_available)
             print(data.quant)
-            if(book.total_available > data.quant):
+            if(book.total_available >= data.quant):
                 book.num_sales += data.quant
                 book.total_available -= data.quant
                 book.save_to_db()
-                article = ArticlesModel(data.price)
+                article = ArticlesModel(data.price,book.genre,data.quant)
                 order.add_article(article)
                 article.save_to_db()
                 return article.id, 200
