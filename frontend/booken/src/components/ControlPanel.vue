@@ -691,13 +691,75 @@
                   <h4 style="text-align: left; margin-left: 0.5em; margin-top: 0.5em">Rendimiento por año</h4>
                 </div>
                 <div class="col" style="text-align: right">
-                  <select class="custom-select" id="validationTooltip04" style="width: auto; margin-right: 0.5em">
-                    <option v-for="(year, index) in this.years_data" :key="index">{{year}}</option>
+                  <select class="custom-select" id="validationTooltip04" style="width: auto; margin-right: 0.5em"
+                          @change="changeData()" v-model="selYear">
+                    <option v-for="year in this.years_data" :key="year" :value="year">{{ year }}</option>
                   </select>
                 </div>
               </div>
-              <div>
-                asdasdsa
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col">
+                  <div class="card" style="text-align: left; margin: 0.5em">
+                    <div class="card-header" style="background-color: #2F96B4; color: white">
+                      <div class="row">
+                        <div class="col">
+                          <h5>Ventas ({{ selYear }})</h5>
+                        </div>
+                        <div class="col" style="text-align: right">
+                          <h5><b>{{ salesYear }}</b></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card" style="text-align: left; margin: 0.5em">
+                    <div class="card-header" style="background-color: #6D58FF; color: white">
+                      <div class="row">
+                        <div class="col">
+                          <h5>Ganancias ({{ selYear }})</h5>
+                        </div>
+                        <div class="col" style="text-align: right">
+                          <h5><b>{{ gainYear }}€</b></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2" style="margin-top: 1em">
+                <div class="col">
+                  <apexchart
+                      width="550"
+                      type="bar"
+                      :options="salesMonthOptions"
+                      :series="salesMonthSeries"
+                  ></apexchart>
+                </div>
+                <div class="col">
+                  <apexchart
+                      width="550"
+                      type="bar"
+                      :options="gainMonthOptions"
+                      :series="gainMonthSeries"
+                  ></apexchart>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2" style="margin-top: 1em">
+                <div class="col">
+                  <apexchart
+                      width="550"
+                      type="pie"
+                      :options="salesGenreOptions"
+                  ></apexchart>
+                </div>
+                <div class="col">
+                  <apexchart
+                      width="550"
+                      type="pie"
+                      :options="gainGenreOptions"
+                  ></apexchart>
+                </div>
               </div>
             </div>
           </div>
@@ -716,7 +778,7 @@ import VueApexCharts from "vue3-apexcharts"
 
 export default {
   name: "ControlPanel",
-  components:{
+  components: {
     // eslint-disable-next-line vue/no-unused-components
     apexchart: VueApexCharts
   },
@@ -752,8 +814,12 @@ export default {
       cIndexList: 0,
       addressNumber: 0,
       cardNumber: 0,
-      barChartData: {
-      },
+      salesMonthSeries: [],
+      salesMonthOptions: {},
+      salesGenreSeries: [],
+      salesGenreOptions: {},
+      gainMonthOptions: {},
+      gainGenreOptions: {},
       cards: [
         {
           "id": 0,
@@ -808,7 +874,10 @@ export default {
       total_gain: 0,
       gain_month: {},
       gain_year: {},
-      gain_genre: {}
+      gain_genre: {},
+      selYear: -1,
+      salesYear: 0,
+      gainYear: 0
     }
   },
   created() {
@@ -921,10 +990,10 @@ export default {
             console.log(error)
           })
     },
-    toSimpleArray(arr){
+    toSimpleArray(arr) {
       let i
       var arrr = []
-      for(i in arr){
+      for (i in arr) {
         arrr.push(arr[i])
       }
       return arrr
@@ -948,19 +1017,118 @@ export default {
                 })
           })
     },
+    changeData() {
+      this.chartGeneration(this.selYear)
+    },
+    chartGeneration(y) {
+      this.selYear = y
+      this.salesYear = this.sales_year[this.selYear]
+      this.gainYear = this.gain_year[this.selYear]
+      this.salesMonthOptions = {
+        chart: {
+          id: "vuechart-example",
+        },
+        xaxis: {
+          categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+            "Noviembre", "Diciembre"],
+        },
+        title: {
+          text: 'Ventas por mes (' + this.selYear + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+      this.salesMonthSeries = [
+        {
+          name: "Ventas (unidades)",
+          data: this.toSimpleArray(this.sales_month[y])
+        },
+      ]
+      this.gainMonthOptions = {
+        chart: {
+          id: "vuechart-example",
+        },
+        xaxis: {
+          categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+            "Noviembre", "Diciembre"],
+        },
+        title: {
+          text: 'Ganancias por mes (' + this.selYear + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+      this.gainMonthSeries = [
+        {
+          name: "Ganancia (€)",
+          data: this.toSimpleArray(this.gain_month[y])
+        },
+      ]
+      this.gainGenreOptions = {
+        chart: {
+          type: 'donut'
+        },
+        series: this.toSimpleArray(this.gain_genre[this.selYear]),
+        labels: ["Humanidades", "Técnico y formación", "Métodos de idiomas", "Literatura", "Infantil", "Cómics y manga", "Juvenil", "Otras categorías"],
+        title: {
+          text: 'Ganancias por género (' + this.selYear + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+      this.salesGenreOptions = {
+        chart: {
+          type: 'donut'
+        },
+        series: this.toSimpleArray(this.sales_genre[this.selYear]),
+        labels: ["Humanidades", "Técnico y formación", "Métodos de idiomas", "Literatura", "Infantil", "Cómics y manga", "Juvenil", "Otras categorías"],
+        title: {
+          text: 'Ventas por género (' + this.selYear + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+    },
     getData() {
       var path = api + 'data_retriever/all'
       axios.get(path)
           .then((res) => {
             this.years_data = res.data.all.years_data
+            console.log(this.years_data)
             this.total_sales = res.data.all.total_sales
             this.total_users = res.data.all.total_users
             this.sales_month = res.data.all.sales_month
             this.sales_year = res.data.all.sales_year
             this.sales_genre = res.data.all.sales_genre
             this.total_gain = res.data.all.total_gain
-            this.gain_month = res.data.all.gain_year
+            this.gain_month = res.data.all.gain_month
+            this.gain_year = res.data.all.gain_year
             this.gain_genre = res.data.all.gain_genre
+            this.chartGeneration(this.years_data[0])
           })
           .catch((error) => {
             console.log(error)
