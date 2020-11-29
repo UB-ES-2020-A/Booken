@@ -28,10 +28,12 @@ from models.review import ReviewModel
 from models.wishlist import WishlistModel
 
 def setupApp(test=False):
+    #  deepcode ignore W0621: n/a
+
     app = create_app(test)
     app.app_context().push()
     api = Api(app)
-
+    
     migrate = Migrate(app, db)
 
     # EndPoints configuration
@@ -88,9 +90,7 @@ def setupApp(test=False):
     api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
 
     api.add_resource(Retriever,'/data_retriever/<string:needed_data>')
-
     return app
-
 
 app = setupApp()
 @app.route('/')
