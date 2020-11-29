@@ -1,6 +1,7 @@
 import unittest
 from app import setupApp
 from db import db
+#  deepcode ignore C0411: not an issue
 from datetime import date
 import sys
 sys.path.append('../')
