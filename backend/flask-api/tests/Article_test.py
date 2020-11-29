@@ -1,10 +1,14 @@
+#  deepcode ignore C0411: not an issue
 import unittest
+#  deepcode ignore C0411: not an issue
 import sys
+#  deepcode ignore C0411: not an issue
 sys.path.append('../')
 #  deepcode ignore C0411: not an issue
 from app import setupApp
 #  deepcode ignore C0411: not an issue
 from db import db
+#  deepcode ignore C0411: not an issue
 
 
 class ArticleTest(unittest.TestCase):
