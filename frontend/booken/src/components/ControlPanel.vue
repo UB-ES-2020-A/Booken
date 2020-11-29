@@ -819,6 +819,7 @@ export default {
       salesGenreSeries: [],
       salesGenreOptions: {},
       gainMonthOptions: {},
+      gainMonthSeries: {},
       gainGenreOptions: {},
       cards: [
         {
