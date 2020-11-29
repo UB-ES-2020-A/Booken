@@ -1,3 +1,5 @@
+# file deepcode ignore C0411: n/a
+# file deepcode ignore C0413: n/a
 import unittest
 import sys
 import json

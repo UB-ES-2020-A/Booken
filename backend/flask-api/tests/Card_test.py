@@ -1,3 +1,5 @@
+# file deepcode ignore C0411: n/a
+# file deepcode ignore C0413: n/a
 import unittest
 import sys
 import json
@@ -5,6 +7,7 @@ import json
 sys.path.append('../')
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
+#  deepcode ignore C0413: stupid issue
 from db import db
 
 
