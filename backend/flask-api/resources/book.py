@@ -118,10 +118,10 @@ class SearchBook(Resource):
     def get(self):
         data = self.__parse_request__()
         if data.get('name'):
-            return {'Search Books': [a.json() for a in
+            return {'books': [a.json() for a in
                                      BookModel.query.filter(BookModel.name.like(data.get('name'))).all()]}, 200
         elif data.get('isbn'):
-            return {'Search Books': [a.json() for a in BookModel.query.filter_by(isbn=data.get('isbn')).all()]}, 200
+            return {'books': [a.json() for a in BookModel.query.filter_by(isbn=data.get('isbn')).all()]}, 200
         elif data.get('author_name'):
             author = AuthorModel.find_by_name(data.get('author_name'))
             books = []
@@ -129,7 +129,7 @@ class SearchBook(Resource):
                 for a in book.author:
                     if a == author:
                         books.append(book)
-            return {'Search Books': [a.json() for a in books]}, 200
+            return {'books': [a.json() for a in books]}, 200
 
     def __parse_request__(self):
         parser = reqparse.RequestParser()

@@ -21,10 +21,10 @@
               class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></a>
 
           <form class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
-            <input class="form-control" style="min-width: 80%" type="search"
+            <input class="form-control" style="min-width: 80%" type="search" v-model="information"
                    placeholder="Busca por autor, título, ISBN"
                    aria-label="Search">
-            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit"><i
+            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit" @click="goToSearch"><i
                 class="fas fa-search"
                 style="color: #FFF"/>
             </button>
@@ -43,10 +43,10 @@
               <li class="nav-item my-xl-auto my-3 mx-2 mx-md-0 ">
                 <div class="searchBarInside mx-auto mb-md-3 my-xl-auto ">
                   <form class="form-inline ">
-                    <input class="form-control" type="search"
+                    <input class="form-control" type="search" v-model="information"
                            placeholder="Busca por autor, título, ISBN"
                            aria-label="Search">
-                    <button class="btn ml-auto " style="background-color: #3b494d;" type="submit"><i
+                    <button class="btn ml-auto " style="background-color: #3b494d;" type="submit" @click="goToSearch"><i
                         class="fas fa-search"
                         style="color: #FFF"/>
                     </button>
@@ -346,6 +346,7 @@ import BookInfo from "@/components/BookInfo";
 import Contact from "@/components/Contact";
 import ControlPanel from "@/components/ControlPanel";
 import ShowBooks from "@/components/ShowBooks";
+import Search from "./components/Search";
 
 export default {
   name: 'App',
@@ -361,7 +362,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     ControlPanel,
     // eslint-disable-next-line vue/no-unused-components
-    ShowBooks
+    ShowBooks,
+    // eslint-disable-next-line vue/no-unused-components
+    Search
   },
   created() {
     bus.on('has-logged-in', (asd) => {
@@ -398,6 +401,7 @@ export default {
       total: 5.00,
       idIn: -1,
       cart: [],
+      information: '',
       wish_list: [
         {
           ISBN: 9788431690656,
@@ -554,6 +558,11 @@ export default {
       if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/cp'})
+    },
+    goToSearch() {
+      if (this.viewCart)
+        this.viewCart = false
+      this.$router.push({ path: '/search', query: { name: this.information } })
     },
     getTodayDate() {
       var today = new Date()
