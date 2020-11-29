@@ -991,9 +991,8 @@ export default {
           })
     },
     toSimpleArray(arr) {
-      let i
       var arrr = []
-      for (i in arr) {
+      for (var i in arr) {
         arrr.push(arr[i])
       }
       return arrr
