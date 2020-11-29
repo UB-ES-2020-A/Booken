@@ -58,7 +58,6 @@ class OrdersModel(db.Model):
     def json_with_address_id(self):
         articles_json = [article.json() for article in self.articles]
         address_json = [address.json_with_id() for address in self.address]
-        card_json = [item.json() for item in self.card]
         return {
             "id": self.id,
             "id_user": self.id_user,
@@ -71,7 +70,7 @@ class OrdersModel(db.Model):
             "card_id": self.card_id,
             "address": address_json,
             "articles": articles_json,
-            "card": card_json
+            "card": self.card_id
         }
 
     def json_filtered_by_book_id(self):
@@ -107,7 +106,7 @@ class OrdersModel(db.Model):
     @classmethod
     def find_by_id_user_and_orderid(cls, id_user, order_id):
         try:
-            return OrdersModel.query.filter_by(id_user=id_user, id=order_id).all()
+            return OrdersModel.query.filter_by(id_user=id_user, id=order_id).first()
         except:
             return None
 
