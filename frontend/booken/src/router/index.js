@@ -6,6 +6,7 @@ import Contact from "../components/Contact";
 import ShowBooks from "@/components/ShowBooks";
 import ControlPanel from "@/components/ControlPanel";
 import ConfirmOrder from "@/components/ConfirmOrder";
+import Search from "../components/Search";
 
 const routes = [
     {
@@ -42,6 +43,11 @@ const routes = [
         path: "/cfm",
         name: "ConfirmOrder",
         component: ConfirmOrder
+    },
+    {
+        path: "/search",
+        name: "Search",
+        component: Search
     }
 ];
 
