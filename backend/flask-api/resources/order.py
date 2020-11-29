@@ -66,12 +66,9 @@ class Orders(Resource):
 
         if order:
             id_user = order.id_user
-            order.delete_from_db()
-            new_order = OrdersModel(id_user, order.date, order.total, order.shipping, order.taxes, data.state,
-                                    order.send_type, order.card_id)
-            db.session.add(new_order)
-            db.session.commit()
-            return new_order.json(), 200
+            order.state = data.get('state')
+            order.save_to_db()
+            return order.json(), 200
         return {'message': "Order not found"}, 400
 
 
