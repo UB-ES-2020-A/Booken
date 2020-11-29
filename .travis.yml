@@ -79,9 +79,9 @@ jobs:
   - stage: code_analysis
     name: Code Analysis SCA/DCA/CC
     script:
-    - cd ../../backend/flask-api
+    - cd backend/flask-api
     - pip install -r requirements.txt
-    - pytest ./tests 
+    - pytest ./tests
     after_success:
     - coveralls #DCA
   - stage: build
