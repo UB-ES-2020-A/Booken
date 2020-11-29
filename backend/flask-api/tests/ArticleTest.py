@@ -1,6 +1,6 @@
+import unittest
 from app import setupApp
 from db import db
-import unittest
 import sys
 sys.path.append('../')
 

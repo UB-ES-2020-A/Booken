@@ -1,7 +1,7 @@
+import unittest
 from app import setupApp
 from db import db
 from datetime import date
-import unittest
 import sys
 sys.path.append('../')
 
