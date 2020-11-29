@@ -13,6 +13,7 @@ def create_app(test=False):
                       template_folder="dist")
     if test:
         app.config['TESTING'] = True
+        #  deepcode ignore DisablesCSRFProtection: n/a
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'

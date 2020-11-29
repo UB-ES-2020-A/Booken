@@ -16,6 +16,7 @@ from resources.data_retriever_rs import Retriever
 from db import db, create_app
 
 def setupApp(test=False):
+    #  deepcode ignore W0621: n/a
     app = create_app(test)
     app.app_context().push()
     api = Api(app)

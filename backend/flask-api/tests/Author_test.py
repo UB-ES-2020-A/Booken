@@ -8,7 +8,7 @@ sys.path.append('../')
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
-#  deepcode ignore C0413: stupid issue
+#  deepcode ignore C0411: not an issue
 from datetime import date
 #  deepcode ignore C0413: stupid issue
 
