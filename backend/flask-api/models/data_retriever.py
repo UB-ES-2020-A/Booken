@@ -4,25 +4,26 @@ class DataRetriever():
 
     @classmethod
     def get_data(cls,needed_data):
+        data = None
+        
         if needed_data == "total_sales":
-            return cls._total_sales(cls)
+            data = cls._total_sales(cls)
         elif needed_data == "sales_month":
-            return cls._sales_month(cls)
+            data = cls._sales_month(cls)
         elif needed_data == "sales_year":
-            return cls._sales_year(cls)
+            data = cls._sales_year(cls)
         elif needed_data == "sales_genre":
-            return cls._sales_genre(cls)
+            data = cls._sales_genre(cls)
         elif needed_data == "total_gain":
-            return cls._total_gain(cls)
+            data = cls._total_gain(cls)
         elif needed_data == "gain_month":
-            return cls._gain_month(cls)
+            data = cls._gain_month(cls)
         elif needed_data == "gain_year":
-            return cls._gain_year(cls)
-        else:
-            if needed_data == "gain_genre":
-                return cls._gain_genre(cls)
-
-            return None
+            data = cls._gain_year(cls)
+        elif needed_data == "gain_genre":
+            data = cls._gain_genre(cls)
+        
+        return data
 
     def _get_orders(self):
         return OrdersModel.get_orders()['orders']
