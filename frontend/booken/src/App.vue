@@ -156,8 +156,6 @@
         <h1 style="margin-top: 1em">Tu cesta</h1>
         <section class="shopping-cart" v-if="this.cart.length >= 1">
           <ol class="ui-list shopping-cart--list" id="shopping-cart--list">
-
-
             <li class="_grid shopping-cart--list-item" v-for="(item,i) in this.cart" :key="i">
               <div class="_column product-image" id="#image">
                 <img class="product-image--img" :src="item.cover" alt="Item image" style="max-width: 110px"/>
@@ -191,16 +189,16 @@
               <div class="cart-totals-key">Total</div>
               <div class="cart-totals-value">{{ total }}€</div>
             </div>
-            <div class="col mb-2">
+            <div class="col mb-2 mt-2">
               <div class="row">
-                <div class="col-sm-12  col-md-6">
+                <div class="col-12 col-md-6">
                   <button class="btn btn-lg btn-block"
                           style="background-color:#3b494d; color: white; margin-top: 0.5rem"
                           @click="toggleCart">
                     Continuar comprando
                   </button>
                 </div>
-                <div class="col-sm-12 col-md-6 text-right">
+                <div class="col-12 col-md-6 ">
                   <button class="btn btn-lg btn-block"
                           style="background-color: #2bc4ed; color: white; margin-top: 0.5rem"
                           @click="checkout">
@@ -251,7 +249,7 @@
                     <p class="card-text" style="text-align:left;">{{ wish_item.description }}</p>
                   </div>
                   <div class="col-md" style="margin:auto; margin-right:0; max-width:9.8em">
-                    <div style="display:flex; flex-direction: horizontal; background-color: #6E6E6E; margin-bottom:auto;
+                    <div style="display:flex; flex-direction: row; background-color: #6E6E6E; margin-bottom:auto;
                             border-color:#6E6E6E; border-style:solid; border-radius:0.2em; max-height:3em;">
                       <span style="margin:0.5em; color:#FFFFFF">{{ wish_item.price }}€</span>
                       <button class="btn btn-success" @click="addToCart(wish_item)">Añadir</button>
