@@ -83,7 +83,7 @@ jobs:
     script:
     - cd backend/flask-api
     - pip install -r requirements.txt
-    - pytest ./tests --cov .
+    - pytest ./tests
     after_success:
     - coveralls #DCA
   - stage: build
