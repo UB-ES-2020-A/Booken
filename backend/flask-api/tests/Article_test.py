@@ -6,9 +6,9 @@ import sys
 sys.path.append('../')
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
-#  deepcode ignore C0411: not an issue
+#  deepcode ignore C0413: stupid issue
 from db import db
-#  deepcode ignore C0411: not an issue
+#  deepcode ignore C0413: stupid issue
 
 
 class ArticleTest(unittest.TestCase):
