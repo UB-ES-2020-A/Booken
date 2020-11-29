@@ -1,7 +1,7 @@
+from app import setupApp
 import unittest
 import sys
 sys.path.append('../')
-from app import setupApp
 from db import db
 
 class ArticleTest(unittest.TestCase):
