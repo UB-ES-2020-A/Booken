@@ -519,12 +519,16 @@
                 <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-for="item in this.cards" :key="item.id">
                   <div class="card" style=" text-align: left">
                     <div class="card-header">
-                      <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
+                      <span v-if="item.vendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
-                      <span v-if="item.vendor == 'VISA'"><i class="fab fa-cc-visa"
+                      <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                             style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
-                      <span v-if="item.vendor == 'DISCOVER'"><i class="fab fa-cc-discover"
+                      <span v-if="item.vendor == 'Discover'"><i class="fab fa-cc-discover"
+                                                                style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'AMEX'"><i class="fab fa-cc-amex"
+                                                                style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'Diners'"><i class="fab fa-cc-diners-club"
                                                                 style="font-size: 1.8em"></i></span><br>
                     </div>
                     <ul class="list-group list-group-flush">
@@ -561,25 +565,30 @@
                           <div class="modal-body">
                             <form>
                               <div class="form-group" style="text-align: left">
-                                <label for="paymentTitular" class="col-form-label">Nombre de titular</label>
+                                <label for="paymentNumber" class="col-form-label">Número de tarjeta</label>
+                                <input class="form-control" id="paymentNumber" @input="chkInput">
+                              </div>
+                              <div class="form-group" style="text-align: left">
+                                <label for="paymentTitular" class="col-form-label">Titular de la tarjeta</label>
                                 <input type="text" class="form-control" id="paymentTitular">
                               </div>
                               <div class="form-group" style="text-align: left">
-                                <label for="paymentNumber" class="col-form-label">Número de tarjeta</label>
-                                <input type="number" class="form-control" id="paymentNumber">
-                              </div>
-                              <div class="form-group" style="text-align: left">
                                 <label for="paymentEndDate" class="col-form-label">Fecha de vencimiento</label>
-                                <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/yyyy">
+                                <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/aaaa">
                               </div>
-                              <div class="form-group" style="text-align: left">
-                                <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
-                                <select class="form-group"
-                                        style="text-align: left; width:100%; height: 2.5em" id="paymentMethod">
-                                  <option>VISA</option>
-                                  <option>JCB</option>
-                                  <option>DISCOVER</option>
-                                </select>
+                              <div class="form-group" style="text-align: center; font-size: 3em">
+                                <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                                                                         style="font-size: 1.8em"></i></span>
+                                <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
+                                                                                                  style="font-size: 1.8em"></i></span>
+                                <span v-if="ccvendor == 'JCB'"><i class="fab fa-cc-jcb"
+                                                                  style="font-size: 1.8em"></i></span>
+                                <span v-if="ccvendor == 'Discover'"><i class="fab fa-cc-discover"
+                                                                       style="font-size: 1.8em"></i></span>
+                                <span v-if="ccvendor == 'AMEX'"><i class="fab fa-cc-amex"
+                                                                   style="font-size: 1.8em"></i></span>
+                                <span v-if="ccvendor == 'Diners'"><i class="fab fa-cc-diners-club"
+                                                                     style="font-size: 1.8em"></i></span>
                               </div>
                             </form>
                           </div>
@@ -843,7 +852,7 @@ export default {
       },
 
       address_edit: -1,
-
+      ccvendor: '',
       newAddressLabel: '',
       newAddressName: '',
       newAddressSurname: '',
@@ -883,6 +892,84 @@ export default {
     //this.stateOrdersSend()
   },
   methods: {
+    getCardType(number) {
+      // visa
+      var re = new RegExp("^4");
+      if (number.match(re) != null)
+        return "Visa";
+
+      // Mastercard
+      re = new RegExp("^5[1-5]");
+      if (number.match(re) != null)
+        return "Mastercard";
+
+      // AMEX
+      re = new RegExp("^3[47]");
+      if (number.match(re) != null)
+        return "AMEX";
+
+      // Discover
+      re = new RegExp("^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)");
+      if (number.match(re) != null)
+        return "Discover";
+
+      // Diners
+      re = new RegExp("^36");
+      if (number.match(re) != null)
+        return "Diners";
+
+      // JCB
+      re = new RegExp("^35(2[89]|[3-8][0-9])");
+      if (number.match(re) != null)
+        return "JCB";
+
+      // Visa Electron
+      re = new RegExp("^(4026|417500|4508|4844|491(3|7))");
+      if (number.match(re) != null)
+        return "Visa Electron";
+
+      return "";
+    },
+    ccFormat(value) {
+      var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+      var matches = v.match(/\d{4,16}/g);
+      var match = matches && matches[0] || ''
+      var parts = []
+      var i, len
+      for (i = 0, len = match.length; i < len; i += 4) {
+        parts.push(match.substring(i, i + 4))
+      }
+
+      if (parts.length) {
+        return parts.join(' ')
+      } else {
+        return value
+      }
+    },
+    checkDigit(val) {
+      var allowedChars = "0123456789"
+      var entryVal = val
+      var flag
+      for (var i = 0; i < entryVal.length; i++) {
+        flag = false
+        for (var j = 0; j < allowedChars.length; j++) {
+          if (entryVal.charAt(i) == allowedChars.charAt(j)) {
+            flag = true
+          }
+        }
+        if (flag == false) {
+          entryVal = entryVal.replace(entryVal.charAt(i), "")
+          i--
+        }
+      }
+      this.ccvendor = this.getCardType(entryVal)
+      return this.ccFormat(entryVal)
+    },
+    chkInput() {
+      var val = document.getElementById('paymentNumber').value
+      document.getElementById('paymentNumber').value = this.checkDigit(val)
+
+    },
     logout() {
       bus.emit('has-logged-out')
       this.$router.push({path: '/'})
@@ -961,7 +1048,7 @@ export default {
             this.cardNumber = this.cards.length
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha podido recuperar las tarjetas.',
                 {
                   timeOut: 2500,
@@ -1416,7 +1503,8 @@ export default {
       this.addCardForm.card_owner = document.getElementById('paymentTitular').value
       this.addCardForm.number = document.getElementById('paymentNumber').value
       this.addCardForm.date = document.getElementById('paymentEndDate').value
-      this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+      this.addCardForm.payment_method = this.getCardType(this.addCardForm.number)
+
 
       if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
           || this.addCardForm.payment_method == '') {
@@ -1428,16 +1516,6 @@ export default {
               positionClass: 'toast-bottom-right',
               preventDuplicates: true
             })
-      } else if (this.addCardForm.number.length != 16) {
-        toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
-            {
-              timeOut: 2500,
-              progressBar: true,
-              newestOnTop: true,
-              positionClass: 'toast-bottom-right',
-              preventDuplicates: true
-            })
-
       } else if (!this.validateEndDate(this.addCardForm.date)) {
         toastr.error('', 'Fecha de caducidad no valida.',
             {
@@ -1515,25 +1593,18 @@ export default {
           })
     },
     validateEndDate(date) {
-      if (date.length == 7) {
-        var count = 0
-        for (var i = 0; i < date.length; i++) {
-          try {
-            if (count == 2) {
-              if (date[i] != '/')
-                return false
-              count += 1
-            } else {
-              parseInt(date[i])
-              count += 1
-            }
-          } catch (error) {
-            return false
-          }
-        }
-        return true
-      } else
+      var today, someday
+      var exMonth = date.slice(0, 2)
+      console.log(exMonth)
+      var exYear = date.slice(3)
+      console.log(exYear)
+      today = new Date()
+      someday = new Date()
+      someday.setFullYear(exYear, exMonth, 1)
+      if (someday < today) {
         return false
+      }
+      return true
     },
     updateAddressModal(address_id) {
       this.address_edit = address_id
