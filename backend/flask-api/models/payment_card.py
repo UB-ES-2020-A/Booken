@@ -1,6 +1,6 @@
 from db import db
 
-METHOD = ('VISA', 'MASTERCARD', 'AMERICAN EXPRESS', 'JCB', 'DISCOVER')
+METHOD = ('Visa', 'Mastercard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners')
 
 class CardModel(db.Model):
     __table_name__ = 'payment_card'

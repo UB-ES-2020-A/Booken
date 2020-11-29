@@ -2,7 +2,7 @@
 users = [["a@a.com", "sm", "sm", "sm22", 2], ["asd@asd.com", "asd", "asd apellido", "asd", 0],
          ["s@s.com", "support", "a", "support", 1]]
 
-admin_cards = [["Bender Bending Rodríguez", "4475482935309482", "02/2558", "VISA"]]
+admin_cards = [["Bender Bending Rodríguez", "4475482935309482", "02/2558", "Visa"]]
 
 admin_add = [["casa1", "Borat", "Margaret Sagdiyev", "Av. de los Madroños", "43", "28043", "Madrid", "Madrid", "624859810"]]
 

@@ -296,7 +296,7 @@
                         <form>
                           <div class="form-group" style="text-align: left">
                             <label for="paymentNumber" class="col-form-label">Número de tarjeta</label>
-                            <input type="number" class="form-control" id="paymentNumber">
+                            <input class="form-control" id="paymentNumber" @input="chkInput">
                           </div>
                           <div class="form-group" style="text-align: left">
                             <label for="paymentTitular" class="col-form-label">Titular de la tarjeta</label>
@@ -307,14 +307,19 @@
                             <label for="paymentEndDate" class="col-form-label">Fecha de caducidad</label>
                             <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/yyyy">
                           </div>
-                          <div class="form-group" style="text-align: left">
-                            <label for="paymentMethod" class="col-form-label">Metodo de pago</label>
-                            <select class="form-group"
-                                    style="text-align: left; width:100%; height: 2.5em" id="paymentMethod">
-                              <option>VISA</option>
-                              <option>JCB</option>
-                              <option>DISCOVER</option>
-                            </select>
+                          <div class="form-group" style="text-align: center; font-size: 3em">
+                            <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                                                                        style="font-size: 1.8em"></i></span>
+                            <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
+                                                                  style="font-size: 1.8em"></i></span>
+                            <span v-if="ccvendor == 'JCB'"><i class="fab fa-cc-jcb"
+                                                                 style="font-size: 1.8em"></i></span>
+                            <span v-if="ccvendor == 'Discover'"><i class="fab fa-cc-discover"
+                                                                      style="font-size: 1.8em"></i></span>
+                            <span v-if="ccvendor == 'AMEX'"><i class="fab fa-cc-amex"
+                                                                      style="font-size: 1.8em"></i></span>
+                            <span v-if="ccvendor == 'Diners'"><i class="fab fa-cc-diners-club"
+                                                                      style="font-size: 1.8em"></i></span>
                           </div>
                         </form>
                       </div>
@@ -384,6 +389,7 @@ import IMask from 'imask'
 import * as toastr from '../assets/toastr.js'
 import gsap from 'gsap'
 import {bus, api} from '../main.js'
+
 export default {
   name: "ConfirmOrder",
   props: {
@@ -520,6 +526,7 @@ export default {
         cardYear: '',
         cardCvv: ''
       },
+      ccvendor: '',
       selected: 0,
       selectedCard: -1,
       selectedAdd: -1,
@@ -532,6 +539,7 @@ export default {
       days: [0, 5, 2, 1],
       dateAprox: '',
       send: 0,
+      ccNumber: '',
       addCardForm: {
         "card_owner": '',
         "number": '',
@@ -541,8 +549,85 @@ export default {
     }
   },
   methods: {
+    getCardType(number) {
+      // visa
+      var re = new RegExp("^4");
+      if (number.match(re) != null)
+        return "Visa";
+
+      // Mastercard
+      re = new RegExp("^5[1-5]");
+      if (number.match(re) != null)
+        return "Mastercard";
+
+      // AMEX
+      re = new RegExp("^3[47]");
+      if (number.match(re) != null)
+        return "AMEX";
+
+      // Discover
+      re = new RegExp("^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)");
+      if (number.match(re) != null)
+        return "Discover";
+
+      // Diners
+      re = new RegExp("^36");
+      if (number.match(re) != null)
+        return "Diners";
+
+      // JCB
+      re = new RegExp("^35(2[89]|[3-8][0-9])");
+      if (number.match(re) != null)
+        return "JCB";
+
+      // Visa Electron
+      re = new RegExp("^(4026|417500|4508|4844|491(3|7))");
+      if (number.match(re) != null)
+        return "Visa Electron";
+
+      return "";
+    },
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
+    },
+    ccFormat(value) {
+      var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+      var matches = v.match(/\d{4,16}/g);
+      var match = matches && matches[0] || ''
+      var parts = []
+      var i, len
+      for (i = 0, len = match.length; i < len; i += 4) {
+        parts.push(match.substring(i, i + 4))
+      }
+
+      if (parts.length) {
+        return parts.join(' ')
+      } else {
+        return value
+      }
+    },
+    checkDigit(val) {
+      var allowedChars = "0123456789"
+      var entryVal = val
+      var flag
+      for (var i = 0; i < entryVal.length; i++) {
+        flag = false
+        for (var j = 0; j < allowedChars.length; j++) {
+          if (entryVal.charAt(i) == allowedChars.charAt(j)) {
+            flag = true
+          }
+        }
+        if (flag == false) {
+          entryVal = entryVal.replace(entryVal.charAt(i), "")
+          i--
+        }
+      }
+      this.ccvendor = this.getCardType(entryVal)
+      return this.ccFormat(entryVal)
+    },
+    chkInput() {
+      var val = document.getElementById('paymentNumber').value
+      document.getElementById('paymentNumber').value = this.checkDigit(val)
     },
     checkout() {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
@@ -559,18 +644,18 @@ export default {
       console.log(path)
       console.log(parameters)
       axios.post(path, parameters)
-              .then((res) => {
-                console.log(res)
-                var order_id = res.data
-                console.log(order_id)
-                this.finalizePurchase(order_id)
-              })
-              .catch((error) => {
-                // eslint-disable-next-line
-                toastr.error('', 'Order error.',
-                        {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
-                console.log(error)
-              })
+          .then((res) => {
+            console.log(res)
+            var order_id = res.data
+            console.log(order_id)
+            this.finalizePurchase(order_id)
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            toastr.error('', 'Order error.',
+                {timeOut: 1500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            console.log(error)
+          })
     },
     finalizePurchase(order_id) {
       console.log(this.cart)
@@ -585,25 +670,25 @@ export default {
           quant: item.quant
         }
         axios.post(path, parameters)
-                .then(() => {
-                  console.log('Order done')
-                  console.log('Article added')
-                  bus.emit('empty_cart')
-                })
-                .catch((error) => {
-                  // eslint-disable-next-line
-                  console.log(error)
-                  const path_del = api + 'order/' + order_id
-                  axios.delete(path_del)
-                          .then(() => {
-                            console.log('Bad Order deleted')
-                            return
-                          })
-                          .catch((error) => {
-                            console.log(error)
-                            return
-                          })
-                })
+            .then(() => {
+              console.log('Order done')
+              console.log('Article added')
+              bus.emit('empty_cart')
+            })
+            .catch((error) => {
+              // eslint-disable-next-line
+              console.log(error)
+              const path_del = api + 'order/' + order_id
+              axios.delete(path_del)
+                  .then(() => {
+                    console.log('Bad Order deleted')
+                    return
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    return
+                  })
+            })
       }
     },
     changeSend(w) {
@@ -618,11 +703,11 @@ export default {
       this.selectedAdd = w
       this.showPayButtonChk()
     },
-    showPayButtonChk(){
-      if(this.selectedCard!=-1 && this.selectedAdd!=-1 && this.selected!=0){
+    showPayButtonChk() {
+      if (this.selectedCard != -1 && this.selectedAdd != -1 && this.selected != 0) {
         document.getElementById('canpay').style.display = 'block'
         document.getElementById('nocanpay').style.display = 'none'
-      }else{
+      } else {
         document.getElementById('nocanpay').style.display = 'block'
         document.getElementById('canpay').style.display = 'none'
       }
@@ -660,7 +745,7 @@ export default {
       this.addCardForm.card_owner = document.getElementById('paymentTitular').value
       this.addCardForm.number = document.getElementById('paymentNumber').value
       this.addCardForm.date = document.getElementById('paymentEndDate').value
-      this.addCardForm.payment_method = document.getElementById('paymentMethod').value
+      this.addCardForm.payment_method = this.getCardType(this.addCardForm.number)
 
       if (this.addCardForm.card_owner == '' || this.addCardForm.number == '' || this.addCardForm.date == ''
           || this.addCardForm.payment_method == '') {
@@ -672,16 +757,6 @@ export default {
               positionClass: 'toast-bottom-right',
               preventDuplicates: true
             })
-      } else if (this.addCardForm.number.length != 16) {
-        toastr.info('', 'El numero de cuenta debe contener 16 digitos.',
-            {
-              timeOut: 2500,
-              progressBar: true,
-              newestOnTop: true,
-              positionClass: 'toast-bottom-right',
-              preventDuplicates: true
-            })
-
       } else if (!this.validateEndDate(this.addCardForm.date)) {
         toastr.error('', 'Fecha de caducidad no válida.',
             {
@@ -730,25 +805,18 @@ export default {
           })
     },
     validateEndDate(date) {
-      if (date.length == 7) {
-        var count = 0
-        for (var i = 0; i < date.length; i++) {
-          try {
-            if (count == 2) {
-              if (date[i] != '/')
-                return false
-              count += 1
-            } else {
-              parseInt(date[i])
-              count += 1
-            }
-          } catch (error) {
-            return false
-          }
-        }
-        return true
-      } else
+      var today, someday
+      var exMonth = date.slice(0, 2)
+      console.log(exMonth)
+      var exYear = date.slice(3)
+      console.log(exYear)
+      today = new Date()
+      someday = new Date()
+      someday.setFullYear(exYear, exMonth, 1)
+      if (someday < today) {
         return false
+      }
+      return true
     },
     updateAddressModal(address_id) {
       this.address_edit = address_id
