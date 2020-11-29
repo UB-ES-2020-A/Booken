@@ -438,7 +438,7 @@ export default {
           year: 2020,
         }
       ],
-      typeIn: -1,
+      typeIn: 2,//-1
       email: "prueba@gmail.com",
       viewCart: false,
       //toggledNav: false
@@ -502,7 +502,7 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
-      //this.$router.push({path: '/cfm'})
+      this.$router.push({path: '/cp'})
     },
     hideCart() {
       if (this.viewCart)

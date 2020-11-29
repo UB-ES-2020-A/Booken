@@ -200,7 +200,7 @@
               </div>
             </div>
           </div>
-          <!-- ORDERS LIST: view order list history -->
+          <!-- ORDERS LIST: view order list history for shop manager-->
           <div class="tab-pane fade show active" id="pills-orders-list" role="tabpanel"
                aria-labelledby="pills-orders-list-tab" v-if="type == 2">
             <div class="container-fluid">
@@ -522,14 +522,14 @@
                       <span v-if="item.vendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
-                                                            style="font-size: 1.8em"></i></span>
+                                                                                              style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'Discover'"><i class="fab fa-cc-discover"
                                                                 style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'AMEX'"><i class="fab fa-cc-amex"
-                                                                style="font-size: 1.8em"></i></span>
+                                                            style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'Diners'"><i class="fab fa-cc-diners-club"
-                                                                style="font-size: 1.8em"></i></span><br>
+                                                              style="font-size: 1.8em"></i></span><br>
                     </div>
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
@@ -640,151 +640,66 @@
           </div>
           <!-- ECONOMY: for admin only -->
           <div class="tab-pane fade" id="pills-economy" role="tabpanel" aria-labelledby="pills-pay-tab">
-            <!--<div class="container-fluid">
-              <div class="row">
-                <div class="col-md-6 col-xl-4">
-                  <div class="card mb-3 widget-content">
-                    <div class="widget-content-outer">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Total Orders</div>
-                          <div class="widget-subheading">Last year expenses</div>
+            <div style="margin-left: 0.5em; margin-right: 0.5em">
+              <h4 style="text-align: left; margin-left: 0.5em">Rendimiento global</h4>
+              <div class="row row-cols-1 row-cols-md-3">
+                <div class="col">
+                  <div class="card" style="text-align: left; margin: 0.5em">
+                    <div class="card-header" style="background-color: #2F96B4; color: white">
+                      <div class="row">
+                        <div class="col">
+                          <h5>Ventas</h5>
                         </div>
-                        <div class="widget-content-right">
-                          <div class="widget-numbers text-success">1896</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl-4">
-                  <div class="card mb-3 widget-content">
-                    <div class="widget-content-outer">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Products Sold</div>
-                          <div class="widget-subheading">Revenue streams</div>
-                        </div>
-                        <div class="widget-content-right">
-                          <div class="widget-numbers text-warning">$3M</div>
+                        <div class="col" style="text-align: right">
+                          <h5><b>{{ total_sales }}</b></h5>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl-4">
-                  <div class="card mb-3 widget-content">
-                    <div class="widget-content-outer">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Followers</div>
-                          <div class="widget-subheading">People Interested</div>
+                <div class="col">
+                  <div class="card" style="text-align: left; margin: 0.5em">
+                    <div class="card-header" style="background-color: #6D58FF; color: white">
+                      <div class="row">
+                        <div class="col">
+                          <h5>Ganancias</h5>
                         </div>
-                        <div class="widget-content-right">
-                          <div class="widget-numbers text-danger">45,9%</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                  <div class="card mb-3 widget-content">
-                    <div class="widget-content-outer">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left">
-                          <div class="widget-heading">Income</div>
-                          <div class="widget-subheading">Expected totals</div>
-                        </div>
-                        <div class="widget-content-right">
-                          <div class="widget-numbers text-focus">$147</div>
-                        </div>
-                      </div>
-                      <div class="widget-progress-wrapper">
-                        <div class="progress-bar-sm progress-bar-animated-alt progress">
-                          <div class="progress-bar bg-info" role="progressbar" aria-valuenow="54" aria-valuemin="0"
-                               aria-valuemax="100" style="width: 54%;"></div>
-                        </div>
-                        <div class="progress-sub-label">
-                          <div class="sub-label-left">Expenses</div>
-                          <div class="sub-label-right">100%</div>
+                        <div class="col" style="text-align: right">
+                          <h5><b>{{ total_gain }}€</b></h5>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="col">
+                  <div class="card" style="text-align: left; margin: 0.5em">
+                    <div class="card-header" style="background-color: #16BF78; color: white">
+                      <div class="row">
+                        <div class="col">
+                          <h5>Usuarios</h5>
+                        </div>
+                        <div class="col" style="text-align: right">
+                          <h5><b>{{ total_users }}</b></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2" style="margin-top: 1em">
+                <div class="col">
+                  <h4 style="text-align: left; margin-left: 0.5em; margin-top: 0.5em">Rendimiento por año</h4>
+                </div>
+                <div class="col" style="text-align: right">
+                  <select class="custom-select" id="validationTooltip04" style="width: auto; margin-right: 0.5em">
+                    <option v-for="(year, index) in this.years_data" :key="index">{{year}}</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                asdasdsa
               </div>
             </div>
-            <div class="tab-content">
-              <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Pie Chart</h5>
-                        <canvas id="chart-area"></canvas>
-                      </div>
-                    </div>
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Radar Chart</h5>
-                        <canvas id="radar-chart"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Doughnut</h5>
-                        <canvas id="doughnut-chart"></canvas>
-                      </div>
-                    </div>
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Polar Chart</h5>
-                        <canvas id="polar-chart"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="tab-pane tabs-animation fade" id="tab-content-1" role="tabpanel">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Vertical Bars</h5>
-                        <canvas id="canvas"></canvas>
-                      </div>
-                    </div>
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Horizontal Bars</h5>
-                        <canvas id="chart-horiz-bar"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Line Chart</h5>
-                        <div style="height: 400px">
-                          <canvas id="line-chart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="main-card mb-3 card">
-                      <div class="card-body">
-                        <h5 class="card-title">Stacked Bars</h5>
-                        <canvas id="stacked-bars-chart"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>-->
-
           </div>
         </div>
       </div>
@@ -797,9 +712,14 @@
 import {bus, api} from '../main.js'
 import axios from 'axios'
 import * as toastr from "@/assets/toastr";
+import VueApexCharts from "vue3-apexcharts"
 
 export default {
   name: "ControlPanel",
+  components:{
+    // eslint-disable-next-line vue/no-unused-components
+    apexchart: VueApexCharts
+  },
   props: {
     logged: Boolean,
     token: String,
@@ -832,6 +752,8 @@ export default {
       cIndexList: 0,
       addressNumber: 0,
       cardNumber: 0,
+      barChartData: {
+      },
       cards: [
         {
           "id": 0,
@@ -876,7 +798,17 @@ export default {
         {text: 'En progreso', value: '0'},
         {text: 'Enviados', value: '1'},
         {text: 'Recibidos', value: '2'}
-      ]
+      ],
+      years_data: [],
+      total_sales: 0,
+      total_users: 0,
+      sales_month: {},
+      sales_year: {},
+      sales_genre: {},
+      total_gain: 0,
+      gain_month: {},
+      gain_year: {},
+      gain_genre: {}
     }
   },
   created() {
@@ -890,6 +822,9 @@ export default {
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
+  },
+  mounted() {
+    this.getData()
   },
   methods: {
     getCardType(number) {
@@ -986,6 +921,14 @@ export default {
             console.log(error)
           })
     },
+    toSimpleArray(arr){
+      let i
+      var arrr = []
+      for(i in arr){
+        arrr.push(arr[i])
+      }
+      return arrr
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
       axios.get(path)
@@ -1005,15 +948,38 @@ export default {
                 })
           })
     },
+    getData() {
+      var path = api + 'data_retriever/all'
+      axios.get(path)
+          .then((res) => {
+            this.years_data = res.data.all.years_data
+            this.total_sales = res.data.all.total_sales
+            this.total_users = res.data.all.total_users
+            this.sales_month = res.data.all.sales_month
+            this.sales_year = res.data.all.sales_year
+            this.sales_genre = res.data.all.sales_genre
+            this.total_gain = res.data.all.total_gain
+            this.gain_month = res.data.all.gain_year
+            this.gain_genre = res.data.all.gain_genre
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los datos.',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+          })
+    },
     getOrdersList() {
       var path = api + 'orders'
       axios.get(path)
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.ordersHist = res.data.orders
-            console.log(this.ordersHist.length)
             this.splitOrdersList()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1116,7 +1082,6 @@ export default {
       }
       this.sOrdersList.push(this.ordersHist.slice(-(this.ordersHist.length % this.maxPerPage)))
       this.viewOrdersList = this.sOrdersList[0]
-      console.log(this.viewOrdersList)
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
