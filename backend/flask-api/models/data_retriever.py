@@ -20,8 +20,8 @@ class DataRetriever():
             return cls._gain_year(cls)
         elif needed_data == "gain_genre":
             return cls._gain_genre(cls)
-        else:
-            return None
+
+        return None
 
     def _get_orders(self):
         return OrdersModel.get_orders()['orders']
