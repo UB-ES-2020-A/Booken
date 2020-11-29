@@ -4,6 +4,7 @@ node_js:
 cache: npm
 install:
 - npm install newman
+- pip install pytest
 stages:
 - name: build_deploy
   if: "(branch = dev)"
@@ -79,6 +80,7 @@ jobs:
     name: Code Analysis SCA/DCA/CC
     script:
     - cd ../../backend/flask-api
+    - pytest --cov=.
     after_success:
     - coveralls #DCA
   - stage: build
