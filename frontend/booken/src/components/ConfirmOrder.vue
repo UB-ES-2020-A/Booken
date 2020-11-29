@@ -6,7 +6,7 @@
 <style lang="scss" src="../assets/order-button.scss" scoped>
 </style>
 <template>
-  <div class="container animate__animated animate__slideInUp" style="margin-top: 2em; margin-bottom: 2em">
+  <div class="container " style="margin-top: 2em; margin-bottom: 2em">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -24,9 +24,9 @@
         </div>
         <div style="margin: 0.5em">
           <h3 class="card-title" style="text-align: left; margin-top: 1em">¿Cómo te lo mandamos?</h3>
-          <div class="row row-cols-1 row-cols-md-4">
-            <div class="col mb-2">
-              <div class="card h-100 text-white bg-info" style="max-width: 18rem; text-align: left"
+          <div class="row">
+            <div class="col-12 col-md-4 mb-2">
+              <div class="card h-100 text-white bg-info" style="text-align: left"
                    @click="changeSend(1)"
                    v-if="selected!=1">
                 <div class="card-header"><b>Envío estándar - 5€</b></div>
@@ -39,7 +39,7 @@
                 </div>
               </div>
               <div class="card h-100 text-white bg-info"
-                   style="max-width: 18rem; text-align: left; border-color: black; border-width: 2px"
+                   style="text-align: left; border-color: black; border-width: 2px"
                    v-if="selected==1">
                 <div class="card-header"><b>Envío estándar - 5€</b></div>
                 <div class="card-body">
@@ -51,8 +51,8 @@
                 </div>
               </div>
             </div>
-            <div class="col mb-2">
-              <div class="card h-100 text-white bg-warning" style="max-width: 18rem; text-align: left"
+            <div class="col-12 col-md-4 mb-2">
+              <div class="card h-100 text-white bg-warning" style=" text-align: left"
                    @click="changeSend(2)" v-if="selected!=2">
                 <div class="card-header"><b>Envío estándar Plus - 7€</b></div>
                 <div class="card-body">
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div class="card h-100 text-white bg-warning"
-                   style="max-width: 18rem; text-align: left; border-color: black; border-width: 2px"
+                   style=" text-align: left; border-color: black; border-width: 2px"
                    v-if="selected==2">
                 <div class="card-header"><b>Envío estándar Plus - 7€</b></div>
                 <div class="card-body">
@@ -74,9 +74,9 @@
                 </div>
               </div>
             </div>
-            <div class="col mb-2">
+            <div class="col-12 col-md-4 mb-2">
               <div class="card h-100 text-white bg-success"
-                   style="max-width: 18rem; text-align: left" @click="changeSend(3)" v-if="selected!=3">
+                   style="text-align: left" @click="changeSend(3)" v-if="selected!=3">
                 <div class="card-header"><b>Envío Ultra Express - 50€</b></div>
                 <div class="card-body">
                   <h5 class="card-title">¡Ahora mismo!</h5>
@@ -85,7 +85,7 @@
                 </div>
               </div>
               <div class="card h-100 text-white bg-success"
-                   style="max-width: 18rem; text-align: left; border-color: black; border-width: 2px"
+                   style=" text-align: left; border-color: black; border-width: 2px"
                    v-if="selected==3">
                 <div class="card-header"><b>Envío Ultra Express - 50€</b></div>
                 <div class="card-body">
@@ -97,8 +97,8 @@
             </div>
           </div>
           <h3 class="card-title" style="text-align: left; margin-top: 1em">¿Y a dónde?</h3>
-          <div class="row row-cols-1 row-cols-md-4">
-            <div class="col mb-2" v-for="(item, index) in this.addresses" :key="item.id">
+          <div class="row">
+            <div class="col-12 col-md-4 mb-2" v-for="(item, index) in this.addresses" :key="item.id">
               <div class="card" style="text-align: left" v-if="selectedAdd!=index" @click="changeAdd(index)">
                 <div class="card-header">
                   {{ item.label_name }}
@@ -147,7 +147,7 @@
                 </div>
               </div>
             </div>
-            <div class="col mb-2" v-if="this.addressNumber < 3">
+            <div class="col-12 col-md-4 mb-2 myAddressCard" v-if="this.addressNumber < 3">
               <div class="card h-100" style="text-align: center">
                 <button style="color: #3b494d; height: 100%" type="submit"
                         data-toggle="modal" data-target="#modalAddress" data-whatever="@getbootstrap"
@@ -226,8 +226,8 @@
             </div>
           </div>
           <h3 class="card-title" style="text-align: left; margin-top: 1em">Por último, ¿con que pagarás?</h3>
-          <div class="row row-cols-1 row-cols-md-4">
-            <div class="col mb-2" v-for="(item, index) in this.cards" :key="item.id">
+          <div class="row">
+            <div class="col-12 col-md-6 mb-2" v-for="(item, index) in this.cards" :key="item.id">
               <div class="card" style=" text-align: left" @click="changeCard(index)" v-if="selectedCard!=index">
                 <div class="card-header">
                       <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
@@ -274,7 +274,7 @@
                 </div>
               </div>
             </div>
-            <div class="col mb-2" v-if="this.cardNumber < 2">
+            <div class="col-12 col-md-6 myPaymentCard mb-2" v-if="this.cardNumber < 2">
               <div class="card h-100">
                 <button style="color: #3b494d; height: 100%" type="submit" data-toggle="modal"
                         data-target="#modalPayment" data-whatever="@getbootstrap">
@@ -309,17 +309,17 @@
                           </div>
                           <div class="form-group" style="text-align: center; font-size: 3em">
                             <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
-                                                                        style="font-size: 1.8em"></i></span>
+                                                                     style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
-                                                                  style="font-size: 1.8em"></i></span>
+                                                                                              style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'JCB'"><i class="fab fa-cc-jcb"
-                                                                 style="font-size: 1.8em"></i></span>
+                                                              style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'Discover'"><i class="fab fa-cc-discover"
-                                                                      style="font-size: 1.8em"></i></span>
+                                                                   style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'AMEX'"><i class="fab fa-cc-amex"
-                                                                      style="font-size: 1.8em"></i></span>
+                                                               style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'Diners'"><i class="fab fa-cc-diners-club"
-                                                                      style="font-size: 1.8em"></i></span>
+                                                                 style="font-size: 1.8em"></i></span>
                           </div>
                         </form>
                       </div>
@@ -1053,5 +1053,25 @@ export default {
 </script>
 
 <style scoped>
+@media (min-width: 0px) {
+  .myAddressCard {
+    min-height: 220px;
+  }
 
+  .myPaymentCard {
+    min-height: 200px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .myAddressCard {
+    height: auto;
+  }
+
+
+  .myPaymentCard {
+    height: auto;
+  }
+}
 </style>
