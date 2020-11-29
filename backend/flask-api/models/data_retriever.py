@@ -44,7 +44,7 @@ class DataRetriever:
                 'gain_genre': self._gain_genre(self)}
 
     def _years_data(self):
-        return sorted(set([int(o['date'][6:]) for o in self._get_orders(self)]), reverse=True)
+        return sorted({int(o['date'][6:]) for o in orders}, reverse=True)
 
     def _total_users(self):
         return len([user for user in AccountModel.get_users()['users'] if user['type'] == 0])
@@ -63,7 +63,7 @@ class DataRetriever:
 
     def _sales_month(self):
         orders = self._get_orders(self)
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         n_sales_month = {year: {i: 0 for i in range(1, 13)} for year in years}
         for order in orders:
             year = int(order['date'][6:])
@@ -78,7 +78,7 @@ class DataRetriever:
 
     def _gain_month(self):
         orders = self._get_orders(self)
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         gain_month = {year: {i: 0 for i in range(1, 13)} for year in years}
 
         for order in orders:
@@ -93,7 +93,7 @@ class DataRetriever:
 
     def _sales_year(self):
         orders = self._get_orders(self)
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         n_sales_year = {year: 0 for year in years}
         for order in orders:
             year = int(order['date'][-4:])
@@ -109,7 +109,7 @@ class DataRetriever:
         orders = self._get_orders(self)
         genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL', 'COMICS Y MANGA',
           'JUVENIL', 'OTRAS CATEGORIAS']
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         n_sales_genre = {year: {genre: 0 for genre in genres} for year in years}
 
         for order in orders:
@@ -134,7 +134,7 @@ class DataRetriever:
 
     def _gain_year(self):
         orders = self._get_orders(self)
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         gain_year = {year: 0 for year in years}
 
         for order in orders:
@@ -148,7 +148,7 @@ class DataRetriever:
 
     def _gain_genre(self):
         orders = self._get_orders(self)
-        years = sorted(set([int(o['date'][6:]) for o in orders]), reverse=True)
+        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
         genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL',
                   'COMICS Y MANGA',
                   'JUVENIL', 'OTRAS CATEGORIAS']
