@@ -44,7 +44,7 @@ class DataRetriever:
                 'gain_genre': self._gain_genre(self)}
 
     def _years_data(self):
-        return sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        return sorted({int(o['date'][6:]) for o in self._get_orders(self)}, reverse=True)
 
     def _total_users(self):
         return len([user for user in AccountModel.get_users()['users'] if user['type'] == 0])
