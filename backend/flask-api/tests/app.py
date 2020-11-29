@@ -1,4 +1,9 @@
 from flask import render_template
+import sys
+import json
+sys.path.append('../*')
+sys.path.append('../models/*')
+sys.path.append('../resources/')
 from flask_migrate import Migrate
 from flask_restful import Api
 from resources.account_rs import Account, Accounts, PasswordChange
