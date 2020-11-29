@@ -2,6 +2,10 @@
 users = [["a@a.com", "sm", "sm", "sm22", 2], ["asd@asd.com", "asd", "asd apellido", "asd", 0],
          ["s@s.com", "support", "a", "support", 1]]
 
+admin_cards = [["Bender Bending Rodríguez", "4475482935309482", "02/2558", "VISA"]]
+
+admin_add = [["casa1", "Borat", "Margaret Sagdiyev", "Av. de los Madroños", "43", "28043", "Madrid", "Madrid", "624859810"]]
+
 books = [["9788431690656", "Mitos griegos", [["Maria Angelidou", "06/09/1978", "Biblao", "España"]], "HUMANIDADES",
           "2013", "Vicens Vives", "Castellano", "7.50", "El presente volumen constituye una inmejorable introducción "
                                                         "al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y "
