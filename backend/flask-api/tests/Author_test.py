@@ -3,9 +3,11 @@ import sys
 sys.path.append('../')
 #  deepcode ignore C0411: not an issue
 from app import setupApp
+#  deepcode ignore C0411: not an issue
 from db import db
+#  deepcode ignore C0411: not an issue
 from datetime import date
-
+#  deepcode ignore C0411: not an issue
 
 
 class AuthorTest(unittest.TestCase):

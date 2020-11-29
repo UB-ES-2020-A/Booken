@@ -3,6 +3,7 @@ import sys
 sys.path.append('../')
 #  deepcode ignore C0411: not an issue
 from app import setupApp
+#  deepcode ignore C0411: not an issue
 from db import db
 
 class OrderTest(unittest.TestCase):
