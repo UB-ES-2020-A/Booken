@@ -52,7 +52,7 @@ class Book(Resource):
         return new_book.json(), 200
 
     def delete(self, idd):
-        book = BookModel.find_by_id(id)
+        book = BookModel.find_by_id(idd)
         if not book:
             return {'message': "There is no book with ['id': {}], therefore it cannot be deleted".format(idd)}, 404
         book.delete_from_db()
@@ -61,7 +61,7 @@ class Book(Resource):
 
     def put(self, idd):
         data = self.__parse_request__()
-        exists = BookModel.find_by_id(id)
+        exists = BookModel.find_by_id(idd)
         if not exists:
             return {'message': "A book with ['id': {}] not found".format(idd)}, 404
         authors = []

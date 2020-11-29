@@ -57,7 +57,7 @@ api.add_resource(Contact, '/contact_info/<int:idd>', '/contact_info')
 api.add_resource(ContactList, '/contact_list/')
 
 api.add_resource(OrdersList, '/orders')
-api.add_resource(Orders, '/order', '/order/<int:id>')
+api.add_resource(Orders, '/order', '/order/<int:idd>')
 
 api.add_resource(ArticlesList, '/articles')
 api.add_resource(Articles, '/article/<int:idd>', '/article')

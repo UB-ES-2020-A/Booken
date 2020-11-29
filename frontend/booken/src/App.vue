@@ -174,7 +174,7 @@
                   <button class="_btn _column product-plus" @click="increaseQuant(item.id)" :disabled="item.quant>=item.quant_t">&plus;</button>
                 </div>
                 <button class="_btn entypo-trash product-remove" @click="removeBook(item.id)">Quitar</button>
-                <div class="price product-total-price">{{ item.quant * item.price }}€</div>
+                <div class="price product-total-price">{{ this.round2Dec(item.quant * item.price) }}€</div>
               </div>
             </li>
           </ol>
@@ -502,6 +502,7 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
+      this.$router.push({path: '/cp'})
     },
     hideCart() {
       if (this.viewCart)

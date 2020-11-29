@@ -49,7 +49,7 @@
 
                     <div class="row align-items-center mt-3 md-1">
                       <div class="col-8 text-left">
-                        <div>Deseas eliminar tu cuenta?</div>
+                        <div>¿Quieres eliminar tu cuenta?</div>
                       </div>
                       <div class="col-4 text-right">
                         <button class="btn btn-secondary" style="width: 50px" type="submit"
@@ -61,8 +61,8 @@
                            aria-labelledby="logOutTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
-                            <div class="modal-header" style="border-bottom: 0 none;">
-                              <h5 class="modal-title" id="deleteAccountTitle">Estás seguro de eliminar la cuenta?</h5>
+                            <div class="modal-header" style="border-bottom: 0 none; text-align: left">
+                              <h5 class="modal-title" id="deleteAccountTitle">¿Estás seguro? Este proceso no se puede revertir.</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -96,7 +96,7 @@
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header" style="border-bottom: 0 none;">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Quieres cerrar la sesión?</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres cerrar la sesión?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,7 +113,7 @@
           </div>
         </div>
         <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 0">
             <a class="nav-link active" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab"
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
