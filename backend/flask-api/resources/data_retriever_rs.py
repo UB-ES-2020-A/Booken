@@ -1,5 +1,4 @@
-from flask_restful import Resource, reqparse
-from flask import g
+from flask_restful import Resource
 
 from models.data_retriever import DataRetriever
 
