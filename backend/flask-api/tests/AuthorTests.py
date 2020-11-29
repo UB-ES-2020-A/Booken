@@ -1,9 +1,9 @@
 from app import setupApp
+from db import db
+from datetime import date
 import unittest
 import sys
 sys.path.append('../')
-from datetime import date
-from db import db
 
 
 class AuthorTest(unittest.TestCase):
