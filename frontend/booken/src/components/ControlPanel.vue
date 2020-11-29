@@ -730,7 +730,7 @@
               <div class="row row-cols-1 row-cols-md-2" style="margin-top: 1em">
                 <div class="col">
                   <apexchart
-                      width="550"
+                      width="100%"
                       type="bar"
                       :options="salesMonthOptions"
                       :series="salesMonthSeries"
@@ -738,7 +738,7 @@
                 </div>
                 <div class="col">
                   <apexchart
-                      width="550"
+                      width="100%"
                       type="bar"
                       :options="gainMonthOptions"
                       :series="gainMonthSeries"
@@ -748,14 +748,14 @@
               <div class="row row-cols-1 row-cols-md-2" style="margin-top: 1em">
                 <div class="col">
                   <apexchart
-                      width="550"
+                      width="100%"
                       type="pie"
                       :options="salesGenreOptions"
                   ></apexchart>
                 </div>
                 <div class="col">
                   <apexchart
-                      width="550"
+                      width="100%"
                       type="pie"
                       :options="gainGenreOptions"
                   ></apexchart>
@@ -819,6 +819,7 @@ export default {
       salesGenreSeries: [],
       salesGenreOptions: {},
       gainMonthOptions: {},
+      gainMonthSeries: {},
       gainGenreOptions: {},
       cards: [
         {
