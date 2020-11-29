@@ -12,6 +12,7 @@ from resources.address_rs import Address, AddressList
 from resources.payment_card_rs import Card, CardList
 from resources.review import ReviewList, ReviewListBook, ReviewListUser, Review
 from resources.wishlist import Wishlist
+from resources.data_retriever_rs import Retriever
 from db import db, create_app
 
 app = create_app()
@@ -57,7 +58,7 @@ api.add_resource(Contact, '/contact_info/<int:idd>', '/contact_info')
 api.add_resource(ContactList, '/contact_list/')
 
 api.add_resource(OrdersList, '/orders')
-api.add_resource(Orders, '/order', '/order/<int:id>')
+api.add_resource(Orders, '/order', '/order/<int:idd>')
 
 api.add_resource(ArticlesList, '/articles')
 api.add_resource(Articles, '/article/<int:idd>', '/article')
@@ -85,6 +86,7 @@ api.add_resource(ReceivedOrdersList, '/orders-list-state-2')
 
 api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
 
+api.add_resource(Retriever,'/data_retriever/<string:needed_data>')
 
 @app.route('/')
 def render_vue():
