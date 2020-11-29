@@ -3,7 +3,9 @@ import sys
 import json
 
 sys.path.append('../')
+#  deepcode ignore C0413: stupid issue
 from app import setupApp
+#  deepcode ignore C0411: stupid issue
 from db import db
 from datetime import date
 

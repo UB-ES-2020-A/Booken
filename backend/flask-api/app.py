@@ -29,7 +29,6 @@ from models.wishlist import WishlistModel
 
 def setupApp(test=False):
     #  deepcode ignore W0621: n/a
-
     app = create_app(test)
     app.app_context().push()
     api = Api(app)

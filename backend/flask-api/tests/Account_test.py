@@ -2,6 +2,7 @@ import unittest
 import sys
 import json
 sys.path.append('../')
+#  deepcode ignore C0413: stupid issue
 from app import setupApp
 from db import db
 
