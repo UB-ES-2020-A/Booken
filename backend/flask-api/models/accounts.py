@@ -84,6 +84,12 @@ class AccountModel(db.Model):
         db.session.commit()
 
     @classmethod
+    def get_users(cls):
+        list_users = [user.json() for user in AccountModel.query.all()]
+        dicc = {"users": list_users}
+        return dicc
+
+    @classmethod
     def find_by_id(self, idd):
         return self.query.filter_by(id=idd).first()
 

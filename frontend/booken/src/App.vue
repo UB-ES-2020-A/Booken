@@ -502,7 +502,7 @@ export default {
     getHelp() {
       if (this.viewCart)
         this.viewCart = false
-      //this.$router.push({path: '/cfm'})
+      //this.$router.push({path: '/cp'})
     },
     hideCart() {
       if (this.viewCart)
