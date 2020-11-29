@@ -20,7 +20,7 @@
           <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
               class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></a>
 
-          <form class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
+          <div class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
                    placeholder="Busca por autor, título, ISBN"
                    aria-label="Search">
@@ -28,7 +28,7 @@
                 class="fas fa-search"
                 style="color: #FFF"/>
             </button>
-          </form>
+          </div>
 
           <!-- Links Button -->
           <button class="navbar-toggler ml-auto lapse" type="button" data-toggle="collapse"
@@ -42,15 +42,16 @@
             <ul class="navbar-nav ml-xl-auto buttonList ml-lg-auto">
               <li class="nav-item my-xl-auto my-3 mx-2 mx-md-0 ">
                 <div class="searchBarInside mx-auto mb-md-3 my-xl-auto ">
-                  <form class="form-inline ">
+                  <div class="form-inline">
                     <input class="form-control" type="search" v-model="information"
                            placeholder="Busca por autor, título, ISBN"
                            aria-label="Search">
-                    <button class="btn ml-auto " style="background-color: #3b494d;" type="submit" @click="goToSearch"><i
+                    <button class="btn ml-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
+                            style="background-color: #3b494d;" type="submit" @click="goToSearch"><i
                         class="fas fa-search"
                         style="color: #FFF"/>
                     </button>
-                  </form>
+                  </div>
                 </div>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-0 mr-md-auto ">

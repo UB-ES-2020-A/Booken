@@ -57,8 +57,7 @@
         },
         data() {
             return {
-                books: [],
-                admin: 1
+                books: []
             }
         },
         methods: {
