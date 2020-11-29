@@ -79,7 +79,7 @@ jobs:
   - stage: code_analysis
     name: Code Analysis SCA/DCA/CC
     script:
-    - cd ../../backend/flask-api
+    - cd ../../backend/flask-api/tests
     - pytest --cov=.
     after_success:
     - coveralls #DCA
