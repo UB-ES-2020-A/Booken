@@ -16,23 +16,24 @@ from resources.data_retriever_rs import Retriever
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
-from models.accounts import AccountModel
-from models.author import AuthorModel
-from models.book import BookModel
-from models.contact import ContactModel
-from models.orders import OrdersModel
-from models.articles import ArticlesModel
-from models.address import AddressModel
-from models.payment_card import CardModel
-from models.review import ReviewModel
-from models.wishlist import WishlistModel
 
 def setupApp(test=False):
     #  deepcode ignore W0621: n/a
+
+    from models.accounts import AccountModel
+    from models.author import AuthorModel
+    from models.book import BookModel
+    from models.contact import ContactModel
+    from models.orders import OrdersModel
+    from models.articles import ArticlesModel
+    from models.address import AddressModel
+    from models.payment_card import CardModel
+    from models.review import ReviewModel
+    from models.wishlist import WishlistModel
     app = create_app(test)
     app.app_context().push()
     api = Api(app)
-    
+
     migrate = Migrate(app, db)
 
     # EndPoints configuration
