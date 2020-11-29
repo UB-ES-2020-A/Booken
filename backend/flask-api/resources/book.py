@@ -117,6 +117,18 @@ class SearchBook(Resource):
 
     def get(self):
         data = self.__parse_request__()
+        query = data.get('name')
+        books = [(a.json()['book']['name'].lower(), 'book') for a in BookModel.query.all()]
+        authors = [(a.json()['name'].lower(), 'author') for a in AuthorModel.query.all()]
+        isbn = [(a.json()['book']['ISBN'], 'isbn') for a in BookModel.query.all()]
+        repo = books + authors + isbn
+        found = -1
+        for i in range(len(repo)):
+            if query == repo[i]:
+                found = repo[i]
+                break
+
+
         if data.get('name'):
             return {'books': [a.json() for a in
                                      BookModel.query.filter(BookModel.name.like(data.get('name'))).all()]}, 200
