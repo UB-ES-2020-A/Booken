@@ -1,5 +1,6 @@
 import unittest
 import sys
+import json
 sys.path.append('../')
 from app import setupApp
 from db import db
@@ -26,9 +27,10 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_valid_user_login(self):
+        self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         response = self.login('tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(response.data.token, '')
+        self.assertNotEqual(json.loads(response.data)["token"], '')
 
     def register(self, name, lname, email, password):
         return self.app.post('/account',
