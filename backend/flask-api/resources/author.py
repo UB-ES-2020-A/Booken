@@ -9,7 +9,7 @@ class Author(Resource):
     def get(self, id):
         author = AuthorModel.find_by_id(id)
         if author:
-            return {'author': author.json()}
+            return {'author': author.json()}, 200
         else:
             return {'message': "Author with id [{}] Not found".format(id)}, 409
 
