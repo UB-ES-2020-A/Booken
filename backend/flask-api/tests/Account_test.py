@@ -10,7 +10,7 @@ class AccountTests(unittest.TestCase):
 
     def setUp(self):
 
-        self.app = setupApp().test_client()
+        self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
 
@@ -30,7 +30,7 @@ class AccountTests(unittest.TestCase):
         self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         response = self.login('tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(json(response.data)['token'], '')
+        self.assertNotEqual(json.loads(response.data)['token'], '')
 
     def register(self, name, lname, email, password):
         return self.app.post('/account',

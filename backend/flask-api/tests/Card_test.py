@@ -19,7 +19,7 @@ class CardTests(unittest.TestCase):
 
     def setUp(self):
 
-        self.app = setupApp().test_client()
+        self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
 
