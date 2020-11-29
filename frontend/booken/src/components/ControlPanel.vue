@@ -49,7 +49,7 @@
 
                     <div class="row align-items-center mt-3 md-1">
                       <div class="col-8 text-left">
-                        <div>Deseas eliminar tu cuenta?</div>
+                        <div>¿Quieres eliminar tu cuenta?</div>
                       </div>
                       <div class="col-4 text-right">
                         <button class="btn btn-secondary" style="width: 50px" type="submit"
@@ -61,8 +61,9 @@
                            aria-labelledby="logOutTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
-                            <div class="modal-header" style="border-bottom: 0 none;">
-                              <h5 class="modal-title" id="deleteAccountTitle">Estás seguro de eliminar la cuenta?</h5>
+                            <div class="modal-header" style="border-bottom: 0 none; text-align: left">
+                              <h5 class="modal-title" id="deleteAccountTitle">¿Estás seguro? Este proceso no se puede
+                                revertir.</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -96,7 +97,7 @@
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header" style="border-bottom: 0 none;">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Quieres cerrar la sesión?</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres cerrar la sesión?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,11 +114,11 @@
           </div>
         </div>
         <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 0">
             <a class="nav-link active" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab"
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 2">
             <a class="nav-link" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list" role="tab"
                aria-controls="pills-orders-list" aria-selected="false">Lista de pedidos</a>
           </li>
@@ -140,7 +141,8 @@
         </ul>
         <div class="tab-content mt-3" id="pills-tabContent">
           <!-- ORDERS: view order history -->
-          <div class="tab-pane fade show active" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
+          <div class="tab-pane fade show active" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab"
+               v-if="type == 0">
             <div class="container-fluid">
               <div class="row">
                 <div class="col col-md mr-auto" style="text-align: right">
@@ -199,7 +201,8 @@
             </div>
           </div>
           <!-- ORDERS LIST: view order list history -->
-          <div class="tab-pane" id="pills-orders-list" role="tabpanel" aria-labelledby="pills-orders-list-tab">
+          <div class="tab-pane fade show active" id="pills-orders-list" role="tabpanel"
+               aria-labelledby="pills-orders-list-tab" v-if="type == 2">
             <div class="container-fluid">
               <div class="row">
                 <div class="col col-md mr-auto" style="text-align: right">
@@ -385,7 +388,8 @@
                 </div>
                 <div class="col-12 col-md-4 my-3">
                   <label for="exampleFormControlInput1">Repite contraseña nueva</label>
-                  <input type="password" class="form-control" placeholder="" :disabled="!editPass" v-model="newPassword2">
+                  <input type="password" class="form-control" placeholder="" :disabled="!editPass"
+                         v-model="newPassword2">
                 </div>
               </div>
             </div>
@@ -1128,28 +1132,52 @@ export default {
     savePassword() {
       this.editPass = false
 
-      if(this.newPassword == '' || this.newPassword2 == '' || this.oldPassword == ''){
+      if (this.newPassword == '' || this.newPassword2 == '' || this.oldPassword == '') {
         toastr.info('', 'Por favor rellene todos los campos gracias.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
-      }else if(this.newPassword != this.newPassword2){
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      } else if (this.newPassword != this.newPassword2) {
         toastr.info('', 'La nueva contraseña no coincide, intentelo de nuevo.',
-            {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right',preventDuplicates: true})
-      }else if (!this.validatePassword(this.newPassword)) {
-          toastr.error('', 'La contraseña no cumple los requisitos de seguridad.',
-              {
-                timeOut: 2500,
-                progressBar: true,
-                newestOnTop: true,
-                positionClass: 'toast-bottom-right',
-                preventDuplicates: true
-              })
-      }else{
-          var path = api + 'account/' + this.id + "/change_password"
-          var currentUser = {username: this.id, password: this.token}
-          axios.put(path, {'old_password': this.oldPassword, 'new_password': this.newPassword}, {auth: currentUser})
-              .then((res) => {
-                path = res
-                toastr.success('', 'Datos de usuario actualizados.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      } else if (!this.validatePassword(this.newPassword)) {
+        toastr.error('', 'La contraseña no cumple los requisitos de seguridad.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      } else {
+        var path = api + 'account/' + this.id + "/change_password"
+        var currentUser = {username: this.id, password: this.token}
+        axios.put(path, {'old_password': this.oldPassword, 'new_password': this.newPassword}, {auth: currentUser})
+            .then((res) => {
+              path = res
+              toastr.success('', 'Datos de usuario actualizados.',
+                  {
+                    timeOut: 2500,
+                    progressBar: true,
+                    newestOnTop: true,
+                    positionClass: 'toast-bottom-right',
+                    preventDuplicates: true
+                  })
+            })
+            .catch((error) => {
+              console.log(error)
+              if (error.response.status == 406) {
+                toastr.info('', 'La contraseña actual no coincide con la de la cuenta.',
                     {
                       timeOut: 2500,
                       progressBar: true,
@@ -1157,29 +1185,17 @@ export default {
                       positionClass: 'toast-bottom-right',
                       preventDuplicates: true
                     })
-              })
-              .catch((error) => {
-                console.log(error)
-                if(error.response.status == 406){
-                    toastr.info('', 'La contraseña actual no coincide con la de la cuenta.',
-                        {
-                          timeOut: 2500,
-                          progressBar: true,
-                          newestOnTop: true,
-                          positionClass: 'toast-bottom-right',
-                          preventDuplicates: true
-                        })
-                }else{
-                    toastr.error('', 'No se ha podido guardar los cambios.',
-                        {
-                          timeOut: 2500,
-                          progressBar: true,
-                          newestOnTop: true,
-                          positionClass: 'toast-bottom-right',
-                          preventDuplicates: true
-                        })
-                }
-              })
+              } else {
+                toastr.error('', 'No se ha podido guardar los cambios.',
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
+              }
+            })
       }
 
       this.oldPassword = ''

@@ -18,8 +18,8 @@
             <h2 class="card-title" style="text-align: left">Confirmar pedido</h2>
           </div>
           <div class="col" style="text-align: right; display: inline">
-            <h1 v-if="selected!=0">Total: {{ total + prices[selected] }}€</h1>
-            <h1 v-if="selected==0">Total: {{ total }}€ + envío</h1>
+            <h1 v-if="selected!=0">Total: {{ this.round2Dec(total + prices[selected]) }}€</h1>
+            <h1 v-if="selected==0">Total: {{ this.round2Dec(total) }}€ + envío</h1>
           </div>
         </div>
         <div style="margin: 0.5em">
@@ -541,6 +541,9 @@ export default {
     }
   },
   methods: {
+    round2Dec(trnd) {
+      return Math.round(trnd * 100) / 100
+    },
     checkout() {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
       const path = api + 'order/' + this.id

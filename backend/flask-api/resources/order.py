@@ -39,7 +39,7 @@ class Orders(Resource):
         if not acc:
             return {'message': "There isn't a user with this id"}, 409
 
-        new_order = OrdersModel(idd, data.date, data.total, data.shipping, data.taxes, data.state,data.send_type,card)
+        new_order = OrdersModel(idd, data.date, data.total, data.shipping, data.taxes, data.state, data.send_type, card)
         acc.orders.append(new_order)
         db.session.add(new_order)
         db.session.commit()

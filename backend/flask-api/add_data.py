@@ -1,4 +1,4 @@
-from data import books, users
+from data import books, users, admin_add, admin_cards
 from db import db, create_app
 from models.author import AuthorModel
 from models.book import BookModel
@@ -21,10 +21,24 @@ for table in reversed(meta.sorted_tables):
     db.session.execute(table.delete())
 db.session.commit()
 
-acc = 0
+acc, accc, accd = 0, 0, 0
+for c in admin_cards:
+    card = CardModel(c[0], c[1], c[2], c[3])
+    db.session.add(card)
+    accc -= -1
+
+for a in admin_add:
+    add = AddressModel(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8])
+    db.session.add(add)
+    accd -= -1
+
 for i in users:
     user = AccountModel(i[0], i[1], i[2], i[3])
     user.type = i[4]
+    if user.type == 2:
+        user.cards.append(card)
+        user.addresses.append(add)
+
     db.session.add(user)
     acc -= -1
 
@@ -41,6 +55,8 @@ for i in books:
     db.session.add(book)
 
 print("add_data> Added {} new accounts".format(acc))
+print("add_data> Added {} new cards".format(accc))
+print("add_data> Added {} new addresses".format(accd))
 print("add_data> Added {} new books and {} new authors".format(bookss, authorss))
 
 db.session.commit()
