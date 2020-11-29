@@ -6,7 +6,9 @@
 <style lang="scss" src="../assets/order-button.scss" scoped>
 </style>
 <template>
-  <div class="container " style="margin-top: 2em; margin-bottom: 2em">
+
+ <div class="container" style="margin-top: 2em; margin-bottom: 2em">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -1063,6 +1065,7 @@ export default {
   }
 }
 
+
 @media (min-width: 768px) {
 
   .myAddressCard {
@@ -1075,3 +1078,4 @@ export default {
   }
 }
 </style>
+
