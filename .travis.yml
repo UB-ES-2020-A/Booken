@@ -9,6 +9,7 @@ install:
 - npm install newman
 - pip install pytest
 - pip install pytest-cov
+- pip install coveralls
 stages:
 - name: build_deploy
   if: "(branch = dev)"
