@@ -3,7 +3,7 @@
 import unittest
 import sys
 import json
-sys.path.insert(1, './../')
+sys.path.append(1, './../')
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 from db import db
