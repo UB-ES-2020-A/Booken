@@ -77,7 +77,8 @@
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic" style="max-height: 20em"
                          :src="bookInfo.cover_image_url" v-if="bookInfo.cover_image_url != ''">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" style="max-height: 20em"
-                         src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png" v-if="bookInfo.cover_image_url == ''">
+                         src="https://i.ibb.co/jkbth7h/Portada-no-disponible.png" v-if="bookInfo.cover_image_url == ''"
+                         id="displayPic3">
                     <img ref="bigPic" class="animate__animated animate__zoomIn" id="displayPic2"
                          style="max-height: 20em; display: none" :src="bookInfo.back_cover_image_url"
                          v-if="bookInfo.back_cover_image_url != ''">
@@ -86,10 +87,10 @@
               </div>
               <div class="col-sm">
                 <div class="row">
-                  <div class="col-sm">
+                  <div class="col-6">
                     <p ref="label_summary" class="label-info-selected" @click="change_info('summary')">Sinopsis</p>
                   </div>
-                  <div class="col-sm">
+                  <div class="col-6">
                     <p ref="label_details" class="label-info-not-selected" @click="change_info('details')">Detalles</p>
                   </div>
                 </div>
@@ -199,7 +200,8 @@
                         v-if="bookInfo.available <= 0" disabled><a
                     class="navbartextbt" v-if="!edit">Agotado</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
-                    class="navbartextbt" v-if="!edit" @click="addToWishList(book)">Añadir a lista de deseos</a></button>
+                    class="navbartextbt" v-if="!edit" @click="addToWishList(bookInfo)">Añadir a lista de deseos</a>
+                </button>
               </div>
             </div>
           </div>
@@ -287,7 +289,8 @@
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="addvaluationNumber = 0">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                              @click="addvaluationNumber = 0">
                         Cancelar
                       </button>
                       <button type="button" class="btn" style="background: #2bc4ed; color: white" data-dismiss="modal"
@@ -305,7 +308,7 @@
           <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{item.name}} - {{ item.date }}</div>
+                <div class="card-header">{{ item.name }} - {{ item.date }}</div>
                 <div class="card-body">
                   <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
@@ -338,8 +341,9 @@
             </div>
           </div>
           <div class="row" v-if="reviews.length == 0">
-            <div class="col-12" style="text-align: center;">
-              <img src="https://i.ibb.co/kDmqZRz/asd.png">
+            <div class="col-12 text-center my-5">
+              <img src="https://i.ibb.co/kDmqZRz/asd.png" style="object-fit:cover;
+  max-width: 100%; ">
             </div>
           </div>
         </div>
@@ -362,47 +366,16 @@
         <div class="card-body">
           <h2 class="card-title">Te recomendamos</h2>
           <div class="row row-cols-1 row-cols-md-4">
-            <div class="col mb-4">
+            <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
               <div class="card h-100">
                 <img
-                    src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
+                    :src="item.cover_image_url"
                     class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h6 class="card-subtitle">J. D. Barker</h6>
-                  <h4 class="card-title"><a href="">El Cuarto Mono</a></h4>
-                </div>
-              </div>
-            </div>
-            <div class="col mb-4">
-              <div class="card h-100">
-                <img
-                    src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h6 class="card-subtitle">J. D. Barker</h6>
-                  <h4 class="card-title"><a href="">El Cuarto Mono</a></h4>
-                </div>
-              </div>
-            </div>
-            <div class="col mb-4">
-              <div class="card h-100">
-                <img
-                    src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h6 class="card-subtitle">J. D. Barker</h6>
-                  <h4 class="card-title"><a href="">El Cuarto Mono</a></h4>
-                </div>
-              </div>
-            </div>
-            <div class="col mb-4">
-              <div class="card h-100">
-                <img
-                    src="https://www.planetadelibros.com/usuaris/libros/fotos/270/m_libros/portada_el-cuarto-mono_julio-hermoso-oliveras_201803221718.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h6 class="card-subtitle">J. D. Barker</h6>
-                  <h4 class="card-title"><a href="">El Cuarto Mono</a></h4>
+                  <h6 class="card-subtitle">{{ item.author[0] }}</h6>
+                  <h4 class="card-title">
+                    <router-link :to="{name: 'BookInfo', params: {id: item.id}}">{{ item.name }}</router-link>
+                  </h4>
                 </div>
               </div>
             </div>
@@ -429,6 +402,7 @@ export default {
   },
 
   created() {
+    scrollTo(0 ,0)
     this.is_edit = this.$route.query.is_edit
     this.book_id = this.$route.params.id
     this.initAuthors()
@@ -439,7 +413,7 @@ export default {
       }
     } else {
       this.initBookInfo()
-      //this.getBooksFromDB()
+      this.getBooksFromDB('TODO')
       this.getReviewsFromDB()
     }
   },
@@ -464,6 +438,8 @@ export default {
       book_id: '0',
       edit: 0,
       authors: [],
+      books: [],
+      booksRM: [],
       bookInfo: {
         id: 0,
         name: '',
@@ -550,18 +526,35 @@ export default {
       var path = api + 'review'
 
       axios.post(path, {
-        "user_id": this.id, "book_id": this.bookInfo.id, "title": this.valuationTitle, "valuation": this.addvaluationNumber,
-        "comment": this.valuationText, "date": this.getTodayDate()})
+        "user_id": this.id,
+        "book_id": this.bookInfo.id,
+        "title": this.valuationTitle,
+        "valuation": this.addvaluationNumber,
+        "comment": this.valuationText,
+        "date": this.getTodayDate()
+      })
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getReviewsFromDB()
           })
           .catch((error) => {
             this.toPrint(error)
             toastr.error('', 'No se ha guardar la reseña.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     getAuthorId(name) {
@@ -588,25 +581,49 @@ export default {
             this.bookInfo.price == '' || this.bookInfo.synopsis == '' || this.bookInfo.desc == '' || this.bookInfo.num_pages == ''
             || this.bookInfo.cover_type == -1 || this.bookInfo.num_sales.toString() == '' || this.bookInfo.available == '') {
           toastr.info('', 'Por favor, rellena todos los campos.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
           return 0
         }
         if (this.bookInfo.year < 0 || this.bookInfo.price < 0 || this.bookInfo.available < 0 || this.bookInfo.num_sales < 0
             || this.bookInfo.num_pages < 0) {
           toastr.warning('', 'No se admiten valores negativos',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
           return 0
         }
         if (this.bookInfo.author == 0) {
           if (this.nAutor.name == '' || this.nAutor.birth_date == '' || this.nAutor.country == '' || this.nAutor.city == '') {
             toastr.info('', 'Por favor, rellena todos los campos.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             return 0
           }
         }
         if (!this.isValidIsbn(this.bookInfo.isbn)) {
           toastr.warning('', 'El ISBN introducido no tiene el formato correcto.',
-              {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
           return 0
         }
         this.edit = 0
@@ -641,12 +658,24 @@ export default {
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro actualizado correctamente!',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
               })
               .catch((error) => {
                 this.toPrint(error)
                 toastr.error('', 'No se ha podido guardar los cambios en el libro.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
               })
         } else {
           path = api + 'book'
@@ -675,12 +704,24 @@ export default {
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro añadido correctamente!',
-                    {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
               })
               .catch((error) => {
                 console.log(error)
                 toastr.error('', 'No se ha podido añadir el libro.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
               })
         }
       }
@@ -727,22 +768,75 @@ export default {
         }
         return (check == str[str.length - 1].toUpperCase());
       }
-    }
-    ,
+    },
     addToWishList(book) {
-      console.log(book)
-      toastr.success('', 'Añadido a tu lista de deseos.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+      if (this.logged) {
+        this.wish_list = []
+        var path = api + 'wishlist/' + this.id + '/' + book.id
+        axios.post(path)
+            .then((res) => {
+              console.log(res.data)
+              toastr.success('', 'Añadido a tu lista de deseos.',
+                  {
+                    timeOut: 2500,
+                    progressBar: true,
+                    newestOnTop: true,
+                    positionClass: 'toast-bottom-right',
+                    preventDuplicates: true
+                  })
+            })
+            .catch((error) => {
+              console.log(error)
+              if (error.response) {
+                if (error.response.status == 400) {
+                  toastr.info('', 'Este libro ya está a tu lista de deseados.',
+                      {
+                        timeOut: 2500,
+                        progressBar: true,
+                        newestOnTop: true,
+                        positionClass: 'toast-bottom-right',
+                        preventDuplicates: true
+                      })
+                }
+              } else {
+                toastr.error('', 'No se ha podido añadir el libro a deseados, intentálo de nuevo más tarde.',
+                    {
+                      timeOut: 2500,
+                      progressBar: true,
+                      newestOnTop: true,
+                      positionClass: 'toast-bottom-right',
+                      preventDuplicates: true
+                    })
+              }
+            })
+      } else {
+        toastr.info('', 'Debes estar registrado para añadir un libro a deseados.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+      }
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
       bus.emit('added-to-cart', {
         'id': book.id,
         'title': book.name,
         'price': book.price,
+        'desc': book.desc,
         'cover': book.cover_image_url,
-        'quant': 1
+        'quant': 1,
+        'quant_t': book.available
       })
     }
     ,
@@ -809,12 +903,29 @@ export default {
       axios.get(path)
           .then((res) => {
             this.books = res.data.books
+            this.recommendBooks()
           })
           .catch((error) => {
             this.toPrint(error)
           })
-    }
-    ,
+    },
+    recommendBooks() {
+      var min = 0, max = this.books.length - 1
+      var r1 = 0, r2 = 0, r3 = 0, r4 = 0
+      while(r1 == r2 || r1 == r3 || r1 == r4 ||
+          r2 == r1 || r2 == r3 || r2 == r4 ||
+          r3 == r1 || r3 == r2 || r3 == r4 ||
+          r4 == r1 || r4 == r2 || r4 == r3){
+        r1 =  Math.floor(Math.random()*(max-min+1)+min)
+        r2 =  Math.floor(Math.random()*(max-min+1)+min)
+        r3 =  Math.floor(Math.random()*(max-min+1)+min)
+        r4 =  Math.floor(Math.random()*(max-min+1)+min)
+      }
+      this.booksRM.push(this.books[r1])
+      this.booksRM.push(this.books[r2])
+      this.booksRM.push(this.books[r3])
+      this.booksRM.push(this.books[r4])
+    },
     changeImage(id_image) {
       if (id_image == 1) {
         document.getElementById('displayPic').style.display = 'block'

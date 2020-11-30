@@ -6,12 +6,11 @@ from models.author import AuthorModel
 
 class Author(Resource):
 
-    def get(self, id):
-        author = AuthorModel.find_by_id(id)
+    def get(self, idd):
+        author = AuthorModel.find_by_id(idd)
         if author:
             return {'author': author.json()}
-        else:
-            return {'message': "Author with id [{}] Not found".format(id)}, 409
+        return {'message': "Author with id [{}] Not found".format(idd)}, 409
 
     def post(self):
         # Create a new author with the data passed to us.
@@ -33,15 +32,14 @@ class Author(Resource):
         new_author.save_to_db()
         return {'message': "OK"}, 201
 
-    def delete(self, id):
-        author = AuthorModel.find_by_id(id)
+    def delete(self, idd):
+        author = AuthorModel.find_by_id(idd)
         if author:
             author.delete_from_db()
             return {'message': "OK"}, 201
-        else:
-            return {'message': "Artist with id [{}] Not found".format(id)}, 409
+        return {'message': "Artist with id [{}] Not found".format(idd)}, 409
 
-    def put(self, id):
+    def put(self, idd):
 
         # Create a new author with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -53,14 +51,13 @@ class Author(Resource):
         parser.add_argument('country', type=str, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-        author = AuthorModel.find_by_id(id)
+        author = AuthorModel.find_by_id(idd)
         if author:
             author.delete_from_db()
             new_author = AuthorModel(data.get('name'), data.get('birth_date'), data.get('city'), data.get('country'))
             new_author.save_to_db()
             return {'message': "Author modified"}, 201
-        else:
-            return {'message': "Author with id [{}] Not found".format(id)}, 409
+        return {'message': "Author with id [{}] Not found".format(idd)}, 409
 
 
 class AuthorList(Resource):

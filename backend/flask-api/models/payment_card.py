@@ -1,6 +1,6 @@
 from db import db
 
-METHOD = ('VISA', 'MASTERCARD', 'AMERICAN EXPRESS', 'JCB', 'DISCOVER')
+METHOD = ('Visa', 'Mastercard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners')
 
 class CardModel(db.Model):
     __table_name__ = 'payment_card'
@@ -41,5 +41,5 @@ class CardModel(db.Model):
 
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
+    def find_by_id(self, idd):
+        return self.query.filter_by(id=idd).first()

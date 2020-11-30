@@ -39,8 +39,8 @@ class ContactModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+    def find_by_id(cls, idd):
+        return cls.query.filter_by(id=idd).first()
 
     @classmethod
     def find_by_email(cls, email):

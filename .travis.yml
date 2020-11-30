@@ -1,35 +1,99 @@
 language: node_js
-sudo: required
 node_js:
-    - node
+- node
+language: python
+python:
+  - 3.8.6
 cache: npm
 install:
-    - npm install newman
-script:
+- npm install newman
+- pip install pytest
+- pip install pytest-cov
+- pip install coveralls
+stages:
+- name: build_deploy
+  if: "(branch = dev)"
+- name: release
+  if: "(branch = main)"
+- name: code_analysis
+  if: "(branch = ca)"
+- name: build
+  if: "(branch != dev AND branch != main AND branch != ca)"
+jobs:
+  include:
+  - stage: build_deploy
+    name: Dev deployment
+    script:
     - cd frontend/booken
     - npm install
     - npm run build
-before_deploy:
+    before_deploy:
     - cd ../../backend/flask-api
-deploy:
-  skip_cleanup: true
-  provider: heroku
-  api_key:
-    secure: Tbtne+5uUQ+oCA8D5LXqZA0+BRbFRfJ2P29urU+Vl1dFAK6jfB1md6xmaI3GsiByu3jgt8wmZ04xKlkqlhsHO9OjzD5OomJFqc3rTeAyX9zgT3ed2Jufp/19/HoN614n8SFFA0uWF9tDwjfiARWyHlflOaXFHGJDlgQJ/jLEVwIZ4OZKmxAownD8f0YsyLXBc2TJimJEed0xNVWkU5CnNsrs/oYZdfzgadkoVP31X1CqthaZ/cxZouG0/nIDYe/jlj1kzY9X1rSPakPl1UTpMMqs4gTDPlo5PGAwdiMEcw0j9FZFF3c3QUVcg4M0AkvjeYhR5HRnDHf7rtoXHG3D07m3GgLKOx6VQdSporGH3Acz7j54JiP5y4kYDaj3geLgJIVA/Eh6Dv8PXCwnd9J30ZExVSpc8Vhoc+FeVvwQ2cqFLKZNz7punCTB8BDM8No9jcNlGNxtRXkS4kB8dHu2xmZ+7XYV8pHohI+cZYxT5II7Z6WOrcgIzES0xgj4oBP1wl3HPJ8lQcPYSdJa7N1+b8sm+Kg4M7BTBRzBvOlwvpAQhftGHaKRWJfp8fOvAmbnkEL70I/0Hldr57tBq/yBKcHjQBlifDRmhj5sAjk494HCrsQdGojj6345VUzckZoSRU4DqqbR/h9dm9K8MDojvyju1ThrtoHPXgbZFf0l8N0=
-  app: booken-app
-  on:
-    repo: UB-ES-2020/Booken
-    branch: main
+    on:
+      repo: UB-ES-2020-A/Booken
+    branches:
+      only:
+      - dev
+    deploy:
+      provider: heroku
+      skip_cleanup: true
+      api_key:
+        secure: n9vGyY20ikM3PaFtQTbWyX3zEf95c3awg/kC4aV+evfDQOGo6qJLZXilkXGFRJkSBTdzKc0bh45i/LL2ImccevsxRgl01Uw0k+dO1uXlJc8ZbwRbluEt7Mxo+87fcouUT1xLmGljbIjtvmrPbpDCYjmlU5kiOKf1hJbC09QM6mMeqALg1Nq2aQ59CzuRGh4IfgfSdxh76v+HiVFyufu3yX5ZNgFj/G+zrbNl99k3woS7RkfGrggpEVZz23VMDBC4LJZDvyrjAz3ViXQuxbtjfRIvTj7FIRzsODCyTB5LcUiVLXL4cFKgP82QVmrPcP8dKrcJ/T5aAVBnlCX1EXsulIvsvs7hUNek5022yjNODIipK1EbOVrw0dVSUZT7V01gPoH0qc0Tkmxnx81NycZGPV7k9HyCzs0bEtVYqQIhH/gjyXOpRaaBZNXmUjxEKWn9j+jB7Og6htiI9x5tu0SgrGOB/ALWPSHs/T4IVM79dhb4KDTQoVmpln5zctzVtQ6x4MtTyeYCvUE6FsiYI3CHm3wSLko8DZTj9FNhgfNjMKmAWTHRVwA9zdeCYY8CZXkxbUxrw61dRYCIakxtNMr36Vzn3sbopuhTlzBKZHUVasgcFSGDZeWBJBbxyUpE04/k4VP4sjY9QO0ie8JLmrMGDc4Ta4gzNWhtv9O6bIeQ3qs=
+      app:
+        dev: booken-dev
+      after_deploy:
+      - cd ../..
+      - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Reviews.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Address.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Card.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Orders.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Articles.postman_collection.json
+  - stage: release
+    name: Production deployment
+    script:
+    - cd frontend/booken
+    - npm install
+    - npm run build
+    before_deploy:
+    - cd ../../backend/flask-api
+    on:
+      repo: UB-ES-2020-A/Booken
+    branches:
+      only:
+      - main
+    deploy:
+      provider: heroku
+      skip_cleanup: true
+      api_key:
+        secure: n9vGyY20ikM3PaFtQTbWyX3zEf95c3awg/kC4aV+evfDQOGo6qJLZXilkXGFRJkSBTdzKc0bh45i/LL2ImccevsxRgl01Uw0k+dO1uXlJc8ZbwRbluEt7Mxo+87fcouUT1xLmGljbIjtvmrPbpDCYjmlU5kiOKf1hJbC09QM6mMeqALg1Nq2aQ59CzuRGh4IfgfSdxh76v+HiVFyufu3yX5ZNgFj/G+zrbNl99k3woS7RkfGrggpEVZz23VMDBC4LJZDvyrjAz3ViXQuxbtjfRIvTj7FIRzsODCyTB5LcUiVLXL4cFKgP82QVmrPcP8dKrcJ/T5aAVBnlCX1EXsulIvsvs7hUNek5022yjNODIipK1EbOVrw0dVSUZT7V01gPoH0qc0Tkmxnx81NycZGPV7k9HyCzs0bEtVYqQIhH/gjyXOpRaaBZNXmUjxEKWn9j+jB7Og6htiI9x5tu0SgrGOB/ALWPSHs/T4IVM79dhb4KDTQoVmpln5zctzVtQ6x4MtTyeYCvUE6FsiYI3CHm3wSLko8DZTj9FNhgfNjMKmAWTHRVwA9zdeCYY8CZXkxbUxrw61dRYCIakxtNMr36Vzn3sbopuhTlzBKZHUVasgcFSGDZeWBJBbxyUpE04/k4VP4sjY9QO0ie8JLmrMGDc4Ta4gzNWhtv9O6bIeQ3qs=
+      app:
+        dev: booken-app
+      after_deploy:
+      - cd ../..
+      - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Reviews.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Address.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Card.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Orders.postman_collection.json
+      - node_modules/.bin/newman run backend/tests/TEST----Articles.postman_collection.json
+  - stage: code_analysis
+    name: Code Analysis SCA/DCA/CC
+    script:
+    - pip install -r backend/flask-api/requirements.txt
+    - pytest --cov=. backend/flask-api/tests/
+    after_success:
+    - coveralls #DCA
+  - stage: build
+    name: Project build
+    script:
+    - cd frontend/booken
+    - npm install
+    - npm run lint #SCA
 notifications:
   slack:
-    secure: PmiwCTDDv9GxdBKDQWIJuB/jmOxEvU7aW0NhOBuCAJ2G77pxt7zTCu9kJS2TtziiUEPwTCe7HmkiTB0xvykoTipaN4UOpN6INMgDwl4jd4bbCB8IabJsY8RVCmXbpbdotJclkS5Ul/XLQN+G7RzsFbLiniZ3d1X+V82JoAajT9CCuk1FlfVDhuh3EURbcqD7HqO26hhoKSQepqDSlAAqLKY63ScIQHguEC1CovBuWd6W0OiE5UnTxm7aA3WR+fId0q+OZ5oAbJahwRVNC37OFYwSjGkBscB/FK9MrtRPl5N2jW8tEzg8lmbROchZawH04o4j5nxsjpeNunOIJD9ZOp65PHyot0qZTDPEsTID86s9f90YYqqYtBPXILtGqLPK2Yjdb2xkIJ8xjmZ85PG3OznqzgojGhauK7VVzdmoiyoPHoGtwIZj1dlUOYYUJ1SLJPvF2Mqu9W5SGSh9jqMq61NgSsgeNi22LVH/Sf4cmt8cyuQvruRElu9K/JZrfmiApSPg/ypsTvy+UBdCqiFhhzZnKEMxngph25zlcAD4uRGnGEvbIJpsZdI5IcYfBNCm5MbuVjRjfC2PjuAufYVz0lUaObBp27SCILkB3tDyk3kjs0UCtIfj3BWE55Nme6qXl/z6zSO7c5l48xWkuxuRRwnsHmkk2DUAs9aLPwwK4QI=
-after_deploy:
-    - cd ../..
-    - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Author.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Book.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Reviews.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Address.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Card.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Orders.postman_collection.json
-    - node_modules/.bin/newman run backend/tests/TEST----Articles.postman_collection.json
+    secure: aTbGa5ESd04A0MrqCeM+Vc/yzBDjoArQMDWHqsBshhrCh72TP9rUdsoikB7bPW21dggUnmlmmKZeoXD9UYUP0IyY/9i7hTtxh4ijlt9jgdtLmFblZLYWhkndcmMlIfwFknXz2N3rfeRYsem3c74P+9CtcgN4p+DgDF13Ji+g0rKXC+rn/6eB4oGwLwUi+hpB5UgcfTUgsq1HVYK+SX5o4oKZOUbwUcfHFU3BPA8umqXeH0t756z4cObrhFjS+6+fbcN7Awx8ChqSvGV+1morIzVe7jIjwmVurdqitAq9ZWI3E1jLS/qLyfi/vq+D5pY25eMvC3xX2lK09arKz0atBe6GYDuDiZMmMmzApBDSy6BhQuZeeXINrQy0O2aNUmc6TiZ13zT1Pk8d5N0sH6wC06I+pEfCsZUzHBkbQdGK4b3bnMCbnFnCaMPOzQ741ioswxip5ux7b3ts/KQRE4jOiQeOb5qtYJk1qhbXAyaqJT0SfLKdH/nVHhJ6+7OPJX0cRn1GSsRE8RAuNqgzstkSZ8y02jSalZT7gPDNet89K/6VPTseMCiBt2JETQ6bEQB/9cFYfUa3oqUnl+d0iGv4gfDFB4Tsr5wW6HVPt8LY5X/KOi+uyvSI4G9fGlfU4LwQOutp62WsITUrQLUJDbLtIVJ8oFNAuDJmSxUDLuIcEBo=

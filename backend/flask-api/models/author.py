@@ -36,9 +36,9 @@ class AuthorModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(cls, id):
+    def find_by_id(cls, idd):
         try:
-            return AuthorModel.query.filter_by(id=id).first()
+            return AuthorModel.query.filter_by(id=idd).first()
         except:
             return None
 

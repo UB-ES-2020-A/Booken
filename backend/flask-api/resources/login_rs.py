@@ -21,7 +21,5 @@ class Login(Resource):
             if account.verify_password(data["password"]):
                 token = account.generate_auth_token()
                 return {'token': token.decode('ascii'), 'type': account.type, 'id': account.id}, 200
-            else:
-                return {'message': "Password is invalid"}, 400
-        else:
-            return {'message': "Account with email [{}] Not found".format(data["email"])}, 404
+            return {'message': "Password is invalid"}, 400
+        return {'message': "Account with email [{}] Not found".format(data["email"])}, 404

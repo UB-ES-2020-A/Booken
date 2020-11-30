@@ -6,6 +6,8 @@ from flask_httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
 
+from models.wishlist import WishlistModel
+
 auth = HTTPBasicAuth()
 
 
@@ -30,6 +32,10 @@ class AccountModel(db.Model):
 
     reviews = db.relationship('ReviewModel', backref='reviews_acc', lazy=True)
 
+    orders = db.relationship('OrdersModel', backref='orders', lazy=True)
+
+    wishlist = db.relationship('WishlistModel', backref='wishlist', lazy=True)
+
 
     def __init__(self, email, name, lastname, password):
         self.email = email
@@ -38,6 +44,7 @@ class AccountModel(db.Model):
         self.hash_password(password)
         self.type = 0
         self.available_money = 0
+        self.wishlist.append(WishlistModel(self.id))
 
     def json(self):
         body = {
@@ -77,8 +84,14 @@ class AccountModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_id(self, id):
-        return self.query.filter_by(id=id).first()
+    def get_users(cls):
+        list_users = [user.json() for user in AccountModel.query.all()]
+        dicc = {"users": list_users}
+        return dicc
+
+    @classmethod
+    def find_by_id(self, idd):
+        return self.query.filter_by(id=idd).first()
 
     @classmethod
     def find_by_email(self, email):
@@ -112,14 +125,12 @@ class AccountModel(db.Model):
         index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
         if index:
             return self.addresses[index[0]]
-        else:
-            return None
+        return None
 
 @auth.verify_password
-def verify_password(id, token):
-    id = int(id)
+def verify_account(idd, token):
     user = AccountModel.verify_auth_token(token)
-    if (user and user.id == id):
+    if user and user.id == int(idd):
         g.user = user
         return user
 
