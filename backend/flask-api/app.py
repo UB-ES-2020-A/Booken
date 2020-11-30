@@ -1,3 +1,4 @@
+# file deepcode ignore C0413: <comment the reason here>
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.append('././')
