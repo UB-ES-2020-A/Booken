@@ -1,10 +1,15 @@
 language: node_js
 node_js:
 - node
+language: python
+python:
+  - 3.8.6
 cache: npm
 install:
 - npm install newman
 - pip install pytest
+- pip install pytest-cov
+- pip install coveralls
 stages:
 - name: build_deploy
   if: "(branch = dev)"
@@ -79,8 +84,8 @@ jobs:
   - stage: code_analysis
     name: Code Analysis SCA/DCA/CC
     script:
-    - cd ../../backend/flask-api/tests
-    - pytest --cov=.
+    - pip install -r backend/flask-api/requirements.txt
+    - pytest --cov=. backend/flask-api/tests/
     after_success:
     - coveralls #DCA
   - stage: build
