@@ -1,3 +1,6 @@
+import sys
+# insert at 1, 0 is the script path (or '' in REPL)
+sys.path.insert(1, './')
 from flask import render_template
 from flask_migrate import Migrate
 from flask_restful import Api
@@ -32,7 +35,7 @@ def setupApp(test=False):
     app = create_app(test)
     app.app_context().push()
     api = Api(app)
-    
+
     migrate = Migrate(app, db)
 
     # EndPoints configuration
