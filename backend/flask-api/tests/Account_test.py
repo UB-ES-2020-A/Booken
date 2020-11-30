@@ -2,8 +2,10 @@
 # file deepcode ignore C0413: n/a
 import unittest
 import sys
+import os
 import json
-sys.path.append('./../')
+parent_path = os.path.dirname(os.path.abspath(file))[:-6]
+sys.path.insert(1, parent_path)
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 from db import db
