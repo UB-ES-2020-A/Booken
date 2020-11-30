@@ -1,6 +1,6 @@
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
-sys.path.insert(1, './')
+sys.path.append('././')
 from flask import render_template
 from flask_migrate import Migrate
 from flask_restful import Api
