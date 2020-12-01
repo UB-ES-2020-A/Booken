@@ -30,10 +30,7 @@ class FAQModel(db.Model):
 
     @classmethod
     def find_by_id(cls, idd):
-        try:
-            return FAQModel.query.filter_by(id=idd).first()
-        except:
-            return None
+        return FAQModel.query.filter_by(id=idd).first()
 
     @classmethod
     def num_faq(cls):
