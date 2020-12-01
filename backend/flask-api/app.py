@@ -17,6 +17,7 @@ from resources.payment_card_rs import Card, CardList
 from resources.review import ReviewList, ReviewListBook, ReviewListUser, Review
 from resources.wishlist import Wishlist
 from resources.data_retriever_rs import Retriever
+from resources.faq import FAQ,FAQList
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -93,6 +94,10 @@ def setupApp(test=False):
     api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
 
     api.add_resource(Retriever,'/data_retriever/<string:needed_data>')
+
+    api.add_resource(FAQ, '/faq/<int:idd>', '/faq')
+    api.add_resource(FAQList, '/faqs')
+
     return app
 
 app = setupApp()
