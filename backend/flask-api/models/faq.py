@@ -1,7 +1,5 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from db import db
-from flask import g, current_app
+
 
 
 class FAQModel(db.Model):
