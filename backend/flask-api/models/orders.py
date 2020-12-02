@@ -1,4 +1,5 @@
 from db import db
+from models.address import AddressModel
 from models.book import BookModel
 
 from models.payment_card import CardModel
@@ -27,8 +28,9 @@ class OrdersModel(db.Model):
 
     # Card de pagament
     card_id = db.Column(db.Integer, primary_key=False, nullable=False)
+    address_id = db.Column(db.Integer, primary_key=False, nullable=False)
 
-    def __init__(self, id_user, date, total, shipping, taxes, state, send_type,card_id):
+    def __init__(self, id_user, date, total, shipping, taxes, state, send_type, card_id, address_id):
         self.id_user = id_user
         self.date = date
         self.total = total
@@ -36,11 +38,13 @@ class OrdersModel(db.Model):
         self.taxes = taxes
         self.state = state
         self.send_type = send_type
-        self.card_id  = card_id
+        self.card_id = card_id
+        self.address_id = address_id
 
     def json(self):
         articles_json = [article.json() for article in self.articles]
-        address_json = [address.json() for address in self.address]
+        card = CardModel.find_by_id(self.card_id)
+        address = AddressModel.find_by_id(self.address_id)
         return {
             "id": self.id,
             "id_user": self.id_user,
@@ -50,8 +54,8 @@ class OrdersModel(db.Model):
             "taxes": self.taxes,
             "state": self.state,
             "send_type": self.send_type,
-            "card_id":self.card_id,
-            "address": address_json,
+            "card": card.json(),
+            "address": address.json_with_id(),
             "articles": articles_json,
         }
 
