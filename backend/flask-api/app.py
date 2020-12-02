@@ -18,6 +18,7 @@ from resources.review import ReviewList, ReviewListBook, ReviewListUser, Review
 from resources.wishlist import Wishlist
 from resources.data_retriever_rs import Retriever
 from resources.faq import FAQ,FAQList
+from resources.category_faq import Category_FAQ,Category_FAQ_list
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -31,6 +32,7 @@ from models.address import AddressModel
 from models.payment_card import CardModel
 from models.review import ReviewModel
 from models.wishlist import WishlistModel
+from models.faq import FAQModel
 
 def setupApp(test=False):
     #  deepcode ignore W0621: n/a
@@ -97,6 +99,9 @@ def setupApp(test=False):
 
     api.add_resource(FAQ, '/faq/<int:idd>', '/faq')
     api.add_resource(FAQList, '/faqs')
+
+    api.add_resource(Category_FAQ, '/category/<int:idd>', '/category')
+    api.add_resource(Category_FAQ_list, '/categories')
 
     return app
 
