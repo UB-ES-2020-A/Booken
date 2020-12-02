@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <wrapper class="d-flex flex-column">
+  <div class="wrapper d-flex flex-column">
     <!-- First navbar-->
     <div style="background: #2bc4ed;">
 
@@ -24,7 +24,8 @@
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
                    placeholder="Busca por autor, título, ISBN"
                    aria-label="Search">
-            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit" @click="goToSearch"><i
+            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit"
+                    @click="goToSearch"><i
                 class="fas fa-search"
                 style="color: #FFF"/>
             </button>
@@ -74,9 +75,9 @@
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
                         data-target="#mynavbar, #mynavbar2"
-                        style="background-color: #3b494d;" type="submit">
-                  <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt" @click="getHelp">Ayuda</a>
+                        style="background-color: #3b494d;" type="submit" @click="goToFAQ">
+                  <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
+                  <a class="navbartextbt">Ayuda</a>
                 </button>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
@@ -170,7 +171,9 @@
                 <div class="_grid">
                   <button class="_btn _column product-subtract" @click="decreaseQuant(item.id)">&minus;</button>
                   <div class="_column product-qty">{{ item.quant }}</div>
-                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)" :disabled="item.quant>=item.quant_t">&plus;</button>
+                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)"
+                          :disabled="item.quant>=item.quant_t">&plus;
+                  </button>
                 </div>
                 <button class="_btn entypo-trash product-remove" @click="removeBook(item.id)">Quitar</button>
                 <div class="price product-total-price">{{ this.round2Dec(item.quant * item.price) }}€</div>
@@ -307,7 +310,9 @@
               <li @click="hideCart">
                 <router-link to="/contact">Contacto</router-link>
               </li>
-              <li @click="hideCart"><a href="">Preguntas frecuentes</a></li>
+              <li @click="hideCart">
+                <router-link to="/faq">Preguntas frecuentes</router-link>
+              </li>
 
             </ul>
           </div>
@@ -333,7 +338,7 @@
         </div>
       </div>
     </footer>
-  </wrapper>
+  </div>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
@@ -461,7 +466,13 @@ export default {
       b.quant += 1
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, preventDuplicates: true, positionClass: 'toast-bottom-right'})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            preventDuplicates: true,
+            positionClass: 'toast-bottom-right'
+          })
     },
     getSubTotal() {
       this.subtotal = 0
@@ -494,18 +505,25 @@ export default {
       }
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-    },
-    getHelp() {
-      if (this.viewCart)
-        this.viewCart = false
-      //this.$router.push({path: '/cp'})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
     },
     hideCart() {
       if (this.viewCart)
@@ -522,7 +540,6 @@ export default {
         this.$router.push({path: '/cfm'})
       else
         this.$router.push({path: '/access'})
-
     },
     searchInCart(id) {
       var i, item
@@ -548,6 +565,11 @@ export default {
     getYear() {
       return new Date().getFullYear()
     },
+    goToFAQ() {
+      if (this.viewCart)
+        this.viewCart = false
+      this.$router.push({path: '/faq'})
+    },
     goToAccess() {
       if (this.viewCart)
         this.viewCart = false
@@ -561,7 +583,7 @@ export default {
     goToSearch() {
       if (this.viewCart)
         this.viewCart = false
-      this.$router.push({ path: '/search', query: { name: this.information } })
+      this.$router.push({path: '/search', query: {name: this.information}})
     },
     getTodayDate() {
       var today = new Date()
@@ -574,7 +596,13 @@ export default {
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
       console.log(book)
       bus.emit('added-to-cart', {
         'id': book.id,
@@ -603,14 +631,26 @@ export default {
           .then((res) => {
             console.log(res)
             toastr.success('', 'Lista de deseados actualizada correctamente.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
 
             this.getWishList();
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
 
             this.getWishList();
           })
@@ -723,7 +763,7 @@ export default {
   }
 }
 
-body, wrapper {
+body, .wrapper {
   min-height: 100vh;
 }
 
