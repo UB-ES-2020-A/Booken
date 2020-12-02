@@ -3,6 +3,7 @@ from models.address import AddressModel
 from models.book import BookModel
 
 from models.payment_card import CardModel
+# file deepcode ignore W0621: f*** you deepcode
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
                     db.Column('order_id', db.Integer, db.ForeignKey('orders.id')))
 
