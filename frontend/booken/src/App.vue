@@ -17,8 +17,8 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ">
           <!-- Brand -->
-          <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
-              class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></a>
+          <router-link class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" to="/">booken<span
+              class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></router-link>
 
           <div class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
