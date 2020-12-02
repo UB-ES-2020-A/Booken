@@ -213,8 +213,7 @@
           </div>
         </div>
       </div>
-      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem"
-           v-if="book_found && book_id != 0">
+      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem" v-if="book_found && book_id != 0">
         <div class="card-body">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
