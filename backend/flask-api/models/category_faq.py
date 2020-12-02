@@ -31,11 +31,7 @@ class CategoryModel(db.Model):
 
     @classmethod
     def type_exist(cls, type_category):
-        cat = CategoryModel.query.filter_by(type=type_category).first()
-        if cat:
-            return True
-        else:
-            return False
+        return bool(CategoryModel.query.filter_by(type=type_category).first())
 
     @classmethod
     def find_by_type(cls, type_category):
