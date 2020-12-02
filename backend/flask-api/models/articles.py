@@ -2,27 +2,32 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from db import db
+from models.book import BookModel
 
 
 class ArticlesModel(db.Model):
     __tablename__ = 'articles'  # This is table name
 
     id = db.Column(db.Integer, unique=False, primary_key=True)
+    book_id = db.Column(db.Integer, unique=False)
     price = db.Column(db.Float, unique=False, nullable=False)
     categoria = db.Column(db.String, unique=False, nullable=False)
     quant = db.Column(db.Integer, unique=False, nullable=False)
 
-    def __init__(self, price,categoria,quant):
+    def __init__(self, price, categoria, quant, book_id):
         self.price = price
         self.categoria = categoria
         self.quant = quant
+        self.book_id = book_id
 
     def json(self):
+        book = BookModel.find_by_id(self.book_id)
         return {
             "id": self.id,
             "price": self.price,
             "categoria": self.categoria,
-            "quant": self.quant
+            "quant": self.quant,
+            "book_title": book.name
         }
 
     def save_to_db(self):

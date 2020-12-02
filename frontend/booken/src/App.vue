@@ -568,7 +568,7 @@ export default {
     goToFAQ() {
       if (this.viewCart)
         this.viewCart = false
-      this.$router.push({path: '/faq'})
+      //this.$router.push({path: '/faq'})
     },
     goToAccess() {
       if (this.viewCart)

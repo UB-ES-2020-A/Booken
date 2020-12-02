@@ -1,9 +1,9 @@
 <style>
-
 @import url("../assets/toastr.css");
 @import url("../assets/animate.min.css");
 @import url("../assets/book_info.css");
-
+</style>
+<style lang="scss" src="../assets/ticket.scss" scoped>
 </style>
 <template>
   <div class="container front-container">
@@ -179,7 +179,137 @@
                       <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
                     </td>
                     <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      <button class="btn btn-light" @click="viewOrder(item)" data-toggle="modal"
+                              data-target="#view-ticket-c">Ver pedido
+                      </button>
+                      <div class="modal fade" id="view-ticket-c" tabindex="-1" role="dialog"
+                           aria-labelledby="modalAddressLabel"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document"
+                             style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-ticket" id="ticket-pdf">
+                                <div class="ticket">
+                                  <div class="head-ticket">
+                                    <p class="x-bold">booken & co</p>
+                                    <p class="bold">08032 BARCELONA</p>
+                                    <p class="bold">Tfno: 932 98 65 00</p>
+                                    <p>{{ order.date }}</p>
+                                    <p>Pedido {{ getYear() + "-" + order.id.toString() }} QRL 02154</p>
+                                    <div class="code-barre">
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                    </div>
+                                  </div>
+                                  <div class="body-ticket">
+                                    <div class="produits">
+                                      <div class="col2" v-for="art in this.order.articles" :key="art.id">
+                                        <p>{{ art.quant }} x {{ art.book_title }}</p>
+                                        <p class="prix">{{ art.price }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.send_type == 1">1 x Envío Estándard</p>
+                                        <p v-if="order.send_type == 2">1 x Envío Estándard Plus</p>
+                                        <p v-if="order.send_type == 3">1 x Envío Ultra Express</p>
+                                        <p class="prix">{{ order.shipping }}€</p>
+                                      </div>
+                                      <div class="hr-sm"></div>
+                                      <div class="col2">
+                                        <p>IVA (21%)</p>
+                                        <p class="prix">{{ order.taxes }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.articles.length == 1">Total 1 artículo</p>
+                                        <p v-else>Total {{ order.articles.length }} artículos</p>
+                                        <p class="prix">{{ order.total }}€</p>
+                                      </div>
+                                      <p>En pesetas : {{ round2Dec(order.total * 166.386) }} ptas</p>
+                                      <p>(1 euro = 166.386 pesetas)</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Dirección de envío</p>
+                                      <p class="lel">{{ order.add_name + " " + order.add_lname }}</p>
+                                      <p class="lel">{{ order.street + ", " + order.add_number }}</p>
+                                      <p class="lel">{{ order.add_cp + " " + order.add_prov }}</p>
+                                      <p class="lel">Tfno: {{ order.telf }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Método de pago</p>
+                                      <p class="lel">{{ order.card_vendor }} **** **** **** {{ order.card_num }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                  </div>
+                                  <div class="footer-ticket">
+                                    <p class="title-footer">¡Gracias por comprar en booken!</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" @click="printReceipt">
+                                Imprimir
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   </tbody>
@@ -251,7 +381,137 @@
                       <button class="btn btn-danger" @click="cancelOrderList(item.id)">Cancelar</button>
                     </td>
                     <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      <button class="btn btn-light" @click="viewOrder(item)" data-toggle="modal"
+                              data-target="#view-ticket-a">Ver pedido
+                      </button>
+                      <div class="modal fade" id="view-ticket-a" tabindex="-1" role="dialog"
+                           aria-labelledby="modalAddressLabel"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document"
+                             style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-ticket" id="ticket-pdf">
+                                <div class="ticket">
+                                  <div class="head-ticket">
+                                    <p class="x-bold">booken & co</p>
+                                    <p class="bold">08032 BARCELONA</p>
+                                    <p class="bold">Tfno: 932 98 65 00</p>
+                                    <p>{{ order.date }}</p>
+                                    <p>Pedido {{ getYear() + "-" + order.id.toString() }} QRL 02154</p>
+                                    <div class="code-barre">
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                    </div>
+                                  </div>
+                                  <div class="body-ticket">
+                                    <div class="produits">
+                                      <div class="col2" v-for="art in this.order.articles" :key="art.id">
+                                        <p class="xd">{{ art.quant }} x {{ art.book_title }}</p>
+                                        <p class="prix">{{ art.price }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.send_type == 1">1 x Envío Estándard</p>
+                                        <p v-if="order.send_type == 2">1 x Envío Estándard Plus</p>
+                                        <p v-if="order.send_type == 3">1 x Envío Ultra Express</p>
+                                        <p class="prix">{{ order.shipping }}€</p>
+                                      </div>
+                                      <div class="hr-sm"></div>
+                                      <div class="col2">
+                                        <p>IVA (21%)</p>
+                                        <p class="prix">{{ order.taxes }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.articles.length == 1">Total 1 artículo</p>
+                                        <p v-else>Total {{ order.articles.length }} artículos</p>
+                                        <p class="prix">{{ order.total }}€</p>
+                                      </div>
+                                      <p>En pesetas : {{ round2Dec(order.total * 166.386) }} ptas</p>
+                                      <p>(1 euro = 166.386 pesetas)</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Dirección de envío</p>
+                                      <p class="lel">{{ order.add_name + " " + order.add_lname }}</p>
+                                      <p class="lel">{{ order.street + ", " + order.add_number }}</p>
+                                      <p class="lel">{{ order.add_cp + " " + order.add_prov }}</p>
+                                      <p class="lel">Tfno: {{ order.telf }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Método de pago</p>
+                                      <p class="lel">{{ order.card_vendor }} **** **** **** {{ order.card_num }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                  </div>
+                                  <div class="footer-ticket">
+                                    <p class="title-footer">¡Gracias por comprar en booken!</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" @click="printReceipt">
+                                Imprimir
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   </tbody>
@@ -519,7 +779,7 @@
                 <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-for="item in this.cards" :key="item.id">
                   <div class="card" style=" text-align: left">
                     <div class="card-header">
-                      <span v-if="item.vendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                      <span v-if="item.vendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                                                               style="font-size: 1.8em"></i></span>
@@ -577,7 +837,7 @@
                                 <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/aaaa">
                               </div>
                               <div class="form-group" style="text-align: center; font-size: 3em">
-                                <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                                <span v-if="ccvendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                          style="font-size: 1.8em"></i></span>
                                 <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                                                                   style="font-size: 1.8em"></i></span>
@@ -771,6 +1031,7 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
+import {jsPDF} from "jspdf"
 import {bus, api} from '../main.js'
 import axios from 'axios'
 import * as toastr from "@/assets/toastr";
@@ -839,7 +1100,25 @@ export default {
         "date": '',
         "payment_method": ''
       },
-
+      order: {
+        id: -1,
+        date: "",
+        total: -1,
+        shipping: -1,
+        send_type: -1,
+        card_vendor: "",
+        card_num: "",
+        add_name: "",
+        add_lname: "",
+        add_number: -1,
+        add_cp: "",
+        add_city: "",
+        add_prov: "",
+        street: "",
+        telf: -1,
+        articles: {},
+        taxes: -1
+      },
       address_edit: -1,
       ccvendor: '',
       newAddressLabel: '',
@@ -897,6 +1176,12 @@ export default {
     this.getData()
   },
   methods: {
+    round2Dec(trnd) {
+      return Math.round(trnd * 100) / 100
+    },
+    printReceipt() {
+      print()
+    },
     getCardType(number) {
       // visa
       var re = new RegExp("^4");
@@ -906,7 +1191,7 @@ export default {
       // Mastercard
       re = new RegExp("^5[1-5]");
       if (number.match(re) != null)
-        return "Mastercard";
+        return "MasterCard";
 
       // AMEX
       re = new RegExp("^3[47]");
@@ -1310,8 +1595,25 @@ export default {
                 })
           })
     },
-    viewOrder(id) {
-      console.log(id)
+    viewOrder(i) {
+      console.log(i)
+      this.order.id = i.id
+      this.order.date = i.date
+      this.order.total = i.total
+      this.order.taxes = i.taxes
+      this.order.shipping = i.shipping
+      this.order.send_type = i.send_type
+      this.order.card_num = i.card.number
+      this.order.card_vendor = i.card.method
+      this.order.add_name = i.address.name
+      this.order.add_lname = i.address.surnames
+      this.order.street = i.address.street
+      this.order.add_number = i.address.number
+      this.order.add_cp = i.address.cp
+      this.order.add_city = i.address.city
+      this.order.add_prov = i.address.province
+      this.order.telf = i.address.telf
+      this.order.articles = i.articles
     },
     modifyProfile() {
       this.editProfile = true
@@ -1475,6 +1777,9 @@ export default {
       if (elem != null) elem.style.width = score + '%';
 
       return score
+    },
+    getYear() {
+      return new Date().getFullYear()
     },
     checkNewPasswordStrength() {
       const score = this.scoreNewPassword();
