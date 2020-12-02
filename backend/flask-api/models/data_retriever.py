@@ -88,7 +88,7 @@ class DataRetriever:
                 gain_month[year][month] += round(order['total'], 2)
             except KeyError:
                 gain_month[year][month] += round(order['total'], 2)
-
+            gain_month[year][month] = round(gain_month[year][month], 2)
         return gain_month
 
     def _sales_year(self):
@@ -143,7 +143,7 @@ class DataRetriever:
                 gain_year[year] += round(order['total'], 2)
             except KeyError:
                 gain_year[year] = round(order['total'], 2)
-
+            gain_year[year] = round(gain_year[year], 2)
         return gain_year
 
     def _gain_genre(self):
@@ -162,5 +162,5 @@ class DataRetriever:
                     gain_genre[year][genre] += round(float(article['price']), 2)
                 except KeyError:
                     gain_genre[year][genre] = round(float(article['price']), 2)
-
+            gain_genre[year][genre] = round(gain_genre[year][genre], 2)
         return gain_genre
