@@ -7,8 +7,8 @@ class CategoryModel(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     type = db.Column(db.String(30), unique=False, nullable=False)
 
-    def __init__(self, type):
-        self.type = type
+    def __init__(self, type_category):
+        self.type = type_category
 
 
     def json(self):
