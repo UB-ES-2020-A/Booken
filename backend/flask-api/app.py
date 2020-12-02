@@ -1,4 +1,5 @@
 # file deepcode ignore C0413: <comment the reason here>
+# file deepcode ignore W0611: stupid deepcode
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.append('././')
