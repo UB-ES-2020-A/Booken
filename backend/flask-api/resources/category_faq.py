@@ -19,7 +19,7 @@ class Category_FAQ(Resource):
         data = parser.parse_args()
 
         # The ID is the following to the last one
-        if(CategoryModel.type_exist(data.get('type'))):
+        if CategoryModel.type_exist(data.get('type')):
             return {'message': "Category with type [{}] exists  ".format(data.get('type'))}, 409
         else:
             new_cat = CategoryModel(data.get('type'))
