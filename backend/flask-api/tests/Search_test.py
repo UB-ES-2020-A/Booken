@@ -1,5 +1,4 @@
 #  deepcode ignore C0411: not an issue
-import json
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
