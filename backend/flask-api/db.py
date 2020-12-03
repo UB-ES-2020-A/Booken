@@ -21,6 +21,16 @@ def create_app(test=False):
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    # Email configuration
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+    app.config['MAIL_USERNAME'] = "booken.eshop@gmail.com"
+    app.config['MAIL_PASSWORD'] = "asdxd123@"
+    app.config['MAIL_DEFAULT_SENDER'] = ["","booken.eshop@gmail.com"] # 0: Nombre de encabezado / 1: Correo electronico
+
     app.config.from_object(__name__)
     # Cross-origin request config
     CORS(app, resources={r'/*': {'origins': '*'}})
