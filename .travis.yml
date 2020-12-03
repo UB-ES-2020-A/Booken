@@ -23,7 +23,7 @@ jobs:
     script:
     - cd frontend/booken
     - npm install
-    - npm run build --mode staging
+    - npm run staging
     before_deploy:
     - cd ../../backend/flask-api
     on:
