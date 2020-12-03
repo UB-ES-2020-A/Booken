@@ -351,6 +351,7 @@ import Contact from "@/components/Contact";
 import ControlPanel from "@/components/ControlPanel";
 import ShowBooks from "@/components/ShowBooks";
 import Search from "./components/Search";
+import FAQ from "@/components/FAQ";
 
 export default {
   name: 'App',
@@ -368,7 +369,9 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     ShowBooks,
     // eslint-disable-next-line vue/no-unused-components
-    Search
+    Search,
+    // eslint-disable-next-line vue/no-unused-components
+    FAQ,
   },
   created() {
     bus.on('has-logged-in', (asd) => {
@@ -568,7 +571,7 @@ export default {
     goToFAQ() {
       if (this.viewCart)
         this.viewCart = false
-      //this.$router.push({path: '/faq'})
+      this.$router.push({path: '/faq'})
     },
     goToAccess() {
       if (this.viewCart)
