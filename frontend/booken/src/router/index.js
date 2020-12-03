@@ -58,11 +58,8 @@ const routes = [
 ];
 
 const router = createRouter({
-    mode: 'abstract',
     history: createWebHistory(),
     routes
 });
-
-router.replace('/')
 
 export default router;
