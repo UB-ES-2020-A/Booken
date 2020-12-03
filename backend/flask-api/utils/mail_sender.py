@@ -8,7 +8,7 @@ class MailSender():
     def send_contact_response_mail(cls, target, full_name, contact_query, response):
         try:
             html = open("utils/email_templates/contact_response_email.html")
-        except Exception as e:
+        except FileNotFoundError as e:
             print(e)
             return 500
 
@@ -21,14 +21,9 @@ class MailSender():
         mail = Mail(current_app)
 
         msg = Message("Consulta Booken",
-                      recipients=[target],
+                      recipients=[""],
                       html=parser)
 
-        try:
-            with mail.connect() as connection:
-                connection.send(msg)
-            return 200
-        except Exception as e:
-            print(e)
-            return 500
+        with mail.connect() as connection:
+            connection.send(msg)
 

@@ -5,7 +5,6 @@ sys.path.append('././')
 from flask import render_template
 from flask_migrate import Migrate
 from flask_restful import Api
-from flask_mail import Mail
 from resources.account_rs import Account, Accounts, PasswordChange
 from resources.author import AuthorList, Author
 from resources.login_rs import Login
