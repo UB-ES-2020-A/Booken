@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 class MailSender():
 
     @classmethod
-    def send_mail(cls, target, full_name, contact_query, response):
+    def send_contact_response_mail(cls, target, full_name, contact_query, response):
         try:
             html = open("utils/email_templates/contact_response_email.html")
         except Exception as e:

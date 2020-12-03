@@ -21,7 +21,7 @@ class SendContactResponse(Resource):
 
         if contact:
             try:
-                MailSender.send_mail(contact.email, contact.full_name, contact.contact_query, contact_response)
+                MailSender.send_contact_response_mail(contact.email, contact.full_name, contact.contact_query, contact_response)
                 contact.delete_from_db()
                 return {"message": "Email sended"}, 200
             except:
