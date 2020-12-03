@@ -39,7 +39,7 @@ class FAQ(Resource):
             cat_aux = CategoryModel.find_by_id(id_cat)
             cat_aux.num_faq -= 1
             cat_aux.save_to_db()
-            if (cat_aux.num_faq <= 0):
+            if cat_aux.num_faq <= 0:
                 # Si no tiene faq la eliminamos
                 cat_aux.delete_from_db()
             faq.delete_from_db()
@@ -63,7 +63,7 @@ class FAQ(Resource):
             id_cat = faq.category[0].id
             cat_aux = CategoryModel.find_by_id(id_cat)
             cat_aux.num_faq-=1
-            if(cat_aux.num_faq<=0):
+            if cat_aux.num_faq<=0:
                 #Si no tiene faq la eliminamos
                 cat_aux.delete_from_db()
             cat_aux.save_to_db()
