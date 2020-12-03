@@ -44,7 +44,7 @@ class DataRetriever:
                 'gain_genre': self._gain_genre(self)}
 
     def _years_data(self):
-        return sorted({int(o['date'][6:]) for o in self._get_orders(self)}, reverse=True)
+        return sorted({int(o['date'][6:10]) for o in self._get_orders(self)}, reverse=True)
 
     def _total_users(self):
         return len([user for user in AccountModel.get_users()['users'] if user['type'] == 0])
@@ -63,10 +63,10 @@ class DataRetriever:
 
     def _sales_month(self):
         orders = self._get_orders(self)
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         n_sales_month = {year: {i: 0 for i in range(1, 13)} for year in years}
         for order in orders:
-            year = int(order['date'][6:])
+            year = int(order['date'][6:10])
             month = int(order['date'][3:5])
             for article in order['articles']:
                 try:
@@ -78,25 +78,25 @@ class DataRetriever:
 
     def _gain_month(self):
         orders = self._get_orders(self)
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         gain_month = {year: {i: 0 for i in range(1, 13)} for year in years}
 
         for order in orders:
-            year = int(order['date'][6:])
+            year = int(order['date'][6:10])
             month = int(order['date'][3:5])
             try:
                 gain_month[year][month] += round(order['total'], 2)
             except KeyError:
                 gain_month[year][month] += round(order['total'], 2)
-
+            gain_month[year][month] = round(gain_month[year][month], 2)
         return gain_month
 
     def _sales_year(self):
         orders = self._get_orders(self)
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         n_sales_year = {year: 0 for year in years}
         for order in orders:
-            year = int(order['date'][-4:])
+            year = int(order['date'][6:10])
             for article in order['articles']:
                 try:
                     n_sales_year[year] += int(article['quant'])
@@ -109,11 +109,11 @@ class DataRetriever:
         orders = self._get_orders(self)
         genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL', 'COMICS Y MANGA',
           'JUVENIL', 'OTRAS CATEGORIAS']
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         n_sales_genre = {year: {genre: 0 for genre in genres} for year in years}
 
         for order in orders:
-            year = int(order['date'][-4:])
+            year = int(order['date'][6:10])
             for article in order['articles']:
                 genre = article['categoria']
                 try:
@@ -134,33 +134,33 @@ class DataRetriever:
 
     def _gain_year(self):
         orders = self._get_orders(self)
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         gain_year = {year: 0 for year in years}
 
         for order in orders:
-            year = int(order['date'][-4:])
+            year = int(order['date'][6:10])
             try:
                 gain_year[year] += round(order['total'], 2)
             except KeyError:
                 gain_year[year] = round(order['total'], 2)
-
+            gain_year[year] = round(gain_year[year], 2)
         return gain_year
 
     def _gain_genre(self):
         orders = self._get_orders(self)
-        years = sorted({int(o['date'][6:]) for o in orders}, reverse=True)
+        years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL',
                   'COMICS Y MANGA',
                   'JUVENIL', 'OTRAS CATEGORIAS']
         gain_genre = {year: {genre: 0 for genre in genres} for year in years}
 
         for order in orders:
-            year = int(order['date'][-4:])
+            year = int(order['date'][6:10])
             for article in order['articles']:
                 genre = article['categoria']
                 try:
                     gain_genre[year][genre] += round(float(article['price']), 2)
                 except KeyError:
                     gain_genre[year][genre] = round(float(article['price']), 2)
-
+            gain_genre[year][genre] = round(gain_genre[year][genre], 2)
         return gain_genre

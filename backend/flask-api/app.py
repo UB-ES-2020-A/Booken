@@ -1,4 +1,5 @@
 # file deepcode ignore C0413: <comment the reason here>
+# file deepcode ignore W0611: stupid deepcode
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.append('././')
@@ -17,6 +18,8 @@ from resources.payment_card_rs import Card, CardList
 from resources.review import ReviewList, ReviewListBook, ReviewListUser, Review
 from resources.wishlist import Wishlist
 from resources.data_retriever_rs import Retriever
+from resources.faq import FAQ,FAQList
+from resources.category_faq import Category_FAQ,Category_FAQ_list
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -30,6 +33,8 @@ from models.address import AddressModel
 from models.payment_card import CardModel
 from models.review import ReviewModel
 from models.wishlist import WishlistModel
+from models.faq import FAQModel
+from models.category_faq import CategoryModel
 
 def setupApp(test=False):
     #  deepcode ignore W0621: n/a
@@ -93,6 +98,13 @@ def setupApp(test=False):
     api.add_resource(Wishlist, '/wishlist/<int:id_account>', '/wishlist/<int:id_account>/<int:id_book>')
 
     api.add_resource(Retriever,'/data_retriever/<string:needed_data>')
+
+    api.add_resource(FAQ, '/faq/<int:idd>', '/faq')
+    api.add_resource(FAQList, '/faqs')
+
+    api.add_resource(Category_FAQ, '/category/<int:idd>', '/category')
+    api.add_resource(Category_FAQ_list, '/categories')
+
     return app
 
 app = setupApp()

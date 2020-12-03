@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 63133e693e1d
+Revision ID: 0d8340630811
 Revises: 
-Create Date: 2020-11-29 13:51:49.410765
+Create Date: 2020-12-02 19:49:25.774114
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '63133e693e1d'
+revision = '0d8340630811'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,6 +32,7 @@ def upgrade():
     )
     op.create_table('articles',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('book_id', sa.Integer(), nullable=True),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('categoria', sa.String(), nullable=False),
     sa.Column('quant', sa.Integer(), nullable=False),
@@ -75,6 +76,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
+    op.create_table('faq',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('question', sa.String(length=30), nullable=False),
+    sa.Column('answer', sa.String(length=30), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
+    )
     op.create_table('addresses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('account_id', sa.String(length=30), nullable=False),
@@ -97,7 +105,7 @@ def upgrade():
     sa.Column('card_owner', sa.String(), nullable=False),
     sa.Column('number', sa.String(), nullable=False),
     sa.Column('date', sa.String(), nullable=False),
-    sa.Column('payment_method', sa.Enum('Visa', 'Mastercard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners', name='payment_method'), nullable=False),
+    sa.Column('payment_method', sa.Enum('Visa', 'MasterCard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners', name='payment_method'), nullable=False),
     sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
@@ -112,6 +120,7 @@ def upgrade():
     sa.Column('state', sa.Integer(), nullable=False),
     sa.Column('send_type', sa.Integer(), nullable=False),
     sa.Column('card_id', sa.Integer(), nullable=False),
+    sa.Column('address_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['accounts.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -171,6 +180,7 @@ def downgrade():
     op.drop_table('orders')
     op.drop_table('card_model')
     op.drop_table('addresses')
+    op.drop_table('faq')
     op.drop_table('contacts')
     op.drop_table('books')
     op.drop_table('authors')

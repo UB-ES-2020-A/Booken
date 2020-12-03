@@ -7,6 +7,7 @@ import ShowBooks from "@/components/ShowBooks";
 import ControlPanel from "@/components/ControlPanel";
 import ConfirmOrder from "@/components/ConfirmOrder";
 import Search from "../components/Search";
+import FAQ from "../components/FAQ";
 
 const routes = [
     {
@@ -48,12 +49,17 @@ const routes = [
         path: "/search",
         name: "Search",
         component: Search
+    },
+    {
+        path: "/faq",
+        name: "FAQ",
+        component: FAQ
     }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes
 });
 
 export default router;

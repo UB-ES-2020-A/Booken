@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "debug": "vue-cli-service serve --mode debug",
     "build": "vue-cli-service build",
+    "staging": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -13,15 +15,18 @@
     "axios": "^0.20.0",
     "bootstrap": "^5.0.0-alpha2",
     "chart.js": "^2.9.4",
+    "compass-mixins": "^0.12.10",
     "core-js": "^3.6.5",
     "css-select": "^3.1.0",
     "gsap": "^3.5.1",
     "imask": "^6.0.5",
     "jquery": "^3.5.1",
+    "jspdf": "^2.1.1",
     "mitt": "^2.1.0",
     "popper.js": "^1.16.1",
     "vue": "^3.0.0",
     "vue-chartjs": "^3.5.1",
+    "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.0-beta.13",
     "vue3-apexcharts": "^1.1.1"
   },

@@ -1,6 +1,3 @@
-language: node_js
-node_js:
-- node
 language: python
 python:
   - 3.8.6
@@ -26,7 +23,7 @@ jobs:
     script:
     - cd frontend/booken
     - npm install
-    - npm run build
+    - npm run staging
     before_deploy:
     - cd ../../backend/flask-api
     on:
@@ -70,7 +67,7 @@ jobs:
       api_key:
         secure: n9vGyY20ikM3PaFtQTbWyX3zEf95c3awg/kC4aV+evfDQOGo6qJLZXilkXGFRJkSBTdzKc0bh45i/LL2ImccevsxRgl01Uw0k+dO1uXlJc8ZbwRbluEt7Mxo+87fcouUT1xLmGljbIjtvmrPbpDCYjmlU5kiOKf1hJbC09QM6mMeqALg1Nq2aQ59CzuRGh4IfgfSdxh76v+HiVFyufu3yX5ZNgFj/G+zrbNl99k3woS7RkfGrggpEVZz23VMDBC4LJZDvyrjAz3ViXQuxbtjfRIvTj7FIRzsODCyTB5LcUiVLXL4cFKgP82QVmrPcP8dKrcJ/T5aAVBnlCX1EXsulIvsvs7hUNek5022yjNODIipK1EbOVrw0dVSUZT7V01gPoH0qc0Tkmxnx81NycZGPV7k9HyCzs0bEtVYqQIhH/gjyXOpRaaBZNXmUjxEKWn9j+jB7Og6htiI9x5tu0SgrGOB/ALWPSHs/T4IVM79dhb4KDTQoVmpln5zctzVtQ6x4MtTyeYCvUE6FsiYI3CHm3wSLko8DZTj9FNhgfNjMKmAWTHRVwA9zdeCYY8CZXkxbUxrw61dRYCIakxtNMr36Vzn3sbopuhTlzBKZHUVasgcFSGDZeWBJBbxyUpE04/k4VP4sjY9QO0ie8JLmrMGDc4Ta4gzNWhtv9O6bIeQ3qs=
       app:
-        dev: booken-app
+        main: booken-app
       after_deploy:
       - cd ../..
       - node_modules/.bin/newman run backend/tests/TEST----Account-Login.postman_collection.json
