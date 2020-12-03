@@ -25,8 +25,8 @@
         </div>
       </div>
 
-      <div class="col-9" >
-        <div class=" tab-content" id="v-pills-tabContent" >
+      <div class="col-9">
+        <div class=" tab-content" id="v-pills-tabContent">
 
           <div class="tab-pane fade show active" role="tabpanel"
                v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
@@ -158,6 +158,11 @@ export default {
         {
           category: 'Pago con tarjeta',
           question: 'Pago con tarjeta Question123',
+          answer: 'Pago con tarjeta Answer'
+        },
+        {
+          category: 'Pago con tarjeta',
+          question: 'Pago con tarjeta Question1231',
           answer: 'Pago con tarjeta Answer'
         },
 
