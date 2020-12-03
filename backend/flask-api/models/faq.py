@@ -1,21 +1,25 @@
 from db import db
 
 
-
+category = db.Table('cat_relation', db.Column('category_id', db.Integer, db.ForeignKey('category.id')),
+                    db.Column('faq_id', db.Integer, db.ForeignKey('faq.id')))
 class FAQModel(db.Model):
     __tablename__ = 'faq'
     id = db.Column(db.Integer, unique=True, primary_key=True)
+    category = db.relationship('CategoryModel', secondary=category, backref=db.backref('faq', lazy='dynamic'))
     question = db.Column(db.String(30), unique=False, nullable=False)
     answer = db.Column(db.String(30), unique=False, nullable=False)
 
-    def __init__(self, question, answer):
+    def __init__(self, faq_category,question, answer):
         self.question = question
         self.answer = answer
-
+        self.category.append(faq_category)
 
     def json(self):
+        categor = [cat.json() for cat in self.category]
         return {
             "id": self.id,
+            "category": categor,
             "question": self.question,
             "answer": self.answer,
         }

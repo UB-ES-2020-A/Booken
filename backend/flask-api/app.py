@@ -34,6 +34,7 @@ from models.payment_card import CardModel
 from models.review import ReviewModel
 from models.wishlist import WishlistModel
 from models.faq import FAQModel
+from models.category_faq import CategoryModel
 
 def setupApp(test=False):
     #  deepcode ignore W0621: n/a
