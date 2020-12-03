@@ -27,3 +27,4 @@ class MailSender():
         with mail.connect() as connection:
             connection.send(msg)
 
+        return None

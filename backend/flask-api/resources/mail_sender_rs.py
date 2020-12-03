@@ -1,9 +1,10 @@
+import smtplib
+
 from flask_restful import Resource, reqparse
 
 from utils.mail_sender import MailSender
 from models.contact import ContactModel
 
-import smtplib
 
 class SendContactResponse(Resource):
     def post(self):
