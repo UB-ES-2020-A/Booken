@@ -34,15 +34,12 @@
             <div class="accordion">
               <div class="" v-for="(consult) in this.consults" :key="consult.category">
                 <div v-if="consultCat === consult.category">
-                  <div class="card-header">
-                    <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                              :data-target="'#'+this.suppressSpace(consult.question)" aria-expanded="true"
-                              aria-controls="collapseOne">
-                        {{ consult.question }}
-                      </button>
-                    </h2>
-                  </div>
+
+                  <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
+                          data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
+                          aria-expanded="true" aria-controls="collapseOne">
+                    {{ consult.question }}?
+                  </button>
 
                   <div :id="this.suppressSpace(consult.question)"
                        v-if="this.suppressSpace(consult.question) === this.firstQuestion" class="collapse show">
@@ -68,15 +65,11 @@
             <div class="accordion">
               <div class="" v-for="(consult) in this.consults" :key="consult.category">
                 <div v-if="consultCat === consult.category">
-                  <div class="card-header">
-                    <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                              :data-target="'#'+this.suppressSpace(consult.question)" aria-expanded="true"
-                              aria-controls="collapseOne">
-                        {{ consult.question }}
-                      </button>
-                    </h2>
-                  </div>
+                  <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
+                          data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
+                          aria-expanded="true" aria-controls="collapseOne">
+                    {{ consult.question }}?
+                  </button>
 
                   <div :id="this.suppressSpace(consult.question)" class="collapse">
                     <div class="card-body">
@@ -162,7 +155,7 @@ export default {
         },
         {
           category: 'Pago con tarjeta',
-          question: 'Pago con tarjeta Question1231',
+          question: 'Se puede devolcer un artículo que está dañadao cuando lo he recibido',
           answer: 'Pago con tarjeta Answer'
         },
 
