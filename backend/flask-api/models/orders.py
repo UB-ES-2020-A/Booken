@@ -157,9 +157,9 @@ class OrdersModel(db.Model):
         self.save_to_db()
 
     def delete_address(self, idd):
-        index = [i for i in range(len(self.json()["address"])) if self.json()["address"][i]["id"] == int(idd)]
-        if index:
-            self.address.pop(index[0])
+        address = AddressModel.find_by_id(idd)
+        if address in self.address:
+            self.address.remove(address)
             db.session.add(self)
             db.session.commit()
             return 1

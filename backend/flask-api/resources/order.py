@@ -130,11 +130,10 @@ class OrderArticles(Resource):
     # @auth.login_required(role='admin')
     def delete(self, idd, id_article):
         order = OrdersModel.find_by_id(idd)
-        listt = [order.json()["articles"][i]["id"] == int(id_article) for i in
-                 range(len(order.json()["articles"]))]
+        listt = [i.json()["id"] for i in order.articles]
         if len(listt) == 0:
             return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, idd)}
-        if not True in listt:
+        if True not in listt:
             return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, idd)}
         index = listt.index(True)
         if index is not None:
@@ -210,14 +209,7 @@ class OrderAddress(Resource):
     # @auth.login_required(role='admin')
     def delete(self, idd, id_sub):
         order = OrdersModel.find_by_id(idd)
-        listt = [order.json()["address"][i]["id"] == int(id_sub) for i in
-                 range(len(order.json()["address"]))]
-        if len(listt) == 0:
-            return {"message": "Address with id [{}] not in Order with id [{}]".format(id_sub, idd)}
-        if True not in listt:
-            return {"message": "Address with id [{}] not in Order with id [{}]".format(id_sub, idd)}
-        index = listt.index(True)
-        if index is not None:
+        if order:
             deleted = order.delete_address(id_sub)
             if deleted:
                 return {'message': "OK"}, 201

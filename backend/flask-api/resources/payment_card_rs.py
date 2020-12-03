@@ -36,7 +36,7 @@ class Card(Resource):
         parser.add_argument('payment_method', type=str, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-        card = CardModel(data['card_owner'],data['number'],data['date'],data['payment_method'])
+        card = CardModel(data['card_owner'], data['number'], data['date'], data['payment_method'])
 
         account.cards.append(card)
 
