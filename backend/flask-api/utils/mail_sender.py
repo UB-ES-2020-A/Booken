@@ -21,7 +21,7 @@ class MailSender():
         mail = Mail(current_app)
 
         msg = Message("Consulta Booken",
-                      recipients=[""],
+                      recipients=[target],
                       html=parser)
 
         with mail.connect() as connection:
