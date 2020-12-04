@@ -84,12 +84,15 @@
           </div>
         </div>
       </div>
+
       <!-- Customizable jumbotron -->
-      <div class="jumbotron jumbotron-fluid" style="background-color: #2bc4ed; text-align: left !important;">
+      <div class="jumbotron rounded" style="background-color: #2bc4ed; text-align: left !important;">
         <div class="container">
-          <h1 class="display-4">¿No encuentras lo que buscas?</h1>
+          <h1 class="display-5" style="font-weight: bold">¿No encuentras lo que buscas?</h1>
+           <hr>
+          <br>
           <p class="lead">No dudes en
-            <router-link to="/contact">contactarnos</router-link>
+            <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
             , ¡y te ayudaremos!
           </p>
         </div>
