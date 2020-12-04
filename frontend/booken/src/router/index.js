@@ -54,6 +54,10 @@ const routes = [
         path: "/faq",
         name: "FAQ",
         component: FAQ
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        component: Front
     }
 ];
 
