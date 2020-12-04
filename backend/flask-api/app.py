@@ -20,6 +20,7 @@ from resources.wishlist import Wishlist
 from resources.data_retriever_rs import Retriever
 from resources.faq import FAQ,FAQList
 from resources.category_faq import Category_FAQ,Category_FAQ_list
+from resources.mail_sender_rs import SendContactResponse
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -104,6 +105,8 @@ def setupApp(test=False):
 
     api.add_resource(Category_FAQ, '/category/<int:idd>', '/category')
     api.add_resource(Category_FAQ_list, '/categories')
+
+    api.add_resource(SendContactResponse, '/send_contact_response')
 
     return app
 
