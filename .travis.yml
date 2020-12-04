@@ -12,6 +12,8 @@ addons:
       version: 3.0dev
       description: asd
     notification_email: rcmikado@gmail.com
+    build_command_prepend: cd backend/flask-api
+    build_command: ls
     branch_pattern: coverity_scan
 install:
 - npm install newman
@@ -100,9 +102,6 @@ jobs:
     - coveralls #DCA
   - stage: coverity_scan
     name: Coverity DCA
-    script:
-    - cd backend/flask-api
-    
   - stage: build
     name: Project build
     script:
