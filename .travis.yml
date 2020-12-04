@@ -2,6 +2,16 @@ language: python
 python:
   - 3.8.6
 cache: npm
+env:
+  global:
+    - secure: rivMZztJeeYFzwH2Rj1ojOheQdUPYcOa33oTVB8tbzrjM9YPLoaCXw08POmnzxIUM0m7fbHWs8U27dQ3hfTmIzTjnK0jX4VHdCa6oFCaxzcJ0iyHLeE8ZtPhRyP5mSR2IH/OGCIOHHSZYUmX9DdKUVMyD22nmJpKyod2elywfyUurlrviO6d7lst9AubELX05+E1/u8IutPn8+e1n6017zdmRWcWX25AaxxWpzIskF6aj4RbczrKgzAkGQNhnRQSNoMRtJrWQIykdb4cCxajtrh1cuSOZa1hkqNjc679QREQPiuTclODi/2OIMvyDEEc/ESmdPhFrxQT4Q1F0pW772ZztPJCQV6K5SegmIY/YGsl1tKyr9GV8nKROnOZ3ojcDPrcEZ1m4owsp7qj5L4/IP0VzNHALNPJXv+2KbFWj2xQeIxpnV00PHGOv4fRxAovTa3NIEZdPO9gC7bv+iIw2T3N4cblKZiEqPcJLs0VVw3MvhPSq7hwaqjINouRnf32JiXS03GD1OXf8Glvc9nC7UoyTahCkUaz/z4mC3gfSZjdLFDgDh5nKLqgDexdOh5xRWePZwk+FtSF7HikqAsHLO1644P1ewry9Lng6yyEB/3t40aeInMr8hn4IAbMgyOozyUECxrdtU+KhyvMigpmmaf08GkS6IC6fy/Nt10ADF0=
+addons:
+  coverity_scan:
+    project:
+      name: booken
+      version: 3.0dev
+      description: asd
+    branch_pattern: ca
 install:
 - npm install newman
 - pip install pytest
