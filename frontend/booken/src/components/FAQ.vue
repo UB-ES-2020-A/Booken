@@ -32,8 +32,8 @@
                v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
                :id="iter">
             <div class="accordion">
-              <div class="" v-for="(consult) in this.consults" :key="consult.category">
-                <div v-if="consultCat === consult.category">
+              <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
+                <div v-if="consultCat === consult.category[0].type">
 
                   <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
                           data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
@@ -63,8 +63,8 @@
                v-for="[iter, consultCat] in this.consultsCat" :key="iter"
                :id="iter">
             <div class="accordion">
-              <div class="" v-for="(consult) in this.consults" :key="consult.category">
-                <div v-if="consultCat === consult.category">
+              <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
+                <div v-if="consultCat === consult.category[0].type">
                   <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
                           data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
                           aria-expanded="true" aria-controls="collapseOne">
@@ -89,8 +89,8 @@
 </template>
 
 <script>
-/*import {api} from "../main";
-import axios from "axios";*/
+import {api} from "../main";
+import axios from "axios";
 
 export default {
   name: "FAQ",
@@ -101,60 +101,59 @@ export default {
     type: Number
   },
   created() {
-    /*this.getConsults()*/
-    this.getCategories()
+    this.getConsults()
   },
   data() {
     return {
       consults: [
         {
-          category: 'Usuarios extras',
+          category: [{'type':'Usuarios extras'}],
           question: 'Usuarios Question 1',
           answer: 'Usuarios Answer'
         },
         {
-          category: 'General',
+          category: [{'type':'General'}],
           question: 'Gastos de envío Question',
           answer: 'Gastos de envío Answer'
         },
         {
-          category: 'Gastos de envío',
+          category: [{'type':'Gastos de envío'}],
           question: 'Gastos de envío Question 2',
           answer: ' Gastos de envío Answer 2'
         },
         {
-          category: 'Devolución',
+          category: [{'type':'Devolución'}],
           question: 'Devolución Question',
           answer: 'Devolución Answer'
         },
 
         {
-          category: 'Seguimiento de pedido',
+          category: [{'type':'Seguimiento de pedido'}],
           question: 'Seguimiento de pedido Question',
           answer: 'Seguimiento de pedido Answer'
         },
         {
-          category: 'Pago con tarjeta',
+          category: [{'type':'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: 'Usuarios extras',
+          category: [{'type':'Usuarios extras'}],
           question: 'Usuarios Question',
           answer: 'Usuarios Answer'
         },
         {
-          category: 'Pago con tarjeta',
+          category: [{'type':'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question23',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: 'Pago con tarjeta',
+          category: [{'type':'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question123',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: 'Pago con tarjeta',
+          category: [{'type':'Pago con tarjeta'}],
           question: 'Se puede devolcer un artículo que está dañadao cuando lo he recibido',
           answer: 'Pago con tarjeta Answer'
         },
@@ -170,10 +169,22 @@ export default {
     suppressSpace(word) {
       return word.replace(/ /g, '')
     },
+    getConsults(){
+      var path = api + 'faqs'
+      axios.get(path)
+          .then((res) => {
+            this.consults = res.data.FAQ
+            console.log(this.consults[0].answer)
+            this.getCategories()
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+    },
     getCategories() {
       let first, firstValue
       for (let i in this.consults) {
-        let cat = this.consults[i].category
+        let cat = this.consults[i].category[0].type
         let iter = this.suppressSpace(cat)
         if (i === '0') {
           first = iter
