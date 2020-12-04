@@ -61,24 +61,22 @@
           <h2>Preguntas más frecuentes</h2>
         </div>
       </div>
-    </div>
-    <hr>
 
-    <div class="row mb-4" v-if="this.consultsCat" :key="this.consultsCat.length">
+      <hr>
 
-      <div class="col-3">
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link active" data-toggle="pill" role="tab"
-             aria-selected="false"
-             v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
-             :href="'#'+iter">{{ consultCat }}</a>
-          <a class="nav-link" data-toggle="pill" role="tab"
-             aria-selected="false"
-             v-for="[iter, consultCat] in this.consultsCat" :key="iter"
-             :href="'#'+iter">{{ consultCat }}</a>
-
+      <div class="row mb-4" v-if="this.consultsCat" :key="this.consultsCat.length">
+        <div class="col-3">
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" data-toggle="pill" role="tab"
+               aria-selected="false"
+               v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
+               :href="'#'+iter">{{ consultCat }}</a>
+            <a class="nav-link" data-toggle="pill" role="tab"
+               aria-selected="false"
+               v-for="[iter, consultCat] in this.consultsCat" :key="iter"
+               :href="'#'+iter">{{ consultCat }}</a>
+          </div>
         </div>
-      </div>
 
       <div class="col-9">
         <div class=" tab-content" id="v-pills-tabContent">
@@ -131,18 +129,17 @@
                     <div class="card-body">
                       {{ consult.answer }}
                     </div>
-                  </div>
 
-                  <div :id="this.suppressSpace(consult.question)" v-else class="collapse">
-                    <div class="card-body">
-                      {{ consult.answer }}
+                    <div :id="this.suppressSpace(consult.question)" v-else class="collapse">
+                      <div class="card-body">
+                        {{ consult.answer }}
+                      </div>
                     </div>
-                  </div>
 
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
           <div class="tab-pane fade" role="tabpanel"
                v-for="[iter, consultCat] in this.consultsCat" :key="iter"
@@ -160,16 +157,29 @@
                     <div class="card-body">
                       {{ consult.answer }}
                     </div>
-                  </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
+      <div class="jumbotron rounded"
+           style="background-color: whitesmoke; margin-top: 8rem; text-align: left !important;">
+        <div class="container ">
+          <h1 class="display-5" style="font-weight: bold">¿Sigues con la duda?</h1>
+          <hr>
+          <br>
+          <p class="lead">No dudes en
+            <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
+            , ¡y te ayudaremos!
+          </p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -194,57 +204,56 @@ export default {
       FAQ_to_delete: 0,
       consults: [
         {
-          category: [{'type':'Usuarios extras'}],
+          category: [{'type': 'Usuarios extras'}],
           question: 'Usuarios Question 1',
           answer: 'Usuarios Answer'
         },
         {
-          category: [{'type':'General'}],
+          category: [{'type': 'General'}],
           question: 'Gastos de envío Question',
           answer: 'Gastos de envío Answer'
         },
         {
-          category: [{'type':'Gastos de envío'}],
+          category: [{'type': 'Gastos de envío'}],
           question: 'Gastos de envío Question 2',
           answer: ' Gastos de envío Answer 2'
         },
         {
-          category: [{'type':'Devolución'}],
+          category: [{'type': 'Devolución'}],
           question: 'Devolución Question',
           answer: 'Devolución Answer'
         },
 
         {
-          category: [{'type':'Seguimiento de pedido'}],
+          category: [{'type': 'Seguimiento de pedido'}],
           question: 'Seguimiento de pedido Question',
           answer: 'Seguimiento de pedido Answer'
         },
         {
-          category: [{'type':'Pago con tarjeta'}],
+          category: [{'type': 'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: [{'type':'Usuarios extras'}],
+          category: [{'type': 'Usuarios extras'}],
           question: 'Usuarios Question',
           answer: 'Usuarios Answer'
         },
         {
-          category: [{'type':'Pago con tarjeta'}],
+          category: [{'type': 'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question23',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: [{'type':'Pago con tarjeta'}],
+          category: [{'type': 'Pago con tarjeta'}],
           question: 'Pago con tarjeta Question123',
           answer: 'Pago con tarjeta Answer'
         },
         {
-          category: [{'type':'Pago con tarjeta'}],
+          category: [{'type': 'Pago con tarjeta'}],
           question: 'Se puede devolcer un artículo que está dañadao cuando lo he recibido',
           answer: 'Pago con tarjeta Answer'
         },
-
       ],
       consultsCat: new Map(),
       consultsCatHead: new Map(),
@@ -261,7 +270,7 @@ export default {
     suppressSpace(word) {
       return word.replace(/ /g, '')
     },
-    getConsults(){
+    getConsults() {
       var path = api + 'faqs'
       axios.get(path)
           .then((res) => {
@@ -279,6 +288,8 @@ export default {
           return
       }
       let first, firstValue
+      this.
+      actToConsults()
       for (let i in this.consults) {
         let cat = this.consults[i].category[0].type
         let iter = this.suppressSpace(cat)
@@ -294,6 +305,7 @@ export default {
       this.consultsCat.delete(first)
       //this.firstQuestion = this.suppressSpace(this.consults[0].question)
     },
+    
     deleteFAQ_DB(){
       var path = api + 'faq/' + this.FAQ_to_delete
       axios.delete(path)
