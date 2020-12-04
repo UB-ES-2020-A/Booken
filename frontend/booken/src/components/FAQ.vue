@@ -54,7 +54,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+          </div>
         </div>
 
         <div class="col-12 col-md-6 mr-md-auto my-auto " v-else>
@@ -78,94 +78,94 @@
           </div>
         </div>
 
-      <div class="col-9">
-        <div class=" tab-content" id="v-pills-tabContent">
+          <div class="col-9">
+            <div class=" tab-content" id="v-pills-tabContent">
 
-          <div class="tab-pane fade show active" role="tabpanel"
-               v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
-               :id="iter">
-            <div class="accordion">
-              <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
-                <div v-if="consultCat === consult.category[0].type">
+              <div class="tab-pane fade show active" role="tabpanel"
+                   v-for="[iter, consultCat] in this.consultsCatHead" :key="iter"
+                   :id="iter">
+                <div class="accordion">
+                  <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
+                    <div v-if="consultCat === consult.category[0].type">
 
-                  <div style="display:flex;">
+                      <div style="display:flex;">
+                          <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
+                                  data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
+                                  aria-expanded="true" aria-controls="collapseOne">
+                            ¿{{ consult.question }}?
+                          </button>
+
+                          <button type="submit" class="close" aria-label="Close" style="font-size:2em; color:red;"
+                            data-toggle="modal" data-target="#deleteFAQ" v-if="type==1"
+                            @click="this.FAQ_to_delete = consult.id">
+                                <span aria-hidden="true">&times;</span>
+                          </button>
+
+                          <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog"
+                               aria-labelledby="deleteFAQTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header" style="border-bottom: 0 none;">
+                                  <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres eliminar la FAQ?</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-footer" style="border-top: 0 none;">
+                                  <button type="button" class="btn btn-secondary" style="width:50px"
+                                          @click="deleteFAQ_DB()"
+                                          data-dismiss="modal">Sí
+                                  </button>
+                                  <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+                      <div :id="this.suppressSpace(consult.question)"
+                           v-if="this.suppressSpace(consult.question) === this.firstQuestion" class="collapse show">
+                        <div class="card-body">
+                          {{ consult.answer }}
+                        </div>
+                      </div>
+
+                      <div :id="this.suppressSpace(consult.question)" v-else class="collapse">
+                        <div class="card-body">
+                          {{ consult.answer }}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" role="tabpanel"
+                   v-for="[iter, consultCat] in this.consultsCat" :key="iter"
+                   :id="iter">
+                <div class="accordion">
+                  <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
+                    <div v-if="consultCat === consult.category[0].type">
                       <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
                               data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
                               aria-expanded="true" aria-controls="collapseOne">
                         ¿{{ consult.question }}?
                       </button>
 
-                      <button type="submit" class="close" aria-label="Close" style="font-size:2em; color:red;"
-                        data-toggle="modal" data-target="#deleteFAQ" v-if="type==1"
-                        @click="this.FAQ_to_delete = consult.id">
-                            <span aria-hidden="true">&times;</span>
-                      </button>
-
-                      <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog"
-                           aria-labelledby="deleteFAQTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header" style="border-bottom: 0 none;">
-                              <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres eliminar la FAQ?</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-footer" style="border-top: 0 none;">
-                              <button type="button" class="btn btn-secondary" style="width:50px"
-                                      @click="deleteFAQ_DB()"
-                                      data-dismiss="modal">Sí
-                              </button>
-                              <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No</button>
-                            </div>
-                          </div>
+                      <div :id="this.suppressSpace(consult.question)" class="collapse">
+                        <div class="card-body">
+                          {{ consult.answer }}
                         </div>
-                      </div>
 
-                  </div>
-
-                  <div :id="this.suppressSpace(consult.question)"
-                       v-if="this.suppressSpace(consult.question) === this.firstQuestion" class="collapse show">
-                    <div class="card-body">
-                      {{ consult.answer }}
-                    </div>
-
-                    <div :id="this.suppressSpace(consult.question)" v-else class="collapse">
-                      <div class="card-body">
-                        {{ consult.answer }}
                       </div>
                     </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          <div class="tab-pane fade" role="tabpanel"
-               v-for="[iter, consultCat] in this.consultsCat" :key="iter"
-               :id="iter">
-            <div class="accordion">
-              <div class="" v-for="(consult) in this.consults" :key="consult.category[0].type">
-                <div v-if="consultCat === consult.category[0].type">
-                  <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
-                          data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
-                          aria-expanded="true" aria-controls="collapseOne">
-                    ¿{{ consult.question }}?
-                  </button>
-
-                  <div :id="this.suppressSpace(consult.question)" class="collapse">
-                    <div class="card-body">
-                      {{ consult.answer }}
-                    </div>
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
-
       <div class="jumbotron rounded"
            style="background-color: whitesmoke; margin-top: 8rem; text-align: left !important;">
         <div class="container ">
@@ -178,7 +178,6 @@
           </p>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -275,6 +274,7 @@ export default {
       axios.get(path)
           .then((res) => {
             this.consults = res.data.FAQ
+            console.log(this.consults)
             this.getCategories()
           })
           .catch((error) => {
@@ -282,14 +282,13 @@ export default {
           })
     },
     getCategories() {
-      if(this.consults.length == 0){
-          this.consultsCat = new Map()
-          this.consultsCatHead = new Map()
-          return
-      }
+      this.consultsCat = new Map()
+      this.consultsCatHead = new Map()
+
+      if(this.consults.length == 0)
+        return
+
       let first, firstValue
-      this.
-      actToConsults()
       for (let i in this.consults) {
         let cat = this.consults[i].category[0].type
         let iter = this.suppressSpace(cat)
