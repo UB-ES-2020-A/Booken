@@ -1,6 +1,6 @@
 from flask_restful import Resource
 
-from models.data_retriever import DataRetriever
+from utils.data_retriever import DataRetriever
 
 
 class Retriever(Resource):
