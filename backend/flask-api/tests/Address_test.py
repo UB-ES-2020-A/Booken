@@ -32,7 +32,7 @@ class AddressTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-        self.app.post('/account',
+        self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
 
@@ -46,7 +46,7 @@ class AddressTests(unittest.TestCase):
 
     def test_get_concrete_address(self):
         self.add_address(self.address_info)
-        response = self.app.get('/account/1/address/1', follow_redirects=True)
+        response = self.app.get('api/account/1/address/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.address_info, json.loads(response.data)["address"])
@@ -54,7 +54,7 @@ class AddressTests(unittest.TestCase):
     def test_get_addresses(self):
         self.add_address(self.address_info)
         self.add_address(self.address_info)
-        response = self.app.get('/account/1/addresses', follow_redirects=True)
+        response = self.app.get('api/account/1/addresses', follow_redirects=True)
 
         tmp_address_1 = self.address_info.copy()
         tmp_address_2 = self.address_info.copy()
@@ -71,9 +71,9 @@ class AddressTests(unittest.TestCase):
         tmp_address = self.address_info.copy()
         tmp_address["label_name"] = "La casa del vecino"
 
-        self.app.put('/account/1/address/1', data=tmp_address, follow_redirects=True)
+        self.app.put('api/account/1/address/1', data=tmp_address, follow_redirects=True)
 
-        response = self.app.get('/account/1/address/1', follow_redirects=True)
+        response = self.app.get('api/account/1/address/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(tmp_address, json.loads(response.data)["address"])
@@ -82,13 +82,13 @@ class AddressTests(unittest.TestCase):
     def test_delete_address(self):
         self.add_address(self.address_info)
 
-        response = self.app.delete('/account/1/address/1', follow_redirects=True)
+        response = self.app.delete('api/account/1/address/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
 
     def add_address(self, info):
-        return self.app.post('/account/1/address',
+        return self.app.post('api/account/1/address',
                              data=info,
                              follow_redirects=True)
 

@@ -38,12 +38,12 @@ class AccountTests(unittest.TestCase):
         self.assertNotEqual(json.loads(response.data)['token'], '')
 
     def register(self, name, lname, email, password):
-        return self.app.post('/account',
+        return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
 
     def login(self, email, password):
-        return self.app.post('/login',
+        return self.app.post('api/login',
                              data=dict(email=email, password=password),
                              follow_redirects=True)
 

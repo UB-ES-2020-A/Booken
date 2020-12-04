@@ -41,14 +41,14 @@ class AuthorTest(unittest.TestCase):
 
     def test_get_author(self):
         self.add_author(self.author_info)
-        response = self.app.get('/author/1', follow_redirects=True)
+        response = self.app.get('api/author/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
     def test_get_authors(self):
         self.add_author(self.author_info)
         self.add_author(self.author_info)
-        response = self.app.get('/authors', follow_redirects=True)
+        response = self.app.get('api/authors', follow_redirects=True)
 
         author_1 = self.author_info.copy()
         author_2 = self.author_info.copy()
@@ -66,19 +66,19 @@ class AuthorTest(unittest.TestCase):
         'city': "Barcelona",
         'country': "Spain"
         }
-        response = self.app.put('/author/1', data=info,follow_redirects=True)
+        response = self.app.put('api/author/1', data=info,follow_redirects=True)
         self.assertEqual(response.status_code, 201)
 
     def test_delete_author(self):
         self.add_author(self.author_info)
 
-        response = self.app.delete('/author/1', follow_redirects=True)
+        response = self.app.delete('api/author/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 201)
 
 
     def add_author(self, info):
-        return self.app.post('/author',
+        return self.app.post('api/author',
                              data=info,
                              follow_redirects=True)
 if __name__ == '__main__':
