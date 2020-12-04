@@ -282,8 +282,8 @@ export default {
           })
     },
     getCategories() {
-      this.consultsCat = new Map()
-      this.consultsCatHead = new Map()
+      this.consultsCat.clear()
+      this.consultsCatHead.clear()
 
       if(this.consults.length == 0)
         return
