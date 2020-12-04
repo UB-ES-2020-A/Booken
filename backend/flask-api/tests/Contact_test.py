@@ -28,7 +28,7 @@ class ContactTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-        self.app.post('/account',
+        self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
 
@@ -42,7 +42,7 @@ class ContactTests(unittest.TestCase):
 
     def test_get_concrete_contact(self):
         self.add_contact(self.contact_info)
-        response = self.app.get('/contact_info/1', follow_redirects=True)
+        response = self.app.get('api/contact_info/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.contact_info, json.loads(response.data)["contact"])
@@ -50,7 +50,7 @@ class ContactTests(unittest.TestCase):
     def test_get_contacts(self):
         self.add_contact(self.contact_info)
         self.add_contact(self.contact_info)
-        response = self.app.get('/contact_list', follow_redirects=True)
+        response = self.app.get('api/contact_list', follow_redirects=True)
 
         tmp_contact_1 = self.contact_info.copy()
         tmp_contact_2 = self.contact_info.copy()
@@ -64,13 +64,13 @@ class ContactTests(unittest.TestCase):
     def test_delete_contact(self):
         self.add_contact(self.contact_info)
 
-        response = self.app.delete('/contact_info/1', follow_redirects=True)
+        response = self.app.delete('api/contact_info/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
 
     def add_contact(self, info):
-        return self.app.post('/contact_info',
+        return self.app.post('api/contact_info',
                              data=info,
                              follow_redirects=True)
 

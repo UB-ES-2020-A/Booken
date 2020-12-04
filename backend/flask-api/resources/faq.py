@@ -62,24 +62,24 @@ class FAQ(Resource):
         if faq:
             id_cat = faq.category[0].id
             cat_aux = CategoryModel.find_by_id(id_cat)
-            cat_aux.num_faq-=1
-            if cat_aux.num_faq<=0:
-                #Si no tiene faq la eliminamos
-                cat_aux.delete_from_db()
+            cat_aux.num_faq -= 1
             cat_aux.save_to_db()
+            if cat_aux.num_faq <= 0:
+                # Si no tiene faq la eliminamos
+                cat_aux.delete_from_db()
+
             if CategoryModel.type_exist(data.get('category')):
                 cat = CategoryModel.find_by_type(data.get('category'))
             else:
                 cat = CategoryModel(data.get('category'))
             cat.num_faq += 1
-            faq.category = cat
+            faq.category += [cat]
             faq.question = data.get('question')
             faq.answer = data.get('answer')
             cat.save_to_db()
             faq.save_to_db()
             return {'message': "FAQ modified"}, 200
         return {'message': "FAQ with id [{}] Not found".format(idd)}, 409
-
 
 class FAQList(Resource):
     def get(self):
