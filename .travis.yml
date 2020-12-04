@@ -11,6 +11,7 @@ addons:
       name: booken-app
       version: 3.0dev
       description: asd
+    notification_email: rcmikado@gmail.com
     branch_pattern: coverity_scan
 install:
 - npm install newman
