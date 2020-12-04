@@ -27,7 +27,7 @@ class CardTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-        self.app.post('/account',
+        self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
 
@@ -41,7 +41,7 @@ class CardTests(unittest.TestCase):
 
     def test_get_concrete_card(self):
         self.add_card(self.card_info)
-        response = self.app.get('/account/1/card/1', follow_redirects=True)
+        response = self.app.get('api/account/1/card/1', follow_redirects=True)
 
         tmp = self.card_info.copy()
         tmp.pop("payment_method")
@@ -53,7 +53,7 @@ class CardTests(unittest.TestCase):
     def test_get_cards(self):
         self.add_card(self.card_info)
         self.add_card(self.card_info)
-        response = self.app.get('/account/1/cards', follow_redirects=True)
+        response = self.app.get('api/account/1/cards', follow_redirects=True)
 
         tmp = self.card_info.copy()
         tmp.pop("payment_method")
@@ -72,13 +72,13 @@ class CardTests(unittest.TestCase):
     def test_delete_card(self):
         self.add_card(self.card_info)
 
-        response = self.app.delete('/account/1/card/1', follow_redirects=True)
+        response = self.app.delete('api/account/1/card/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
 
     def add_card(self, info):
-        return self.app.post('/account/1/card',
+        return self.app.post('api/account/1/card',
                              data=info,
                              follow_redirects=True)
 

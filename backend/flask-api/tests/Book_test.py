@@ -71,16 +71,16 @@ class BookTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def postBook(self, info):
-        return self.app.post('/book', data=info, follow_redirects=True)
+        return self.app.post('api/book', data=info, follow_redirects=True)
 
     def getBook(self):
-        return self.app.get('/book/1', follow_redirects=True)
+        return self.app.get('api/book/1', follow_redirects=True)
 
     def putBook(self, info):
-        return self.app.put('/book/1', data=info, follow_redirects=True)
+        return self.app.put('api/book/1', data=info, follow_redirects=True)
 
     def deleteBook(self):
-        return self.app.delete('/book/1', follow_redirects=True)
+        return self.app.delete('api/book/1', follow_redirects=True)
 
 
 if __name__ == '__main__':

@@ -4,14 +4,17 @@ python:
 cache: npm
 env:
   global:
-    - secure: rivMZztJeeYFzwH2Rj1ojOheQdUPYcOa33oTVB8tbzrjM9YPLoaCXw08POmnzxIUM0m7fbHWs8U27dQ3hfTmIzTjnK0jX4VHdCa6oFCaxzcJ0iyHLeE8ZtPhRyP5mSR2IH/OGCIOHHSZYUmX9DdKUVMyD22nmJpKyod2elywfyUurlrviO6d7lst9AubELX05+E1/u8IutPn8+e1n6017zdmRWcWX25AaxxWpzIskF6aj4RbczrKgzAkGQNhnRQSNoMRtJrWQIykdb4cCxajtrh1cuSOZa1hkqNjc679QREQPiuTclODi/2OIMvyDEEc/ESmdPhFrxQT4Q1F0pW772ZztPJCQV6K5SegmIY/YGsl1tKyr9GV8nKROnOZ3ojcDPrcEZ1m4owsp7qj5L4/IP0VzNHALNPJXv+2KbFWj2xQeIxpnV00PHGOv4fRxAovTa3NIEZdPO9gC7bv+iIw2T3N4cblKZiEqPcJLs0VVw3MvhPSq7hwaqjINouRnf32JiXS03GD1OXf8Glvc9nC7UoyTahCkUaz/z4mC3gfSZjdLFDgDh5nKLqgDexdOh5xRWePZwk+FtSF7HikqAsHLO1644P1ewry9Lng6yyEB/3t40aeInMr8hn4IAbMgyOozyUECxrdtU+KhyvMigpmmaf08GkS6IC6fy/Nt10ADF0=
+    - secure: m25bNe6OT4sAkAR1dfkWd+zbaCTZr4nl8zBUqlFl2rrl0D1Jy0FYBI0OWOh1D/Dn74tk748lHqXBHtcTWFdVCVE6A2NnG7tvyxoUIna3rJO99bXnCLVsuABCqRHL9liMS58nq53BE7v7qv8CC57sIJJN7dKkj9b7gTIaBMT5lr9+lTBFTFflujEOa15xEx5yulKRL332ADFX+S5iGfZrKD0VWqaQg09OSoQWqwhjHhoWCsgXffNcv+sfQOyJNT/h+E89l3VhXOdOR+3hJCfIPMfCmLTU75HepwlW+56J0ohMBjS31F0X3SaffcMvL1TPG8ruOL7H5CFtTeLkfSaHkeExwfZPW7EpEAMajyGWTUrzo21V9YNd0KUlnuYj+g6YJKuMN2R945jL1r6xFlrJYjliPs+0jDq3vENRt1uiHEPm/GqrrZFYn7ZGEZleYUp6srIoqBInH/yciBg/bVT+6LaH9JhFD4rHJ/0QzjPJzeOct81BWJyFacXXSUary+d7XElJph3X/L4ExuHjhaC4WEXd0xIbOCtoE+viQhv24BNL0SRs53Bt/Qh3fiJV/B0aAy78ltERoY2dVj3c8wR+lzHLZlx57sZoy4QfwgeZuMAq7p9WLvLIcftdtaYXL9pRHlSgJPQCdGPpHJwD8KteJUtaY/tCZoV3zibSlI7vbLk=
 addons:
   coverity_scan:
     project:
-      name: booken
+      name: booken-app
       version: 3.0dev
       description: asd
-    branch_pattern: ca
+    notification_email: rcmikado@gmail.com
+    build_command_prepend: cd backend/flask-api
+    build_command: ls
+    branch_pattern: coverity_scan
 install:
 - npm install newman
 - pip install pytest
@@ -24,8 +27,10 @@ stages:
   if: "(branch = main)"
 - name: code_analysis
   if: "(branch = ca)"
+- name: coverity_scan
+  if: "(branch = coverity_scan)"
 - name: build
-  if: "(branch != dev AND branch != main AND branch != ca)"
+  if: "(branch != dev AND branch != main AND branch != ca AND branch != coverity_scan)"
 jobs:
   include:
   - stage: build_deploy
@@ -95,6 +100,8 @@ jobs:
     - pytest --cov=. backend/flask-api/tests/
     after_success:
     - coveralls #DCA
+  - stage: coverity_scan
+    name: Coverity DCA
   - stage: build
     name: Project build
     script:

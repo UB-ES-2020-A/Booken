@@ -50,7 +50,7 @@ class ArticleTest(unittest.TestCase):
         self.postBook(self.book_info)
 
     def postBook(self, info):
-        return self.app.post('/book', data=info, follow_redirects=True)
+        return self.app.post('api/book', data=info, follow_redirects=True)
 
     def tearDown(self):
         # Executed after each test
@@ -63,14 +63,14 @@ class ArticleTest(unittest.TestCase):
 
     def test_get_article(self):
         self.add_article(self.article_info)
-        response = self.app.get('/article/1', follow_redirects=True)
+        response = self.app.get('api/article/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
     def test_get_articles(self):
         self.add_article(self.article_info)
         self.add_article(self.article_info)
-        response = self.app.get('/articles', follow_redirects=True)
+        response = self.app.get('api/articles', follow_redirects=True)
 
         article_1 = self.article_info.copy()
         article_2 = self.article_info.copy()
@@ -83,13 +83,13 @@ class ArticleTest(unittest.TestCase):
     def test_delete_article(self):
         self.add_article(self.article_info)
 
-        response = self.app.delete('/article/1', follow_redirects=True)
+        response = self.app.delete('api/article/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 201)
 
 
     def add_article(self, info):
-        return self.app.post('/article',
+        return self.app.post('api/article',
                              data=info,
                              follow_redirects=True)
 if __name__ == '__main__':
