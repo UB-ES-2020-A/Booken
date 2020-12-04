@@ -11,7 +11,7 @@ addons:
       name: booken
       version: 3.0dev
       description: asd
-    branch_pattern: ca
+    branch_pattern: coverity_scan
 install:
 - npm install newman
 - pip install pytest
@@ -24,8 +24,10 @@ stages:
   if: "(branch = main)"
 - name: code_analysis
   if: "(branch = ca)"
+- name: coverity_scan
+  if: "(branch = coverity_scan)"
 - name: build
-  if: "(branch != dev AND branch != main AND branch != ca)"
+  if: "(branch != dev AND branch != main AND branch != ca AND branch != coverity_scan)"
 jobs:
   include:
   - stage: build_deploy
@@ -95,6 +97,10 @@ jobs:
     - pytest --cov=. backend/flask-api/tests/
     after_success:
     - coveralls #DCA
+  - stage: coverity_scan
+    name: Coverity DCA
+    script:
+    - ls
   - stage: build
     name: Project build
     script:
