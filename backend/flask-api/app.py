@@ -113,7 +113,11 @@ def setupApp(test=False):
 app = setupApp()
 @app.route('/')
 def render_vue():
-    return render_template("index.html")
+    return render_template("index.html"), 200
+
+@app.errorhandler(404)
+def render_errorXD():
+    return render_template("index.html"), 200
 
 
 if __name__ == '__main__':
