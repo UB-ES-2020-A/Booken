@@ -80,6 +80,7 @@ class AccountModel(db.Model):
         db.session.rollback()
 
     def delete_from_db(self):
+        self.wishlist[0].delete_from_db()
         db.session.delete(self)
         db.session.commit()
 
@@ -121,7 +122,7 @@ class AccountModel(db.Model):
 
         return user
 
-    def find_addres_by_id(self,address_id):
+    def find_address_by_id(self, address_id):
         index = [i for i in range(len(self.json_with_address()["addresses"])) if self.json_with_address()["addresses"][i]["id"] == int(address_id)]
         if index:
             return self.addresses[index[0]]
