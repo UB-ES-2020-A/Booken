@@ -17,8 +17,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ">
           <!-- Brand -->
-          <router-link class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" to="/">booken<span
-              class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></router-link>
+          <router-link class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" to="/">booken</router-link>
 
           <div class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
@@ -286,6 +285,16 @@
         </div>
       </div>
     </main>
+    <div class="card cookie-alert show" v-if="!cookiesack">
+      <div class="card-body">
+        <h5 class="card-title">&#x1F36A; ¿Te gustan las cookies?</h5>
+        <p class="card-text">Usamos cookies para ofrecerte la mejor experiencia en nuestra web.</p>
+        <div class="btn-toolbar justify-content-end">
+          <a href="http://cookiesandyou.com/" target="_blank" class="btn btn-link">¿Que son las cookies?</a>
+          <a class="btn btn-primary accept-cookies" @click="acknowledgeCookies">¡Ok!</a>
+        </div>
+      </div>
+    </div>
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
@@ -374,11 +383,13 @@ export default {
     FAQ,
   },
   created() {
+    this.cookieManagement()
     bus.on('has-logged-in', (asd) => {
       this.loggedIn = Boolean(asd.logged)
       this.tokenIn = String(asd.token)
       this.typeIn = parseInt(asd.type)
       this.idIn = parseInt(asd.id)
+      this.saveLogInDataCookie({id: this.idIn, token: this.tokenIn, type: this.typeIn, logged: this.loggedIn}, false)
     })
     bus.on('added-to-cart', (book) => {
       this.checkAddToCart(book)
@@ -392,6 +403,7 @@ export default {
       this.tokenIn = ''
       this.typeIn = -1
       this.idIn = -1
+      this.saveLogInDataCookie({id: this.idIn, token: this.tokenIn, type: this.typeIn, logged: this.loggedIn}, true)
     })
     bus.on('empty_cart', () => {
       this.cart = []
@@ -409,46 +421,8 @@ export default {
       idIn: -1,
       cart: [],
       information: '',
-      wish_list: [
-        {
-          ISBN: 9788431690656,
-          author: ["Maria Angelidou"],
-          back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
-          cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
-          cover_type: 0,
-          description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
-          editorial: "Vicens Vives",
-          genre: "HUMANIDADES",
-          id: 1,
-          language: "Castellano",
-          name: "Mitos griegos",
-          num_pages: 128,
-          num_sales: 0,
-          price: 7.5,
-          synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-          total_available: 28,
-          year: 2013
-        },
-        {
-          ISBN: 9788466668545,
-          author: ["Arturo Pérez-Reverte"],
-          back_cover_image_url: "",
-          cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
-          cover_type: 0,
-          description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
-          editorial: "S.A. Ediciones B",
-          genre: "LITERATURA",
-          id: 6,
-          language: "Castellano",
-          name: "Rey Blanco",
-          num_pages: 528,
-          num_sales: 10,
-          price: 20,
-          synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
-          total_available: 100,
-          year: 2020,
-        }
-      ],
+      cookiesack: false,
+      wish_list: [],
       typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false,
@@ -456,6 +430,43 @@ export default {
     }
   },
   methods: {
+    saveLogInDataCookie(data, clear){
+      this.$cookie.setCookie("logindata", data, {
+        expire: '1h',
+        path: '/',
+        domain: '',
+        secure: '',
+        sameSite: '',
+      })
+      if(clear){
+        this.retrieveLoginCookies()
+      }
+    },
+    retrieveLoginCookies(){
+      var data = this.cookiesack = this.$cookie.getCookie("logindata")
+        this.loggedIn = data.logged
+        this.tokenIn = data.token
+        this.idIn = data.id
+        this.typeIn = data.type
+    },
+    acknowledgeCookies() {
+      this.$cookie.setCookie("ackcookies", true, {
+        expire: '90d',
+        path: '/',
+        domain: '',
+        secure: '',
+        sameSite: '',
+      })
+      this.cookiesack = this.$cookie.getCookie("ackcookies")
+    },
+    cookieManagement() {
+      if(this.$cookie.isCookieAvailable("ackcookies")){
+        this.cookiesack = this.$cookie.getCookie("ackcookies")
+      }
+      if(this.$cookie.isCookieAvailable("logindata")){
+        this.retrieveLoginCookies()
+      }
+    },
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
     },
@@ -606,7 +617,6 @@ export default {
             positionClass: 'toast-bottom-right',
             preventDuplicates: true
           })
-      console.log(book)
       bus.emit('added-to-cart', {
         'id': book.id,
         'title': book.name,
@@ -632,7 +642,6 @@ export default {
       var path = api + 'wishlist/' + this.idIn + '/' + book.id
       axios.delete(path)
           .then((res) => {
-            console.log(res)
             toastr.success('', 'Lista de deseados actualizada correctamente.',
                 {
                   timeOut: 2500,
@@ -672,6 +681,24 @@ export default {
 }
 </style>
 <style scoped>
+.cookie-alert {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 320px;
+  margin: 0 !important;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 500ms ease-out;
+}
+
+.cookie-alert.show {
+  opacity: 1;
+  transform: translateY(0%);
+  transition-delay: 1000ms;
+}
+
 @font-face {
   font-family: 'LogoFont';
   src: url('/assets/logo_font.woff')

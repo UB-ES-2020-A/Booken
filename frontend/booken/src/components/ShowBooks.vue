@@ -203,7 +203,6 @@ export default {
     },
     freqSort() {
       this.books = this.freqArray
-      console.log(this.books)
     },
     ascendSort() {
       this.books = this.ascendArray

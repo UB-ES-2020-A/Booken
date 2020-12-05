@@ -100,7 +100,6 @@ export default {
     },
     contactQuery(){
         const path = api + 'contact_info'
-        console.log(this.addContactForm)
       axios.post(path, this.addContactForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {

@@ -654,9 +654,7 @@ export default {
       }
       axios.post(path, parameters)
           .then((res) => {
-            console.log(res)
             var order_id = res.data
-            console.log(order_id)
             this.finalizePurchase(order_id)
           })
           .catch((error) => {
@@ -667,10 +665,8 @@ export default {
           })
     },
     finalizePurchase(order_id) {
-      console.log(this.cart)
       for (let i = 0; i < this.cart.length; i += 1) {
         var item = this.cart[i]
-        console.log(item)
         var price = item.price * item.quant
         const path = api + 'article-order/' + order_id
         const parameters = {
@@ -680,8 +676,6 @@ export default {
         }
         axios.post(path, parameters)
             .then(() => {
-              console.log('Order done')
-              console.log('Article added')
               bus.emit('empty_cart')
             })
             .catch((error) => {
@@ -690,7 +684,6 @@ export default {
               const path_del = api + 'order/' + order_id
               axios.delete(path_del)
                   .then(() => {
-                    console.log('Bad Order deleted')
                     return
                   })
                   .catch((error) => {
@@ -816,9 +809,7 @@ export default {
     validateEndDate(date) {
       var today, someday
       var exMonth = date.slice(0, 2)
-      console.log(exMonth)
       var exYear = date.slice(3)
-      console.log(exYear)
       today = new Date()
       someday = new Date()
       someday.setFullYear(exYear, exMonth, 1)
