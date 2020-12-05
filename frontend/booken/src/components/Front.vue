@@ -148,7 +148,7 @@ export default {
             this.getBooksFromDBR('TODO')
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error) //
           })
     }, getBooksFromDBR(req) {
       var path = api + 'books/' + req
@@ -161,7 +161,7 @@ export default {
             this.booksRR = this.booksR.sort(this.compare).slice(0, 5)
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error) //
           })
     },
     recommendBooks() {
