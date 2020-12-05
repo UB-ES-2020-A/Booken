@@ -59,7 +59,7 @@ class AccountModel(db.Model):
         return body
 
     def json_with_address(self):
-        address_json = [address.json_with_id() for address in self.addresses]
+        address_json = [address.json() for address in self.addresses]
         body = {
             'id': self.id,
             'name': self.name,

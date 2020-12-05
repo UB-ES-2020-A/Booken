@@ -26,7 +26,7 @@ class Address(Resource):
             return {'message': "Account with id [{}] Not found".format(account_id)}, 404
 
         if len(account.addresses) == 3:
-            return {'message': "Account with id [{}] cannot have more addresses".format(account_id)}, 404
+            return {'message': "Account with id [{}] cannot have more addresses".format(account_id)}, 403
 
         # define the input parameters need and its type
         parser.add_argument('label_name', type=str, required=True, help="This field cannot be left blanck")
@@ -45,11 +45,8 @@ class Address(Resource):
 
         account.addresses.append(address)
 
-        try:
-            account.save_to_db()
-            return {"Message": "Address saved correctly"}, 200
-        except:
-            return {"Message": "Coudln't save changes"}, 500
+        account.save_to_db()
+        return {"Message": "Address saved correctly"}, 200
 
     def put(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
@@ -87,24 +84,17 @@ class Address(Resource):
         address.province = data['province']
         address.telf = data['telf']
 
-        try:
-            address.save_to_db()
-            return {"Message": "Address saved correctly"}, 200
-        except:
-            return {"Message": "Coudln't save changes"}, 500
+        address.save_to_db()
+        return {"Message": "Address saved correctly"}, 200
 
     def delete(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         address = AddressModel.find_by_id(idd)
         if address is not None and account is not None:
             if address in account.addresses:
-                try:
-                    address.delete_from_db()
-                    return {"Message": "Address deleted correctly"}, 200
-                except:
-                    return {"Message": "Coudln't save changes"}, 500
-            else:
-                return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
+                address.delete_from_db()
+                return {"Message": "Address deleted correctly"}, 200
+            return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
         elif address is None:
             return {'message': "Address with id [{}] Not found".format(id)}, 404
         else:

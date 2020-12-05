@@ -56,13 +56,13 @@ class OrdersModel(db.Model):
             "state": self.state,
             "send_type": self.send_type,
             "card": card.json(),
-            "address": address.json_with_id(),
+            "address": address.json(),
             "articles": articles_json,
         }
 
     def json_with_address_id(self):
         articles_json = [article.json() for article in self.articles]
-        address_json = [address.json_with_id() for address in self.address]
+        address_json = [address.json() for address in self.address]
         return {
             "id": self.id,
             "id_user": self.id_user,
