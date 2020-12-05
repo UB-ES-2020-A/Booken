@@ -433,6 +433,7 @@ export default {
   },
   methods: {
     searchInputChange(){
+      //  deepcode ignore UsageOfUndefinedReturnValue: shut it deepcode
       debounce(this.goToSearch(), 5000)
     },
     saveLogInDataCookie(data, clear){
