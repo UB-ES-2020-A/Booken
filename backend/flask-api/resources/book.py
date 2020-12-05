@@ -17,7 +17,7 @@ class BookArtist(Resource):
     def get(self, idd):
         book = BookModel.find_by_id(idd)
         if book:
-            return {'Book': book.author.json()}, 200
+            return {'Book': a.json() for a in book.author}, 200
         return {'message': "Book with ['id': {}] not found".format(idd)}, 404
 
 

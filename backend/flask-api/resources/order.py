@@ -74,7 +74,7 @@ class Orders(Resource):
 class OrdersList(Resource):
     def get(self):
         orders = OrdersModel.get_orders()
-        return orders, 200 if orders else 404
+        return orders, 200
 
 
 # articles list of an order
@@ -123,6 +123,7 @@ class OrderArticles(Resource):
                 article = ArticlesModel(data.price, book.genre, data.quant, book.id)
                 order.add_article(article)
                 article.save_to_db()
+                order.save_to_db()
                 return article.id, 200
             return {"message": "Not enought books with id [{}] for the order".format(data.id_book)}, 404
         return {"message": "Book with id [{}] not found ".format(data.id_book)}, 404
@@ -130,18 +131,16 @@ class OrderArticles(Resource):
     # @auth.login_required(role='admin')
     def delete(self, idd, id_article):
         order = OrdersModel.find_by_id(idd)
-        listt = [i.json()["id"] for i in order.articles]
-        if len(listt) == 0:
-            return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, idd)}
-        if True not in listt:
-            return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, idd)}
-        index = listt.index(True)
-        if index is not None:
-            deleted = order.delete_article(id_article)
-            if deleted:
-                return {'message': "OK"}, 201
+        article = ArticlesModel.find_by_id(id_article)
+        if not order:
+            return {'message': "Order with id [{}] doesn t exists".format(idd)}, 404
 
-        return {'message': "Article with id [{}] Not found in order with id [{}]".format(id_article, id)}, 409
+        if not article in order.articles:
+            return {'message': "Article with id [{}] Not found in order with id [{}]".format(id_article, idd)}, 404
+
+        order.delete_article(id_article)
+        return {'message': "OK"}, 201
+
 
 
 # adress list of an order
@@ -199,7 +198,7 @@ class OrderAddress(Resource):
             account.addresses.append(address)
         # Si pasamos la id de la direccion la buscamos en la cuenta
         else:
-            address = account.find_addres_by_id(address_id)
+            address = account.find_address_by_id(address_id)
         if address is not None:
             order.add_address(address)
             order.save_to_db()

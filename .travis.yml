@@ -2,19 +2,6 @@ language: python
 python:
   - 3.8.6
 cache: npm
-env:
-  global:
-    - secure: m25bNe6OT4sAkAR1dfkWd+zbaCTZr4nl8zBUqlFl2rrl0D1Jy0FYBI0OWOh1D/Dn74tk748lHqXBHtcTWFdVCVE6A2NnG7tvyxoUIna3rJO99bXnCLVsuABCqRHL9liMS58nq53BE7v7qv8CC57sIJJN7dKkj9b7gTIaBMT5lr9+lTBFTFflujEOa15xEx5yulKRL332ADFX+S5iGfZrKD0VWqaQg09OSoQWqwhjHhoWCsgXffNcv+sfQOyJNT/h+E89l3VhXOdOR+3hJCfIPMfCmLTU75HepwlW+56J0ohMBjS31F0X3SaffcMvL1TPG8ruOL7H5CFtTeLkfSaHkeExwfZPW7EpEAMajyGWTUrzo21V9YNd0KUlnuYj+g6YJKuMN2R945jL1r6xFlrJYjliPs+0jDq3vENRt1uiHEPm/GqrrZFYn7ZGEZleYUp6srIoqBInH/yciBg/bVT+6LaH9JhFD4rHJ/0QzjPJzeOct81BWJyFacXXSUary+d7XElJph3X/L4ExuHjhaC4WEXd0xIbOCtoE+viQhv24BNL0SRs53Bt/Qh3fiJV/B0aAy78ltERoY2dVj3c8wR+lzHLZlx57sZoy4QfwgeZuMAq7p9WLvLIcftdtaYXL9pRHlSgJPQCdGPpHJwD8KteJUtaY/tCZoV3zibSlI7vbLk=
-addons:
-  coverity_scan:
-    project:
-      name: booken-app
-      version: 3.0dev
-      description: asd
-    notification_email: rcmikado@gmail.com
-    build_command_prepend: cd backend/flask-api
-    build_command: ls
-    branch_pattern: coverity_scan
 install:
 - npm install newman
 - pip install pytest
@@ -27,10 +14,8 @@ stages:
   if: "(branch = main)"
 - name: code_analysis
   if: "(branch = ca)"
-- name: coverity_scan
-  if: "(branch = coverity_scan)"
 - name: build
-  if: "(branch != dev AND branch != main AND branch != ca AND branch != coverity_scan)"
+  if: "(branch != dev AND branch != main AND branch != ca)"
 jobs:
   include:
   - stage: build_deploy
@@ -100,8 +85,6 @@ jobs:
     - pytest --cov=. backend/flask-api/tests/
     after_success:
     - coveralls #DCA
-  - stage: coverity_scan
-    name: Coverity DCA
   - stage: build
     name: Project build
     script:

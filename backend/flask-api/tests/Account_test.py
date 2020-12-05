@@ -5,9 +5,9 @@ import unittest
 import sys
 import os
 import json
-
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
+
 from models.accounts import AccountModel, get_user_roles, verify_account
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
