@@ -86,7 +86,7 @@
                  aria-labelledby="'t'+index" role="tabpanel">
 
               <div class="accordion">
-                <div v-for="(consult) in this.consults" :key="consult.category[0].type">{{consult}}
+                <div v-for="(consult) in this.consults" :key="consult.category[0].type">
                   <div v-if="category === consult.category[0].type">
 
                     <div style="display:flex;">
@@ -101,28 +101,6 @@
                               @click="this.FAQ_to_delete = consult.id">
                         <span aria-hidden="true">&times;</span>
                       </button>
-
-                      <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog"
-                           aria-labelledby="deleteFAQTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header" style="border-bottom: 0 none;">
-                              <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres eliminar la FAQ?</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-footer" style="border-top: 0 none;">
-                              <button type="button" class="btn btn-secondary" style="width:50px"
-                                      @click="deleteFAQ_DB()"
-                                      data-dismiss="modal">Sí
-                              </button>
-                              <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
                     <div :id="this.suppressSpace(consult.question)" class="collapse">
@@ -135,6 +113,28 @@
                 </div>
               </div>
             </div>
+
+            <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog"
+               aria-labelledby="deleteFAQTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 0 none;">
+                  <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres eliminar la FAQ?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-footer" style="border-top: 0 none;">
+                  <button type="button" class="btn btn-secondary" style="width:50px"
+                          @click="deleteFAQ_DB()"
+                          data-dismiss="modal">Sí
+                  </button>
+                  <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
           </div>
@@ -265,7 +265,7 @@ export default {
             })
             .catch((error) => {
               console.log(error)
-              toastr.error('', 'Rellena los campos obligatorios para añadir la FAQ.',
+              toastr.error('', 'Algo no salió como se esperaba.',
                   {
                     timeOut: 2500,
                     progressBar: true,
