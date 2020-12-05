@@ -54,21 +54,12 @@ class BookModel(db.Model):
         return db.session.query(BookModel).filter_by(id=idd).first()
 
     @classmethod
-    def find_by_isbn(cls, isbn):
-        return db.session.query(BookModel).filter_by(isbn=" ".join(w.capitalize() for w in isbn.split(" "))).first()
-
-    @classmethod
     def find_by_name(cls, name):
         return db.session.query(BookModel).filter_by(name=name).first()
 
     @classmethod
     def find_by_genre(cls, genre):
         return db.session.query(BookModel).filter_by(genre=genre).all()
-
-    @classmethod
-    def find_by_author(cls, author):
-        return db.session.query(BookModel).filter_by(
-            name=" ".join(w.capitalize() for w in [a.name for a in author].split(" ")))
 
     def save_to_db(self):
         db.session.add(self)

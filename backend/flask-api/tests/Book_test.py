@@ -60,6 +60,15 @@ class BookTests(unittest.TestCase):
         response = self.postBook(self.book_info)
         self.assertEqual(response.status_code, 409)
 
+    def test_post_book_same_author(self):
+        self.postBook(self.book_info)
+
+        put_info = self.book_info.copy()
+        put_info["name"] = 'Book Test modified'
+
+        response = self.postBook(put_info)
+        self.assertEqual(response.status_code, 200)
+
     def test_get_Book(self):
         self.postBook(self.book_info)
         response = self.app.get('api/book/1', follow_redirects=True)
@@ -90,6 +99,16 @@ class BookTests(unittest.TestCase):
 
         response = response = self.app.put('api/book/2', data=put_info, follow_redirects=True)
         self.assertEqual(response.status_code, 404)
+
+    def test_put_book_new_author(self):
+        self.postBook(self.book_info)
+
+        put_info = self.book_info.copy()
+        put_info["name"] = 'Book Test modified'
+        put_info["author_name"] = 'Jose Calvo'
+
+        response = self.app.put('api/book/1', data=put_info, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_delete_book(self):
         self.postBook(self.book_info)
