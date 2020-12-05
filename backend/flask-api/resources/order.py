@@ -138,9 +138,8 @@ class OrderArticles(Resource):
         if not article in order.articles:
             return {'message': "Article with id [{}] Not found in order with id [{}]".format(id_article, idd)}, 404
 
-        deleted = order.delete_article(id_article)
-        if deleted:
-            return {'message': "OK"}, 201
+        order.delete_article(id_article)
+        return {'message': "OK"}, 201
 
 
 

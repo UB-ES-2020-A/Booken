@@ -1,7 +1,5 @@
 from db import db
 from models.address import AddressModel
-from models.book import BookModel
-
 from models.payment_card import CardModel
 # file deepcode ignore W0621: f*** you deepcode
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
@@ -114,11 +112,10 @@ class OrdersModel(db.Model):
 
     def delete_article(self, idd):
         index = [i for i in range(len(self.json()["articles"])) if self.json()["articles"][i]["id"] == int(idd)]
-        if index:
-            self.articles.pop(index[0])
-            db.session.add(self)
-            db.session.commit()
-            return 1
+        self.articles.pop(index[0])
+        db.session.add(self)
+        db.session.commit()
+        return 1
 
     def add_address(self, address):
         self.address += [address]
@@ -126,8 +123,7 @@ class OrdersModel(db.Model):
 
     def delete_address(self, idd):
         address = AddressModel.find_by_id(idd)
-        if address in self.address:
-            self.address.remove(address)
-            db.session.add(self)
-            db.session.commit()
-            return 1
+        self.address.remove(address)
+        db.session.add(self)
+        db.session.commit()
+        return 1
