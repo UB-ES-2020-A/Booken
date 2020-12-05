@@ -16,10 +16,6 @@ from db import db
 
 
 class SearchBookTests(unittest.TestCase):
-    app = setupApp(True).test_client()
-    db.drop_all()
-    db.create_all()
-
     book_info1 = {
         "isbn": 12345678911,
         "name": 'The secret of the Stones',
@@ -43,10 +39,9 @@ class SearchBookTests(unittest.TestCase):
     }
 
     def setUp(self):
-        meta = db.metadata
-        for table in reversed(meta.sorted_tables):
-            db.session.execute(table.delete())
-        db.session.commit()
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
 
     def tearDown(self):
         # Executed after each test
