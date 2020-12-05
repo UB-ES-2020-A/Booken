@@ -665,7 +665,6 @@ export default {
                   positionClass: 'toast-bottom-right',
                   preventDuplicates: true
                 })
-
             this.getWishList();
           })
     }

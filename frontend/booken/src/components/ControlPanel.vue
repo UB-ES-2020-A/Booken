@@ -1021,6 +1021,15 @@
                   ></apexchart>
                 </div>
               </div>
+              <div class="row row-cols-1 row-cols-md-1" style="margin-top: 1em">
+                <div class="col">
+                  <apexchart
+                      width="100%"
+                      type="line"
+                      :options="loginLogOptions"
+                  ></apexchart>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1082,6 +1091,7 @@ export default {
       gainMonthOptions: {},
       gainMonthSeries: {},
       gainGenreOptions: {},
+      loginLogOptions: {},
       cards: [
         {
           "id": 0,
@@ -1146,6 +1156,7 @@ export default {
         {text: 'Recibidos', value: '2'}
       ],
       years_data: [],
+      log_month: {},
       total_sales: 0,
       total_users: 0,
       sales_month: {},
@@ -1283,6 +1294,13 @@ export default {
       }
       return arrr
     },
+    toSimpleArrayKeys(arr){
+      var arrr = []
+      for (var i in arr) {
+        arrr.push(i)
+      }
+      return arrr
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
       axios.get(path)
@@ -1397,6 +1415,52 @@ export default {
           },
         }
       }
+      this.loginLogOptions = {
+        series: [{
+          name: "Accesos",
+          data: this.toSimpleArray(this.log_month)
+        }],
+        labels: this.toSimpleArrayKeys(this.log_month),
+        title: {
+          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth()) + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+    },
+    getMonthString(month){
+      switch(month){
+        case 1:
+          return "enero"
+        case 2:
+          return "febrero"
+        case 3:
+          return "marzo"
+        case 4:
+          return "abril"
+        case 5:
+          return "mayo"
+        case 6:
+          return "junio"
+        case 7:
+          return "julio"
+        case 8:
+          return "agosto"
+        case 9:
+          return "septiembre"
+        case 10:
+          return "octubre"
+        case 11:
+          return "noviembre"
+        case 12:
+          return "diciembre"
+      }
     },
     getData() {
       var path = api + 'data_retriever/all'
@@ -1412,6 +1476,7 @@ export default {
             this.gain_month = res.data.all.gain_month
             this.gain_year = res.data.all.gain_year
             this.gain_genre = res.data.all.gain_genre
+            this.log_month = res.data.all.log_month
             this.chartGeneration(this.years_data[0])
           })
           .catch((error) => {
