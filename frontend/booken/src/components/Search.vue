@@ -1,6 +1,6 @@
 <template>
   <div class="front-container">
-    <div class="container" style="max-width: 1400px" v-if="this.nbooks > 0">
+    <div class="container" v-if="this.nbooks >0" style="max-width: 1400px">
       <div class="row justify-content-md-between justify-content-sm-start">
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
           <h2>Resultados de la busqueda: "{{search}}"</h2>
@@ -42,11 +42,11 @@
         </div>
       </div>
     </div>
-    <div class="col" v-else style="text-align: center">
+  </div>
+  <div class="col" v-if="this.nbooks<=0" style="text-align: center">
       <h1>No se han encontrado libros para su busqueda: "{{search}}"</h1>
       <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
            src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
-    </div>
   </div>
 </template>
 
