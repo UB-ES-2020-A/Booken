@@ -51,7 +51,7 @@ class Review(Resource):
         new_review.save_to_db()
         user.reviews.append(new_review)
         book.reviews.append(new_review)
-        return new_review.json(), 200
+        return new_review.json(), 201
 
     def put(self, idd):
         data = self.__parse_request__()
