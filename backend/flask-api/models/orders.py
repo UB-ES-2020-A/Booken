@@ -103,31 +103,19 @@ class OrdersModel(db.Model):
 
     @classmethod
     def find_by_state(cls, state, idd):
-        try:
-            return OrdersModel.query.filter_by(state=state, id_user=idd).all()
-        except:
-            return None
+        return OrdersModel.query.filter_by(state=state, id_user=idd).all()
 
     @classmethod
     def find_by_id_user_and_orderid(cls, id_user, order_id):
-        try:
-            return OrdersModel.query.filter_by(id_user=id_user, id=order_id).first()
-        except:
-            return None
+        return OrdersModel.query.filter_by(id_user=id_user, id=order_id).first()
 
     @classmethod
     def find_by_id_user(cls, idd):
-        try:
-            return OrdersModel.query.filter_by(id_user=idd).all()
-        except:
-            return None
+        return OrdersModel.query.filter_by(id_user=idd).all()
 
     @classmethod
     def find_by_id(cls, idd):
-        try:
-            return OrdersModel.query.filter_by(id=idd).first()
-        except:
-            return None
+        return OrdersModel.query.filter_by(id=idd).first()
 
     @classmethod
     def num_orders(cls):
@@ -165,9 +153,3 @@ class OrdersModel(db.Model):
             return 1
         return 0
 
-    def get_card(self):
-        card = CardModel.find_by_id(self.card_id)
-        return card.json()
-
-    def get_num_articles(self):
-        return len(self.articles)
