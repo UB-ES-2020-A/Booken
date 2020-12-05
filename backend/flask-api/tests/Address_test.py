@@ -15,6 +15,7 @@ from db import db
 
 
 class AddressTests(unittest.TestCase):
+
     address_info = {
         "id": 1,
         "label_name": "Mi casa",
@@ -27,18 +28,11 @@ class AddressTests(unittest.TestCase):
         "province": "Mi provincia",
         "telf": 123456
     }
-    app = setupApp(True).test_client()
-    db.drop_all()
-    db.create_all()
 
     def setUp(self):
-        """self.app = setupApp(True).test_client()
+        self.app = setupApp(True).test_client()
         db.drop_all()
-        db.create_all()"""
-        meta = db.metadata
-        for table in reversed(meta.sorted_tables):
-            db.session.execute(table.delete())
-        db.session.commit()
+        db.create_all()
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
@@ -75,6 +69,14 @@ class AddressTests(unittest.TestCase):
         response = self.app.get('api/account/2/address/1', follow_redirects=True)
         self.assertEqual(409, response.status_code)
 
+    def test_delete_non_assigned_address_in_account(self):
+        self.add_address(self.address_info)
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test2", password="test"),
+                      follow_redirects=True)
+        response = self.app.delete('api/account/2/address/1', follow_redirects=True)
+        self.assertEqual(409, response.status_code)
+
     def test_get_non_existing_address_from_account(self):
         self.add_address(self.address_info)
         response = self.app.get('api/account/1/address/95', follow_redirects=True)
@@ -97,6 +99,19 @@ class AddressTests(unittest.TestCase):
     def test_put_address_non_existing_address(self):
         response = self.app.put('api/account/1/address/25', data=self.address_info, follow_redirects=True)
         self.assertEqual(404, response.status_code)
+
+    def test_delete_address_non_existing_address(self):
+        response = self.app.delete('api/account/1/address/25', data=self.address_info, follow_redirects=True)
+        self.assertEqual(404, response.status_code)
+
+    def test_put_address_non_assigned_address(self):
+        response = self.add_address(self.address_info)
+        self.assertEqual(response.status_code, 200)
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test2", password="test"),
+                      follow_redirects=True)
+        response = self.app.put('api/account/2/address/1', data=self.address_info, follow_redirects=True)
+        self.assertEqual(409, response.status_code)
 
     def test_post_address_max_amount_address(self):
         for i in range(4):

@@ -57,8 +57,6 @@ class Address(Resource):
                 return {'message': "This account doesn't have an address with id [{}] ".format(idd)}, 409
         elif address is None:
             return {'message': "Address with id [{}] Not found".format(idd)}, 404
-        else:
-            return {'message': "Account with id [{}] Not found".format(idd)}, 404
 
         parser = reqparse.RequestParser()
         # define the input parameters need and its type
@@ -97,8 +95,6 @@ class Address(Resource):
             return {'message': "This account doesn't have an address with id [{}] ".format(id)}, 409
         elif address is None:
             return {'message': "Address with id [{}] Not found".format(id)}, 404
-        else:
-            return {'message': "Account with id [{}] Not found".format(id)}, 404
 
 
 class AddressList(Resource):
