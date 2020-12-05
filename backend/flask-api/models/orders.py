@@ -1,7 +1,5 @@
 from db import db
 from models.address import AddressModel
-from models.book import BookModel
-
 from models.payment_card import CardModel
 # file deepcode ignore W0621: f*** you deepcode
 articles = db.Table('relationship', db.Column('article_id', db.Integer, db.ForeignKey('articles.id')),
@@ -78,18 +76,6 @@ class OrdersModel(db.Model):
             "card": self.card_id
         }
 
-    def json_filtered_by_book_id(self):
-        book = BookModel.find_by_id(self.id_book)
-        return {
-            "id": self.id_book,
-            "id_user": self.id_user,
-            "book_name": book.name,
-            "num_books": self.num_books,
-            "state": self.state,
-            "send_type": self.send_type,
-            "card_id": self.card_id
-        }
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -98,40 +84,21 @@ class OrdersModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def change_order_state(self, new_state):
-        self.state = new_state
-
     @classmethod
     def find_by_state(cls, state, idd):
-        try:
-            return OrdersModel.query.filter_by(state=state, id_user=idd).all()
-        except:
-            return None
+        return OrdersModel.query.filter_by(state=state, id_user=idd).all()
 
     @classmethod
     def find_by_id_user_and_orderid(cls, id_user, order_id):
-        try:
-            return OrdersModel.query.filter_by(id_user=id_user, id=order_id).first()
-        except:
-            return None
+        return OrdersModel.query.filter_by(id_user=id_user, id=order_id).first()
 
     @classmethod
     def find_by_id_user(cls, idd):
-        try:
-            return OrdersModel.query.filter_by(id_user=idd).all()
-        except:
-            return None
+        return OrdersModel.query.filter_by(id_user=idd).all()
 
     @classmethod
     def find_by_id(cls, idd):
-        try:
-            return OrdersModel.query.filter_by(id=idd).first()
-        except:
-            return None
-
-    @classmethod
-    def num_orders(cls):
-        return len(OrdersModel.query.all())
+        return OrdersModel.query.filter_by(id=idd).first()
 
     @classmethod
     def get_orders(cls):
@@ -145,12 +112,10 @@ class OrdersModel(db.Model):
 
     def delete_article(self, idd):
         index = [i for i in range(len(self.json()["articles"])) if self.json()["articles"][i]["id"] == int(idd)]
-        if index:
-            self.articles.pop(index[0])
-            db.session.add(self)
-            db.session.commit()
-            return 1
-        return 0
+        self.articles.pop(index[0])
+        db.session.add(self)
+        db.session.commit()
+        return 1
 
     def add_address(self, address):
         self.address += [address]
@@ -158,16 +123,7 @@ class OrdersModel(db.Model):
 
     def delete_address(self, idd):
         address = AddressModel.find_by_id(idd)
-        if address in self.address:
-            self.address.remove(address)
-            db.session.add(self)
-            db.session.commit()
-            return 1
-        return 0
-
-    def get_card(self):
-        card = CardModel.find_by_id(self.card_id)
-        return card.json()
-
-    def get_num_articles(self):
-        return len(self.articles)
+        self.address.remove(address)
+        db.session.add(self)
+        db.session.commit()
+        return 1
