@@ -134,20 +134,13 @@ class OrderArticles(Resource):
         article = ArticlesModel.find_by_id(id_article)
         if not order:
             return {'message': "Order with id [{}] doesn t exists".format(idd)}, 404
-        if not article:
-            return {'message': "Article with id [{}] doesn t exists".format(id_article)}, 404
 
         if not article in order.articles:
             return {'message': "Article with id [{}] Not found in order with id [{}]".format(id_article, idd)}, 404
 
-        listt = [i.json()["id"] for i in order.articles]
-        if len(listt) == 0:
-            return {"message": "Article with id [{}] not in Order with id [{}]".format(id_article, idd)}, 404
-
         deleted = order.delete_article(id_article)
         if deleted:
             return {'message': "OK"}, 201
-
 
 
 

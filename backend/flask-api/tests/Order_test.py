@@ -12,6 +12,7 @@ from db import db
 #  deepcode ignore C0413: stupid issue
 
 class OrderTest(unittest.TestCase):
+
     order_info = {
         "date": "29/11/2020 10:50",
         "total": 1.,
@@ -21,24 +22,6 @@ class OrderTest(unittest.TestCase):
         "send_type": 0,
         "card_id": 1,
         "address_id": 1
-    }
-
-    article_order_info = {
-        "price": 1.,
-        "id_book": 1,
-        "quant": 1
-    }
-
-    address_order_info = {
-        "label_name": "Test",
-        "name": "Test",
-        "surnames": "Test",
-        "street": "Test",
-        "number": 1,
-        "cp": "08080",
-        "city": "Barcelona",
-        "province": "Barcelona",
-        "telf": 666666666,
     }
 
     account_info = {
@@ -55,47 +38,39 @@ class OrderTest(unittest.TestCase):
         "payment_method": "Visa"
     }
 
-    book_info = {
-        "isbn": 12345678910,
-        "name": 'Book Test',
-        "author_name": 'Kim Follet',
-        "author_bd": '10/10/1979',
-        "author_city": "BCN",
-        "author_country": "Spain",
-        "genre": 'HUMANIDADES',
-        "year": 2020,
-        "editorial": 'Santillana',
-        "language": 'Castellano',
-        "price": 10.9,
-        "synopsis": 'Synopsis',
-        "description": 'Descripcion',
-        "num_pages": 130,
-        "cover_type": 0,
-        "num_sales": 0,
-        "total_available": 15,
-        "cover_image_url": 'asd',
-        "back_cover_image_url": 'asd'
+    address_order_info = {
+        "label_name": "Test",
+        "name": "Test",
+        "surnames": "Test",
+        "street": "Test",
+        "number": 1,
+        "cp": "08080",
+        "city": "Barcelona",
+        "province": "Barcelona",
+        "telf": 666666666,
     }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.create_account(self.account_info)
+        self.add_card(self.card_info)
+        self.add_address(self.address_order_info)
 
     def tearDown(self):
         # Executed after each test
         pass
 
     def test_create_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         response = self.add_order(self.order_info)
+        resp = self.app.post('api/order/1000',
+                             data=self.order_info,
+                             follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 409)
 
     def test_get_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
         self.add_order(self.order_info)
         response = self.app.get('api/order/1', follow_redirects=True)
         resp = self.app.get('api/order/1000', follow_redirects=True)
@@ -103,19 +78,13 @@ class OrderTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 409)
 
     def test_get_orders(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
         self.add_order(self.order_info)
         response = self.app.get('api/orders', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
 
     def test_put_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         self.add_order(self.order_info)
-        self.add_address(self.address_order_info)
         info_put = {
             "state": 1
         }
@@ -125,27 +94,18 @@ class OrderTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 400)
 
     def test_delete_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         self.add_order(self.order_info)
-
         response = self.app.delete('api/order/1', follow_redirects=True)
         resp = self.app.delete('api/order/1000', follow_redirects=True)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp.status_code, 409)
 
     def test_get_order_user(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
         self.add_order(self.order_info)
         response = self.app.get('api/order-user/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_order_user(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         self.add_order(self.order_info)
         response = self.app.delete('api/order-user/1/1', follow_redirects=True)
         resp = self.app.delete('api/order-user/1/1000', follow_redirects=True)
@@ -153,25 +113,33 @@ class OrderTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 409)
 
     def test_get_orders_inprogress(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
         self.add_order(self.order_info)
         response = self.app.get('api/orders-state-0/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_get_orders_send(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         self.add_order(self.order_info)
         response = self.app.get('api/orders-state-1/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_get_orders_received(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
         self.add_order(self.order_info)
-        response = self.app.get('api/orders-state-1/1', follow_redirects=True)
+        response = self.app.get('api/orders-state-2/1', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_orders_inprogress_list(self):
+        self.add_order(self.order_info)
+        response = self.app.get('api/orders-list-state-0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_orders_send_list(self):
+        self.add_order(self.order_info)
+        response = self.app.get('api/orders-list-state-1', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_orders_received_list(self):
+        self.add_order(self.order_info)
+        response = self.app.get('api/orders-list-state-2', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def add_order(self, info):
@@ -184,15 +152,6 @@ class OrderTest(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-    def add_article_order(self, info):
-        return self.app.post('api/article-order/1',
-                             data=info,
-                             follow_redirects=True)
-
-    def add_address_order(self, info):
-        return self.app.post('api/address-order/1/1',
-                             data=info,
-                             follow_redirects=True)
 
     def add_card(self, info):
         return self.app.post('api/account/1/card',
@@ -207,8 +166,6 @@ class OrderTest(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-    def postBook(self, info):
-        return self.app.post('api/book', data=info, follow_redirects=True)
 
 
 if __name__ == '__main__':

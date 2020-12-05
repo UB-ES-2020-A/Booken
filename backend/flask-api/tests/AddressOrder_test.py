@@ -41,6 +41,7 @@ class AddressOrderTest(unittest.TestCase):
         "telf": 666666666,
     }
 
+
     account_info = {
         "name": "Test",
         "lastname": "Test",
@@ -77,6 +78,18 @@ class AddressOrderTest(unittest.TestCase):
         "back_cover_image_url": 'asd'
     }
 
+    address_info = {
+        "label_name": "Mi casa",
+        "name": "test",
+        "surnames": "tests",
+        "street": "La calle de mi casa",
+        "number": 32,
+        "cp": "08431",
+        "city": "Mi city",
+        "province": "Mi provincia",
+        "telf": 123456
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
@@ -87,28 +100,38 @@ class AddressOrderTest(unittest.TestCase):
         pass
 
     def test_create_address_order(self):
-        response = self.create_account(self.account_info)
-        resp = self.add_card(self.card_info)
-        resp = self.add_order(self.order_info)
-        resp = self.add_address(self.address_order_info)
+        self.create_account(self.account_info)
+        self.add_card(self.card_info)
+        self.add_order(self.order_info)
+        self.add_address(self.address_order_info)
         response = self.add_address_order(self.address_order_info)
         resp_notorder = self.app.post('api/address-order/1000/1',
-                             data=self.address_order_info,
-                             follow_redirects=True)
-        resp_notacc = self.app.post('api/address-order/1/1000',
                                       data=self.address_order_info,
                                       follow_redirects=True)
-        resp_notaddress = self.app.post('api/address-order/1/1/1000',
+        resp_notacc = self.app.post('api/address-order/1/1000',
                                     data=self.address_order_info,
                                     follow_redirects=True)
-        resp_address = self.app.post('api/address-order/1/1/1',
+        resp_notaddress = self.app.post('api/address-order/1/1/1000',
                                         data=self.address_order_info,
                                         follow_redirects=True)
+        resp_address = self.app.post('api/address-order/1/1/1',
+                                     data=self.address_order_info,
+                                     follow_redirects=True)
+
+        self.add_address_account(self.address_info)
+        self.add_address_account(self.address_info)
+        self.add_address_account(self.address_info)
+
+        resp_max_address = self.app.post('api/address-order/1/1',
+                                         data=self.address_order_info,
+                                         follow_redirects=True)
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp_notorder.status_code, 404)
         self.assertEqual(resp_notacc.status_code, 404)
         self.assertEqual(resp_notaddress.status_code, 404)
         self.assertEqual(resp_address.status_code, 200)
+        self.assertEqual(resp_max_address.status_code, 404)
 
     def test_get_address_order(self):
         self.create_account(self.account_info)
@@ -179,6 +202,11 @@ class AddressOrderTest(unittest.TestCase):
 
     def postBook(self, info):
         return self.app.post('api/book', data=info, follow_redirects=True)
+
+    def add_address_account(self, info):
+        return self.app.post('api/account/1/address',
+                             data=info,
+                             follow_redirects=True)
 
 
 if __name__ == '__main__':

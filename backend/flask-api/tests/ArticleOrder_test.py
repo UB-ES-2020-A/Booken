@@ -12,12 +12,7 @@ from db import db
 #  deepcode ignore C0413: stupid issue
 
 class ArticleOrderTest(unittest.TestCase):
-    article_info = {
-        'price': 1,
-        'categoria': "HUMANIDADES",
-        'quant': 1,
-        'book_id': 1
-    }
+
     order_info = {
         "date": "29/11/2020 10:50",
         "total": 1.,
@@ -39,6 +34,12 @@ class ArticleOrderTest(unittest.TestCase):
         "price": 1.,
         "id_book": 1,
         "quant": 99999999
+    }
+
+    article_order_3_info = {
+        "price": 1.,
+        "id_book": 100,
+        "quant": 1
     }
 
     address_order_info = {
@@ -93,33 +94,30 @@ class ArticleOrderTest(unittest.TestCase):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
-
+        self.create_account(self.account_info)
+        self.add_card(self.card_info)
+        self.add_address(self.address_order_info)
+        self.add_order(self.order_info)
+        self.postBook(self.book_info)
 
     def tearDown(self):
         # Executed after each test
         pass
 
     def test_create_article_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_order(self.order_info)
-        self.postBook(self.book_info)
         response = self.add_article_order(self.article_order_info)
         resp = self.add_article_order(self.article_order_2_info)
-        resp_book = self.app.post('api/article-order/1000',
-                             data=self.article_order_info,
-                             follow_redirects=True)
+        resp_order = self.app.post('api/article-order/1000',
+                                   data=self.article_order_info,
+                                   follow_redirects=True)
+
+        resp_book = self.add_article_order(self.article_order_3_info)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp_order.status_code, 404)
         self.assertEqual(resp_book.status_code, 404)
 
-
     def test_get_article_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
-        self.add_order(self.order_info)
-        self.postBook(self.book_info)
         self.add_article_order(self.article_order_info)
         response = self.app.get('api/article-order/1/1', follow_redirects=True)
         resp = self.app.get('api/article-order/1000/1', follow_redirects=True)
@@ -128,40 +126,19 @@ class ArticleOrderTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 404)
         self.assertEqual(resp_article.status_code, 404)
 
-
     def test_get_articles_order(self):
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
-        self.add_order(self.order_info)
         response = self.app.get('api/articles-order/1', follow_redirects=True)
         resp = self.app.get('api/articles-order/1000', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp.status_code, 404)
 
-
     def test_delete_article_order(self):
-        db.drop_all()
-        db.create_all()
-        self.create_account(self.account_info)
-        self.add_card(self.card_info)
-        self.add_address(self.address_order_info)
-        self.add_order(self.order_info)
-        self.postBook(self.book_info)
         self.add_article_order(self.article_order_info)
         response = self.app.delete('api/article-order/1/1', follow_redirects=True)
         resp = self.app.delete('api/article-order/1/1000', follow_redirects=True)
-        db.drop_all()
-        db.create_all()
-        self.add_order(self.order_info)
-        self.add_article(self.article_info)
-        resp_not_articles = self.app.delete('api/article-order/1/1', follow_redirects=True)
         resp_not_order = self.app.delete('api/article-order/100/1', follow_redirects=True)
-
         self.assertEqual(response.status_code, 201)
         self.assertEqual(resp.status_code, 404)
-
-        self.assertEqual(resp_not_articles.status_code, 404)
         self.assertEqual(resp_not_order.status_code, 404)
 
 

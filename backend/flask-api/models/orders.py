@@ -78,18 +78,6 @@ class OrdersModel(db.Model):
             "card": self.card_id
         }
 
-    def json_filtered_by_book_id(self):
-        book = BookModel.find_by_id(self.id_book)
-        return {
-            "id": self.id_book,
-            "id_user": self.id_user,
-            "book_name": book.name,
-            "num_books": self.num_books,
-            "state": self.state,
-            "send_type": self.send_type,
-            "card_id": self.card_id
-        }
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -97,9 +85,6 @@ class OrdersModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-
-    def change_order_state(self, new_state):
-        self.state = new_state
 
     @classmethod
     def find_by_state(cls, state, idd):
@@ -118,10 +103,6 @@ class OrdersModel(db.Model):
         return OrdersModel.query.filter_by(id=idd).first()
 
     @classmethod
-    def num_orders(cls):
-        return len(OrdersModel.query.all())
-
-    @classmethod
     def get_orders(cls):
         list_orders = [order.json() for order in OrdersModel.query.all()]
         dicc = {"orders": list_orders}
@@ -138,7 +119,6 @@ class OrdersModel(db.Model):
             db.session.add(self)
             db.session.commit()
             return 1
-        return 0
 
     def add_address(self, address):
         self.address += [address]
@@ -151,5 +131,3 @@ class OrdersModel(db.Model):
             db.session.add(self)
             db.session.commit()
             return 1
-        return 0
-
