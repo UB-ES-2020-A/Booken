@@ -198,7 +198,7 @@ class OrderAddress(Resource):
             account.addresses.append(address)
         # Si pasamos la id de la direccion la buscamos en la cuenta
         else:
-            address = account.find_addres_by_id(address_id)
+            address = account.find_address_by_id(address_id)
         if address is not None:
             order.add_address(address)
             order.save_to_db()
