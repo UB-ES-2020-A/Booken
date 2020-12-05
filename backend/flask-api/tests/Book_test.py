@@ -2,16 +2,22 @@
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
+
 #  deepcode ignore C0411: not an issue
 sys.path.append('../')
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
+
+
 #  deepcode ignore C0411: not an issue
 
 
 class BookTests(unittest.TestCase):
+    app = setupApp(True).test_client()
+    db.drop_all()
+    db.create_all()
 
     book_info = {
         "isbn": 12345678911,
@@ -36,9 +42,10 @@ class BookTests(unittest.TestCase):
     }
 
     def setUp(self):
-        self.app = setupApp(test=True).test_client()
-        db.drop_all()
-        db.create_all()
+        meta = db.metadata
+        for table in reversed(meta.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
 
     def tearDown(self):
         # Executed after each test
@@ -53,7 +60,19 @@ class BookTests(unittest.TestCase):
         response = self.getBook()
 
         self.assertEqual(response.status_code, 200)
-        assert b'Book post' in response.data
+        self.assertIn(b'Book post', response.data)
+
+    def test_get_book_list_genre(self):
+        self.postBook(self.book_info)
+        response = self.getBookListGenre()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'HUMANIDADES', response.data)
+
+    def test_get_book_list(self):
+        self.postBook(self.book_info)
+        response = self.getBookList()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Book post', response.data)
 
     def test_put_book(self):
         self.postBook(self.book_info)
@@ -63,7 +82,7 @@ class BookTests(unittest.TestCase):
 
         response = self.putBook(put_info)
         self.assertEqual(response.status_code, 200)
-        assert b'Book Test modified' in response.data
+        self.assertIn(b'Book Test modified', response.data)
 
     def test_delete_Book(self):
         self.postBook(self.book_info)
@@ -81,6 +100,12 @@ class BookTests(unittest.TestCase):
 
     def deleteBook(self):
         return self.app.delete('api/book/1', follow_redirects=True)
+
+    def getBookListGenre(self):
+        return self.app.get('/api/books/HUMANIDADES', follow_redirects=True)
+
+    def getBookList(self):
+        return self.app.get('/api/books', follow_redirects=True)
 
 
 if __name__ == '__main__':
