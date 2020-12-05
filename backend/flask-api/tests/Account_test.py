@@ -15,6 +15,11 @@ from db import db
 
 
 class AccountTests(unittest.TestCase):
+
+    app = setupApp(True).test_client()
+    db.drop_all()
+    db.create_all()
+
     address_info = {
         "id": 1,
         "label_name": "Mi casa",
@@ -29,9 +34,10 @@ class AccountTests(unittest.TestCase):
     }
 
     def setUp(self):
-        self.app = setupApp(True).test_client()
-        db.drop_all()
-        db.create_all()
+        meta = db.metadata
+        for table in reversed(meta.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
 
     def tearDown(self):
         # Executed after each test
@@ -87,7 +93,9 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(None, AccountModel.find_by_email('tengo@barcos.tech'))
 
     def test_model_account_number(self):
-        self.assertEqual(0, len(AccountModel.get_users()['users']))
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(1, len(AccountModel.get_users()['users']))
 
     def test_model_find_address_id(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
@@ -155,14 +163,30 @@ class AccountTests(unittest.TestCase):
                                     'ascii')})
         self.assertEqual(200, response.status_code)
 
-    def test_get_put_unauthorized_account(self):
+    def test_get_put_non_existent_account(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
         acc = AccountModel.find_by_email('tengo@barcos.tech')
+        response = self.login('tengo@barcos.tech', 'america16')
+        response = self.app.put('api/account/99', follow_redirects=True, data={"name": "CEp", "lastname": "asdas",
+                                                                              "email": "lel@a.com"},
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
+                                    'ascii')})
+        self.assertEqual(404, response.status_code)
+
+    def test_get_put_unauthorized_account(self):
+        response = self.register('Cristoasdbal', 'Coloasdn', 'tengo@barcasds.tech', 'amerasdica16')
+        self.assertEqual(response.status_code, 200)
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(response.status_code, 200)
+        acc = AccountModel.find_by_email('tengo@barcos.tech')
+        response = self.login('tengo@barcos.tech', 'america16')
         response = self.app.put('api/account/1', follow_redirects=True, data={"name": "CEp", "lastname": "asdas",
                                                                               "email": "lel@a.com"},
                                 headers={'Authorization': 'Basic ' + base64.b64encode(
-                                    bytes(str(acc.id) + ":" + "asdasd", 'ascii')).decode('ascii')})
+                                    bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
+                                    'ascii')})
         self.assertEqual(401, response.status_code)
 
     def test_delete_account_from_db(self):
@@ -176,6 +200,7 @@ class AccountTests(unittest.TestCase):
         self.assertEqual(404, response.status_code)
 
     def test_get_accounts(self):
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         response = self.app.get('api/accounts', follow_redirects=True)
         self.assertEqual(200, response.status_code)
 
@@ -206,12 +231,14 @@ class AccountTests(unittest.TestCase):
     def test_unauthorized_account_change_password(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
+        response = self.register('Cristoasdbal', 'Coloasdn', 'tengo@barcasds.tech', 'amerasdica16')
+        self.assertEqual(response.status_code, 200)
         acc = AccountModel.find_by_email('tengo@barcos.tech')
         response = self.login('tengo@barcos.tech', 'america16')
-        response = self.app.put('api/account/'+str(acc.id)+'/change_password',
+        response = self.app.put('api/account/'+str(2)+'/change_password',
                                 follow_redirects=True, data={"old_password": "america16", "new_password": "asdas"},
                                 headers={'Authorization': 'Basic ' + base64.b64encode(
-                                    bytes(str(acc.id) + ":" + "asdasdas", 'ascii')).decode(
+                                    bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
                                     'ascii')})
         self.assertEqual(401, response.status_code)
 

@@ -23,6 +23,11 @@ from datetime import date
 
 
 class AuthorTest(unittest.TestCase):
+
+    app = setupApp(True).test_client()
+    db.drop_all()
+    db.create_all()
+
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -31,9 +36,10 @@ class AuthorTest(unittest.TestCase):
     }
 
     def setUp(self):
-        self.app = setupApp(True).test_client()
-        db.drop_all()
-        db.create_all()
+        meta = db.metadata
+        for table in reversed(meta.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
 
     def tearDown(self):
         # Executed after each test
