@@ -587,6 +587,7 @@ export default {
       if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/search', query: {name: this.information}})
+      this.information = ''
     },
     getTodayDate() {
       var today = new Date()
