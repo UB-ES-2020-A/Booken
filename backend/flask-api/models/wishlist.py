@@ -26,9 +26,9 @@ class WishlistModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.query(WishlistModel).filter_by(id=self.id).delete()
-        db.session.commit()
+    # def delete_from_db(self):
+    #     db.session.query(WishlistModel).filter_by(id=self.id).delete()
+    #     db.session.commit()
 
     def json(self):
         return {"Wishlist": {
