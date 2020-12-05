@@ -1,3 +1,4 @@
+# file deepcode ignore C0411: shut it deepcode
 from db import db
 from datetime import datetime
 

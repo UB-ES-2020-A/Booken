@@ -1,3 +1,4 @@
+# file deepcode ignore C0411: shut it deepcode
 from models.accounts import AccountModel
 from models.log import LogModel
 from models.orders import OrdersModel
