@@ -55,24 +55,22 @@ class BookTests(unittest.TestCase):
         response = self.postBook(self.book_info)
         self.assertEqual(response.status_code, 200)
 
+    def test_post_book_error(self):
+        self.postBook(self.book_info)
+        response = self.postBook(self.book_info)
+        self.assertEqual(response.status_code, 409)
+
     def test_get_Book(self):
         self.postBook(self.book_info)
-        response = self.getBook()
+        response = self.app.get('api/book/1', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Book post', response.data)
 
-    def test_get_book_list_genre(self):
+    def test_get_book_error(self):
         self.postBook(self.book_info)
-        response = self.getBookListGenre()
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'HUMANIDADES', response.data)
-
-    def test_get_book_list(self):
-        self.postBook(self.book_info)
-        response = self.getBookList()
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Book post', response.data)
+        response = self.app.get('api/book/2', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
 
     def test_put_book(self):
         self.postBook(self.book_info)
@@ -80,32 +78,53 @@ class BookTests(unittest.TestCase):
         put_info = self.book_info.copy()
         put_info["name"] = 'Book Test modified'
 
-        response = self.putBook(put_info)
+        response = self.app.put('api/book/1', data=put_info, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Book Test modified', response.data)
 
-    def test_delete_Book(self):
+    def test_put_book_error(self):
         self.postBook(self.book_info)
-        response = self.deleteBook()
+
+        put_info = self.book_info.copy()
+        put_info["name"] = 'Book Test modified'
+
+        response = response = self.app.put('api/book/2', data=put_info, follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_book(self):
+        self.postBook(self.book_info)
+        response = self.app.delete('api/book/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_delete_book_error(self):
+        self.postBook(self.book_info)
+        response = self.app.delete('api/book/2', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_book_list_genre(self):
+        self.postBook(self.book_info)
+        response = self.app.get('/api/books/HUMANIDADES', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'HUMANIDADES', response.data)
+
+    def test_get_book_list(self):
+        self.postBook(self.book_info)
+        response = self.app.get('/api/books', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Book post', response.data)
+
+    def test_book_author(self):
+        self.postBook(self.book_info)
+        response = self.app.get('/api/book/1/author', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_book_author_error(self):
+        self.postBook(self.book_info)
+        response = self.app.get('/api/book/4/author', follow_redirects=True)
+        self.assertEqual(response.status_code, 404)
 
     def postBook(self, info):
         return self.app.post('api/book', data=info, follow_redirects=True)
-
-    def getBook(self):
-        return self.app.get('api/book/1', follow_redirects=True)
-
-    def putBook(self, info):
-        return self.app.put('api/book/1', data=info, follow_redirects=True)
-
-    def deleteBook(self):
-        return self.app.delete('api/book/1', follow_redirects=True)
-
-    def getBookListGenre(self):
-        return self.app.get('/api/books/HUMANIDADES', follow_redirects=True)
-
-    def getBookList(self):
-        return self.app.get('/api/books', follow_redirects=True)
 
 
 if __name__ == '__main__':

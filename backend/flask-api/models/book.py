@@ -59,7 +59,7 @@ class BookModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        return db.session.query(BookModel).filter_by(name=" ".join(w.capitalize() for w in name.split(" "))).first()
+        return db.session.query(BookModel).filter_by(name=name).first()
 
     @classmethod
     def find_by_genre(cls, genre):
