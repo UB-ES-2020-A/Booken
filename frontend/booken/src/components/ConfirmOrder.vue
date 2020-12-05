@@ -171,11 +171,11 @@
                       <div class="modal-body">
                         <form>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <label class="col-form-label">Identificador</label>
                             <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <label class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
                               <input type="text" class="form-control"
                                      v-model="newAddressName" placeHolder="Nombre">
@@ -184,7 +184,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <label class="col-form-label">Dirección</label>
                             <div style="display:flex">
                               <input type="text" class="form-control" style="width:80%;"
                                      v-model="newAddressRoad" placeHolder="Calle">
@@ -193,11 +193,11 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <label class="col-form-label">Código postal</label>
                             <input type="number" class="form-control" v-model="newAddressCode">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <label class="col-form-label">Residencia</label>
                             <div style="display:flex">
                               <input type="text" class="form-control"
                                      v-model="newAddressCity" placeHolder="Ciudad">
@@ -206,7 +206,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <label class="col-form-label">Telefono</label>
                             <input type="number" class="form-control" v-model="newAddressPhone">
                           </div>
                         </form>

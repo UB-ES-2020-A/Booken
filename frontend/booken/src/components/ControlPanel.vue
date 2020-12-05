@@ -189,13 +189,13 @@
                              style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <h5 class="modal-title">Detalles del pedido</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              <div class="container-ticket" id="ticket-pdf">
+                              <div class="container-ticket">
                                 <div class="ticket">
                                   <div class="head-ticket">
                                     <p class="x-bold">booken & co</p>
@@ -391,7 +391,7 @@
                              style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <h5 class="modal-title">Detalles del pedido</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -712,11 +712,11 @@
                       <div class="modal-body">
                         <form>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <label class="col-form-label">Identificador</label>
                             <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <label class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
                               <input type="text" class="form-control"
                                      v-model="newAddressName" placeHolder="Nombre">
@@ -725,7 +725,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <label class="col-form-label">Dirección</label>
                             <div style="display:flex">
                               <input type="text" class="form-control" style="width:80%;"
                                      v-model="newAddressRoad" placeHolder="Calle">
@@ -734,11 +734,11 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <label class="col-form-label">Código postal</label>
                             <input type="number" class="form-control" v-model="newAddressCode">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <label class="col-form-label">Residencia</label>
                             <div style="display:flex">
                               <input type="text" class="form-control"
                                      v-model="newAddressCity" placeHolder="Ciudad">
@@ -747,7 +747,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <label class="col-form-label">Teléfono</label>
                             <input type="number" class="form-control" v-model="newAddressPhone">
                           </div>
                         </form>
@@ -2143,6 +2143,7 @@ export default {
         state: type
       }
       axios.put(path, parameters)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
             if (this.sortTypeHist == "-1") {
               this.getOrdersList()
@@ -2263,6 +2264,7 @@ export default {
     deleteAccount() {
       var path = api + 'account/' + this.id
       axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
                 {

@@ -641,6 +641,7 @@ export default {
     deleteFromWishList(book) {
       var path = api + 'wishlist/' + this.idIn + '/' + book.id
       axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Lista de deseados actualizada correctamente.',
                 {
