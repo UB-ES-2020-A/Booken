@@ -42,11 +42,11 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col" v-if="this.nbooks<=0" style="text-align: center">
+    <div class="col" v-if="this.nbooks <= 0" style="text-align: center">
       <h1>No se han encontrado libros para su busqueda: "{{search}}"</h1>
       <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
            src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+  </div>
   </div>
 </template>
 
