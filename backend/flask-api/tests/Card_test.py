@@ -57,15 +57,6 @@ class CardTests(unittest.TestCase):
         response = self.app.get('/api/account/3/card/1', follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
-    def test_get_existent_card_from_non_existent_account(self):
-        card = CardModel(self.card_info['card_owner'], self.card_info['number'], self.card_info['date'],
-                         self.card_info['payment_method'])
-        account = AccountModel.query.first()
-        account.cards.append(card)
-        card.save_to_db()
-        response = self.app.get('/api/account/3/card/1', follow_redirects=True)
-        self.assertEqual(404, response.status_code)
-
     def test_get_existent_card_from_non_owner_account(self):
         card = CardModel(self.card_info['card_owner'], self.card_info['number'], self.card_info['date'],
                          self.card_info['payment_method'])
