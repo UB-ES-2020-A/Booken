@@ -16,6 +16,10 @@ from db import db
 
 
 class SearchBookTests(unittest.TestCase):
+    app = setupApp(True).test_client()
+    db.drop_all()
+    db.create_all()
+
     book_info1 = {
         "isbn": 12345678911,
         "name": 'The secret of the Stones',
@@ -39,9 +43,10 @@ class SearchBookTests(unittest.TestCase):
     }
 
     def setUp(self):
-        self.app = setupApp(test=True).test_client()
-        db.drop_all()
-        db.create_all()
+        meta = db.metadata
+        for table in reversed(meta.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
 
     def tearDown(self):
         # Executed after each test
@@ -63,7 +68,6 @@ class SearchBookTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'12345678911', response.data)
         self.assertIn(b'The secret of the Stones', response.data)
-
 
     def test_search_by_author_name(self):
         self.postBook(self.book_info1)
