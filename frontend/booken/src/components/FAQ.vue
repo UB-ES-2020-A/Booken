@@ -220,9 +220,27 @@ export default {
           .then((res) => {
             console.log(res)
             this.getConsults()
+
+            toastr.success('', '¡Las FAQ se han actualizado con éxito!',
+                  {
+                    timeOut: 2500,
+                    progressBar: true,
+                    newestOnTop: true,
+                    positionClass: 'toast-bottom-right',
+                    preventDuplicates: true
+                  })
           })
           .catch((error) => {
             console.log(error)
+
+            toastr.error('', 'Algo no salió como se esperaba.',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
     },
     addFAQ_DB() {
