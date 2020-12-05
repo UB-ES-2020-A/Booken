@@ -38,7 +38,7 @@ class BookTests(unittest.TestCase):
     }
 
     def setUp(self):
-        app = setupApp(True).test_client()
+        self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
 
