@@ -1,5 +1,8 @@
 from models.accounts import AccountModel
+from models.log import LogModel
 from models.orders import OrdersModel
+from calendar import monthrange
+from datetime import datetime
 
 
 class DataRetriever:
@@ -26,6 +29,8 @@ class DataRetriever:
             data = cls._gain_genre(cls)
         elif needed_data == "total_users":
             data = cls._total_users(cls)
+        elif needed_data == "log_month":
+            data = cls._log_month(cls)
         elif needed_data == "all":
             data = cls._get_all_data(cls)
 
@@ -41,10 +46,19 @@ class DataRetriever:
                 'total_gain': self._total_gain(self)['gain'],
                 'gain_month': self._gain_month(self),
                 'gain_year': self._gain_year(self),
-                'gain_genre': self._gain_genre(self)}
+                'gain_genre': self._gain_genre(self),
+                'log_month': self._log_month(self)}
 
     def _years_data(self):
         return sorted({int(o['date'][6:10]) for o in self._get_orders(self)}, reverse=True)
+
+    def _log_month(self):
+        year, month, day = datetime.now().year, datetime.now().month, datetime.now().day
+        _, ndays = monthrange(year, month)
+        logs = {day: 0 for day in range(1, day + 1)}
+        for i in LogModel.find_by_month_year(year, month):
+            logs[i.day] += 1
+        return logs
 
     def _total_users(self):
         return len([user for user in AccountModel.get_users()['users'] if user['type'] == 0])
@@ -107,8 +121,9 @@ class DataRetriever:
 
     def _sales_genre(self):
         orders = self._get_orders(self)
-        genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL', 'COMICS Y MANGA',
-          'JUVENIL', 'OTRAS CATEGORIAS']
+        genres = ['HUMANIDADES', 'TECNICO Y FORMACION', 'METODOS DE IDIOMAS', 'LITERATURA', 'INFANTIL',
+                  'COMICS Y MANGA',
+                  'JUVENIL', 'OTRAS CATEGORIAS']
         years = sorted({int(o['date'][6:10]) for o in orders}, reverse=True)
         n_sales_genre = {year: {genre: 0 for genre in genres} for year in years}
 
