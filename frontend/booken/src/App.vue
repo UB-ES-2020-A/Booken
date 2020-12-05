@@ -22,7 +22,7 @@
           <div class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
                    placeholder="Busca por autor, título, ISBN"
-                   aria-label="Search">
+                   aria-label="Search" @input="goToSearch">
             <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit"
                     @click="goToSearch"><i
                 class="fas fa-search"
@@ -45,7 +45,7 @@
                   <div class="form-inline ">
                     <input class="form-control" type="search" v-model="information"
                            placeholder="Busca por autor, título, ISBN"
-                           aria-label="Search">
+                           aria-label="Search" @input="searchInputChange">
                     <button class="btn ml-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                             style="background-color: #3b494d;" type="submit" @click="goToSearch"><i
                         class="fas fa-search"
@@ -354,6 +354,7 @@ import * as toastr from './assets/toastr.js'
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
 import {bus, api} from './main.js'
+import { debounce } from "debounce";
 import axios from 'axios'
 import BookInfo from "@/components/BookInfo";
 import Contact from "@/components/Contact";
@@ -426,10 +427,15 @@ export default {
       typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false,
+      query: ''
       //toggledNav: false
     }
   },
   methods: {
+    searchInputChange(){
+      //  deepcode ignore UsageOfUndefinedReturnValue: shut it deepcode
+      debounce(this.goToSearch(), 5000)
+    },
     saveLogInDataCookie(data, clear){
       this.$cookie.setCookie("logindata", data, {
         expire: '1h',
@@ -598,7 +604,6 @@ export default {
       if (this.viewCart)
         this.viewCart = false
       this.$router.push({path: '/search', query: {name: this.information}})
-      this.information = ''
     },
     getTodayDate() {
       var today = new Date()
