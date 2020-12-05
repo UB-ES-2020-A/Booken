@@ -189,13 +189,13 @@
                              style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <h5 class="modal-title">Detalles del pedido</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              <div class="container-ticket" id="ticket-pdf">
+                              <div class="container-ticket">
                                 <div class="ticket">
                                   <div class="head-ticket">
                                     <p class="x-bold">booken & co</p>
@@ -391,7 +391,7 @@
                              style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="modalPaymentLabel">Detalles del pedido</h5>
+                              <h5 class="modal-title">Detalles del pedido</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -712,11 +712,11 @@
                       <div class="modal-body">
                         <form>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <label class="col-form-label">Identificador</label>
                             <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <label class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
                               <input type="text" class="form-control"
                                      v-model="newAddressName" placeHolder="Nombre">
@@ -725,7 +725,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <label class="col-form-label">Dirección</label>
                             <div style="display:flex">
                               <input type="text" class="form-control" style="width:80%;"
                                      v-model="newAddressRoad" placeHolder="Calle">
@@ -734,11 +734,11 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <label class="col-form-label">Código postal</label>
                             <input type="number" class="form-control" v-model="newAddressCode">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <label class="col-form-label">Residencia</label>
                             <div style="display:flex">
                               <input type="text" class="form-control"
                                      v-model="newAddressCity" placeHolder="Ciudad">
@@ -747,7 +747,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <label class="col-form-label">Teléfono</label>
                             <input type="number" class="form-control" v-model="newAddressPhone">
                           </div>
                         </form>
@@ -1021,6 +1021,15 @@
                   ></apexchart>
                 </div>
               </div>
+              <div class="row row-cols-1 row-cols-md-1" style="margin-top: 1em">
+                <div class="col">
+                  <apexchart
+                      width="100%"
+                      type="line"
+                      :options="loginLogOptions"
+                  ></apexchart>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1082,6 +1091,7 @@ export default {
       gainMonthOptions: {},
       gainMonthSeries: {},
       gainGenreOptions: {},
+      loginLogOptions: {},
       cards: [
         {
           "id": 0,
@@ -1146,6 +1156,7 @@ export default {
         {text: 'Recibidos', value: '2'}
       ],
       years_data: [],
+      log_month: {},
       total_sales: 0,
       total_users: 0,
       sales_month: {},
@@ -1283,6 +1294,13 @@ export default {
       }
       return arrr
     },
+    toSimpleArrayKeys(arr){
+      var arrr = []
+      for (var i in arr) {
+        arrr.push(i)
+      }
+      return arrr
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
       axios.get(path)
@@ -1397,13 +1415,58 @@ export default {
           },
         }
       }
+      this.loginLogOptions = {
+        series: [{
+          name: "Accesos",
+          data: this.toSimpleArray(this.log_month)
+        }],
+        labels: this.toSimpleArrayKeys(this.log_month),
+        title: {
+          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth()) + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+    },
+    getMonthString(month){
+      switch(month){
+        case 1:
+          return "enero"
+        case 2:
+          return "febrero"
+        case 3:
+          return "marzo"
+        case 4:
+          return "abril"
+        case 5:
+          return "mayo"
+        case 6:
+          return "junio"
+        case 7:
+          return "julio"
+        case 8:
+          return "agosto"
+        case 9:
+          return "septiembre"
+        case 10:
+          return "octubre"
+        case 11:
+          return "noviembre"
+        case 12:
+          return "diciembre"
+      }
     },
     getData() {
       var path = api + 'data_retriever/all'
       axios.get(path)
           .then((res) => {
             this.years_data = res.data.all.years_data
-            console.log(this.years_data)
             this.total_sales = res.data.all.total_sales
             this.total_users = res.data.all.total_users
             this.sales_month = res.data.all.sales_month
@@ -1413,6 +1476,7 @@ export default {
             this.gain_month = res.data.all.gain_month
             this.gain_year = res.data.all.gain_year
             this.gain_genre = res.data.all.gain_genre
+            this.log_month = res.data.all.log_month
             this.chartGeneration(this.years_data[0])
           })
           .catch((error) => {
@@ -1503,9 +1567,7 @@ export default {
       this.cIndex = index
     },
     changeViewingOrdersList(index) {
-      console.log(this.viewOrdersList)
       this.viewOrdersList = this.sOrdersList[index]
-      console.log(this.viewOrdersList)
       this.cIndexList = index
     },
     splitOrders() {
@@ -1541,7 +1603,6 @@ export default {
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
-      console.log(id)
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
@@ -1569,7 +1630,6 @@ export default {
     },
     cancelOrderList(id) {
       var path = api + 'order/' + id
-      console.log(id)
       axios.delete(path)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
@@ -1596,7 +1656,6 @@ export default {
           })
     },
     viewOrder(i) {
-      console.log(i)
       this.order.id = i.id
       this.order.date = i.date
       this.order.total = i.total
@@ -1806,11 +1865,8 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1830,11 +1886,8 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1854,11 +1907,8 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1878,7 +1928,6 @@ export default {
 
       axios.get(path)
           .then((res) => {
-            console.log(res.data.orders)
             this.ordersHist = res.data.orders
             this.splitOrdersList()
           })
@@ -2033,9 +2082,7 @@ export default {
     validateEndDate(date) {
       var today, someday
       var exMonth = date.slice(0, 2)
-      console.log(exMonth)
       var exYear = date.slice(3)
-      console.log(exYear)
       today = new Date()
       someday = new Date()
       someday.setFullYear(exYear, exMonth, 1)
@@ -2156,29 +2203,24 @@ export default {
 
     },
     changeState(type, order_id) {
-      console.log(this.sortTypeHist)
       const path = api + 'order/' + order_id
       const parameters = {
         state: type
       }
       axios.put(path, parameters)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            console.log(res)
             if (this.sortTypeHist == "-1") {
               this.getOrdersList()
-
             }
             if (this.sortTypeHist == "0") {
               this.stateOrdersListInProgress()
-
             }
             if (this.sortTypeHist == "1") {
               this.stateOrdersListSend()
-
             }
             if (this.sortTypeHist == "2") {
               this.stateOrdersListReceived()
-
             }
           })
           .catch((error) => {
@@ -2286,10 +2328,9 @@ export default {
     },
     deleteAccount() {
       var path = api + 'account/' + this.id
-      console.log(this.id)
       axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            console.log(res.data)
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
                 {
                   timeOut: 2500,
@@ -2313,8 +2354,8 @@ export default {
                 })
           })
     },
+    // eslint-disable-next-line no-unused-vars
     searchOrder(order_id) {
-      console.log(order_id)
     }
   }
 }

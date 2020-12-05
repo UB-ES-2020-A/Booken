@@ -496,7 +496,6 @@ export default {
       }
     },
     splitReviews() {
-      console.log(this.reviews)
       if (this.reviews.length <= 2) {
         this.viewingReviews = this.reviews
       } else {
@@ -545,7 +544,7 @@ export default {
             this.getReviewsFromDB()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha guardar la reseña.',
                 {
                   timeOut: 2500,
@@ -666,7 +665,7 @@ export default {
                     })
               })
               .catch((error) => {
-                this.toPrint(error)
+                console.log(error)
                 toastr.error('', 'No se ha podido guardar los cambios en el libro.',
                     {
                       timeOut: 2500,
@@ -773,8 +772,8 @@ export default {
         this.wish_list = []
         var path = api + 'wishlist/' + this.id + '/' + book.id
         axios.post(path)
+            // eslint-disable-next-line no-unused-vars
             .then((res) => {
-              console.log(res.data)
               toastr.success('', 'Añadido a tu lista de deseos.',
                   {
                     timeOut: 2500,
@@ -837,12 +836,7 @@ export default {
         'quant': 1,
         'quant_t': book.available
       })
-    }
-    ,
-    toPrint(toPrint) {
-      console.log(toPrint)
-    }
-    ,
+    },
     initAuthors() {
       var path = api + 'authors'
 
@@ -851,7 +845,7 @@ export default {
             this.authors = res.data.authors
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     }
     ,
@@ -880,7 +874,7 @@ export default {
             this.bookInfo.synopsis = res.data.book.synopsis
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     }
     ,
@@ -905,7 +899,7 @@ export default {
             this.recommendBooks()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     },
     recommendBooks() {

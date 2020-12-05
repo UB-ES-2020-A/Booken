@@ -18,6 +18,7 @@
     "compass-mixins": "^0.12.10",
     "core-js": "^3.6.5",
     "css-select": "^3.1.0",
+    "debounce": "^1.2.0",
     "gsap": "^3.5.1",
     "imask": "^6.0.5",
     "jquery": "^3.5.1",
@@ -26,6 +27,8 @@
     "popper.js": "^1.16.1",
     "vue": "^3.0.0",
     "vue-chartjs": "^3.5.1",
+    "vue-cookie-next": "^1.0.3",
+    "vue-device-detector": "^1.1.6",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.0-beta.13",
     "vue3-apexcharts": "^1.1.1"

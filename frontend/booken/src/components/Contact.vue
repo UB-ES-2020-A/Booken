@@ -15,26 +15,26 @@
     <h1>Contacto</h1>
     <form>
       <div class="form-group">
-        <label for="exampleFormControlInput1">Nombre y apellido</label>
+        <label>Nombre y apellido</label>
         <input type="text" class="form-control" id="full_name" placeholder="Name Surname">
       </div>
       <div class="form-group">
-        <label for="exampleFormControlInput2">Correo electrónico</label>
+        <label>Correo electrónico</label>
         <input type="email" class="form-control" id="email" placeholder="name@example.com">
       </div>
       <div class="form-group">
-        <label for="exampleFormControlInput3">Teléfono de contacto</label>
+        <label>Teléfono de contacto</label>
         <input type="number" class="form-control" id="phone_number" placeholder="">
       </div>
 
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">Consulta</label>
+        <label>Consulta</label>
         <textarea class="form-control" id="contact_query" rows="10"></textarea>
       </div>
       <div class="form-group row">
           <div class="form-check" style="margin-top: 30px">
             <input class="form-check-input" type="checkbox" id="check_box">
-            <label class="form-check-label" for="gridCheck1">
+            <label class="form-check-label">
               He leído y acepto <a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">la política de privacidad</a>
             </label>
           </div>
@@ -100,7 +100,6 @@ export default {
     },
     contactQuery(){
         const path = api + 'contact_info'
-        console.log(this.addContactForm)
       axios.post(path, this.addContactForm)
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
