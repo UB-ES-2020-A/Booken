@@ -28,17 +28,17 @@
                 <div class="modal-body">
                   <form>
                     <div class="form-group" style="text-align: left">
-                      <label for="categoryLabel" class="col-form-label">Categoria de la pregunta</label>
+                      <label  class="col-form-label">Categoria de la pregunta</label>
                       <input type="test" class="form-control" v-model="newCategory">
                     </div>
 
                     <div class="form-group" style="text-align: left">
-                      <label for="questionLabel" class="col-form-label">Pregunta</label>
+                      <label  class="col-form-label">Pregunta</label>
                       <input type="test" class="form-control" v-model="newQuestion">
                     </div>
 
                     <div class="form-group" style="text-align: left">
-                      <label for="answerLabel" class="col-form-label">Respuesta</label>
+                      <label  class="col-form-label">Respuesta</label>
                       <textarea type="text" class="form-control cln" col=30 rows=10 v-model="newAnswer"/>
                     </div>
                   </form>
@@ -86,7 +86,7 @@
                  aria-labelledby="'t'+index" role="tabpanel">
 
               <div class="accordion">
-                <div v-for="(consult) in this.consults" :key="consult.category[0].type">
+                <div v-for="(consult) in this.consults" :key="consult.category[0].type">{{consult}}
                   <div v-if="category === consult.category[0].type">
 
                     <div style="display:flex;">
@@ -196,7 +196,7 @@ export default {
       axios.get(path)
           .then((res) => {
             this.consults = res.data.FAQ
-            console.log(this.consults)
+            for (var i in this.consults) console.log(this.consults[i])
             this.getCategories()
           })
           .catch((error) => {
