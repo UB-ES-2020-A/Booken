@@ -15,7 +15,7 @@ from db import db
 #  deepcode ignore C0411: not an issue
 
 
-class BookTests(unittest.TestCase):
+class SearchBookTests(unittest.TestCase):
     book_info1 = {
         "isbn": 12345678911,
         "name": 'The secret of the Stones',
