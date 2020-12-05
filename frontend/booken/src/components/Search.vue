@@ -1,14 +1,14 @@
 <template>
   <div class="front-container">
-    <div class="container" style="max-width: 1400px">
+    <div class="container" style="max-width: 1400px" v-if="this.nbooks > 0">
       <div class="row justify-content-md-between justify-content-sm-start">
         <div class="col-12 col-md-6 mr-md-auto my-auto ">
-          <h2>Resultados de la busqueda:</h2>
+          <h2>Resultados de la busqueda: "{{search}}"</h2>
         </div>
       </div>
     </div>
     <hr>
-    <div class="row row-cols-1 row-cols-sm-5" :key="this.nbooks">
+    <div class="row row-cols-1 row-cols-sm-5" v-if="this.nbooks > 0" :key="this.nbooks">
       <div class="col mb-4" v-for="book in this.books" :key="book.id">
         <div class="card h-100">
           <img
@@ -42,6 +42,11 @@
         </div>
       </div>
     </div>
+    <div class="col" v-else style="text-align: center">
+      <h1>No se han encontrado libros para su busqueda: "{{search}}"</h1>
+      <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
+           src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+    </div>
   </div>
 </template>
 
@@ -52,12 +57,14 @@ import axios from "axios";
 export default {
   name: "Search",
   created() {
+    this.search = this.$route.query.name
     this.searchBook(this.$route.query.name)
   },
   data() {
     return {
       books: [],
-      nbooks: 0
+      nbooks: 0,
+      search: ''
     }
   },
   methods: {
@@ -67,7 +74,7 @@ export default {
           .then((res) => {
             this.books = res.data.books
             this.nbooks = this.books.length
-
+            this.search = name
           })
           .catch((error) => {
             console.log(error)
