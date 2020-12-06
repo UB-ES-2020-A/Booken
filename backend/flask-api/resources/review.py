@@ -55,7 +55,7 @@ class Review(Resource):
 
     def put(self, idd):
         data = self.__parse_request__()
-        review =ReviewModel.find_by_id(id)
+        review =ReviewModel.find_by_id(idd)
         if not review:
             return {'message': "There is no review with ['id': {}]".format(idd)}, 404
         review.delete_from_db()
