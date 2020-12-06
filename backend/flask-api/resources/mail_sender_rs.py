@@ -4,7 +4,7 @@ from flask_restful import Resource, reqparse
 
 from models.contact import ContactModel
 from utils.mail_sender import MailSender
-
+import os
 
 class SendContactResponse(Resource):
 
@@ -33,7 +33,7 @@ class SendContactResponse(Resource):
                 contact.delete_from_db()
                 return {"message":"Email sended correctly"}, 200
             except (FileNotFoundError, smtplib.SMTPException) as e:
-                print(e)
+                print(e, os.getcwd())
                 return {'message': 'Something went wrong'}, 500
         else:
             return {"message":"Contact not found"}, 404
