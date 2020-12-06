@@ -207,7 +207,3 @@ class AddressOrderTest(unittest.TestCase):
         return self.app.post('api/account/1/address',
                              data=info,
                              follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()
