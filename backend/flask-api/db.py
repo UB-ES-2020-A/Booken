@@ -7,17 +7,14 @@ db = SQLAlchemy()
 
 secret_key = "McQfTjWnZr4u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H+MbQeThVmYq3t6w9z$C&F"
 
-email_templates = {}
+email_templates = {
+        "response_template": "utils/email_templates/contact_response_email.html"
+    }
 
 def create_app(test=False):
-    global email_templates
     app = Flask(__name__,
                       static_folder="static",
                       template_folder="dist")
-
-    email_templates = {
-        "response_template": "utils/email_templates/contact_response_email.html"
-    }
 
     if test:
         app.config['TESTING'] = True
@@ -27,7 +24,7 @@ def create_app(test=False):
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
         app.config['MAIL_SUPPRESS_SEND'] = False
-        email_templates["response_template"] = "../" + email_templates["response_template"]
+        email_templates["response_template"] = "../utils/email_templates/contact_response_email.html"
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
