@@ -87,7 +87,7 @@ export default {
 <style scoped>
 .front-container {
   margin-right: 5%;
-  margin-left: 15%;
+  margin-left: 5%;
   margin-top: 50px;
   text-align: left;
 }
