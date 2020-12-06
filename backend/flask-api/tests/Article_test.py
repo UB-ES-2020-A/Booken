@@ -64,8 +64,10 @@ class ArticleTest(unittest.TestCase):
     def test_get_article(self):
         self.add_article(self.article_info)
         response = self.app.get('api/article/1', follow_redirects=True)
+        resp = self.app.get('api/article/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def test_get_articles(self):
         self.add_article(self.article_info)
@@ -84,11 +86,13 @@ class ArticleTest(unittest.TestCase):
         self.add_article(self.article_info)
 
         response = self.app.delete('api/article/1', follow_redirects=True)
+        resp = self.app.delete('api/article/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 201)
-
+        self.assertEqual(resp.status_code, 404)
 
     def add_article(self, info):
         return self.app.post('api/article',
                              data=info,
                              follow_redirects=True)
+

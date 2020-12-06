@@ -8,7 +8,7 @@ class Category_FAQ(Resource):
         cat = CategoryModel.find_by_id(idd)
         if cat:
             return {'Category': cat.json()},200
-        return {'message': "Category with id [{}] Not found".format(idd)}, 409
+        return {'message': "Category with id [{}] Not found".format(idd)}, 404
 
     def post(self):
         # Create a new faq with the data passed to us.
@@ -29,4 +29,4 @@ class Category_FAQ(Resource):
 
 class Category_FAQ_list(Resource):
     def get(self):
-        return CategoryModel.get_categories(), 200 if CategoryModel.get_categories() else 404
+        return CategoryModel.get_categories(), 200

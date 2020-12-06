@@ -12,7 +12,7 @@ class Articles(Resource):
         article = ArticlesModel.find_by_id(idd)
         if article:
             return {"article": article.json()}, 200
-        return {'message': "Article with id [{}] Not found".format(idd)}, 409
+        return {'message': "Article with id [{}] Not found".format(idd)}, 404
 
     # @auth.login_required(role='admin')
     def post(self):
@@ -36,10 +36,10 @@ class Articles(Resource):
         if article:
             article.delete_from_db()
             return {'message': "OK"}, 201
-        return {'message': "Article with id [{}] Not found".format(idd)}, 409
+        return {'message': "Article with id [{}] Not found".format(idd)}, 404
 
 
 class ArticlesList(Resource):
 
     def get(self):
-        return ArticlesModel.get_articles(), 200 if ArticlesModel.get_articles() else 404
+        return ArticlesModel.get_articles(), 200

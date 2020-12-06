@@ -41,14 +41,8 @@ class ArticlesModel(db.Model):
 
     @classmethod
     def find_by_id(cls, idd):
-        try:
-            return ArticlesModel.query.filter_by(id=idd).first()
-        except:
-            return None
+        return ArticlesModel.query.filter_by(id=idd).first()
 
-    @classmethod
-    def num_articles(cls):
-        return len(ArticlesModel.query.all())
 
     @classmethod
     def get_articles(cls):
@@ -56,8 +50,3 @@ class ArticlesModel(db.Model):
         list_articles = [article.json() for article in ArticlesModel.query.all()]
         dicc = {"articles": list_articles}
         return dicc
-
-    @classmethod
-    def get_articles_list(cls):
-        list_articles = [article.json() for article in ArticlesModel.query.all()]
-        return list_articles
