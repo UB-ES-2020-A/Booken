@@ -10,7 +10,7 @@ secret_key = "McQfTjWnZr4u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H+MbQeThVmYq3t6w9z$C&F"
 email_templates = {}
 
 def create_app(test=False):
-
+    global email_templates
     app = Flask(__name__,
                       static_folder="static",
                       template_folder="dist")
