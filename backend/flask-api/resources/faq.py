@@ -8,7 +8,7 @@ class FAQ(Resource):
         faq = FAQModel.find_by_id(idd)
         if faq:
             return {'faq': faq.json()},200
-        return {'message': "Faq with id [{}] Not found".format(idd)}, 409
+        return {'message': "Faq with id [{}] Not found".format(idd)}, 404
 
     def post(self):
         # Create a new faq with the data passed to us.
@@ -45,7 +45,7 @@ class FAQ(Resource):
             faq.delete_from_db()
 
             return {'message': "OK"}, 200
-        return {'message': "Faq with id [{}] Not found".format(idd)}, 409
+        return {'message': "Faq with id [{}] Not found".format(idd)}, 404
 
     def put(self, idd):
 
@@ -79,8 +79,8 @@ class FAQ(Resource):
             cat.save_to_db()
             faq.save_to_db()
             return {'message': "FAQ modified"}, 200
-        return {'message': "FAQ with id [{}] Not found".format(idd)}, 409
+        return {'message': "FAQ with id [{}] Not found".format(idd)}, 404
 
 class FAQList(Resource):
     def get(self):
-        return FAQModel.get_faqs(), 200 if FAQModel.get_faqs() else 404
+        return FAQModel.get_faqs(), 200
