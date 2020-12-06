@@ -6,12 +6,9 @@ import sys
 
 sys.path.append('../')
 
-from data import books, users, admin_add, admin_cards
+from data import books
 from models.author import AuthorModel
 from models.book import BookModel
-from models.accounts import AccountModel
-from models.address import AddressModel
-from models.payment_card import CardModel
 
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
