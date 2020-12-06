@@ -17,12 +17,10 @@ from app import setupApp
 from db import db
 #  deepcode ignore C0411: not an issue
 from datetime import date
-
-
 #  deepcode ignore C0413: stupid issue
 
 
-class AuthorTest(unittest.TestCase):
+class AuthorModelTest(unittest.TestCase):
 
     author_info = {
         'name': "Test",
@@ -36,16 +34,26 @@ class AuthorTest(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-    def tearDown(self):
-        # Executed after each test
-        pass
-
     def test_model_no_authors_length(self):
         self.assertEqual(0, AuthorModel.num_authors())
 
-    def test_create_author(self):
-        response = self.add_author(self.author_info)
-        self.assertEqual(response.status_code, 201)
+    def add_author(self, info):
+        return self.app.post('api/author', data=info, follow_redirects=True)
+
+
+class AuthorResourceGetTest(unittest.TestCase):
+
+    author_info = {
+        'name': "Test",
+        'birth_date': "29/11/2020",
+        'city': "Barcelona",
+        'country': "Spain"
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
 
     def test_get_author(self):
         self.add_author(self.author_info)
@@ -70,6 +78,46 @@ class AuthorTest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def add_author(self, info):
+        return self.app.post('api/author', data=info, follow_redirects=True)
+
+
+class AuthorResourcePostTest(unittest.TestCase):
+
+    author_info = {
+        'name': "Test",
+        'birth_date': "29/11/2020",
+        'city': "Barcelona",
+        'country': "Spain"
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+
+    def test_post_author(self):
+        response = self.add_author(self.author_info)
+        self.assertEqual(response.status_code, 201)
+
+    def add_author(self, info):
+        return self.app.post('api/author', data=info, follow_redirects=True)
+
+
+class AuthorResourcePutTest(unittest.TestCase):
+
+    author_info = {
+        'name': "Test",
+        'birth_date': "29/11/2020",
+        'city': "Barcelona",
+        'country': "Spain"
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+
     def test_put_author(self):
         self.add_author(self.author_info)
         info = {
@@ -91,6 +139,24 @@ class AuthorTest(unittest.TestCase):
         }
         response = self.app.put('api/author/59', data=info, follow_redirects=True)
         self.assertEqual(response.status_code, 409)
+
+    def add_author(self, info):
+        return self.app.post('api/author', data=info, follow_redirects=True)
+
+
+class AuthorResourceDeleteTest(unittest.TestCase):
+
+    author_info = {
+        'name': "Test",
+        'birth_date': "29/11/2020",
+        'city': "Barcelona",
+        'country': "Spain"
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
 
     def test_delete_author(self):
         self.add_author(self.author_info)
