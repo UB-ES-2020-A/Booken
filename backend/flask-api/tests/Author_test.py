@@ -168,6 +168,3 @@ class AuthorResourceDeleteTest(unittest.TestCase):
     def add_author(self, info):
         return self.app.post('api/author', data=info, follow_redirects=True)
 
-
-if __name__ == '__main__':
-    unittest.main()

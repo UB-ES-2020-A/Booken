@@ -442,7 +442,3 @@ class ReviewResourceDeleteTests(unittest.TestCase):
         return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()
