@@ -14,7 +14,112 @@ from app import setupApp
 from db import db
 
 
-class AddressTests(unittest.TestCase):
+class AddressModelTests(unittest.TestCase):
+    address_info = {
+        "id": 1,
+        "label_name": "Mi casa",
+        "name": "test",
+        "surnames": "tests",
+        "street": "La calle de mi casa",
+        "number": 32,
+        "cp": "08431",
+        "city": "Mi city",
+        "province": "Mi provincia",
+        "telf": 123456
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test", password="test"),
+                      follow_redirects=True)
+
+    def test_find_address_in_account(self):
+        response = self.add_address(self.address_info)
+        self.assertEqual(response.status_code, 200)
+        add = AddressModel.find_by_account_id(1)[0]
+        self.assertEqual(self.address_info['city'], add.city)
+
+    def test_model_address_json(self):
+        response = self.add_address(self.address_info)
+        self.assertEqual(response.status_code, 200)
+        add = AddressModel.find_by_id(1)
+        self.assertEqual(add.json(),
+                         {"id": 1, "label_name": "Mi casa", "name": "test", "surnames": "tests", "street": "La calle de"
+                                                                                                           + " mi casa",
+                          "number": 32, "cp": "08431", "city": "Mi city", "province": "Mi provincia",
+                          "telf": 123456})
+
+    def add_address(self, info):
+        return self.app.post('api/account/1/address',
+                             data=info,
+                             follow_redirects=True)
+
+
+class AddressResourceGetTests(unittest.TestCase):
+    address_info = {
+        "id": 1,
+        "label_name": "Mi casa",
+        "name": "test",
+        "surnames": "tests",
+        "street": "La calle de mi casa",
+        "number": 32,
+        "cp": "08431",
+        "city": "Mi city",
+        "province": "Mi provincia",
+        "telf": 123456
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test", password="test"),
+                      follow_redirects=True)
+
+    def test_get_non_assigned_address_in_account(self):
+        self.add_address(self.address_info)
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test2", password="test"),
+                      follow_redirects=True)
+        response = self.app.get('api/account/2/address/1', follow_redirects=True)
+        self.assertEqual(409, response.status_code)
+
+    def test_get_non_existing_address_from_account(self):
+        self.add_address(self.address_info)
+        response = self.app.get('api/account/1/address/95', follow_redirects=True)
+        self.assertEqual(404, response.status_code)
+
+    def test_get_concrete_address(self):
+        self.add_address(self.address_info)
+        response = self.app.get('api/account/1/address/1', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.address_info, json.loads(response.data)["address"])
+
+    def test_get_addresses(self):
+        self.add_address(self.address_info)
+        self.add_address(self.address_info)
+        response = self.app.get('api/account/1/addresses', follow_redirects=True)
+
+        tmp_address_1 = self.address_info.copy()
+        tmp_address_2 = self.address_info.copy()
+
+        tmp_address_1["id"] = 1
+        tmp_address_2["id"] = 2
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.data)["accounts_addresses"], [tmp_address_1, tmp_address_2])
+
+    def add_address(self, info):
+        return self.app.post('api/account/1/address',
+                             data=info,
+                             follow_redirects=True)
+
+
+class AddressResourcePostTests(unittest.TestCase):
 
     address_info = {
         "id": 1,
@@ -37,60 +142,47 @@ class AddressTests(unittest.TestCase):
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
 
-    def tearDown(self):
-        # Executed after each test
-        pass
-
-    def test_create_address(self):
+    def test_post_address(self):
         response = self.add_address(self.address_info)
         self.assertEqual(response.status_code, 200)
-
-    def test_find_address_in_account(self):
-        response = self.add_address(self.address_info)
-        self.assertEqual(response.status_code, 200)
-        add = AddressModel.find_by_account_id(1)[0]
-        self.assertEqual(self.address_info['city'], add.city)
-
-    def test_model_address_json(self):
-        response = self.add_address(self.address_info)
-        self.assertEqual(response.status_code, 200)
-        add = AddressModel.find_by_id(1)
-        self.assertEqual(add.json(),
-                         {"id": 1, "label_name": "Mi casa", "name": "test", "surnames": "tests", "street": "La calle de"
-                           + " mi casa",
-                                 "number": 32, "cp": "08431", "city": "Mi city", "province": "Mi provincia",
-                          "telf": 123456})
-
-    def test_get_non_assigned_address_in_account(self):
-        self.add_address(self.address_info)
-        self.app.post('api/account',
-                      data=dict(name="test", lastname="test", email="test2", password="test"),
-                      follow_redirects=True)
-        response = self.app.get('api/account/2/address/1', follow_redirects=True)
-        self.assertEqual(409, response.status_code)
-
-    def test_delete_non_assigned_address_in_account(self):
-        self.add_address(self.address_info)
-        self.app.post('api/account',
-                      data=dict(name="test", lastname="test", email="test2", password="test"),
-                      follow_redirects=True)
-        response = self.app.delete('api/account/2/address/1', follow_redirects=True)
-        self.assertEqual(409, response.status_code)
-
-    def test_get_non_existing_address_from_account(self):
-        self.add_address(self.address_info)
-        response = self.app.get('api/account/1/address/95', follow_redirects=True)
-        self.assertEqual(404, response.status_code)
-
-    def test_get_concrete_address(self):
-        self.add_address(self.address_info)
-        response = self.app.get('api/account/1/address/1', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.address_info, json.loads(response.data)["address"])
 
     def test_post_address_non_existing_account(self):
         response = self.app.post('api/account/25/address', data=self.address_info, follow_redirects=True)
         self.assertEqual(404, response.status_code)
+
+    def test_post_address_max_amount_address(self):
+        for i in range(4):
+            response = self.app.post('api/account/1/address', data=self.address_info, follow_redirects=True)
+        self.assertEqual(403, response.status_code)
+
+    def add_address(self, info):
+        return self.app.post('api/account/1/address',
+                             data=info,
+                             follow_redirects=True)
+
+
+class AddressResourcePutTests(unittest.TestCase):
+
+    address_info = {
+        "id": 1,
+        "label_name": "Mi casa",
+        "name": "test",
+        "surnames": "tests",
+        "street": "La calle de mi casa",
+        "number": 32,
+        "cp": "08431",
+        "city": "Mi city",
+        "province": "Mi provincia",
+        "telf": 123456
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test", password="test"),
+                      follow_redirects=True)
 
     def test_put_address_non_existing_account(self):
         response = self.app.put('api/account/25/address/1', data=self.address_info, follow_redirects=True)
@@ -98,10 +190,6 @@ class AddressTests(unittest.TestCase):
 
     def test_put_address_non_existing_address(self):
         response = self.app.put('api/account/1/address/25', data=self.address_info, follow_redirects=True)
-        self.assertEqual(404, response.status_code)
-
-    def test_delete_address_non_existing_address(self):
-        response = self.app.delete('api/account/1/address/25', data=self.address_info, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_put_address_non_assigned_address(self):
@@ -113,26 +201,7 @@ class AddressTests(unittest.TestCase):
         response = self.app.put('api/account/2/address/1', data=self.address_info, follow_redirects=True)
         self.assertEqual(409, response.status_code)
 
-    def test_post_address_max_amount_address(self):
-        for i in range(4):
-            response = self.app.post('api/account/1/address', data=self.address_info, follow_redirects=True)
-        self.assertEqual(403, response.status_code)
-
-    def test_get_addresses(self):
-        self.add_address(self.address_info)
-        self.add_address(self.address_info)
-        response = self.app.get('api/account/1/addresses', follow_redirects=True)
-
-        tmp_address_1 = self.address_info.copy()
-        tmp_address_2 = self.address_info.copy()
-
-        tmp_address_1["id"] = 1
-        tmp_address_2["id"] = 2
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data)["accounts_addresses"], [tmp_address_1, tmp_address_2])
-
-    def test_modify_address(self):
+    def test_put_address(self):
         self.add_address(self.address_info)
 
         tmp_address = self.address_info.copy()
@@ -145,11 +214,50 @@ class AddressTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(tmp_address, json.loads(response.data)["address"])
 
+    def add_address(self, info):
+        return self.app.post('api/account/1/address',
+                             data=info,
+                             follow_redirects=True)
+
+
+class AddressResourceDeleteTests(unittest.TestCase):
+
+    address_info = {
+        "id": 1,
+        "label_name": "Mi casa",
+        "name": "test",
+        "surnames": "tests",
+        "street": "La calle de mi casa",
+        "number": 32,
+        "cp": "08431",
+        "city": "Mi city",
+        "province": "Mi provincia",
+        "telf": 123456
+    }
+
+    def setUp(self):
+        self.app = setupApp(True).test_client()
+        db.drop_all()
+        db.create_all()
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test", password="test"),
+                      follow_redirects=True)
+
+    def test_delete_non_assigned_address_in_account(self):
+        self.add_address(self.address_info)
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test2", password="test"),
+                      follow_redirects=True)
+        response = self.app.delete('api/account/2/address/1', follow_redirects=True)
+        self.assertEqual(409, response.status_code)
+
+    def test_delete_address_non_existing_address(self):
+        response = self.app.delete('api/account/1/address/25', data=self.address_info, follow_redirects=True)
+        self.assertEqual(404, response.status_code)
+
     def test_delete_address(self):
         self.add_address(self.address_info)
-
         response = self.app.delete('api/account/1/address/1', follow_redirects=True)
-
         self.assertEqual(response.status_code, 200)
 
     def add_address(self, info):
