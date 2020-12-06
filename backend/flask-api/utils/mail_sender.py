@@ -2,11 +2,13 @@ from flask_mail import Mail, Message
 from flask import current_app
 from bs4 import BeautifulSoup
 
+from db import email_templates
+
 class MailSender():
 
     @classmethod
     def send_contact_response_mail(cls, target, full_name, contact_query, response):
-        html = open("utils/email_templates/contact_response_email.html")
+        html = open(email_templates["response_template"])
 
         parser = BeautifulSoup(html, 'lxml')
         parser.find(id="UserName").contents[0].replaceWith(full_name + ",")

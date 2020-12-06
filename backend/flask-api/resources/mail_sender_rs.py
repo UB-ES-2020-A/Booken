@@ -5,7 +5,6 @@ from flask_restful import Resource, reqparse
 from models.contact import ContactModel
 from utils.mail_sender import MailSender
 
-
 class SendContactResponse(Resource):
 
     def post(self,):
