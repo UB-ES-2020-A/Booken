@@ -12,7 +12,8 @@
     <br />
     <br />
     <br />
-    <img src="https://travis-ci.com/UB-ES-2020-A/Booken.svg?branch=dev"> <a href='https://coveralls.io/github/UB-ES-2020-A/Booken?branch=ca'><img src='https://coveralls.io/repos/github/UB-ES-2020-A/Booken/badge.svg?branch=ca' alt='Coverage Status' /></a> <a href="https://www.codefactor.io/repository/github/ub-es-2020-a/booken/overview/cc"><img src="https://www.codefactor.io/repository/github/ub-es-2020-a/booken/badge/dev" alt="CodeFactor" /></a>
+    <img src="https://travis-ci.com/UB-ES-2020-A/Booken.svg?branch=dev"> <a href='https://coveralls.io/github/UB-ES-2020-A/Booken?branch=ca'><img src='https://coveralls.io/repos/github/UB-ES-2020-A/Booken/badge.svg?branch=ca' alt='Coverage Status' /></a>
+ <a href="https://www.codefactor.io/repository/github/ub-es-2020-a/booken/overview/cc"><img src="https://www.codefactor.io/repository/github/ub-es-2020-a/booken/badge/dev" alt="CodeFactor" /></a>
     <br/>
     <a href="http://booken-app.herokuapp.com/">View Demo</a>
   </p>
