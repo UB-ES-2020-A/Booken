@@ -7,4 +7,4 @@ class Retriever(Resource):
 
     def get(self, needed_data):
         data_info = DataRetriever.get_data(needed_data)
-        return {needed_data: data_info}
+        return {needed_data: data_info}, 200

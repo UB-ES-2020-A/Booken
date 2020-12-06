@@ -84,10 +84,7 @@ class DataRetriever:
             year = int(order['date'][6:10])
             month = int(order['date'][3:5])
             for article in order['articles']:
-                try:
-                    n_sales_month[year][month] += int(article['quant'])
-                except KeyError:
-                    n_sales_month[month] = int(article['quant'])
+                n_sales_month[year][month] += int(article['quant'])
 
         return n_sales_month
 
@@ -99,10 +96,8 @@ class DataRetriever:
         for order in orders:
             year = int(order['date'][6:10])
             month = int(order['date'][3:5])
-            try:
-                gain_month[year][month] += round(order['total'], 2)
-            except KeyError:
-                gain_month[year][month] += round(order['total'], 2)
+
+            gain_month[year][month] += round(order['total'], 2)
             gain_month[year][month] = round(gain_month[year][month], 2)
         return gain_month
 
@@ -113,10 +108,7 @@ class DataRetriever:
         for order in orders:
             year = int(order['date'][6:10])
             for article in order['articles']:
-                try:
-                    n_sales_year[year] += int(article['quant'])
-                except KeyError:
-                    n_sales_year[year] = int(article['quant'])
+                n_sales_year[year] += int(article['quant'])
 
         return n_sales_year
 
@@ -132,10 +124,7 @@ class DataRetriever:
             year = int(order['date'][6:10])
             for article in order['articles']:
                 genre = article['categoria']
-                try:
-                    n_sales_genre[year][genre] += article['quant']
-                except KeyError:
-                    n_sales_genre[year][genre] = article['quant']
+                n_sales_genre[year][genre] += article['quant']
 
         return n_sales_genre
 
@@ -155,10 +144,8 @@ class DataRetriever:
 
         for order in orders:
             year = int(order['date'][6:10])
-            try:
-                gain_year[year] += round(order['total'], 2)
-            except KeyError:
-                gain_year[year] = round(order['total'], 2)
+
+            gain_year[year] += round(order['total'], 2)
             gain_year[year] = round(gain_year[year], 2)
         return gain_year
 
@@ -174,9 +161,7 @@ class DataRetriever:
             year = int(order['date'][6:10])
             for article in order['articles']:
                 genre = article['categoria']
-                try:
-                    gain_genre[year][genre] += round(float(article['price']), 2)
-                except KeyError:
-                    gain_genre[year][genre] = round(float(article['price']), 2)
+
+                gain_genre[year][genre] += round(float(article['price']), 2)
             gain_genre[year][genre] = round(gain_genre[year][genre], 2)
         return gain_genre
