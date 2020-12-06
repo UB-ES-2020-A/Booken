@@ -165,8 +165,3 @@ class OrderTest(unittest.TestCase):
         return self.app.post('api/account',
                              data=info,
                              follow_redirects=True)
-
-
-
-if __name__ == '__main__':
-    unittest.main()

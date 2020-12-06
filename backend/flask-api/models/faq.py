@@ -37,10 +37,6 @@ class FAQModel(db.Model):
         return FAQModel.query.filter_by(id=idd).first()
 
     @classmethod
-    def num_faq(cls):
-        return len(FAQModel.query.all())
-
-    @classmethod
     def get_faqs(cls):
         list_faq = [faq.json() for faq in FAQModel.query.all()]
         dicc = {"FAQ": list_faq}

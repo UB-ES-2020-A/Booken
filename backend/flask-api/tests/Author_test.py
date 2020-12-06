@@ -37,9 +37,6 @@ class AuthorModelTest(unittest.TestCase):
     def test_model_no_authors_length(self):
         self.assertEqual(0, AuthorModel.num_authors())
 
-    def add_author(self, info):
-        return self.app.post('api/author', data=info, follow_redirects=True)
-
 
 class AuthorResourceGetTest(unittest.TestCase):
 
@@ -171,6 +168,3 @@ class AuthorResourceDeleteTest(unittest.TestCase):
     def add_author(self, info):
         return self.app.post('api/author', data=info, follow_redirects=True)
 
-
-if __name__ == '__main__':
-    unittest.main()

@@ -45,11 +45,6 @@ class CardModelTests(unittest.TestCase):
         card.save_to_db()
         self.assertEqual(1, CardModel.find_by_id(1).id)
 
-    def add_card(self, info):
-        return self.app.post('api/account/1/card',
-                             data=info,
-                             follow_redirects=True)
-
 
 class CardResourceGetTests(unittest.TestCase):
 
@@ -220,6 +215,3 @@ class CardResourceDeleteTests(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-
-if __name__ == '__main__':
-    unittest.main()

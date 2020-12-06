@@ -157,11 +157,6 @@ class ArticleOrderTest(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-    def add_address_order(self, info):
-        return self.app.post('api/address-order/1/1',
-                             data=info,
-                             follow_redirects=True)
-
     def add_card(self, info):
         return self.app.post('api/account/1/card',
                              data=info,
@@ -178,10 +173,3 @@ class ArticleOrderTest(unittest.TestCase):
     def postBook(self, info):
         return self.app.post('api/book', data=info, follow_redirects=True)
 
-    def add_article(self, info):
-        return self.app.post('api/article',
-                             data=info,
-                             follow_redirects=True)
-
-if __name__ == '__main__':
-    unittest.main()

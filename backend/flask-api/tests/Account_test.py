@@ -97,11 +97,6 @@ class AccountModelTests(unittest.TestCase):
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
 
-    def login(self, email, password):
-        return self.app.post('api/login',
-                             data=dict(email=email, password=password),
-                             follow_redirects=True)
-
     def add_address(self, info):
         return self.app.post('api/account/1/address',
                              data=info,
@@ -170,11 +165,6 @@ class AccountClassAuxFuncTests(unittest.TestCase):
                              data=dict(email=email, password=password),
                              follow_redirects=True)
 
-    def add_address(self, info):
-        return self.app.post('api/account/1/address',
-                             data=info,
-                             follow_redirects=True)
-
 
 class AccountResourceGetTests(unittest.TestCase):
 
@@ -217,18 +207,6 @@ class AccountResourceGetTests(unittest.TestCase):
                              follow_redirects=True)
 
 
-    def login(self, email, password):
-        return self.app.post('api/login',
-                             data=dict(email=email, password=password),
-                             follow_redirects=True)
-
-
-    def add_address(self, info):
-        return self.app.post('api/account/1/address',
-                             data=info,
-                             follow_redirects=True)
-
-
 class LoginResourceTests(unittest.TestCase):
 
     address_info = {
@@ -257,6 +235,11 @@ class LoginResourceTests(unittest.TestCase):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
 
+    def test_login_wrong_password(self):
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        response = self.login('tengo@barcos.tech', 'asdasdasdas')
+        self.assertEqual(400, response.status_code)
+
     def register(self, name, lname, email, password):
         return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),
@@ -265,12 +248,6 @@ class LoginResourceTests(unittest.TestCase):
     def login(self, email, password):
         return self.app.post('api/login',
                              data=dict(email=email, password=password),
-                             follow_redirects=True)
-
-
-    def add_address(self, info):
-        return self.app.post('api/account/1/address',
-                             data=info,
                              follow_redirects=True)
 
 
@@ -380,11 +357,6 @@ class AccountResourcePutTests(unittest.TestCase):
                              data=dict(email=email, password=password),
                              follow_redirects=True)
 
-    def add_address(self, info):
-        return self.app.post('api/account/1/address',
-                             data=info,
-                             follow_redirects=True)
-
 
 class AccountResourceDeleteTests(unittest.TestCase):
 
@@ -420,17 +392,3 @@ class AccountResourceDeleteTests(unittest.TestCase):
         return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
-
-    def login(self, email, password):
-        return self.app.post('api/login',
-                             data=dict(email=email, password=password),
-                             follow_redirects=True)
-
-    def add_address(self, info):
-        return self.app.post('api/account/1/address',
-                             data=info,
-                             follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()

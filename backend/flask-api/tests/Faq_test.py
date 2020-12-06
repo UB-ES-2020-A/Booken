@@ -19,6 +19,10 @@ class FaqTest(unittest.TestCase):
         'answer': "test",
     }
 
+    category_info = {
+        'type': "test2",
+    }
+
     def setUp(self):
 
         self.app = setupApp(True).test_client()
@@ -37,8 +41,10 @@ class FaqTest(unittest.TestCase):
     def test_get_faq(self):
         self.add_faq(self.faq_info)
         response = self.app.get('api/faq/1', follow_redirects=True)
+        resp = self.app.get('api/faq/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def test_get_faqs(self):
         self.add_faq(self.faq_info)
@@ -55,19 +61,34 @@ class FaqTest(unittest.TestCase):
             'answer': "test2",
         }
         response = self.app.put('api/faq/1', data=info,follow_redirects=True)
+        resp = self.app.put('api/faq/1000', data=info, follow_redirects=True)
+        self.add_category(self.category_info)
+        info_aux = {
+            'category': "test2",
+            'question': "test2",
+            'answer': "test2",
+        }
+        resp_cat_exist = self.app.put('api/faq/1', data=info_aux,follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp_cat_exist.status_code, 200)
 
     def test_delete_faq(self):
         self.add_faq(self.faq_info)
 
         response = self.app.delete('api/faq/1', follow_redirects=True)
+        resp = self.app.delete('api/faq/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
 
     def add_faq(self, info):
         return self.app.post('api/faq',
                              data=info,
                              follow_redirects=True)
-if __name__ == '__main__':
-    unittest.main()
+
+    def add_category(self, info):
+        return self.app.post('api/category',
+                             data=info,
+                             follow_redirects=True)

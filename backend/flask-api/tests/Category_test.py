@@ -32,14 +32,17 @@ class CategoryTest(unittest.TestCase):
 
     def test_create_category(self):
         response = self.add_category(self.category_info)
+        resp = self.add_category(self.category_info)
         self.assertEqual(response.status_code, 200)
-
+        self.assertEqual(resp.status_code, 409)
 
     def test_get_category(self):
         self.add_category(self.category_info)
         response = self.app.get('api/category/1', follow_redirects=True)
+        resp = self.app.get('api/category/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def test_get_categories(self):
         self.add_category(self.category_info)
@@ -52,5 +55,3 @@ class CategoryTest(unittest.TestCase):
         return self.app.post('api/category',
                              data=info,
                              follow_redirects=True)
-if __name__ == '__main__':
-    unittest.main()

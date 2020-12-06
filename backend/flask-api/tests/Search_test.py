@@ -77,7 +77,3 @@ class SearchBookTests(unittest.TestCase):
 
     def search(self, name):
         return self.app.get('api/search', data={'name': name}, follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()

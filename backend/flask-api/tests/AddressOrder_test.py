@@ -23,12 +23,6 @@ class AddressOrderTest(unittest.TestCase):
         "address_id": 1
     }
 
-    article_order_info = {
-        "price": 1.,
-        "id_book": 1,
-        "quant": 1
-    }
-
     address_order_info = {
         "label_name": "Test",
         "name": "Test",
@@ -55,29 +49,6 @@ class AddressOrderTest(unittest.TestCase):
         "date": "02/2558",
         "payment_method": "Visa"
     }
-
-    book_info = {
-        "isbn": 12345678910,
-        "name": 'Book Test',
-        "author_name": 'Kim Follet',
-        "author_bd": '10/10/1979',
-        "author_city": "BCN",
-        "author_country": "Spain",
-        "genre": 'HUMANIDADES',
-        "year": 2020,
-        "editorial": 'Santillana',
-        "language": 'Castellano',
-        "price": 10.9,
-        "synopsis": 'Synopsis',
-        "description": 'Descripcion',
-        "num_pages": 130,
-        "cover_type": 0,
-        "num_sales": 0,
-        "total_available": 15,
-        "cover_image_url": 'asd',
-        "back_cover_image_url": 'asd'
-    }
-
     address_info = {
         "label_name": "Mi casa",
         "name": "test",
@@ -177,11 +148,6 @@ class AddressOrderTest(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-    def add_article_order(self, info):
-        return self.app.post('api/article-order/1',
-                             data=info,
-                             follow_redirects=True)
-
     def add_address_order(self, info):
         return self.app.post('api/address-order/1/1',
                              data=info,
@@ -200,14 +166,7 @@ class AddressOrderTest(unittest.TestCase):
                              data=info,
                              follow_redirects=True)
 
-    def postBook(self, info):
-        return self.app.post('api/book', data=info, follow_redirects=True)
-
     def add_address_account(self, info):
         return self.app.post('api/account/1/address',
                              data=info,
                              follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()

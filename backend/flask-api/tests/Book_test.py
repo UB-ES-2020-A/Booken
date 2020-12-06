@@ -139,7 +139,3 @@ class BookTests(unittest.TestCase):
 
     def postBook(self, info):
         return self.app.post('api/book', data=info, follow_redirects=True)
-
-
-if __name__ == '__main__':
-    unittest.main()
