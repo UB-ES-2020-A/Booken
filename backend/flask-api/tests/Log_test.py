@@ -35,6 +35,12 @@ class LogModelTests(unittest.TestCase):
         response = self.login('tengo@barcos.tech', 'america16')
         self.assertEqual(1, LogModel.find_by_year(datetime.now().year)[0].user_id)
 
+    def test_get_logs(self):
+        self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        response = self.login('tengo@barcos.tech', 'america16')
+        response = self.app.get('api/logs', follow_redirects=True)
+        self.assertEqual(200, response.status_code)
+
     def register(self, name, lname, email, password):
         return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),

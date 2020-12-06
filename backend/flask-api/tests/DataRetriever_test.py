@@ -138,7 +138,3 @@ class MailTests(unittest.TestCase):
         db.session.add(book)
 
         db.session.commit()
-
-
-if __name__ =='__main__':
-    unittest.main()

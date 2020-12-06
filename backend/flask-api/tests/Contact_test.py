@@ -73,6 +73,3 @@ class ContactTests(unittest.TestCase):
         return self.app.post('api/contact_info',
                              data=info,
                              follow_redirects=True)
-
-if __name__ == '__main__':
-    unittest.main()

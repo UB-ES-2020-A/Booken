@@ -92,5 +92,3 @@ class ArticleTest(unittest.TestCase):
         return self.app.post('api/article',
                              data=info,
                              follow_redirects=True)
-if __name__ == '__main__':
-    unittest.main()
