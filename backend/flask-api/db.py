@@ -23,8 +23,8 @@ def create_app(test=False):
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
-        #app.config['MAIL_SUPPRESS_SEND'] = False
-        #email_templates["response_template"] = "../" + email_templates["response_template"]
+        app.config['MAIL_SUPPRESS_SEND'] = False
+        email_templates["response_template"] = "backend/flask-api/" + email_templates["response_template"]
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
