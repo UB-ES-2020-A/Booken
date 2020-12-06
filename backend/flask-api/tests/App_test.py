@@ -20,7 +20,6 @@ class Alarm (threading.Thread):
         time.sleep(self.timeout)
 
 
-
 class MyTestCase(unittest.TestCase):
 
     def test_index_gets(self):
