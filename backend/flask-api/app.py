@@ -24,6 +24,7 @@ from resources.faq import FAQ, FAQList
 from resources.category_faq import Category_FAQ, Category_FAQ_list
 from resources.mail_sender_rs import SendContactResponse
 from resources.logs_rs import LoginLogs
+from resources.interface import Interface, InterfaceList, InterfaceListBooks
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -40,6 +41,7 @@ from models.wishlist import WishlistModel
 from models.faq import FAQModel
 from models.category_faq import CategoryModel
 from models.log import LogModel
+from models.interface import InterfaceModel
 
 
 def setupApp(test=False):
@@ -55,7 +57,8 @@ def setupApp(test=False):
     api.add_resource(Accounts, '/api/accounts/')
     api.add_resource(PasswordChange, "/api/account/<int:idd>/change_password")
 
-    api.add_resource(Address, '/api/account/<int:account_id>/address/<int:idd>', '/api/account/<int:account_id>/address')
+    api.add_resource(Address, '/api/account/<int:account_id>/address/<int:idd>',
+                     '/api/account/<int:account_id>/address')
     api.add_resource(AddressList, '/api/account/<int:account_id>/addresses')
 
     api.add_resource(Card, '/api/account/<int:account_id>/card/<int:idd>', '/api/account/<int:account_id>/card')
@@ -114,6 +117,11 @@ def setupApp(test=False):
     api.add_resource(SendContactResponse, '/api/send_contact_response')
 
     api.add_resource(LoginLogs, '/api/logs')
+
+    api.add_resource(Interface, '/api/interface', '/api/interface/<int:idd>')
+    api.add_resource(InterfaceList, '/api/interfaces')
+    api.add_resource(InterfaceListBooks, '/api/interface_books/<int:id_interface>',
+                     '/api/interface_books/<int:id_interface>/<int:id_book>')
 
     return app
 
