@@ -26,22 +26,22 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form>
+                  <div>
                     <div class="form-group" style="text-align: left">
-                      <label  class="col-form-label">Categoria de la pregunta</label>
+                      <label class="col-form-label">Categoria de la pregunta</label>
                       <input type="test" class="form-control" v-model="newCategory">
                     </div>
 
                     <div class="form-group" style="text-align: left">
-                      <label  class="col-form-label">Pregunta</label>
+                      <label class="col-form-label">Pregunta</label>
                       <input type="test" class="form-control" v-model="newQuestion">
                     </div>
 
                     <div class="form-group" style="text-align: left">
-                      <label  class="col-form-label">Respuesta</label>
+                      <label class="col-form-label">Respuesta</label>
                       <textarea type="text" class="form-control cln" col=30 rows=10 v-model="newAnswer"/>
                     </div>
-                  </form>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -114,27 +114,26 @@
               </div>
             </div>
 
-            <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog"
-               aria-labelledby="deleteFAQTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header" style="border-bottom: 0 none;">
-                  <h5 class="modal-title" id="exampleModalLongTitle">¿Quieres eliminar la FAQ?</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-footer" style="border-top: 0 none;">
-                  <button type="button" class="btn btn-secondary" style="width:50px"
-                          @click="deleteFAQ_DB()"
-                          data-dismiss="modal">Sí
-                  </button>
-                  <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
-                  </button>
+            <div class="modal fade" id="deleteFAQ" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header" style="border-bottom: 0 none;">
+                    <h5 class="modal-title">¿Quieres eliminar la FAQ?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-footer" style="border-top: 0 none;">
+                    <button type="button" class="btn btn-secondary" style="width:50px"
+                            @click="deleteFAQ_DB()"
+                            data-dismiss="modal">Sí
+                    </button>
+                    <button type="button" class="btn btn-primary" style="width:50px" data-dismiss="modal">No
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
 
           </div>
@@ -170,6 +169,7 @@ export default {
     type: Number
   },
   created() {
+    scrollTo(0,0)
     this.getConsults()
     //this.getCategories()
   },
@@ -222,13 +222,13 @@ export default {
             this.getConsults()
 
             toastr.success('', '¡Las FAQ se han actualizado con éxito!',
-                  {
-                    timeOut: 2500,
-                    progressBar: true,
-                    newestOnTop: true,
-                    positionClass: 'toast-bottom-right',
-                    preventDuplicates: true
-                  })
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
           })
           .catch((error) => {
             console.log(error)
