@@ -313,7 +313,7 @@
                     <div class="col">
                       {{ item.name }} - {{ item.date }}
                     </div>
-                    <div class="col" style="text-align: right">
+                    <div class="col" style="text-align: right" v-if="type == 2">
                       <button v-if="type == 2" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
                               @click="deleteReview(item.id)"><i class="fas fa-trash"></i>
                       </button>
