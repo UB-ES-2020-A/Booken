@@ -9,6 +9,7 @@ from models.review import ReviewModel
 from models.address import AddressModel
 from models.payment_card import CardModel
 from models.wishlist import WishlistModel
+from models.interface import InterfaceModel
 
 
 app = create_app()

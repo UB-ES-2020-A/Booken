@@ -12,11 +12,11 @@ class InterfaceList(Resource):
 
 class InterfaceListBooks(Resource):
 
-    def get(self, idd):
-        interface = InterfaceModel.find_by_id(idd)
+    def get(self, id_interface):
+        interface = InterfaceModel.find_by_id(id_interface)
         if not interface:
-            return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
-        return {'interfaces': [i.json() for i in interface.books]}, 200
+            return {'message': "Interface with ['id': {}] not found".format(id_interface)}, 404
+        return {'books': [i.json() for i in interface.books]}, 200
 
     def post(self, id_interface, id_book):
         interface = InterfaceModel.find_by_id(id_interface)
@@ -91,9 +91,9 @@ class Interface(Resource):
         parser.add_argument('t1Sub', type=str, required=True, help="Operation not valid: "
                                                                    "'t1Sub' not provided")
         parser.add_argument('t1Small', type=str, required=True, help="Operation not valid: 't1Small' not provided")
-        parser.add_argument('t2RowTitle', type=int, required=True,
+        parser.add_argument('t2RowTitle', type=str, required=True,
                             help="Operation not valid: 't2RowTitle' not provided")
-        parser.add_argument('t2RowNumber', type=str, required=True,
+        parser.add_argument('t2RowNumber', type=int, required=True,
                             help="Operation not valid: 't2RowNumber' not provided")
 
         return parser.parse_args()

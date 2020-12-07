@@ -118,10 +118,10 @@ def setupApp(test=False):
 
     api.add_resource(LoginLogs, '/api/logs')
 
-    api.add_resource(Interface, 'api/interface', 'api/interface/<int:id_interface>')
-    api.add_resource(InterfaceList, 'api/interfaces')
-    api.add_resource(InterfaceListBooks, 'api/interface_books/<int:id_interface>',
-                     'api/interface_books/<int:id_interface>/<int:id_book>')
+    api.add_resource(Interface, '/api/interface', '/api/interface/<int:idd>')
+    api.add_resource(InterfaceList, '/api/interfaces')
+    api.add_resource(InterfaceListBooks, '/api/interface_books/<int:id_interface>',
+                     '/api/interface_books/<int:id_interface>/<int:id_book>')
 
     return app
 
