@@ -379,9 +379,11 @@
           <div class="row row-cols-1 row-cols-md-4">
             <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
               <div class="card h-100">
-                <img
-                    :src="item.cover_image_url"
-                    class="card-img-top" alt="...">
+                <router-link :to="{name: 'BookInfo', params: {id: item.id}}">
+                  <img
+                      :src="item.cover_image_url"
+                      class="card-img-top" alt="...">
+                </router-link>
                 <div class="card-body">
                   <h6 class="card-subtitle">{{ item.author[0] }}</h6>
                   <h4 class="card-title">
