@@ -387,9 +387,8 @@ export default {
         }
       } else if (this.addSectionValues.frontType == 2) {
         if (parseInt(this.addSectionValues.t2RowNumber) >= 3 && parseInt(this.addSectionValues.t2RowNumber) <= 5 && this.addSectionValues.t2RowTitle != '') {
-          if (this.addSectionValues.t2BookMode == 0 && this.selectedBooks.length == parseInt(this.addSectionValues.t2RowNumber)) {
-            return !true
-          } else if (this.addSectionValues.t2BookMode >= 1 && this.addSectionValues.t2BookMode <= 3) {
+          if ((this.addSectionValues.t2BookMode == 0 && this.selectedBooks.length == parseInt(this.addSectionValues.t2RowNumber))
+          || this.addSectionValues.t2BookMode >= 1 && this.addSectionValues.t2BookMode <= 3){
             return !true
           }
           return !false
