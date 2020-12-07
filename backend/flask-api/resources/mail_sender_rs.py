@@ -57,7 +57,7 @@ class SendTicket(Resource):
 
         if account and order:
             try:
-                MailSender.send_ticket_order_mail(account.email, order)
+                MailSender.send_ticket_order_mail(account.email, account.name, order)
 
                 return {"message":"Email sended correctly"}, 200
             except (FileNotFoundError, smtplib.SMTPException) as e:
