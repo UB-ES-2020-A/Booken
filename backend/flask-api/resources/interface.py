@@ -53,7 +53,7 @@ class Interface(Resource):
         data = self.__parse_request__()
         interface = InterfaceModel(data.get('front_type'), data.get('t1BackgndURL'), data.get('t1BackgndCOL'),
                                    data.get('t1LinkTo'), data.get('t1Tit'), data.get('t1Sub'), data.get('t1Small'),
-                                   data.get('t2RowTitle'), data.get('t2RowNumber'))
+                                   data.get('line'), data.get('t2RowTitle'), data.get('t2RowNumber'))
         interface.save_to_db()
         return interface.json(), 200
 
@@ -62,12 +62,20 @@ class Interface(Resource):
         exists = InterfaceModel.find_by_id(idd)
         if not exists:
             return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
-        exists.delete_from_db()
-        interface = InterfaceModel(data.get('front_type'), data.get('t1BackgndURL'), data.get('t1BackgndCOL'),
-                                   data.get('t1LinkTo'), data.get('t1Tit'), data.get('t1Sub'), data.get('t1Small'),
-                                   data.get('t2RowTitle'), data.get('t2RowNumber'))
-        interface.save_to_db()
-        return interface.json(), 200
+
+        exists.front_type = data.get('front_type')
+        exists.t1BackgndURL = data.get('t1BackgndURL')
+        exists.t1BackgndCOL = data.get('t1BackgndCOL')
+        exists.t1LinkTo = data.get('t1LinkTo')
+        exists.t1Tit = data.get('t1Tit')
+        exists.t1Sub = data.get('t1Sub')
+        exists.t1Small = data.get('t1Small')
+        exists.line = data.get('line')
+        exists.t2RowTitle = data.get('t2RowTitle')
+        exists.t2RowNumber = data.get('t2RowNumber')
+
+        exists.save_to_db()
+        return exists.json(), 200
 
     def delete(self, idd):
         exists = InterfaceModel.find_by_id(idd)
@@ -86,11 +94,10 @@ class Interface(Resource):
                                                                           "'t1BackgndCOL' not provided")
         parser.add_argument('t1LinkTo', type=str, required=True,
                             help="Operation not valid: 't1LinkTo' not provided")
-        parser.add_argument('t1Tit', type=str, required=True, help="Operation not valid: "
-                                                                   "'t1Tit' not provided")
-        parser.add_argument('t1Sub', type=str, required=True, help="Operation not valid: "
-                                                                   "'t1Sub' not provided")
+        parser.add_argument('t1Tit', type=str, required=True, help="Operation not valid:'t1Tit' not provided")
+        parser.add_argument('t1Sub', type=str, required=True, help="Operation not valid: 't1Sub' not provided")
         parser.add_argument('t1Small', type=str, required=True, help="Operation not valid: 't1Small' not provided")
+        parser.add_argument('line', type=int, required=True, help="Operation not valid: 'line' not provided")
         parser.add_argument('t2RowTitle', type=str, required=True,
                             help="Operation not valid: 't2RowTitle' not provided")
         parser.add_argument('t2RowNumber', type=int, required=True,

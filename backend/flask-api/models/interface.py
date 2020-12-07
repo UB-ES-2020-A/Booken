@@ -15,11 +15,12 @@ class InterfaceModel(db.Model):
     t1Tit = db.Column(db.String(100), nullable=False)
     t1Sub = db.Column(db.String(30), nullable=False)
     t1Small = db.Column(db.String(30), nullable=False)
+    line = db.Column(db.Integer, nullable=False)  # 0->True, 1->False
     t2RowTitle = db.Column(db.String(50), nullable=False)
     t2RowNumber = db.Column(db.String(30), nullable=False)
     books = db.relationship('BookModel', secondary=interface, backref=db.backref('book_interface', lazy='dynamic'))
 
-    def __init__(self, front_type, t1BackgndURL, t1BackgndCOL, t1LinkTo, t1Tit, t1Sub, t1Small, t2RowTitle,
+    def __init__(self, front_type, t1BackgndURL, t1BackgndCOL, t1LinkTo, t1Tit, t1Sub, t1Small, line, t2RowTitle,
                  t2RowNumber):
         self.front_type = front_type
         self.t1BackgndURL = t1BackgndURL
@@ -28,6 +29,7 @@ class InterfaceModel(db.Model):
         self.t1Tit = t1Tit
         self.t1Sub = t1Sub
         self.t1Small = t1Small
+        self.line = line
         self.t2RowTitle = t2RowTitle
         self.t2RowNumber = t2RowNumber
 
@@ -53,6 +55,7 @@ class InterfaceModel(db.Model):
             "t1Tit": self.t1Tit,
             "t1Sub": self.t1Sub,
             "t1Small": self.t1Small,
+            "line": self.line,
             "t2RowTitle": self.t2RowTitle,
             "t2RowNumber": self.t2RowNumber,
             "books": [a.json()['book'] for a in self.books]
