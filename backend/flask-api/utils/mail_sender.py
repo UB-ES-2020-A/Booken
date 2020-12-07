@@ -1,8 +1,12 @@
 from flask_mail import Mail, Message
 from flask import current_app
 from bs4 import BeautifulSoup
+from xhtml2pdf import pisa
+from io import BytesIO
+from weasyprint import HTML
 
 from db import email_templates
+
 
 from models.orders import OrdersModel
 from models.address import AddressModel
@@ -48,16 +52,20 @@ class MailSender():
 
         # Añadimos los productos con su respectiva cantidad y precio
         products = parser.find(id="products")
+        all_products = parser.find(id="all_products")
         tmp = copy.copy(products.findChildren('p', recursive=False)) # 0: Quant x Book Title / 1: Price
         products.contents = []
+        all_products.contents = []
         for art in order.articles:
             book_title = BookModel.find_by_id(art.book_id).name
+            tmp_products = copy.copy(products)
 
             quant, price = copy.copy(tmp[0]), copy.copy(tmp[1])
             quant.contents[0].replaceWith(str(art.quant) + " x " + book_title)
             price.contents[0].replaceWith(str(art.price) + "€")
-            products.append(quant)
-            products.append(price)
+            tmp_products.append(quant)
+            tmp_products.append(price)
+            all_products.append(tmp_products)
 
         # Añadimos el tipo de envio con su respectivo precio
         sending = parser.find(id="send_type").findChildren('p', recursive=False)
@@ -91,7 +99,7 @@ class MailSender():
 
         # Añadimos la dirección de envio
         direction = parser.find(id="dirección").findChildren('p', recursive=False)
-        name, street, cp, telf = direction[0], direction[1], direction[2], direction[1]
+        name, street, cp, telf = direction[0], direction[1], direction[2], direction[3]
 
         name.contents[0].replaceWith(address.name + " " + address.surnames)
         street.contents[0].replaceWith(address.street + ", " + str(address.number))
@@ -102,12 +110,20 @@ class MailSender():
         method = parser.find(id="vendor")
         method.contents[0].replaceWith(card.payment_method + " **** **** **** " + str(card.number)[-4:])
 
+        # Generamos el pdf
+        pdf = BytesIO()
+
+        HTML(string=str(parser)).write_pdf(target=pdf)
+
         current_app.config['MAIL_DEFAULT_SENDER'][0] = "Pedido de Booken"
         mail = Mail(current_app)
 
-        msg = Message("Consulta Booken",
-                      recipients=[target],
-                      html=parser)
+        msg = Message("Pedido de Booken",
+                      recipients=[target])
+
+        msg.attach("ticket.pdf", "ticket/pdf", pdf.getvalue())
 
         with mail.connect() as connection:
             connection.send(msg)
+
+        del pdf
