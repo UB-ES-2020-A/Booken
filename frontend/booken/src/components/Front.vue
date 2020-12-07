@@ -23,9 +23,11 @@
       <div class="row row-cols-1 row-cols-sm-5">
         <div class="col mb-4" v-for="(item, index) in this.booksRR" :key="index">
           <div class="card h-100">
-            <img
-                :src="item.cover_image_url"
-                class="card-img-top" alt="...">
+            <router-link :to="{name: 'BookInfo', params: {id: item.id}}">
+              <img
+                  :src="item.cover_image_url"
+                  class="card-img-top" alt="...">
+            </router-link>
             <div class="card-body">
               <h6 class="card-subtitle">{{ item.author[0] }}</h6>
               <h4 class="card-title">
@@ -56,9 +58,11 @@
       <div class="row row-cols-1 row-cols-sm-5">
         <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
           <div class="card h-100">
-            <img
-                :src="item.cover_image_url"
-                class="card-img-top" alt="...">
+            <router-link :to="{name: 'BookInfo', params: {id: item.id}}">
+              <img
+                  :src="item.cover_image_url"
+                  class="card-img-top" alt="...">
+            </router-link>
             <div class="card-body">
               <h6 class="card-subtitle">{{ item.author[0] }}</h6>
               <h4 class="card-title">
@@ -86,16 +90,14 @@
       </div>
 
       <!-- Customizable jumbotron -->
-      <div class="jumbotron rounded" style="background-color: #2bc4ed; text-align: left !important;">
-        <div class="container">
-          <h1 class="display-5" style="font-weight: bold">¿No encuentras lo que buscas?</h1>
-           <hr>
-          <br>
-          <p class="lead">No dudes en
-            <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
-            , ¡y te ayudaremos!
-          </p>
-        </div>
+      <div class="jumbotron" style="background-color: #2bc4ed">
+
+        <h1 class="display-4" style="font-weight: bold">¿No encuentras lo que buscas?</h1>
+        <hr class="my-4">
+        <p class="lead">No dudes en
+          <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
+          , ¡y te ayudaremos!
+        </p>
       </div>
     </div>
   </div>
