@@ -351,6 +351,7 @@
                       <div class="row d-flex justify-content-between">
                         <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.contact_date }}</small>
                         <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.full_name }} </small>
+
                         <!--                        <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.email }}</small>
                                                 <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.phone_number }}</small>-->
                       </div>
