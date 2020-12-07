@@ -2,6 +2,8 @@ import smtplib
 
 from flask_restful import Resource, reqparse
 
+from models.accounts import AccountModel
+from models.orders import OrdersModel
 from models.contact import ContactModel
 from utils.mail_sender import MailSender
 
@@ -36,3 +38,30 @@ class SendContactResponse(Resource):
                 return {'message': 'Something went wrong'}, 500
         else:
             return {"message":"Contact not found"}, 404
+
+class SendTicket(Resource):
+
+    def post(self,):
+        parser = reqparse.RequestParser()
+
+        # define the input parameters need and its type
+        parser.add_argument('account_id', type=int, required=True, help="This field cannot be left blank")
+        parser.add_argument('order_id', type=str, required=True, help="This field cannot be left blank")
+
+        data = parser.parse_args()
+
+        account_id, order_id = data['account_id'], data['order_id']
+
+        account = AccountModel.find_by_id(account_id)
+        order = OrdersModel.find_by_id(order_id)
+
+        if account and order:
+            try:
+                MailSender.send_ticket_order_mail(account.email, order)
+
+                return {"message":"Email sended correctly"}, 200
+            except (FileNotFoundError, smtplib.SMTPException) as e:
+                print(e)
+                return {'message': 'Something went wrong'}, 500
+        else:
+            return {"message":"Account or Order not found"}, 404
