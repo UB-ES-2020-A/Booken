@@ -39,7 +39,7 @@ class ReviewModel(db.Model):
         db.session.commit()
 
     def delete_from_db(self):
-        db.session.query(ReviewModel).filter_by(id=self.id).delete()
+        db.session.delete(self)
         db.session.commit()
 
     def json(self):

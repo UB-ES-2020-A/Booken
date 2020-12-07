@@ -213,7 +213,8 @@
           </div>
         </div>
       </div>
-      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem" v-if="book_found && book_id != 0">
+      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem"
+           v-if="book_found && book_id != 0">
         <div class="card-body">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
@@ -307,7 +308,18 @@
           <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{ item.name }} - {{ item.date }}</div>
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col">
+                      {{ item.name }} - {{ item.date }}
+                    </div>
+                    <div class="col" style="text-align: right" v-if="type == 2">
+                      <button v-if="type == 2" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
+                              @click="deleteReview(item.id)"><i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <div class="card-body">
                   <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
@@ -401,7 +413,7 @@ export default {
   },
 
   created() {
-    scrollTo(0 ,0)
+    scrollTo(0, 0)
     this.is_edit = this.$route.query.is_edit
     this.book_id = this.$route.params.id
     this.initAuthors()
@@ -472,6 +484,33 @@ export default {
     }
   },
   methods: {
+    deleteReview(id) {
+      var path = api + 'review/' + id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            toastr.success('', 'Reseña eliminada',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+            this.getReviewsFromDB()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido borrar la reseña',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+          })
+    },
     getReviewsFromDB() {
       var path = api + 'reviewsBook/' + this.$route.params.id
       axios.get(path)
@@ -905,14 +944,14 @@ export default {
     recommendBooks() {
       var min = 0, max = this.books.length - 1
       var r1 = 0, r2 = 0, r3 = 0, r4 = 0
-      while(r1 == r2 || r1 == r3 || r1 == r4 ||
-          r2 == r1 || r2 == r3 || r2 == r4 ||
-          r3 == r1 || r3 == r2 || r3 == r4 ||
-          r4 == r1 || r4 == r2 || r4 == r3){
-        r1 =  Math.floor(Math.random()*(max-min+1)+min)
-        r2 =  Math.floor(Math.random()*(max-min+1)+min)
-        r3 =  Math.floor(Math.random()*(max-min+1)+min)
-        r4 =  Math.floor(Math.random()*(max-min+1)+min)
+      while (r1 == r2 || r1 == r3 || r1 == r4 ||
+      r2 == r1 || r2 == r3 || r2 == r4 ||
+      r3 == r1 || r3 == r2 || r3 == r4 ||
+      r4 == r1 || r4 == r2 || r4 == r3) {
+        r1 = Math.floor(Math.random() * (max - min + 1) + min)
+        r2 = Math.floor(Math.random() * (max - min + 1) + min)
+        r3 = Math.floor(Math.random() * (max - min + 1) + min)
+        r4 = Math.floor(Math.random() * (max - min + 1) + min)
       }
       this.booksRM.push(this.books[r1])
       this.booksRM.push(this.books[r2])

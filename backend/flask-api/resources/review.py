@@ -55,7 +55,7 @@ class Review(Resource):
 
     def put(self, idd):
         data = self.__parse_request__()
-        review =ReviewModel.find_by_id(idd)
+        review = ReviewModel.find_by_id(idd)
         if not review:
             return {'message': "There is no review with ['id': {}]".format(idd)}, 404
         review.delete_from_db()
@@ -79,8 +79,6 @@ class Review(Resource):
             return {'message': "There is no review with ['id': {}], therefore it cannot be deleted".format(idd)}, 404
         user = AccountModel.find_by_id(exists.user_id)
         book = BookModel.find_by_id(exists.book_id)
-        user.reviews.remove(exists)
-        book.reviews.remove(exists)
         exists.delete_from_db()
         return {'message': "Review with ['id': {}] has successfully been deleted".format(idd)}, 200
 
