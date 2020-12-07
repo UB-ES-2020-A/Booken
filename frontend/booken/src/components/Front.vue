@@ -89,9 +89,22 @@
         </div>
       </div>
       <div v-if="this.edit">
-        <div class="card">
+        <div class="card" style="margin-bottom: 1em">
           <div class="card-body" style="text-align: left">
-            <h1 class="card-title">Añadir una sección</h1>
+            <div class="row">
+              <div class="col">
+                <h1 class="card-title">Añadir una sección</h1>
+              </div>
+              <div class="col" style="text-align: right">
+                <button class="btn btn-danger my-2 my-sm-0 mr-2" type="submit"
+                        v-if="edit"><i class="fas fa-times" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                    class="navbartextbt" @click="discardChanges">Descartar</a></button>
+                <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
+                        v-if="edit"><i class="fas fa-save"
+                                       style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                    class="navbartextbt" @click="saveSection">Guardar</a></button>
+              </div>
+            </div>
             <select class="form-control" v-model="this.addSectionValues.frontType">
               <option value=-1>Seleccionar</option>
               <option value=1>Banner</option>
@@ -110,17 +123,29 @@
                   <label class="form-check-label">Color</label>
                 </div>
               </div>
-              <div v-if="addBackgroundType==1" style="margin-top: 0.5em">
+              <div v-if="this.addBackgroundType==1" style="margin-top: 0.5em">
                 <h5>URL imagen</h5>
                 <input class="form-control" type="text" v-model="this.addSectionValues.t1BackgndURL">
               </div>
-              <div v-if="addBackgroundType==2" style="margin-top: 0.5em">
+              <div v-if="this.addBackgroundType==2" style="margin-top: 0.5em">
                 <h5>Color</h5>
-                <vue-color-picker-board :width="800"
-                                        :height="100"
-                                        :defaultColor="'#00AAFF'"
-                                        @onSelection="this.addSectionValues.t1BackgnCOL">
-                </vue-color-picker-board>
+                <input type="color" v-model="this.addSectionValues.t1BackgnCOL">
+              </div>
+              <div style="margin-top: 0.5em">
+                <h5>Título</h5>
+                <input class="form-control" type="text" v-model="this.addSectionValues.t1Tit">
+              </div>
+              <div style="margin-top: 0.5em">
+                <h5>Subtítulo</h5>
+                <input class="form-control" type="text" v-model="this.addSectionValues.t1Sub">
+              </div>
+              <div style="margin-top: 0.5em">
+                <h5>Subtítulo</h5>
+                <input class="form-control" type="text" v-model="this.addSectionValues.t1Smalll">
+              </div>
+              <div style="margin-top: 0.5em">
+                <h5>Enlace del banner</h5>
+                <input class="form-control" type="text" v-model="this.addSectionValues.t1LinkTo">
               </div>
               <div v-if="this.addSectionValues.frontType == 2" style="margin-top: 2em">
                 <h3 class="card-subtitle">Configuración de la fila</h3>
@@ -134,9 +159,9 @@
 </template>
 
 <script>
-import {VueColorPickerBoard} from 'vue-color-picker-board'
 import {api} from "@/main";
 import axios from "axios";
+import 'verte/dist/verte.css'
 
 export default {
   name: 'Front',
@@ -146,17 +171,15 @@ export default {
     id: Number,
     type: Number
   },
-  components: {
-    VueColorPickerBoard
-  },
   created() {
     this.getBooksFromDBL('LITERATURA')
   },
   data() {
     return {
-      addBackgroundType: -1,
+      addBackgroundType: 1,
       edit: false,
       loggedIn: false,
+      idEditingSection: -1,
       addSectionValues: {
         frontType: -1,
         t1BackgndURL: '',
@@ -236,8 +259,12 @@ export default {
       booksRM: []
     }
   }, methods: {
+    discardChanges() {
+      this.edit = false
+      this.idEditingSection = -1
+    },
     editSection(id) {
-      console.log(id)
+      this.idEditingSection = id
       this.edit = true
     },
     addSection() {
@@ -256,9 +283,9 @@ export default {
       }
       this.addBackgroundType = -1
     },
-    saveSection(id) {
-      console.log(id)
+    saveSection() {
       this.edit = false
+      this.idEditingSection = -1
     },
     deleteSection(id) {
       console.log(id)

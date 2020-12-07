@@ -55,6 +55,9 @@
                       v-if="type == 2 && !edit" @click="editInfo"><i class="fas fa-edit"
                                                                      style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
+              <button class="btn btn-danger my-2 my-sm-0 mr-2" type="submit"
+                      v-if="edit"><i class="fas fa-times" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt" @click="discardChanges">Descartar</a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="edit"><i class="fas fa-save" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt" @click="saveChanges">Guardar</a></button>
@@ -612,6 +615,10 @@ export default {
       if (this.admin) {
         this.edit = 1
       }
+    },
+    discardChanges(){
+      this.edit = false
+      this.initBookInfo()
     },
     saveChanges() {
       if (this.admin) {

@@ -25,6 +25,7 @@
     "jspdf": "^2.1.1",
     "mitt": "^2.1.0",
     "popper.js": "^1.16.1",
+    "verte": "0.0.12",
     "vue": "^3.0.0",
     "vue-chartjs": "^3.5.1",
     "vue-cookie-next": "^1.0.3",
