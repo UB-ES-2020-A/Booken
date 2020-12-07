@@ -114,12 +114,17 @@
           </div>
         </div>
         <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 0">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 0">
             <a class="nav-link active" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab"
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 2">
-            <a class="nav-link" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list" role="tab"
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 1">
+            <a class="nav-link active" id="pills-contacts-tab" data-toggle="pill" href="#pills-contacts" role="tab"
+               aria-controls="pills-contacts" aria-selected="false">Lista de consultas</a>
+          </li>
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 2">
+            <a class="nav-link active" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list"
+               role="tab"
                aria-controls="pills-orders-list" aria-selected="false">Lista de pedidos</a>
           </li>
           <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
@@ -330,6 +335,92 @@
               </div>
             </div>
           </div>
+          <!-- CONTACTS: view contacts for support-->
+          <div class="tab-pane fade show active" id="pills-contacts" role="tabpanel"
+               aria-labelledby="pills-orders-list-tab" v-if="type == 1">
+            <div class="container-fluid">
+              <div class=" list-group-flush">
+
+                <div v-for="(contact, index) in this.contacts" :key="index"
+                     :class="['list-group-item ', (index === 0 ? '' : '')]"
+                     href="#">
+
+                  <div class="row">
+                    <div class="col-12 col-md-10">
+                      <h6 class="mb-2 text-left">{{ contact.contact_query }}</h6>
+                      <div class="row d-flex justify-content-between">
+                        <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.contact_date }}</small>
+                        <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.full_name }} </small>
+
+                        <!--                        <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.email }}</small>
+                                                <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.phone_number }}</small>-->
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2 my-md-auto my-2 myButton">
+                      <button type="button" class="btn btn-primary align-middle" data-toggle="modal"
+                              data-target="#answerContact" @click="assignContact(index)">Responder
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="answerContact" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="border-bottom: 0 none;">
+                        <h5 class="modal-title">Responder la pregunta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-12 text-left">
+                            <strong> Datos vinculados: </strong><br>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <div class="border rounded" style="background: whitesmoke;">
+                              <div class="col-12 text-left mt-2">
+                                <strong> ID: </strong> {{ contactToAnswer['id'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Email: </strong> {{ contactToAnswer['email'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Nombre: </strong> {{ contactToAnswer['full_name'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Teléfono: </strong> {{ contactToAnswer['phone_number'] }}
+                              </div>
+                              <div class="col-12 text-left mb-2">
+                                <strong> Fecha de creación: </strong> {{ contactToAnswer['contact_date'] }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 text-left mt-4">
+                            <strong> Pregunta: </strong><br> {{ contactToAnswer['contact_query'] }}
+                          </div>
+                          <div class="col-12 text-left mt-4">
+                            <div class="form-group">
+                              <label class="col-form-label"><strong>Respuesta:</strong></label>
+                              <textarea type="text" class="form-control" col=30 rows=10 v-model="newContactAnswer"/>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer" style="border-top: 0 none;">
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Enviar la respuesta</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
           <!-- ORDERS LIST: view order list history for shop manager-->
           <div class="tab-pane fade show active" id="pills-orders-list" role="tabpanel"
                aria-labelledby="pills-orders-list-tab" v-if="type == 2">
@@ -371,9 +462,7 @@
                       <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)"
                               v-model="sortState[item.id]"
                               class="form-control-sm" style="width: 120px;text-align: center">
-                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{
-                            state.text
-                          }}
+                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}
                         </option>
                       </select>
                     </td>
@@ -1168,7 +1257,9 @@ export default {
       gain_genre: {},
       selYear: -1,
       salesYear: 0,
-      gainYear: 0
+      gainYear: 0,
+      contacts: [],
+      contactToAnswer: [],
     }
   },
   created() {
@@ -1182,6 +1273,7 @@ export default {
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
+    this.getContacts()
   },
   mounted() {
     this.getData()
@@ -1294,7 +1386,7 @@ export default {
       }
       return arrr
     },
-    toSimpleArrayKeys(arr){
+    toSimpleArrayKeys(arr) {
       var arrr = []
       for (var i in arr) {
         arrr.push(i)
@@ -1434,8 +1526,8 @@ export default {
         }
       }
     },
-    getMonthString(month){
-      switch(month){
+    getMonthString(month) {
+      switch (month) {
         case 1:
           return "enero"
         case 2:
@@ -2356,6 +2448,29 @@ export default {
     },
     // eslint-disable-next-line no-unused-vars
     searchOrder(order_id) {
+    },
+    getContacts() {
+      let contact = {
+        "id": 0,
+        "email": "q@q.com",
+        "full_name": "Qijun Jin",
+        "phone_number": 600000000,
+        "contact_query": "Cómo puedo devolver un artículo dañado? Puedo devolverlo por correos? Cómo puedo devolver un artículo dañado? Puedo devolverlo por correos?",
+        "contact_date": "01/01/21"
+      }
+      let contact2 = {
+        "id": 1,
+        "email": "q@q.com",
+        "full_name": "Qijun Jin2",
+        "phone_number": 600000000,
+        "contact_query": "Pregunta2",
+        "contact_date": "01/01/22"
+      }
+      this.contacts.push(contact)
+      this.contacts.push(contact2)
+    },
+    assignContact(index) {
+      this.contactToAnswer = this.contacts[index]
     }
   }
 }

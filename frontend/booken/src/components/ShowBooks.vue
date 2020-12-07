@@ -41,9 +41,11 @@
         <!-- Book card -->
         <div class="col mb-4" v-for="(book) in this.books" :key="book.id">
           <div class="card h-100">
+            <router-link :to="{name: 'BookInfo', params: {id: book.id}}">
             <img
                 :src="book.cover_image_url"
                 class="card-img-top" alt="...">
+            </router-link>
             <div class="card-body">
               <h6 class="card-subtitle">{{ this.joinAuthours(book.author) }}</h6>
               <h4 class="card-title">
