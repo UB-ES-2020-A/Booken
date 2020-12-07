@@ -7,7 +7,7 @@ from models.interface import InterfaceModel
 class InterfaceList(Resource):
 
     def get(self):
-        return {'interfaces': [i.json()['interface'] for i in db.session.query(InterfaceModel).all()]}, 200
+        return {'interfaces': [i.json() for i in db.session.query(InterfaceModel).all()]}, 200
 
 
 class InterfaceListBooks(Resource):
