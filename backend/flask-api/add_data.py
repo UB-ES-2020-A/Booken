@@ -1,3 +1,4 @@
+# file deepcode ignore W0611: <comment the reason here>
 from data import books, users, admin_add, admin_cards
 from db import db, create_app
 from models.author import AuthorModel
