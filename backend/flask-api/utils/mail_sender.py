@@ -1,12 +1,11 @@
 from flask_mail import Mail, Message
 from flask import current_app
 from bs4 import BeautifulSoup
-from xhtml2pdf import pisa
 from io import BytesIO
 from weasyprint import HTML
+from datetime import date
 
 from db import email_templates
-
 
 from models.orders import OrdersModel
 from models.address import AddressModel
@@ -48,7 +47,7 @@ class MailSender():
         # Añadimos la fecha del pedido
         parser.find(id="order_date").contents[0].replaceWith(order.date)
         #parser.find(id="order_id").contents[0].replaceWith("Pedido " + order.date[-4:] + "-" + str(order.id) + "QRL 02154")
-        parser.find(id="order_id").contents[0].replaceWith("Pedido " + "2020" + "-" + str(order.id) + " QRL 02154")
+        parser.find(id="order_id").contents[0].replaceWith("Pedido " + str(date.today().strftime("%Y")) + "-" + str(order.id) + " QRL 02154")
 
         # Añadimos los productos con su respectiva cantidad y precio
         products = parser.find(id="products")
@@ -124,6 +123,6 @@ class MailSender():
         msg.attach("ticket.pdf", "ticket/pdf", pdf.getvalue())
 
         with mail.connect() as connection:
-            connection.send(msg)
+           connection.send(msg)
 
         del pdf
