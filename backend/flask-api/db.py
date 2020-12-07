@@ -9,7 +9,8 @@ secret_key = "McQfTjWnZr4u7x!A%D*G-KaPdRgUkXp2s5v8y/B?E(H+MbQeThVmYq3t6w9z$C&F"
 
 email_templates = {
         "testing":False,
-        "response_template": "utils/email_templates/contact_response_email.html"
+        "response_template": "utils/email_templates/contact_response_email.html",
+        "ticket_template": "utils/email_templates/ticket_order_email.html"
     }
 
 
