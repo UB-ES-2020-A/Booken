@@ -169,8 +169,8 @@ export default {
     type: Number
   },
   created() {
-    this.getConsults()
     scrollTo(0,0)
+    this.getConsults()
     //this.getCategories()
   },
   data() {

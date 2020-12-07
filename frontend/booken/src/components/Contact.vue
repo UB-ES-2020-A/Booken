@@ -31,8 +31,8 @@
         <label>Consulta</label>
         <textarea class="form-control" id="contact_query" rows="10"></textarea>
       </div>
-      <div class="form-group row">
-          <div class="form-check" style="margin-top: 30px">
+      <div class="form-group">
+          <div class="form-check" style="margin-top: 2em">
             <input class="form-check-input" type="checkbox" id="check_box">
             <label class="form-check-label">
               He leído y acepto <a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">la política de privacidad</a>
