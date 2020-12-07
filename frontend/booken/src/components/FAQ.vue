@@ -170,6 +170,7 @@ export default {
   },
   created() {
     this.getConsults()
+    scrollTo(0,0)
     //this.getCategories()
   },
   data() {
