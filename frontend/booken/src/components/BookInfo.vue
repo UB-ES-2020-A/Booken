@@ -17,7 +17,7 @@
         <div class="card-body" style="text-align: left">
           <!-- Book title and author -->
           <div class="row row-cols-1 row-cols-md-2">
-            <div class="col" v-if="book_found">
+            <div class="col" v-if="book_found && this.loading == false">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
               <h1 class="card-title" v-if="edit"><input class="form-control" type="text" v-model="bookInfo.name"
                                                         style="font-size: 52px" placeholder="Título del libro"></h1>
@@ -42,7 +42,7 @@
                        style="margin-top: 0.5em">
               </div>
             </div>
-            <div class="col" style="text-align: right; margin-bottom: 1em" v-if="book_found">
+            <div class="col" style="text-align: right; margin-bottom: 1em" v-if="book_found && this.loading == false">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle"
                                                                    style="text-align: right !important">
                 {{ this.replaceDecimal(bookInfo.price) }}€</p></h1>
@@ -64,7 +64,7 @@
             </div>
           </div>
           <!-- Book images/found -->
-          <div class="col" v-if="book_found">
+          <div class="col" v-if="book_found && this.loading == false">
             <div class="row">
               <div ref="images" class="col" style="margin-bottom: 2rem">
                 <div style="display:flex; flex-direction: row">
@@ -210,14 +210,21 @@
           </div>
           <!-- Book images/not found -->
           <div class="col" v-else style="text-align: center">
-            <h1>No se ha encontrado el libro</h1>
-            <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
-                 src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+            <div v-if="this.loading == false">
+              <h1>No se ha encontrado el libro</h1>
+              <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
+                   src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+            </div>
+            <div v-if="this.loading == true" style="text-align: center">
+                <h3>Cargando</h3>
+                <div class="spinner-border text-info" role="status" style="width: 5em; height: 5em; margin-top: 0.5em">
+                </div>
+              </div>
           </div>
         </div>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem"
-           v-if="book_found && book_id != 0">
+           v-if="book_found && book_id != 0 && this.loading == false">
         <div class="card-body">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
@@ -377,7 +384,7 @@
         </button>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
-        <div class="card-body">
+        <div class="card-body" v-if="this.loading == false">
           <h2 class="card-title">Te recomendamos</h2>
           <div class="row row-cols-1 row-cols-md-4">
             <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
@@ -440,6 +447,7 @@ export default {
       loggedIn: false,
       book_found: 0,
       newAutor: 0,
+      loading: true,
       addvaluationNumber: 0,
       valuationTitle: '',
       valuationText: '',
@@ -616,7 +624,7 @@ export default {
         this.edit = 1
       }
     },
-    discardChanges(){
+    discardChanges() {
       this.edit = false
       this.initBookInfo()
     },
@@ -920,9 +928,11 @@ export default {
             this.bookInfo.num_pages = res.data.book.num_pages
             this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
             this.bookInfo.synopsis = res.data.book.synopsis
+            this.loading = false
           })
           .catch((error) => {
             console.log(error)
+            this.loading = false
           })
     }
     ,
