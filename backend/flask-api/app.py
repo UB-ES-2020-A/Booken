@@ -23,6 +23,7 @@ from resources.data_retriever_rs import Retriever
 from resources.faq import FAQ, FAQList
 from resources.category_faq import Category_FAQ, Category_FAQ_list
 from resources.mail_sender_rs import SendContactResponse
+from resources.mail_sender_rs import SendTicket
 from resources.logs_rs import LoginLogs
 from resources.interface import Interface, InterfaceList, InterfaceListBooks
 from db import db, create_app
@@ -115,6 +116,8 @@ def setupApp(test=False):
     api.add_resource(Category_FAQ_list, '/api/categories')
 
     api.add_resource(SendContactResponse, '/api/send_contact_response')
+
+    api.add_resource(SendTicket, '/api/send_ticket')
 
     api.add_resource(LoginLogs, '/api/logs')
 
