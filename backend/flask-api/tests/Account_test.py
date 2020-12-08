@@ -334,7 +334,7 @@ class AccountResourcePutTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         acc = AccountModel.find_by_email('tengo@barcos.tech')
         response = self.login('tengo@barcos.tech', 'america16')
-        response = self.app.put('api/account/1', follow_redirects=True, data={"name": "CEp", "lastname": "asdas",
+        response = self.app.put('api/account/2', follow_redirects=True, data={"name": "CEp", "lastname": "asdas",
                                                                               "email": "tengo@barcos1.tech"},
                                 headers={'Authorization': 'Basic ' + base64.b64encode(
                                     bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
