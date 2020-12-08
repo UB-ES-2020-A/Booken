@@ -23,8 +23,9 @@ class Account(Resource):
         parser.add_argument('password', required=True, type=str, help="This field cannot be left blank")
 
         data = parser.parse_args()
+        if AccountModel.find_by_email(data['email']):
+            return {"message": "Account already registered for that email address"}, 409
         account = AccountModel(data['email'], data['name'], data['lastname'], data['password'])
-
         account.save_to_db()
         return {"message": "Account saved correctly"}, 200
 
@@ -43,8 +44,10 @@ class Account(Resource):
         parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
-
         data = parser.parse_args()
+        if AccountModel.find_by_email(data['email']):
+            return {"message": "Account already registered for that email address"}, 409
+
         account.name, account.lastname, account.email = data['name'], data['lastname'], data['email']
 
         account.save_to_db()

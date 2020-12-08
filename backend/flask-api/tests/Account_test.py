@@ -235,6 +235,12 @@ class LoginResourceTests(unittest.TestCase):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
 
+    def test_register_account_with_registered_email(self):
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(200, response.status_code)
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(409, response.status_code)
+
     def test_login_wrong_password(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         response = self.login('tengo@barcos.tech', 'asdasdasdas')
@@ -320,6 +326,20 @@ class AccountResourcePutTests(unittest.TestCase):
                                     bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
                                     'ascii')})
         self.assertEqual(200, response.status_code)
+
+    def test_put_change_email_already_registered_email(self):
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos1.tech', 'america16')
+        self.assertEqual(response.status_code, 200)
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(response.status_code, 200)
+        acc = AccountModel.find_by_email('tengo@barcos.tech')
+        response = self.login('tengo@barcos.tech', 'america16')
+        response = self.app.put('api/account/2', follow_redirects=True, data={"name": "CEp", "lastname": "asdas",
+                                                                              "email": "tengo@barcos1.tech"},
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(acc.id) + ":" + json.loads(response.data)['token'], 'ascii')).decode(
+                                    'ascii')})
+        self.assertEqual(409, response.status_code)
 
     def test_put_change_password_mismatching_password(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
