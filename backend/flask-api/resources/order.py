@@ -1,22 +1,21 @@
 from db import db
 from models.address import AddressModel
 from models.book import BookModel
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 from models.articles import ArticlesModel
 from flask_restful import Resource, reqparse
 from models.orders import OrdersModel
 
-
 class Orders(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required(role='stock_manager')
     def get(self, idd):
         order = OrdersModel.find_by_id(idd)
         if order:
             return {"orders": order.json()}, 200
         return {'message': "Order with id [{}] doesn't exist".format(idd)}, 409
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required
     def post(self, idd):
         parser = reqparse.RequestParser()  # create parameters parser from request
 
@@ -43,7 +42,7 @@ class Orders(Resource):
         db.session.commit()
         return new_order.id, 200
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager', 'client'])
+    @auth.login_required(role='stock_manager')
     def delete(self, idd):
         order = OrdersModel.find_by_id(idd)
         if order:
@@ -51,7 +50,7 @@ class Orders(Resource):
             return {'message': "OK"}, 200
         return {'message': "Order with id [{}] Not found".format(idd)}, 409
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager'])
+    @auth.login_required(role = 'stock_manager')
     def put(self, idd):
         parser = reqparse.RequestParser()  # create parameters parser from request
         # define all input parameters need and its type
@@ -70,8 +69,8 @@ class Orders(Resource):
         return {'message': "Order not found"}, 400
 
 
-# @auth.login_required(role=['dev_manager', 'stock_manager'])
 class OrdersList(Resource):
+    @auth.login_required(role = 'stock_manager')
     def get(self):
         orders = OrdersModel.get_orders()
         return orders, 200
@@ -79,6 +78,7 @@ class OrdersList(Resource):
 
 # articles list of an order
 class OrderArticlesList(Resource):
+    @auth.login_required(role = 'stock_manager')
     def get(self, idd):
         try:
             return {"articles": OrdersModel.find_by_id(idd).json()["articles"]}, 200
@@ -88,7 +88,7 @@ class OrderArticlesList(Resource):
 
 # articles of an order
 class OrderArticles(Resource):
-
+    @auth.login_required(role = 'stock_manager')
     def get(self, idd, id_article):
         order = OrdersModel.find_by_id(idd)
         if order is None:
@@ -101,7 +101,7 @@ class OrderArticles(Resource):
         except:
             return {"message": "Article with id [{}] Not found in Order with id [{}]".format(id_article, idd)}, 404
 
-    # @auth.login_required(role='admin')
+    @auth.login_required
     def post(self, idd):
         order = OrdersModel.find_by_id(idd)
         if order is None:
@@ -128,7 +128,7 @@ class OrderArticles(Resource):
             return {"message": "Not enought books with id [{}] for the order".format(data.id_book)}, 404
         return {"message": "Book with id [{}] not found ".format(data.id_book)}, 404
 
-    # @auth.login_required(role='admin')
+    @auth.login_required
     def delete(self, idd, id_article):
         order = OrdersModel.find_by_id(idd)
         article = ArticlesModel.find_by_id(id_article)
@@ -145,6 +145,7 @@ class OrderArticles(Resource):
 
 # adress list of an order
 class OrderAddressList(Resource):
+    @auth.login_required(role = 'stock_manager')
     def get(self, idd):
         try:
             return {"addresses": OrdersModel.find_by_id(idd).json()["address"]}, 200
@@ -154,7 +155,7 @@ class OrderAddressList(Resource):
 
 # articles of an order
 class OrderAddress(Resource):
-
+    @auth.login_required(role = 'stock_manager')
     def get(self, idd, id_sub):
         order = OrdersModel.find_by_id(idd)
         if order is None:
@@ -167,7 +168,7 @@ class OrderAddress(Resource):
         except:
             return {"message": "Address with id [{}] Not found in Order with id [{}]".format(id_sub, id)}, 404
 
-    # @auth.login_required(role='admin')
+    @auth.login_required
     def post(self, idd, id_sub, address_id=None):
         order = OrdersModel.find_by_id(idd)
         account = AccountModel.find_by_id(id_sub)
@@ -205,7 +206,7 @@ class OrderAddress(Resource):
             return {'message': "OK"}, 200
         return {'message': "Address with id [{}] Not found".format(address_id)}, 404
 
-    # @auth.login_required(role='admin')
+    @auth.login_required
     def delete(self, idd, id_sub):
         order = OrdersModel.find_by_id(idd)
         if order:
@@ -216,10 +217,12 @@ class OrderAddress(Resource):
 
 
 class OrderUser(Resource):
+    @auth.login_required
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_id_user(id_user)]
         return {"orders": orders}, 200
 
+    @auth.login_required
     def delete(self, id_user, id_order):
         order = OrdersModel.find_by_id_user_and_orderid(id_user, id_order)
         if order:
@@ -230,7 +233,7 @@ class OrderUser(Resource):
 
 class InProgressOrders(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_state(0, id_user)]
         return {"orders": orders}, 200
@@ -238,7 +241,7 @@ class InProgressOrders(Resource):
 
 class SendOrders(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_state(1, id_user)]
         return {"orders": orders}, 200
@@ -246,7 +249,7 @@ class SendOrders(Resource):
 
 class ReceivedOrders(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required
     def get(self, id_user):
         orders = [order.json() for order in OrdersModel.find_by_state(2, id_user)]
         return {"orders": orders}, 200
@@ -254,7 +257,7 @@ class ReceivedOrders(Resource):
 
 class InProgressOrdersList(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required(role = 'stock_manager')
     def get(self):
         orders = OrdersModel.get_orders()['orders']
         orders_list = [order for order in orders if order['state'] == 0]
@@ -263,7 +266,7 @@ class InProgressOrdersList(Resource):
 
 class SendOrdersList(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required(role = 'stock_manager')
     def get(self):
         orders = OrdersModel.get_orders()['orders']
         orders_list = [order for order in orders if order['state'] == 1]
@@ -272,7 +275,7 @@ class SendOrdersList(Resource):
 
 class ReceivedOrdersList(Resource):
 
-    # @auth.login_required(role=['dev_manager', 'stock_manager','client'])
+    @auth.login_required(role = 'stock_manager')
     def get(self):
         orders = OrdersModel.get_orders()['orders']
         orders_list = [order for order in orders if order['state'] == 2]
