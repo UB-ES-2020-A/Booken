@@ -311,6 +311,17 @@
                               <button type="button" class="btn btn-secondary" @click="printReceipt">
                                 Imprimir
                               </button>
+
+                              <button type="button" class="btn btn-primary" @click="send_ticket(order.id)">
+                                  <div v-if="!sending_mail">
+                                      Enviar al correo
+                                  </div>
+                                  <div v-else>
+                                      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                      </span>
+                                      Enviando ticket...
+                                  </div>
+
                             </div>
                           </div>
                         </div>
