@@ -44,6 +44,8 @@ class Account(Resource):
         parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
+        if AccountModel.find_by_email(parser['email']):
+            return {"message": "Account already registered for that email address"}, 409
 
         data = parser.parse_args()
         account.name, account.lastname, account.email = data['name'], data['lastname'], data['email']
