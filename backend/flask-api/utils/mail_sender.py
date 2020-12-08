@@ -3,7 +3,7 @@ from flask import current_app
 from bs4 import BeautifulSoup
 from io import BytesIO
 from weasyprint import HTML
-from datetime import date
+from datetime import date, datetime
 
 from db import email_templates
 
@@ -73,6 +73,7 @@ class MailSender():
 
         self.parser = BeautifulSoup(html, 'lxml')
         self._replace_content(self, "UserName", data['full_name'] + ",")
+        self._replace_content(self, "footeryear", str(datetime.year))
         self._replace_content(self, "AdminResponse", data['response'])
         self._replace_content(self, "UserQuery", data['contact_query'])
 
@@ -83,6 +84,7 @@ class MailSender():
 
         self.parser = BeautifulSoup(html, 'lxml')
         self._replace_content(self, "UserName", data['full_name'] + ",")
+        self._replace_content(self, "footeryear", str(datetime.year))
 
         html.close()
 
