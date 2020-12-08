@@ -346,7 +346,7 @@
                      href="#">
 
                   <div class="row">
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-9 my-md-auto my-2">
                       <div class="row d-flex justify-content-between">
                         <h6 class="col-12 col-md-10 my-md-auto my-1 text-left">
                             <b>Consulta: </b>{{ contact.contact_query }}
