@@ -167,19 +167,19 @@ class InterfaceTests(unittest.TestCase):
     def test_change_id_banner(self):
         self.postInterface(self.interface_info)
         self.postInterface(self.interface_info_2)
-        response = self.app.delete('api/changeposition/1/2', follow_redirects=True)
+        response = self.app.post('api/changeposition/1/2', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_change_id_banner_error_1(self):
         self.postInterface(self.interface_info)
         self.postInterface(self.interface_info_2)
-        response = self.app.delete('api/changeposition/4/2', follow_redirects=True)
+        response = self.app.post('api/changeposition/4/2', follow_redirects=True)
         self.assertEqual(response.status_code, 404)
 
     def test_change_id_banner_error_2(self):
         self.postInterface(self.interface_info)
         self.postInterface(self.interface_info_2)
-        response = self.app.delete('api/changeposition/1/4', follow_redirects=True)
+        response = self.app.post('api/changeposition/1/4', follow_redirects=True)
         self.assertEqual(response.status_code, 404)
 
     def postBook(self, info):
