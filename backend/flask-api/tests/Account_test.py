@@ -235,6 +235,12 @@ class LoginResourceTests(unittest.TestCase):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
 
+    def test_register_account_with_registered_email(self):
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(200, response.status_code)
+        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        self.assertEqual(409, response.status_code)
+
     def test_login_wrong_password(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         response = self.login('tengo@barcos.tech', 'asdasdasdas')
