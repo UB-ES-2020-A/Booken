@@ -311,6 +311,17 @@
                               <button type="button" class="btn btn-secondary" @click="printReceipt">
                                 Imprimir
                               </button>
+
+                              <button type="button" class="btn btn-primary" @click="send_ticket(order.id)">
+                                  <div v-if="!sending_mail">
+                                      Enviar al correo
+                                  </div>
+                                  <div v-else>
+                                      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                      </span>
+                                      Enviando ticket...
+                                  </div>
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -346,20 +357,24 @@
                      href="#">
 
                   <div class="row">
-                    <div class="col-12 col-md-10">
-                      <h6 class="mb-2 text-left">{{ contact.contact_query }}</h6>
+                    <div class="col-12 col-md-9 my-md-auto my-2">
                       <div class="row d-flex justify-content-between">
-                        <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.contact_date }}</small>
-                        <small class="col-12 col-md-6 my-md-auto my-1">{{ contact.full_name }} </small>
-
-                        <!--                        <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.email }}</small>
-                                                <small class = "col-12 col-md-3 my-md-auto my-1">{{ contact.phone_number }}</small>-->
+                        <h6 class="col-12 col-md-10 my-md-auto my-1 text-left">
+                            <b>Consulta: </b>{{ contact.contact_query }}
+                        </h6>
+                        <small class="col-12 col-md-2 my-md-auto my-1">{{ contact.contact_date }}</small>
                       </div>
                     </div>
-                    <div class="col-12 col-md-2 my-md-auto my-2 myButton">
-                      <button type="button" class="btn btn-primary align-middle" data-toggle="modal"
-                              data-target="#answerContact" @click="assignContact(index)">Responder
-                      </button>
+                    <div class="col-12 col-md-3 my-md-auto my-2 myButton">
+                      <div style="display:flex; flex-direction: row; justify-content: center; align-items:center;">
+                          <button type="button" class="btn btn-danger align-middle"
+                                  style="margin-right:0.5em" @click="deleteContact(index)">
+                                  Eliminar
+                          </button>
+                          <button type="button" class="btn btn-primary align-middle" data-toggle="modal"
+                                  data-target="#answerContact" @click="assignContact(index)">Responder
+                          </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -412,7 +427,16 @@
                       <div class="modal-footer" style="border-top: 0 none;">
 
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary">Enviar la respuesta</button>
+                        <button type="button" class="btn btn-primary" @click="validate_response" v-if="!sent">
+                            <div v-if="!sending_mail">
+                                Enviar la respuesta
+                            </div>
+                            <div v-else>
+                                <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                </span>
+                                Enviando respuesta...
+                            </div>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -596,6 +620,17 @@
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" @click="printReceipt">
                                 Imprimir
+                              </button>
+
+                              <button type="button" class="btn btn-primary" @click="send_ticket(order.id)">
+                                  <div v-if="!sending_mail">
+                                      Enviar al correo
+                                  </div>
+                                  <div v-else>
+                                      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                      </span>
+                                      Enviando ticket...
+                                  </div>
                               </button>
                             </div>
                           </div>
@@ -1260,6 +1295,9 @@ export default {
       gainYear: 0,
       contacts: [],
       contactToAnswer: [],
+      newContactAnswer: '',
+      sending_mail: 0,
+      sent: 0
     }
   },
   created() {
@@ -2450,27 +2488,151 @@ export default {
     searchOrder(order_id) {
     },
     getContacts() {
-      let contact = {
-        "id": 0,
-        "email": "q@q.com",
-        "full_name": "Qijun Jin",
-        "phone_number": 600000000,
-        "contact_query": "Cómo puedo devolver un artículo dañado? Puedo devolverlo por correos? Cómo puedo devolver un artículo dañado? Puedo devolverlo por correos?",
-        "contact_date": "01/01/21"
-      }
-      let contact2 = {
-        "id": 1,
-        "email": "q@q.com",
-        "full_name": "Qijun Jin2",
-        "phone_number": 600000000,
-        "contact_query": "Pregunta2",
-        "contact_date": "01/01/22"
-      }
-      this.contacts.push(contact)
-      this.contacts.push(contact2)
+      var path = api + 'contact_list/'
+      axios.get(path)
+          .then((res) => {
+            this.contacts = res.data.contacts
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los contactos.',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+          })
     },
     assignContact(index) {
       this.contactToAnswer = this.contacts[index]
+      this.sent = 0
+      this.sending_mail = 0
+    },
+    deleteContact(index){
+      this.assignContact(index)
+      var path = api + 'contact_info/' + this.contactToAnswer.id
+      axios.delete(path)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡Consulta eliminada con éxito!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.getContacts()
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.getContacts()
+      })
+    },
+    validate_response(){
+      if(this.sending_mail)
+        return
+      this.sending_mail = 1
+      if( this.newContactAnswer == '' ){
+        toastr.info('', 'Por favor, añada una respuesta.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+        this.sending_mail = 0
+      }
+      else{
+        var parameters = {
+          "contact_id":this.contactToAnswer.id,
+          "contact_response": this.newContactAnswer
+        }
+        console.log(parameters)
+        this.send_response(parameters)
+      }
+      this.newContactAnswer = ''
+    },
+    send_response(parameters){
+      var path = api + 'send_contact_response'
+      axios.post(path, parameters)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡La respuesta fue enviada!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sent = 1
+          this.sending_mail = 0
+          this.getContacts()
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sent = 1
+          this.sending_mail = 0
+          this.getContacts()
+        })
+    },
+    send_ticket(order_id){
+      if(this.sending_mail)
+        return
+
+      this.sending_mail = 1
+
+      var parameters = {"account_id": this.id, "order_id": order_id}
+
+      var path = api + 'send_ticket'
+      axios.post(path, parameters)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡El ticket fue enviado!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sending_mail = 0
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sending_mail = 0
+        })
     }
   }
 }
