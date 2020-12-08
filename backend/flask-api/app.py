@@ -25,7 +25,7 @@ from resources.category_faq import Category_FAQ, Category_FAQ_list
 from resources.mail_sender_rs import SendContactResponse
 from resources.mail_sender_rs import SendTicket
 from resources.logs_rs import LoginLogs
-from resources.interface import Interface, InterfaceList, InterfaceListBooks
+from resources.interface import Interface, InterfaceList, InterfaceListBooks, ChangePositionBanner
 from db import db, create_app
 
 # models (necessary to make the migration correctly)
@@ -125,6 +125,7 @@ def setupApp(test=False):
     api.add_resource(InterfaceList, '/api/interfaces')
     api.add_resource(InterfaceListBooks, '/api/interface_books/<int:id_interface>',
                      '/api/interface_books/<int:id_interface>/<int:id_book>')
+    api.add_resource(ChangePositionBanner, '/api/changeposition/<int:id_1>/<int:id_2>')
 
     return app
 
