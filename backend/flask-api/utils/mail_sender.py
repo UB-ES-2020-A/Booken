@@ -24,10 +24,10 @@ class MailSender():
         mail = Mail(current_app)
 
         cls._prepare_contact_response(cls, "contact_response_template", data=dict(
-                                                                    full_name=full_name,
-                                                                    contact_query=contact_query,
-                                                                    response=response
-                                                                ))
+                                                                            full_name=full_name,
+                                                                            contact_query=contact_query,
+                                                                            response=response
+                                                                        ))
         msg = Message("Consulta Booken",
                       recipients=[target],
                       html=cls.parser)
@@ -46,7 +46,6 @@ class MailSender():
                       html=cls.parser)
 
         cls._prepare_ticket_pdf(cls, "ticket_pdf_template", order)
-
         msg.attach("ticket.pdf", "ticket/pdf", cls.pdf.getvalue())
 
         with mail.connect() as connection:
@@ -54,20 +53,20 @@ class MailSender():
 
         cls.pdf.close()
 
-    def _get_component(self, id):
-        return self.parser.find(id=id)
+    def _get_component(self, component_id):
+        return self.parser.find(id=component_id)
 
-    def _replace_content(self, id, content):
-        self.parser.find(id=id).contents[0].replaceWith(content)
+    def _replace_content(self, component_id, content):
+        self.parser.find(id=component_id).contents[0].replaceWith(content)
 
     def _replace_component_content(self, component, content):
         component.contents[0].replaceWith(content)
 
-    def _get_copy_children(self, id):
-        return copy.copy(self.parser.find(id=id).findChildren('p', recursive=False))
+    def _get_copy_children(self, component_id):
+        return copy.copy(self.parser.find(id=component_id).findChildren('p', recursive=False))
 
-    def _get_children(self, id):
-        return self.parser.find(id=id).findChildren('p', recursive=False)
+    def _get_children(self, component_id):
+        return self.parser.find(id=component_id).findChildren('p', recursive=False)
 
     def _prepare_contact_response(self, html_name, data):
         html = open(email_templates[html_name])
