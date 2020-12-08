@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fb6e685a6101
+Revision ID: 42f6bf7125c4
 Revises: 
-Create Date: 2020-12-07 16:02:24.433923
+Create Date: 2020-12-08 18:46:57.458863
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fb6e685a6101'
+revision = '42f6bf7125c4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -93,14 +93,17 @@ def upgrade():
     op.create_table('interfaces',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('front_type', sa.Integer(), nullable=False),
+    sa.Column('t2BookMode', sa.Integer(), nullable=False),
     sa.Column('t1BackgndURL', sa.String(length=100), nullable=True),
     sa.Column('t1BackgndCOL', sa.String(length=30), nullable=False),
     sa.Column('t1LinkTo', sa.String(length=100), nullable=False),
     sa.Column('t1Tit', sa.String(length=100), nullable=False),
+    sa.Column('t1Separator', sa.String(length=30), nullable=False),
     sa.Column('t1Sub', sa.String(length=30), nullable=False),
     sa.Column('t1Small', sa.String(length=30), nullable=False),
     sa.Column('t2RowTitle', sa.String(length=50), nullable=False),
-    sa.Column('t2RowNumber', sa.String(length=30), nullable=False),
+    sa.Column('t2RowNumber', sa.Integer(), nullable=False),
+    sa.Column('t1TxtColor', sa.String(length=30), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('loginlog',
