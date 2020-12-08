@@ -26,7 +26,7 @@
                   class="navbartextbt"></a></button>
               <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.id < this.frontElements.length"
                       style="" @click="moveDown(id)"><i class="fas fa-arrow-down"
-                                  style="color: #FFF; font-size: 1.5em"/><a
+                                                        style="color: #FFF; font-size: 1.5em"/><a
                   class="navbartextbt"></a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-1" type="submit" @click="editSection(item.id)"
                       style=""><i class="fas fa-edit"
@@ -39,14 +39,14 @@
             </div>
             <a :href="item.t1LinkTo" style="text-decoration: none">
               <div class="jumbotron"
-                   :style="{'background-color': item.t1BackgnCOL, 'background-image': 'url(' + item.t1BackgndURL + ')'}"
+                   :style="{'background-color': item.t1BackgnCOL, 'background-image': 'url(' + item.t1BackgndURL + ')','color': item.t1TxtColor}"
                    v-if="item.frontType==1">
-                <h1 class="display-4" style="color: white">{{ item.t1Tit }}</h1>
-                <p class="lead" style="color: white">
+                <h1 class="display-4">{{ item.t1Tit }}</h1>
+                <p class="lead">
                   {{ item.t1Sub }}
                 </p>
                 <hr class="my-4" v-if="item.t1Separator">
-                <p style="font-size: 0.6em; color: white">{{ item.t1Smalll }}</p>
+                <p style="font-size: 0.9em">{{ item.t1Smalll }}</p>
               </div>
             </a>
           </div>
@@ -86,7 +86,7 @@
                             v-if="inner_item.genre == 'COMICS Y MANGA'">Cómics y manga</span>
                       <span class="badge badge-secondary"
                             v-if="inner_item.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
-                      <span class="badge badge-secondary" v-if="inner_item.genre == 'INFANTIL'">Infantil</span>
+                      <span class="badge badge-secondary" v-if="inner_item.genre == 'INFANTIL'">Infantil</span>&nbsp;
                       <span class="badge badge-dark" v-if="inner_item.cover_type == 0">Tapa dura</span>
                       <span class="badge badge-dark" v-else-if="inner_item.cover_type == 1">Tapa blanda</span>
                     </h4>
@@ -133,12 +133,19 @@
                   <label class="form-check-label">Color</label>
                 </div>
               </div>
+              <div class="form-check" style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
+                <input class="form-check-input" type="checkbox" value="true"
+                       v-model="this.addSectionValues.t1Separator">
+                <h5 class="form-check-label">
+                  Separador <h6>(entre subtítulo y tercera línea)</h6>
+                </h5>
+              </div>
               <div v-if="this.addBackgroundType==1" style="margin-top: 0.5em">
                 <h5>URL imagen*</h5>
                 <input class="form-control" type="text" v-model="this.addSectionValues.t1BackgndURL">
               </div>
               <div v-if="this.addBackgroundType==2" style="margin-top: 0.5em">
-                <h5>Color*</h5>
+                <h5>Color del fondo*</h5>
                 <input type="color" v-model="this.addSectionValues.t1BackgnCOL">
               </div>
               <div style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
@@ -148,6 +155,10 @@
               <div style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
                 <h5>Subtítulo</h5>
                 <input class="form-control" type="text" v-model="this.addSectionValues.t1Sub">
+              </div>
+              <div v-if="this.addBackgroundType!=-1" style="margin-top: 0.5em">
+                <h5>Color del texto</h5>
+                <input type="color" v-model="this.addSectionValues.t1TxtColor">
               </div>
               <div style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
                 <h5>Tercera línea</h5>
@@ -185,8 +196,7 @@
                   <h5 style="margin-top: 1em">Libros a mostrar*</h5>
                   <select class="form-control" v-model="this.addSectionValues.t2BookMode">
                     <option value=1>Más vendidos</option>
-                    <option value=2>Precio ascendente</option>
-                    <option value=3>Precio descendente</option>
+                    <option value=2>Recomendados</option>
                     <option value=0>Selección manual</option>
                   </select>
                   <div v-if="this.addSectionValues.t2BookMode == 0">
@@ -268,6 +278,7 @@ export default {
   created() {
     scrollTo(0, 0)
     this.getBooksFromDBSelector('TODO')
+    this.getBannersFromDB()
   },
   data() {
     return {
@@ -287,6 +298,7 @@ export default {
         t1Smalll: '',
         t2RowTitle: '',
         t2RowNumber: -1,
+        t1TxtColor: '#fff',
         books: []
       },
       frontElements: [
@@ -303,6 +315,7 @@ export default {
           t2RowTitle: '',
           t2RowNumber: '-1',
           t2BookMode: -1,
+          t1TxtColor: '#f2f',
           books: []
         },
         {
@@ -318,6 +331,7 @@ export default {
           t2RowTitle: '',
           t2RowNumber: '-1',
           t2BookMode: -1,
+          t1TxtColor: '#fff',
           books: []
         },
         {
@@ -330,9 +344,10 @@ export default {
           t1Separator: false,
           t1Sub: '',
           t1Smalll: '',
-          t2RowTitle: 'Prueba',
-          t2RowNumber: '6',
+          t2RowTitle: 'Prueba manual',
+          t2RowNumber: '5',
           t2BookMode: 0,
+          t1TxtColor: '#fff',
           books: [{
             "id": 1,
             "ISBN": 9788431690656,
@@ -354,12 +369,74 @@ export default {
             "cover_image_url": "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
             "back_cover_image_url": "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg"
           }]
+        },
+          {
+          id: 4,
+          frontType: 2,
+          t1BackgndURL: '',
+          t1BackgnCOL: '',
+          t1LinkTo: '',
+          t1Tit: '',
+          t1Separator: false,
+          t1Sub: '',
+          t1Smalll: '',
+          t2RowTitle: 'Prueba + vendidos',
+          t2RowNumber: '5',
+          t2BookMode: 1,
+          t1TxtColor: '#fff',
+          books: []
+        },
+          {
+          id: 5,
+          frontType: 2,
+          t1BackgndURL: '',
+          t1BackgnCOL: '',
+          t1LinkTo: '',
+          t1Tit: '',
+          t1Separator: false,
+          t1Sub: '',
+          t1Smalll: '',
+          t2RowTitle: 'Prueba + vendidos verifcar',
+          t2RowNumber: '5',
+          t2BookMode: 1,
+          t1TxtColor: '#fff',
+          books: []
+        },
+          {
+          id: 6,
+          frontType: 2,
+          t1BackgndURL: '',
+          t1BackgnCOL: '',
+          t1LinkTo: '',
+          t1Tit: '',
+          t1Separator: false,
+          t1Sub: '',
+          t1Smalll: '',
+          t2RowTitle: 'Prueba recomendados',
+          t2RowNumber: '5',
+          t2BookMode: 2,
+          t1TxtColor: '#fff',
+          books: []
+        },
+          {
+          id: 7,
+          frontType: 2,
+          t1BackgndURL: '',
+          t1BackgnCOL: '',
+          t1LinkTo: '',
+          t1Tit: '',
+          t1Separator: false,
+          t1Sub: '',
+          t1Smalll: '',
+          t2RowTitle: 'Prueba recomendos verifcar',
+          t2RowNumber: '4',
+          t2BookMode: 2,
+          t1TxtColor: '#fff',
+          books: []
         }
       ],
       books: [],
-      booksR: [],
-      booksRR: [],
-      booksRM: [],
+      booksPopular: [],
       booksSelector: [],
       countSelBooks: 0,
       selectedBooks: []
@@ -388,7 +465,7 @@ export default {
       } else if (this.addSectionValues.frontType == 2) {
         if (parseInt(this.addSectionValues.t2RowNumber) >= 3 && parseInt(this.addSectionValues.t2RowNumber) <= 5 && this.addSectionValues.t2RowTitle != '') {
           if ((this.addSectionValues.t2BookMode == 0 && this.selectedBooks.length == parseInt(this.addSectionValues.t2RowNumber))
-          || this.addSectionValues.t2BookMode >= 1 && this.addSectionValues.t2BookMode <= 3){
+              || this.addSectionValues.t2BookMode >= 1 && this.addSectionValues.t2BookMode <= 3) {
             return !true
           }
           return !false
@@ -396,10 +473,10 @@ export default {
       }
       return !false
     },
-    moveUp(id){
+    moveUp(id) {
       console.log(id)
     },
-    moveDown(id){
+    moveDown(id) {
       console.log(id)
     },
     selectBook(id) {
@@ -478,6 +555,43 @@ export default {
     }
     ,
     // eslint-disable-next-line no-unused-vars
+    getBannersFromDB(){
+      /*var path = api + 'books/' + req
+      if (req === 'TODO') {
+        path = api + 'books'
+      }
+      axios.get(path)
+          .then((res) => {
+            this.frontElements = res.data.LOQUESEA
+            this.getAllBooksFromDBBanners()
+          })
+          .catch((error) => {
+            console.log(error) //
+          })*/
+      this.getAllBooksFromDBBanners()
+    },
+    getAllBooksFromDBBanners() {
+      var path = api + 'books'
+      axios.get(path)
+          .then((res) => {
+            this.books = res.data.books
+            this.booksPopular = this.books.slice().sort(this.compare)
+            console.log(this.books)
+            this.assignBooksToBanners()
+          })
+          .catch((error) => {
+            console.log(error) //
+          })
+    },
+    assignBooksToBanners(){
+      for(let i in this.frontElements){
+        if(this.frontElements[i].t2BookMode == 1){
+          this.frontElements[i].books = this.booksPopular.slice(0, parseInt(this.frontElements[i].t2RowNumber))
+        }else if(this.frontElements[i].t2BookMode == 2){
+          this.frontElements[i].books = this.recommendNBooks(parseInt(this.frontElements[i].t2RowNumber))
+        }
+      }
+    },
     getBooksFromDBSelector(req) {
       var path = api + 'books/' + req
       if (req === 'TODO') {
@@ -490,9 +604,8 @@ export default {
           .catch((error) => {
             console.log(error) //
           })
-    }
-    ,
-    recommendBooks() {
+    },
+    recommendNBooks(N) {
       var min = 0, max = this.books.length - 1
       var r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0
       while (r1 == r2 || r1 == r3 || r1 == r4 || r1 == r5 ||
@@ -506,11 +619,7 @@ export default {
         r4 = Math.floor(Math.random() * (max - min + 1) + min)
         r5 = Math.floor(Math.random() * (max - min + 1) + min)
       }
-      this.booksRM.push(this.books[r1])
-      this.booksRM.push(this.books[r2])
-      this.booksRM.push(this.books[r3])
-      this.booksRM.push(this.books[r4])
-      this.booksRM.push(this.books[r5])
+      return [this.books[r1], this.books[r2], this.books[r3], this.books[r4], this.books[r5]].slice(0, N)
     }
   }
 }
