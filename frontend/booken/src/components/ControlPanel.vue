@@ -321,7 +321,7 @@
                                       </span>
                                       Enviando ticket...
                                   </div>
-
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -631,7 +631,6 @@
                                       </span>
                                       Enviando ticket...
                                   </div>
-
                               </button>
                             </div>
                           </div>
