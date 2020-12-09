@@ -7,7 +7,8 @@ from models.interface import InterfaceModel
 class InterfaceList(Resource):
 
     def get(self):
-        return {'interfaces': [i.json()['banner'] for i in db.session.query(InterfaceModel).all()]}, 200
+        int = sorted([(i.json()['banner'], i.order) for i in db.session.query(InterfaceModel).all()], key=lambda x: x[1])
+        return {'interfaces': [i[0] for i in int]}, 200
 
 
 class InterfaceListBooks(Resource):
@@ -58,7 +59,6 @@ class Interface(Resource):
         if data.get('t2Books'):
             interface.books = [BookModel.find_by_id(int(i)) for i in data.get('t2Books').split(",")]
         interface.save_to_db()
-        print(len(interface.json()['banner']['books']))
         return interface.json(), 200
 
     def put(self, idd):
@@ -89,12 +89,10 @@ class Interface(Resource):
         exists = InterfaceModel.find_by_id(idd)
         if not exists:
             return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
-        interfaces = InterfaceModel.query.all()
-        exists.books = []
-        exists.save_to_db()
         exists.delete_from_db()
-        for i in range(exists.id, len(interfaces)):
-            interfaces[i].id -= 1
+        interfaces = sorted([i for i in db.session.query(InterfaceModel).all()], key=lambda x: x.order)
+        for i in range(len(interfaces)):
+            interfaces[i].order = i + 1
             interfaces[i].save_to_db()
         return {'message': "Interface with ['id': {}] has successfully been deleted".format(idd)}, 200
 
@@ -136,12 +134,9 @@ class ChangePositionBanner(Resource):
             return {'message': "Banner with ['id': {}] not found".format(id_1)}, 404
         if not banner_down:
             return {'message': "Banner with ['id': {}] not found".format(id_2)}, 404
-        len_banners = len([a.json() for a in InterfaceModel.query.all()])
-        id_aux = len_banners + 1
-        banner_top.id = id_aux
+        order_aux = banner_top.order
+        banner_top.order = banner_down.order
         banner_top.save_to_db()
-        banner_down.id = id_1
+        banner_down.order = order_aux
         banner_down.save_to_db()
-        banner_top.id = id_2
-        banner_top.save_to_db()
         return {'message': "Banners ID changed"}, 200

@@ -16,16 +16,16 @@
                                               style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
               class="navbartextbt">Añadir sección</a></button>
         </div>
-        <div v-for="item in this.frontElements" :key="item.id">
+        <div v-for="(item, index) in this.frontElements" :key="item.id">
           <!-- in case it is a jumbotron -->
           <div>
             <div role="group" style="text-align: right; margin-bottom: 0.1em" v-if="this.type == 2">
-              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.id > 1" @click="move(item.id, item.id - 1)"
+              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.order > 1" @click="move(item.id, this.frontElements[index-1].id)"
                       style=""><i class="fas fa-arrow-up"
                                   style="color: #FFF; font-size: 1.5em"/><a
                   class="navbartextbt"></a></button>
-              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.id < this.frontElements.length"
-                      style="" @click="move(item.id, item.id + 1)"><i class="fas fa-arrow-down"
+              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.order < this.frontElements.length"
+                      style="" @click="move(item.id, this.frontElements[index+1].id)"><i class="fas fa-arrow-down"
                                                         style="color: #FFF; font-size: 1.5em"/><a
                   class="navbartextbt"></a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-1" type="submit" @click="editSection(item.id)"
@@ -38,7 +38,7 @@
                   class="navbartextbt">Eliminar sección</a></button>
             </div>
             <a :href="item.t1LinkTo" style="text-decoration: none">
-              <div class="jumbotron"
+              <div class="jumbotron" style="min-height: 30em"
                    :style="{'background-color': item.t1BackgndCOL, 'background-image': 'url(' + item.t1BackgndURL + ')','color': item.t1TxtColor}"
                    v-if="item.front_type==1">
                 <h1 class="display-4">{{ item.t1Tit }}</h1>
@@ -525,7 +525,8 @@ export default {
     }
     ,
     getRowClassName(rows) {
-      return "row row-cols-1 row-cols-sm-" + String(rows)
+      console.log(rows)
+      return "row row-cols-1 row-cols-sm-5 justify-content-around" //+ String(rows)
     }
     ,
     compare(a, b) {

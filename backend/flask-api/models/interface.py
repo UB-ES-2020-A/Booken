@@ -8,6 +8,7 @@ class InterfaceModel(db.Model):
     __tablename__ = 'interfaces'
 
     id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer, nullable=False)
     front_type = db.Column(db.Integer, nullable=False)
     t2BookMode = db.Column(db.Integer, nullable=False)
     t1BackgndURL = db.Column(db.String(100))
@@ -36,6 +37,7 @@ class InterfaceModel(db.Model):
         self.t2RowTitle = t2RowTitle
         self.t2RowNumber = t2RowNumber
         self.t1TxtColor = t1TxtColor
+        self.order = len(InterfaceModel.query.all()) + 1
 
     @classmethod
     def find_by_id(cls, idd):
@@ -64,6 +66,7 @@ class InterfaceModel(db.Model):
             "t2RowTitle": self.t2RowTitle,
             "t2RowNumber": self.t2RowNumber,
             "t1TxtColor": self.t1TxtColor,
+            "order": self.order,
             "books": [a.json()['book'] for a in self.books]
         }}
 
