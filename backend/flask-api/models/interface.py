@@ -20,7 +20,7 @@ class InterfaceModel(db.Model):
     t2RowTitle = db.Column(db.String(50), nullable=False)
     t2RowNumber = db.Column(db.Integer, nullable=False)
     t1TxtColor = db.Column(db.String(30), nullable=False)
-    books = db.relationship('BookModel', secondary=interface, backref=db.backref('book_interface', lazy='dynamic'))
+    books = db.relationship('BookModel', secondary=interface, backref=db.backref('interfaces', lazy='dynamic'))
 
     def __init__(self, front_type, t2BookMode, t1BackgndURL, t1BackgndCOL, t1LinkTo, t1Tit, t1Separator, t1Sub, t1Small,
                  t2RowTitle, t2RowNumber, t1TxtColor):
