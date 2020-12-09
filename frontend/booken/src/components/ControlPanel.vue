@@ -1302,7 +1302,8 @@ export default {
   },
   created() {
     this.getOrders()
-    this.getOrdersList()
+    if (this.type == 2)
+        this.getOrdersList();
     this.getAddresses()
     this.getCards()
     this.getAccount()
