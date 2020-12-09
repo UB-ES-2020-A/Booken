@@ -1433,7 +1433,8 @@ export default {
     },
     getOrders() {
       var path = api + 'order-user/' + this.id
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
@@ -1623,7 +1624,8 @@ export default {
     },
     getOrdersList() {
       var path = api + 'orders'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -1733,7 +1735,8 @@ export default {
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
@@ -1760,7 +1763,8 @@ export default {
     },
     cancelOrderList(id) {
       var path = api + 'order/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
@@ -1992,8 +1996,8 @@ export default {
     },
     stateOrdersInProgress() {
       var path = api + 'orders-state-0/' + this.id
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
@@ -2013,8 +2017,8 @@ export default {
     },
     stateOrdersSend() {
       var path = api + 'orders-state-1/' + this.id
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
@@ -2034,8 +2038,9 @@ export default {
     },
     stateOrdersReceived() {
       var path = api + 'orders-state-2/' + this.id
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
@@ -2055,8 +2060,9 @@ export default {
     },
     stateOrdersListInProgress() {
       var path = api + 'orders-list-state-0'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -2076,8 +2082,9 @@ export default {
     },
     stateOrdersListSend() {
       var path = api + 'orders-list-state-1'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -2097,8 +2104,9 @@ export default {
     },
     stateOrdersListReceived() {
       var path = api + 'orders-list-state-2'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -2337,7 +2345,8 @@ export default {
       const parameters = {
         state: type
       }
-      axios.put(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.put(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             if (this.sortTypeHist == "-1") {

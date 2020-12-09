@@ -1,14 +1,17 @@
 # file deepcode ignore C0411: n/a
 # file deepcode ignore C0413: n/a
 #  deepcode ignore C0411: not an issue
+import base64
 import os
 import unittest
+import json
 #  deepcode ignore C0411: not an issue
 import sys
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
 #  deepcode ignore C0411: not an issue
 from models.author import AuthorModel
+from models.accounts import AccountModel
 
 sys.path.append('../')
 #  deepcode ignore C0413: stupid issue
@@ -47,10 +50,22 @@ class AuthorResourceGetTest(unittest.TestCase):
         'country': "Spain"
     }
 
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def test_get_author(self):
         self.add_author(self.author_info)
@@ -76,7 +91,26 @@ class AuthorResourceGetTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def add_author(self, info):
-        return self.app.post('api/author', data=info, follow_redirects=True)
+        return self.app.post('api/author', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
+
+    def create_account(self, info):
+        return self.register(info)
+
+    def register(self, info):
+        return self.app.post('api/account',
+                             data=info,
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
+                             follow_redirects=True)
+
 
 
 class AuthorResourcePostTest(unittest.TestCase):
@@ -88,17 +122,47 @@ class AuthorResourcePostTest(unittest.TestCase):
         'country': "Spain"
     }
 
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def test_post_author(self):
         response = self.add_author(self.author_info)
         self.assertEqual(response.status_code, 201)
 
     def add_author(self, info):
-        return self.app.post('api/author', data=info, follow_redirects=True)
+        return self.app.post('api/author', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
+
+    def create_account(self, info):
+        return self.register(info)
+
+    def register(self, info):
+        return self.app.post('api/account',
+                             data=info,
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
+                             follow_redirects=True)
 
 
 class AuthorResourcePutTest(unittest.TestCase):
@@ -110,10 +174,22 @@ class AuthorResourcePutTest(unittest.TestCase):
         'country': "Spain"
     }
 
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def test_put_author(self):
         self.add_author(self.author_info)
@@ -123,7 +199,12 @@ class AuthorResourcePutTest(unittest.TestCase):
             'city': "Barcelona",
             'country': "Spain"
         }
-        response = self.app.put('api/author/1', data=info, follow_redirects=True)
+        response = self.app.put('api/author/1', data=info,
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                          'ascii')).decode(
+                                    'ascii')},
+                                follow_redirects=True)
         self.assertEqual(response.status_code, 201)
 
     def test_put_non_existent_author(self):
@@ -134,11 +215,34 @@ class AuthorResourcePutTest(unittest.TestCase):
             'city': "Barcelona",
             'country': "Spain"
         }
-        response = self.app.put('api/author/59', data=info, follow_redirects=True)
+        response = self.app.put('api/author/59', data=info,
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                          'ascii')).decode(
+                                    'ascii')},
+                                follow_redirects=True)
         self.assertEqual(response.status_code, 409)
 
     def add_author(self, info):
-        return self.app.post('api/author', data=info, follow_redirects=True)
+        return self.app.post('api/author', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
+
+    def create_account(self, info):
+        return self.register(info)
+
+    def register(self, info):
+        return self.app.post('api/account',
+                             data=info,
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
+                             follow_redirects=True)
 
 
 class AuthorResourceDeleteTest(unittest.TestCase):
@@ -150,21 +254,60 @@ class AuthorResourceDeleteTest(unittest.TestCase):
         'country': "Spain"
     }
 
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def test_delete_author(self):
         self.add_author(self.author_info)
-        response = self.app.delete('api/author/1', follow_redirects=True)
+        response = self.app.delete('api/author/1',
+                                   headers={'Authorization': 'Basic ' + base64.b64encode(
+                                       bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                             'ascii')).decode(
+                                       'ascii')},
+                                   follow_redirects=True)
         self.assertEqual(response.status_code, 201)
 
     def test_delete_non_existent_author(self):
         self.add_author(self.author_info)
-        response = self.app.delete('api/author/59', follow_redirects=True)
+        response = self.app.delete('api/author/59',
+                                   headers={'Authorization': 'Basic ' + base64.b64encode(
+                                       bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                             'ascii')).decode(
+                                       'ascii')},
+                                   follow_redirects=True)
         self.assertEqual(response.status_code, 409)
 
     def add_author(self, info):
-        return self.app.post('api/author', data=info, follow_redirects=True)
+        return self.app.post('api/author', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
 
+    def create_account(self, info):
+        return self.register(info)
+
+    def register(self, info):
+        return self.app.post('api/account',
+                             data=info,
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
+                             follow_redirects=True)
