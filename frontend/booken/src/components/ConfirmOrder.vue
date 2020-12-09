@@ -652,7 +652,8 @@ export default {
         card_id: this.cards[this.selectedCard].id,
         address_id: this.addresses[this.selectedAdd].id
       }
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters,{auth: currentUser})
           .then((res) => {
             var order_id = res.data
             this.finalizePurchase(order_id)
@@ -674,7 +675,8 @@ export default {
           id_book: item.id,
           quant: item.quant
         }
-        axios.post(path, parameters)
+        var currentUser = {username: this.id, password: this.token}
+        axios.post(path, parameters,{auth: currentUser})
             .then(() => {
               bus.emit('empty_cart')
             })

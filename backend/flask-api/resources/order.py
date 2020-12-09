@@ -42,7 +42,7 @@ class Orders(Resource):
         db.session.commit()
         return new_order.id, 200
 
-    @auth.login_required(role='stock_manager')
+    @auth.login_required
     def delete(self, idd):
         order = OrdersModel.find_by_id(idd)
         if order:
