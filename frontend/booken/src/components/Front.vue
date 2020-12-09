@@ -327,11 +327,6 @@ export default {
           }
         } else if (this.addBackgroundType == 2) {
           return !true
-          /*if (this.addSectionValues.t1BackgnCOL == '') {
-            return !false
-          } else {
-            return !true
-          }*/
         }
       } else if (this.addSectionValues.frontType == 2) {
         if (parseInt(this.addSectionValues.t2RowNumber) >= 3 && parseInt(this.addSectionValues.t2RowNumber) <= 5 && this.addSectionValues.t2RowTitle != '') {
