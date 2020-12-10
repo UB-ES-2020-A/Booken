@@ -66,6 +66,21 @@ class InterfaceTests(unittest.TestCase):
         "t2RowNumber": 1,
         "t1TxtColor": '#fff'
     }
+    interface_info_with_books = {
+        "front_type": 2,
+        "t2BookMode": -2,
+        "t1BackgndURL": 'asdasd',
+        "t1BackgndCOL": 'asdasd',
+        "t1LinkTo": 'asdasd',
+        "t1Tit": 'asdasd',
+        "t1Separator": 'false',
+        "t1Sub": "asdasd",
+        "t1Small": 'asdasd',
+        "t2RowTitle": 'asdasd',
+        "t2RowNumber": 1,
+        "t1TxtColor": '#fff',
+        "t2Books": [1]
+    }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
@@ -84,6 +99,11 @@ class InterfaceTests(unittest.TestCase):
         response = self.postInterface(self.interface_info)
         self.assertEqual(response.status_code, 200)
 
+    def test_post_interface_with_books(self):
+        self.postBook(self.book_info)
+        response = self.postInterface(self.interface_info_with_books)
+        self.assertEqual(response.status_code, 200)
+
     def test_get_interface(self):
         self.postInterface(self.interface_info)
         response = self.app.get('api/interface/1', follow_redirects=True)
@@ -99,6 +119,12 @@ class InterfaceTests(unittest.TestCase):
         response = self.app.put('/api/interface/1', data=self.interface_info, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
+    def test_put_interface_with_books(self):
+        self.postBook(self.book_info)
+        self.postInterface(self.interface_info_with_books)
+        response = self.app.put('/api/interface/1', data=self.interface_info_with_books, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
     def test_put_interface_error(self):
         self.postInterface(self.interface_info)
         response = self.app.put('/api/interface/4', data=self.interface_info, follow_redirects=True)
@@ -106,6 +132,12 @@ class InterfaceTests(unittest.TestCase):
 
     def test_delete_interface(self):
         self.postInterface(self.interface_info)
+        response = self.app.delete('/api/interface/1', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_interface_2(self):
+        self.postInterface(self.interface_info)
+        self.postInterface(self.interface_info_2)
         response = self.app.delete('/api/interface/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
@@ -187,3 +219,7 @@ class InterfaceTests(unittest.TestCase):
 
     def postInterface(self, info):
         return self.app.post('/api/interface', data=info, follow_redirects=True)
+
+
+if __name__ == '__main__':
+    unittest.main()
