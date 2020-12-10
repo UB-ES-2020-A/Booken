@@ -221,5 +221,3 @@ class InterfaceTests(unittest.TestCase):
         return self.app.post('/api/interface', data=info, follow_redirects=True)
 
 
-if __name__ == '__main__':
-    unittest.main()
