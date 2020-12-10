@@ -7,8 +7,8 @@ from models.interface import InterfaceModel
 class InterfaceList(Resource):
 
     def get(self):
-        int = sorted([(i.json()['banner'], i.order) for i in db.session.query(InterfaceModel).all()], key=lambda x: x[1])
-        return {'interfaces': [i[0] for i in int]}, 200
+        intl = sorted([(i.json()['banner'], i.order) for i in db.session.query(InterfaceModel).all()], key=lambda x: x[1])
+        return {'interfaces': [i[0] for i in intl]}, 200
 
 
 class InterfaceListBooks(Resource):
