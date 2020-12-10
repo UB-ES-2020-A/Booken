@@ -16,16 +16,16 @@
                                               style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
               class="navbartextbt">Añadir sección</a></button>
         </div>
-        <div v-for="item in this.frontElements" :key="item.id">
+        <div v-for="(item, index) in this.frontElements" :key="item.id">
           <!-- in case it is a jumbotron -->
           <div>
             <div role="group" style="text-align: right; margin-bottom: 0.1em" v-if="this.type == 2">
-              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.id > 1" @click="moveUp(id)"
+              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.order > 1" @click="move(item.id, this.frontElements[index-1].id)"
                       style=""><i class="fas fa-arrow-up"
                                   style="color: #FFF; font-size: 1.5em"/><a
                   class="navbartextbt"></a></button>
-              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.id < this.frontElements.length"
-                      style="" @click="moveDown(id)"><i class="fas fa-arrow-down"
+              <button class="btn btn-success my-2 my-sm-0 mr-1" type="submit" v-if="item.order < this.frontElements.length"
+                      style="" @click="move(item.id, this.frontElements[index+1].id)"><i class="fas fa-arrow-down"
                                                         style="color: #FFF; font-size: 1.5em"/><a
                   class="navbartextbt"></a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-1" type="submit" @click="editSection(item.id)"
@@ -38,21 +38,22 @@
                   class="navbartextbt">Eliminar sección</a></button>
             </div>
             <a :href="item.t1LinkTo" style="text-decoration: none">
-              <div class="jumbotron"
-                   :style="{'background-color': item.t1BackgnCOL, 'background-image': 'url(' + item.t1BackgndURL + ')','color': item.t1TxtColor}"
-                   v-if="item.frontType==1">
+              <div class="jumbotron" style="min-height: 20em"
+                   :style="{'background-color': item.t1BackgndCOL, 'background-image': 'url(' + item.t1BackgndURL + ')','color': item.t1TxtColor}"
+                   v-if="item.front_type==1">
                 <h1 class="display-4">{{ item.t1Tit }}</h1>
+                <p color="red">{{ item.t1BackgnCOL }}</p>
                 <p class="lead">
                   {{ item.t1Sub }}
                 </p>
-                <hr class="my-4" v-if="item.t1Separator">
-                <p style="font-size: 0.9em">{{ item.t1Smalll }}</p>
+                <hr class="my-4" v-if="item.t1Separator == 'True'">
+                <p style="font-size: 2em">{{ item.t1Small }}</p>
               </div>
             </a>
           </div>
 
           <!-- in case it is a custom row -->
-          <div v-if="item.frontType==2">
+          <div v-if="item.front_type==2">
             <h2>{{ item.t2RowTitle }}</h2>
             <div :class="this.getRowClassName(item.t2RowNumber)">
               <div class="col mb-4" v-for="(inner_item, index) in item.books" :key="index">
@@ -134,8 +135,8 @@
                 </div>
               </div>
               <div class="form-check" style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
-                <input class="form-check-input" type="checkbox" value="true"
-                       v-model="this.addSectionValues.t1Separator">
+                <input class="form-check-input" type="checkbox"
+                       id="separator">
                 <h5 class="form-check-label">
                   Separador <h6>(entre subtítulo y tercera línea)</h6>
                 </h5>
@@ -146,7 +147,7 @@
               </div>
               <div v-if="this.addBackgroundType==2" style="margin-top: 0.5em">
                 <h5>Color del fondo*</h5>
-                <input type="color" v-model="this.addSectionValues.t1BackgnCOL">
+                <input type="color" id="backColor" value="#ff022f">
               </div>
               <div style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
                 <h5>Título</h5>
@@ -158,7 +159,7 @@
               </div>
               <div v-if="this.addBackgroundType!=-1" style="margin-top: 0.5em">
                 <h5>Color del texto</h5>
-                <input type="color" v-model="this.addSectionValues.t1TxtColor">
+                <input type="color" id="textColor" value="#ff00ff">
               </div>
               <div style="margin-top: 0.5em" v-if="this.addBackgroundType != -1">
                 <h5>Tercera línea</h5>
@@ -195,6 +196,7 @@
                 <div v-if="this.addSectionValues.t2RowNumber">
                   <h5 style="margin-top: 1em">Libros a mostrar*</h5>
                   <select class="form-control" v-model="this.addSectionValues.t2BookMode">
+                    <option value=-1 disabled>Seleccionar</option>
                     <option value=1>Más vendidos</option>
                     <option value=2>Recomendados</option>
                     <option value=0>Selección manual</option>
@@ -266,6 +268,7 @@
 import {api} from "@/main";
 import axios from "axios";
 import 'verte/dist/verte.css'
+import * as toastr from "@/assets/toastr";
 
 export default {
   name: 'Front',
@@ -297,144 +300,11 @@ export default {
         t1Sub: '',
         t1Smalll: '',
         t2RowTitle: '',
-        t2RowNumber: -1,
-        t1TxtColor: '#fff',
+        t2RowNumber: 0,
+        t1TxtColor: '',
         books: []
       },
-      frontElements: [
-        {
-          id: 1,
-          frontType: 1,
-          t1BackgndURL: '',
-          t1BackgnCOL: '#2bc4ed',
-          t1LinkTo: 'https://stackoverflow.com/questions/35242272/vue-js-data-bind-style-backgroundimage-not-working',
-          t1Tit: 'Rebajas!',
-          t1Separator: true,
-          t1Sub: 'Esto es un sub',
-          t1Smalll: 'Letra peq',
-          t2RowTitle: '',
-          t2RowNumber: '-1',
-          t2BookMode: -1,
-          t1TxtColor: '#f2f',
-          books: []
-        },
-        {
-          id: 2,
-          frontType: 1,
-          t1BackgndURL: 'https://w.wallhaven.cc/full/x1/wallhaven-x1kd1d.jpg',
-          t1BackgnCOL: '#2bc4ed',
-          t1LinkTo: '',
-          t1Tit: 'Rebajas!',
-          t1Separator: false,
-          t1Sub: 'Esto es un sub',
-          t1Smalll: 'Letra peq',
-          t2RowTitle: '',
-          t2RowNumber: '-1',
-          t2BookMode: -1,
-          t1TxtColor: '#fff',
-          books: []
-        },
-        {
-          id: 3,
-          frontType: 2,
-          t1BackgndURL: '',
-          t1BackgnCOL: '',
-          t1LinkTo: '',
-          t1Tit: '',
-          t1Separator: false,
-          t1Sub: '',
-          t1Smalll: '',
-          t2RowTitle: 'Prueba manual',
-          t2RowNumber: '5',
-          t2BookMode: 0,
-          t1TxtColor: '#fff',
-          books: [{
-            "id": 1,
-            "ISBN": 9788431690656,
-            "name": "Mitos griegos",
-            "author": [
-              "Maria Angelidou"
-            ],
-            "genre": "HUMANIDADES",
-            "year": 2013,
-            "editorial": "Vicens Vives",
-            "language": "Castellano",
-            "price": 7.5,
-            "num_pages": 128,
-            "cover_type": 0,
-            "synopsis": "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-            "description": "Una inmejorable introducción al universo de la mitología",
-            "num_sales": 0,
-            "total_available": 28,
-            "cover_image_url": "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
-            "back_cover_image_url": "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg"
-          }]
-        },
-          {
-          id: 4,
-          frontType: 2,
-          t1BackgndURL: '',
-          t1BackgnCOL: '',
-          t1LinkTo: '',
-          t1Tit: '',
-          t1Separator: false,
-          t1Sub: '',
-          t1Smalll: '',
-          t2RowTitle: 'Prueba + vendidos',
-          t2RowNumber: '5',
-          t2BookMode: 1,
-          t1TxtColor: '#fff',
-          books: []
-        },
-          {
-          id: 5,
-          frontType: 2,
-          t1BackgndURL: '',
-          t1BackgnCOL: '',
-          t1LinkTo: '',
-          t1Tit: '',
-          t1Separator: false,
-          t1Sub: '',
-          t1Smalll: '',
-          t2RowTitle: 'Prueba + vendidos verifcar',
-          t2RowNumber: '5',
-          t2BookMode: 1,
-          t1TxtColor: '#fff',
-          books: []
-        },
-          {
-          id: 6,
-          frontType: 2,
-          t1BackgndURL: '',
-          t1BackgnCOL: '',
-          t1LinkTo: '',
-          t1Tit: '',
-          t1Separator: false,
-          t1Sub: '',
-          t1Smalll: '',
-          t2RowTitle: 'Prueba recomendados',
-          t2RowNumber: '5',
-          t2BookMode: 2,
-          t1TxtColor: '#fff',
-          books: []
-        },
-          {
-          id: 7,
-          frontType: 2,
-          t1BackgndURL: '',
-          t1BackgnCOL: '',
-          t1LinkTo: '',
-          t1Tit: '',
-          t1Separator: false,
-          t1Sub: '',
-          t1Smalll: '',
-          t2RowTitle: 'Prueba recomendos verifcar',
-          t2RowNumber: '4',
-          t2BookMode: 2,
-          t1TxtColor: '#fff',
-          books: []
-        }
-      ],
+      frontElements: [],
       books: [],
       booksPopular: [],
       booksSelector: [],
@@ -456,11 +326,7 @@ export default {
             return !true
           }
         } else if (this.addBackgroundType == 2) {
-          if (this.addSectionValues.t1BackgnCOL == '') {
-            return !false
-          } else {
-            return !true
-          }
+          return !true
         }
       } else if (this.addSectionValues.frontType == 2) {
         if (parseInt(this.addSectionValues.t2RowNumber) >= 3 && parseInt(this.addSectionValues.t2RowNumber) <= 5 && this.addSectionValues.t2RowTitle != '') {
@@ -473,11 +339,16 @@ export default {
       }
       return !false
     },
-    moveUp(id) {
-      console.log(id)
-    },
-    moveDown(id) {
-      console.log(id)
+    move(id1, id2) {
+      var path = api + 'changeposition/' + id1 + '/' + id2
+      axios.post(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            this.getBannersFromDB()
+          })
+          .catch((error) => {
+            console.log(error) //
+          })
     },
     selectBook(id) {
       let div = document.getElementById(id)
@@ -492,7 +363,6 @@ export default {
           div.classList.add("selected-book")
         }
       }
-      console.log(this.selectedBooks)
     }
     ,
     getSelBookClassName(id) {
@@ -505,11 +375,53 @@ export default {
     discardChanges() {
       this.edit = false
       this.idEditingSection = -1
+      this.selectedBooks = []
     }
     ,
     editSection(id) {
       this.idEditingSection = id
       this.edit = true
+      var path = api + 'interface/' + id
+      axios.get(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            let banner = res.data.banner
+            this.addSectionValues.frontType = banner.front_type
+            if(this.addSectionValues.frontType == 1){
+              if(banner.t1BackgndURL == ""){
+                this.addBackgroundType = 2
+              }else{
+                this.addBackgroundType = 1
+              }
+              this.addSectionValues.t1BackgndURL = banner.t1BackgndURL
+              this.addSectionValues.t1Tit = banner.t1Tit
+              this.addSectionValues.t1Sub = banner.t1Sub
+              this.addSectionValues.t1Smalll = banner.t1Small
+              this.addSectionValues.t1LinkTo = banner.t1LinkTo
+              document.getElementById("textColor").value = banner.t1TxtColor
+              document.getElementById("backColor").value = banner.t1BackgndCOL
+              if(banner.t1Separator == "True"){
+                document.getElementById("separator").checked = "True"
+              }else{
+                document.getElementById("separator").checked = "False"
+              }
+            }else{
+              this.selectedBooks = []
+              this.addSectionValues.t2RowTitle = banner.t2RowTitle
+              this.addSectionValues.t2RowNumber = banner.t2RowNumber
+              this.addSectionValues.t2BookMode = banner.t2BookMode
+              this.countSelBooks = banner.t2RowNumber
+              if(this.addSectionValues.t2BookMode == 0){
+                for(var i in banner.books){
+                  this.selectedBooks.push(banner.books[i].id)
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error) //
+          })
+
     }
     ,
     addSection() {
@@ -531,15 +443,90 @@ export default {
     ,
     saveSection() {
       this.edit = false
-      this.idEditingSection = -1
+      var data, path
+      if (this.addSectionValues.frontType == 1) {
+        data = {
+          "front_type": parseInt(this.addSectionValues.frontType),
+          "t2BookMode": -1,
+          "t1BackgndURL": this.addSectionValues.t1BackgndURL,
+          "t1BackgndCOL": "",
+          "t1LinkTo": this.addSectionValues.t1LinkTo,
+          "t1Tit": this.addSectionValues.t1Tit,
+          "t1Separator": document.getElementById("separator").checked,
+          "t1Sub": this.addSectionValues.t1Sub,
+          "t1Small": this.addSectionValues.t1Smalll,
+          "t2RowTitle": this.addSectionValues.t2RowTitle,
+          "t2RowNumber": -1,
+          "t1TxtColor": document.getElementById("textColor").value
+        }
+        if (this.addBackgroundType == 2) {
+          data.t1BackgndCOL = document.getElementById("backColor").value
+        }
+      }else if (this.addSectionValues.frontType == 2){
+        data = {
+          "front_type": parseInt(this.addSectionValues.frontType),
+          "t2BookMode": parseInt(this.addSectionValues.t2BookMode),
+          "t1BackgndURL": "",
+          "t1BackgndCOL": "",
+          "t1LinkTo": this.addSectionValues.t1LinkTo,
+          "t1Tit": this.addSectionValues.t1Tit,
+          "t1Separator": false,
+          "t1Sub": this.addSectionValues.t1Sub,
+          "t1Small": this.addSectionValues.t1Smalll,
+          "t2RowTitle": this.addSectionValues.t2RowTitle,
+          "t2RowNumber": parseInt(this.addSectionValues.t2RowNumber),
+          "t1TxtColor": "",
+          "t2Books": this.selectedBooks.toString()
+        }
+        this.selectedBooks = []
+      }
+      if(this.idEditingSection == -1){
+        path = api + 'interface'
+        axios.post(path, data)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            toastr.success('', 'Sección añadida.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getBannersFromDB()
+          })
+          .catch((error) => {
+            toastr.error('', 'La sección no se ha guardado.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            console.log(error) //
+          })
+      }else{
+        path = api + 'interface/' + this.idEditingSection
+        axios.put(path, data)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            toastr.success('', 'Sección editada.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            this.getBannersFromDB()
+            this.idEditingSection = -1
+          })
+          .catch((error) => {
+            toastr.error('', 'La sección no se ha guardado.',
+                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right'})
+            console.log(error) //
+          })
+      }
     }
     ,
     deleteSection(id) {
-      console.log(id)
+      var path = api + 'interface/' + id
+      axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            this.getBannersFromDB()
+          })
+          .catch((error) => {
+            console.log(error) //
+          })
     }
     ,
     getRowClassName(rows) {
-      return "row row-cols-1 row-cols-sm-" + String(rows)
+      console.log(rows)
+      return "row row-cols-1 row-cols-sm-5 justify-content-around" //+ String(rows)
     }
     ,
     compare(a, b) {
@@ -555,19 +542,16 @@ export default {
     }
     ,
     // eslint-disable-next-line no-unused-vars
-    getBannersFromDB(){
-      /*var path = api + 'books/' + req
-      if (req === 'TODO') {
-        path = api + 'books'
-      }
+    getBannersFromDB() {
+      var path = api + 'interfaces'
       axios.get(path)
           .then((res) => {
-            this.frontElements = res.data.LOQUESEA
+            this.frontElements = res.data.interfaces
             this.getAllBooksFromDBBanners()
           })
           .catch((error) => {
             console.log(error) //
-          })*/
+          })
       this.getAllBooksFromDBBanners()
     },
     getAllBooksFromDBBanners() {
@@ -576,18 +560,17 @@ export default {
           .then((res) => {
             this.books = res.data.books
             this.booksPopular = this.books.slice().sort(this.compare)
-            console.log(this.books)
             this.assignBooksToBanners()
           })
           .catch((error) => {
             console.log(error) //
           })
     },
-    assignBooksToBanners(){
-      for(let i in this.frontElements){
-        if(this.frontElements[i].t2BookMode == 1){
+    assignBooksToBanners() {
+      for (let i in this.frontElements) {
+        if (this.frontElements[i].t2BookMode == 1) {
           this.frontElements[i].books = this.booksPopular.slice(0, parseInt(this.frontElements[i].t2RowNumber))
-        }else if(this.frontElements[i].t2BookMode == 2){
+        } else if (this.frontElements[i].t2BookMode == 2) {
           this.frontElements[i].books = this.recommendNBooks(parseInt(this.frontElements[i].t2RowNumber))
         }
       }

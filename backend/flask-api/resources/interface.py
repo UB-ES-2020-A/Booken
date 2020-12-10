@@ -7,7 +7,8 @@ from models.interface import InterfaceModel
 class InterfaceList(Resource):
 
     def get(self):
-        return {'interfaces': [i.json() for i in db.session.query(InterfaceModel).all()]}, 200
+        intl = sorted([(i.json()['banner'], i.order) for i in db.session.query(InterfaceModel).all()], key=lambda x: x[1])
+        return {'interfaces': [i[0] for i in intl]}, 200
 
 
 class InterfaceListBooks(Resource):
@@ -55,6 +56,8 @@ class Interface(Resource):
                                    data.get('t1BackgndCOL'), data.get('t1LinkTo'), data.get('t1Tit'),
                                    data.get('t1Separator'), data.get('t1Sub'), data.get('t1Small'),
                                    data.get('t2RowTitle'), data.get('t2RowNumber'), data.get('t1TxtColor'))
+        if data.get('t2Books'):
+            interface.books = [BookModel.find_by_id(int(i)) for i in data.get('t2Books').split(",")]
         interface.save_to_db()
         return interface.json(), 200
 
@@ -76,6 +79,8 @@ class Interface(Resource):
         exists.t2RowTitle = data.get('t2RowTitle')
         exists.t2RowNumber = data.get('t2RowNumber')
         exists.t1TxtColor = data.get('t1TxtColor')
+        if data.get('t2Books'):
+            exists.books = [BookModel.find_by_id(int(i)) for i in data.get('t2Books').split(",")]
 
         exists.save_to_db()
         return exists.json(), 200
@@ -85,6 +90,10 @@ class Interface(Resource):
         if not exists:
             return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
         exists.delete_from_db()
+        interfaces = sorted([i for i in db.session.query(InterfaceModel).all()], key=lambda x: x.order)
+        for i in range(len(interfaces)):
+            interfaces[i].order = i + 1
+            interfaces[i].save_to_db()
         return {'message': "Interface with ['id': {}] has successfully been deleted".format(idd)}, 200
 
     def __parse_request__(self):
@@ -110,6 +119,8 @@ class Interface(Resource):
                             help="Operation not valid: 't2RowNumber' not provided")
         parser.add_argument('t1TxtColor', type=str, required=True,
                             help="Operation not valid: 't1TxtColor' not provided")
+        parser.add_argument('t2Books', type=str,
+                            help="Operation not valid: 't1TxtColor' not provided")
 
         return parser.parse_args()
 
@@ -123,12 +134,9 @@ class ChangePositionBanner(Resource):
             return {'message': "Banner with ['id': {}] not found".format(id_1)}, 404
         if not banner_down:
             return {'message': "Banner with ['id': {}] not found".format(id_2)}, 404
-        len_banners = len([a.json() for a in InterfaceModel.query.all()])
-        id_aux = len_banners + 1
-        banner_top.id = id_aux
+        order_aux = banner_top.order
+        banner_top.order = banner_down.order
         banner_top.save_to_db()
-        banner_down.id = id_1
+        banner_down.order = order_aux
         banner_down.save_to_db()
-        banner_top.id = id_2
-        banner_top.save_to_db()
         return {'message': "Banners ID changed"}, 200

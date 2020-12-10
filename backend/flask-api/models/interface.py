@@ -8,6 +8,7 @@ class InterfaceModel(db.Model):
     __tablename__ = 'interfaces'
 
     id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer, nullable=False)
     front_type = db.Column(db.Integer, nullable=False)
     t2BookMode = db.Column(db.Integer, nullable=False)
     t1BackgndURL = db.Column(db.String(100))
@@ -20,7 +21,7 @@ class InterfaceModel(db.Model):
     t2RowTitle = db.Column(db.String(50), nullable=False)
     t2RowNumber = db.Column(db.Integer, nullable=False)
     t1TxtColor = db.Column(db.String(30), nullable=False)
-    books = db.relationship('BookModel', secondary=interface, backref=db.backref('book_interface', lazy='dynamic'))
+    books = db.relationship('BookModel', secondary=interface, backref=db.backref('interfaces', lazy='dynamic'))
 
     def __init__(self, front_type, t2BookMode, t1BackgndURL, t1BackgndCOL, t1LinkTo, t1Tit, t1Separator, t1Sub, t1Small,
                  t2RowTitle, t2RowNumber, t1TxtColor):
@@ -36,6 +37,7 @@ class InterfaceModel(db.Model):
         self.t2RowTitle = t2RowTitle
         self.t2RowNumber = t2RowNumber
         self.t1TxtColor = t1TxtColor
+        self.order = len(InterfaceModel.query.all()) + 1
 
     @classmethod
     def find_by_id(cls, idd):
@@ -64,6 +66,7 @@ class InterfaceModel(db.Model):
             "t2RowTitle": self.t2RowTitle,
             "t2RowNumber": self.t2RowNumber,
             "t1TxtColor": self.t1TxtColor,
+            "order": self.order,
             "books": [a.json()['book'] for a in self.books]
         }}
 
