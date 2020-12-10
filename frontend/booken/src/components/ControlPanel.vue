@@ -1554,7 +1554,7 @@ export default {
         }],
         labels: this.toSimpleArrayKeys(this.log_month),
         title: {
-          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth()) + ')',
+          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth() + 1) + ')',
           align: 'center',
           margin: 10,
           floating: false,
@@ -1567,6 +1567,7 @@ export default {
       }
     },
     getMonthString(month) {
+      console.log(month)
       switch (month) {
         case 1:
           return "enero"
