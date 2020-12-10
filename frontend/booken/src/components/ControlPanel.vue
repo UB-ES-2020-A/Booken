@@ -1677,8 +1677,8 @@ export default {
     },
     getAddresses() {
       var path = api + 'account/' + this.id + '/addresses'
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.addresses = res.data.accounts_addresses
             this.addressNumber = this.addresses.length
@@ -2378,8 +2378,8 @@ export default {
     },
     addressToDB(parameters) {
       const path = api + 'account/' + this.id + '/address'
-
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -2408,8 +2408,8 @@ export default {
     },
     addressUpdateToDB(parameters) {
       const path = api + 'account/' + this.id + '/address/' + this.address_edit
-
-      axios.put(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.put(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -2438,7 +2438,8 @@ export default {
     },
     deleteAddress(address_id) {
       const path = api + 'account/' + this.id + '/address/' + address_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',

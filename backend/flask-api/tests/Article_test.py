@@ -1,11 +1,14 @@
 # file deepcode ignore C0411: n/a
 # file deepcode ignore C0413: n/a
 #  deepcode ignore C0411: not an issue
+import base64
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
+import json
 #  deepcode ignore C0411: not an issue
 sys.path.append('../')
+from models.accounts import AccountModel
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
@@ -43,14 +46,31 @@ class ArticleTest(unittest.TestCase):
         "back_cover_image_url": 'asd'
     }
 
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
+    }
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
         self.postBook(self.book_info)
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def postBook(self, info):
-        return self.app.post('api/book', data=info, follow_redirects=True)
+        return self.app.post('api/book', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
 
     def tearDown(self):
         # Executed after each test
@@ -63,8 +83,18 @@ class ArticleTest(unittest.TestCase):
 
     def test_get_article(self):
         self.add_article(self.article_info)
-        response = self.app.get('api/article/1', follow_redirects=True)
-        resp = self.app.get('api/article/1000', follow_redirects=True)
+        response = self.app.get('api/article/1',
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                          'ascii')).decode(
+                                    'ascii')},
+                                follow_redirects=True)
+        resp = self.app.get('api/article/1000',
+                            headers={'Authorization': 'Basic ' + base64.b64encode(
+                                bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                      'ascii')).decode(
+                                'ascii')},
+                            follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp.status_code, 404)
@@ -72,7 +102,12 @@ class ArticleTest(unittest.TestCase):
     def test_get_articles(self):
         self.add_article(self.article_info)
         self.add_article(self.article_info)
-        response = self.app.get('api/articles', follow_redirects=True)
+        response = self.app.get('api/articles',
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                          'ascii')).decode(
+                                    'ascii')},
+                                follow_redirects=True)
 
         article_1 = self.article_info.copy()
         article_2 = self.article_info.copy()
@@ -85,8 +120,18 @@ class ArticleTest(unittest.TestCase):
     def test_delete_article(self):
         self.add_article(self.article_info)
 
-        response = self.app.delete('api/article/1', follow_redirects=True)
-        resp = self.app.delete('api/article/1000', follow_redirects=True)
+        response = self.app.delete('api/article/1',
+                                   headers={'Authorization': 'Basic ' + base64.b64encode(
+                                       bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                             'ascii')).decode(
+                                       'ascii')},
+                                   follow_redirects=True)
+        resp = self.app.delete('api/article/1000',
+                               headers={'Authorization': 'Basic ' + base64.b64encode(
+                                   bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                         'ascii')).decode(
+                                   'ascii')},
+                               follow_redirects=True)
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(resp.status_code, 404)
@@ -94,5 +139,22 @@ class ArticleTest(unittest.TestCase):
     def add_article(self, info):
         return self.app.post('api/article',
                              data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
+
+    def create_account(self, info):
+        return self.register(info)
+
+    def register(self, info):
+        return self.app.post('api/account',
+                             data=info,
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
                              follow_redirects=True)
 

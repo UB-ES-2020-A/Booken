@@ -149,7 +149,8 @@ export default {
   methods: {
     deleteBook(id) {
       var path = api + 'book/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             this.getBooksFromDB(this.$route.params.category)
