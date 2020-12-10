@@ -38,7 +38,7 @@
                   class="navbartextbt">Eliminar sección</a></button>
             </div>
             <a :href="item.t1LinkTo" style="text-decoration: none">
-              <div class="jumbotron" style="min-height: 30em"
+              <div class="jumbotron" style="min-height: 20em"
                    :style="{'background-color': item.t1BackgndCOL, 'background-image': 'url(' + item.t1BackgndURL + ')','color': item.t1TxtColor}"
                    v-if="item.front_type==1">
                 <h1 class="display-4">{{ item.t1Tit }}</h1>
