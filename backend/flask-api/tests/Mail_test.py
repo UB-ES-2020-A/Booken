@@ -17,7 +17,7 @@ from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
-import json
+import json, base64
 
 
 class MailTests(unittest.TestCase):
@@ -40,11 +40,18 @@ class MailTests(unittest.TestCase):
                       data=dict(name='test', lastname='test', email='booken.eshop@gmail.com', password='test'),
                       follow_redirects=True)
 
+        acc = AccountModel.query.first()
+        acc.type = 1
+        acc.save_to_db()
+
         response = self.app.post('api/login',
                                  data=dict(email='booken.eshop@gmail.com', password='test'),
                                  follow_redirects=True)
 
-        self.token = json.loads(response.data)['token']
+        id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+            .decode('ascii')}
 
         self.app.post('api/account/1/address',
                       data=dict(
@@ -58,6 +65,7 @@ class MailTests(unittest.TestCase):
                           province="Mi provincia",
                           telf=123456
                       ),
+                      headers=self.auth,
                       follow_redirects=True)
 
         self.app.post('api/account/1/card',
@@ -67,6 +75,7 @@ class MailTests(unittest.TestCase):
                           date="12/2025",
                           payment_method="Visa"
                       ),
+                      headers=self.auth,
                       follow_redirects=True)
 
         self.add_book()
@@ -82,6 +91,7 @@ class MailTests(unittest.TestCase):
                           card_id=1,
                           address_id=1
                       ),
+                      headers=self.auth,
                       follow_redirects=True)
 
         self.app.post('/api/article-order/1',
@@ -90,6 +100,7 @@ class MailTests(unittest.TestCase):
                           quant=1,
                           id_book=1
                       ),
+                      headers=self.auth,
                       follow_redirects=True)
 
 
@@ -127,8 +138,17 @@ class MailTests(unittest.TestCase):
 
     def test_send_ticket_with_not_email(self):
         account = AccountModel.query.first()
-        account.email=""
+        account.email="test_fail"
         account.save_to_db()
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test_fail', password='test'),
+                                 follow_redirects=True)
+
+        id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+            .decode('ascii')}
 
         response = self.send_ticket(1,1)
         self.assertEqual(response.status_code, 500)
@@ -139,14 +159,16 @@ class MailTests(unittest.TestCase):
                                  contact_id=contact_id,
                                  contact_response="Test response"
                              ),
+                             headers=self.auth,
                              follow_redirects=True)
-    
+
     def send_ticket(self, account_id, order_id):
         return self.app.post('api/send_ticket',
                              data=dict(
                                  account_id=account_id,
                                  order_id=order_id
                              ),
+                             headers=self.auth,
                              follow_redirects=True)
 
     def add_book(self):
