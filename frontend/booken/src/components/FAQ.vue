@@ -110,7 +110,29 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div v-if="category === 'Sobre la página web'">
 
+                  <div style="display:flex;">
+                    <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
+                            data-toggle="collapse" :data-target="'#'+'contributors'"
+                            aria-expanded="true">
+                      Autores del proyecto
+                    </button>
+                  </div>
+                  <div id="contributors" class="collapse">
+                    <div class="card-body">
+                      Si te ha gustado nuestro proyecto, puedes seguirnos en GitHub y conocer algunos de nuestros otros
+                      proyectos:&nbsp;
+                      <li style="padding-left: 1em">Qijun <i class="fab fa-github"></i> <a
+                          href="https://github.com/qijunJin">qijunJin</a></li>
+                      <li style="padding-left: 1em">Abdel <i class="fab fa-github"></i> <a
+                          href="https://github.com/abdelkarimAzzouguagh">abdelkarimAzzouguagh</a></li>
+                      <li style="padding-left: 1em">Quim <i class="fab fa-github"></i> <a href="https://github.com/joaquimYuste">joaquimYuste</a></li>
+                      <li style="padding-left: 1em">David <i class="fab fa-github"></i> <a href="https://github.com/davidFernandezUB">davidFernandezUB</a></li>
+                      <li style="padding-left: 1em">Rodrigo <i class="fab fa-github"></i> <a href="https://github.com/leroderic">leRoderic</a></li>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -189,20 +211,13 @@ export default {
   methods: {
     suppressSpace(word) {
       var ret = word.replace(/ /g, '')
-      if (ret[ret.length - 1] == '?') {
-        ret = ret.slice(0, -1)
-      }
-      if (ret[0] == '¿') {
-        ret = ret.slice(1, ret.length)
-      }
-      return ret
+      return ret.replace(/[^\w\s]/g, '');
     },
     getConsults() {
       var path = api + 'faqs'
       axios.get(path)
           .then((res) => {
             this.consults = res.data.FAQ
-            for (var i in this.consults) console.log(this.consults[i])
             this.getCategories()
           })
           .catch((error) => {
@@ -212,7 +227,6 @@ export default {
     getCategories() {
       this.consultsCat.clear()
       if (this.consults.length === 0) return
-
       for (let i in this.consults) {
         let cat = this.consults[i].category[0].type
         this.consultsCat.add(cat)
