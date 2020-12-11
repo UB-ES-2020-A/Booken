@@ -11,6 +11,7 @@ sys.path.append('../')
 
 from data import books
 
+#  deepcode ignore C0412: stupid issue
 from models.author import AuthorModel
 from models.book import BookModel
 
