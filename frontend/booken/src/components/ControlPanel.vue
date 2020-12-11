@@ -2583,7 +2583,7 @@ export default {
     send_response(parameters){
       var path = api + 'send_contact_response'
       var currentUser = {username: this.id, password: this.token}
-      axios.post(path,{auth: currentUser})
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡La respuesta fue enviada!',
@@ -2624,7 +2624,7 @@ export default {
 
       var path = api + 'send_ticket'
       var currentUser = {username: this.id, password: this.token}
-      axios.post(path,{auth: currentUser})
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡El ticket fue enviado!',
