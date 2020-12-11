@@ -2470,7 +2470,8 @@ export default {
     },
     deleteAccount() {
       var path = api + 'account/' + this.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',

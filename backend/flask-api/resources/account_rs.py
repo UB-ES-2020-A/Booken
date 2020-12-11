@@ -54,6 +54,7 @@ class Account(Resource):
         return {"message": "Account saved correctly"}, 200
 
     # Delete: Deletes an account from the database
+    @auth.login_required
     def delete(self, idd):
         account = AccountModel.find_by_id(idd)
         if not account:
@@ -70,6 +71,7 @@ class Account(Resource):
 
 
 class Accounts(Resource):
+    @auth.login_required(role='stock_manager')
     def get(self):
         accounts = []
         for a in AccountModel.query.all():
