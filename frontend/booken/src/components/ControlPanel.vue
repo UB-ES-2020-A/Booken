@@ -1596,7 +1596,8 @@ export default {
     },
     getData() {
       var path = api + 'data_retriever/all'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path, {auth: currentUser})
           .then((res) => {
             this.years_data = res.data.all.years_data
             this.total_sales = res.data.all.total_sales
