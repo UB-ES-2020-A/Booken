@@ -112,16 +112,6 @@ class MailTests(unittest.TestCase):
 
         response = self.send_email(1)
         self.assertEqual(response.status_code, 500)
-
-    def send_email(self, contact_id):
-        return self.app.post('api/send_contact_response',
-                             data=dict(
-                                 contact_id=contact_id,
-                                 contact_response="Test response"
-                             ),
-                             follow_redirects=True)
-
-##
     
     def test_send_ticket_correctly(self):
         response = self.send_ticket(1,1)
