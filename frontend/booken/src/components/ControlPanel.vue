@@ -1303,7 +1303,7 @@ export default {
   created() {
     this.getOrders()
     if (this.type == 2)
-        this.getOrdersList();
+        this.getOrdersList()
     this.getAddresses()
     this.getCards()
     this.getAccount()
@@ -1313,6 +1313,7 @@ export default {
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
     this.getContacts()
+    this.changeViewingOrders(0)
   },
   mounted() {
     this.getData()
@@ -1567,7 +1568,6 @@ export default {
       }
     },
     getMonthString(month) {
-      console.log(month)
       switch (month) {
         case 1:
           return "enero"
@@ -1734,6 +1734,7 @@ export default {
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
+      this.changeViewingOrdersList(this.cIndexList)
     },
     cancelOrder(id) {
       var path = api + 'order/' + id

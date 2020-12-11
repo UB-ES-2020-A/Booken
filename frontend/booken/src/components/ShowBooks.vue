@@ -65,6 +65,7 @@
                 <span class="badge badge-secondary" v-if="book.genre == 'COMICS Y MANGA'">Cómics y manga</span>
                 <span class="badge badge-secondary" v-if="book.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
                 <span class="badge badge-secondary" v-if="book.genre == 'INFANTIL'">Infantil</span>
+                <span class="badge badge-secondary" v-if="book.genre == 'JUVENIL'">Juvenil</span>
                 <span class="badge badge-dark" v-if="book.cover_type == 0">Tapa dura</span>
                 <span class="badge badge-dark" v-else-if="book.cover_type == 1">Tapa blanda</span>
                 <button v-if="type == 2" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
