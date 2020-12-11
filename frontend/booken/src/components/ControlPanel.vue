@@ -2502,7 +2502,8 @@ export default {
     },
     getContacts() {
       var path = api + 'contact_list/'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.contacts = res.data.contacts
           })
@@ -2526,7 +2527,8 @@ export default {
     deleteContact(index){
       this.assignContact(index)
       var path = api + 'contact_info/' + this.contactToAnswer.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡Consulta eliminada con éxito!',
