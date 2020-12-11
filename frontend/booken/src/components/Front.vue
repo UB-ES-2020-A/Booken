@@ -85,6 +85,7 @@
                             v-if="inner_item.genre == 'METODOS DE IDIOMAS'">Métodos de idiomas</span>
                       <span class="badge badge-secondary"
                             v-if="inner_item.genre == 'COMICS Y MANGA'">Cómics y manga</span>
+                      <span class="badge badge-secondary" v-if="inner_item.genre == 'JUVENIL'">Juvenil</span>
                       <span class="badge badge-secondary"
                             v-if="inner_item.genre == 'OTRAS CATEGORIAS'">Otras categorías</span>
                       <span class="badge badge-secondary" v-if="inner_item.genre == 'INFANTIL'">Infantil</span>&nbsp;
@@ -524,8 +525,8 @@ export default {
           })
     }
     ,
+    // eslint-disable-next-line no-unused-vars
     getRowClassName(rows) {
-      console.log(rows)
       return "row row-cols-1 row-cols-sm-5 justify-content-around" //+ String(rows)
     }
     ,
