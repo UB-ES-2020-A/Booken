@@ -131,11 +131,11 @@
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-directions-tab" data-toggle="pill" href="#pills-directions" role="tab"
                aria-controls="pills-directions" aria-selected="false">Direcciones</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>

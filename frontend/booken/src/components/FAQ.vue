@@ -9,7 +9,7 @@
           <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                   data-toggle="modal" data-target="#addFAQ" v-if="type == 1">
             <i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
-            <a class="navbartextbt">Nueva FAQ</a>
+            <a class="navbartextbt">Nueva entrada</a>
             <span aria-hidden="true"></span>
           </button>
 
@@ -20,7 +20,7 @@
                  style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="modalFAQLabel">Añadir FAQ</h5>
+                  <h5 class="modal-title" id="modalFAQLabel">Añadir entrada</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -93,13 +93,14 @@
                       <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
                               data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
                               aria-expanded="true">
-                        ¿{{ consult.question }}?
+                        {{ consult.question }}
                       </button>
 
-                      <button type="submit" class="close" aria-label="Close" style="font-size:2em; color:red;"
+                      <button type="submit" class="close" aria-label="Close"
+                              style="font-size:2em; color:red; margin-left: 0.5em"
                               data-toggle="modal" data-target="#deleteFAQ" v-if="type===1"
                               @click="this.FAQ_to_delete = consult.id">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
                       </button>
                     </div>
 
@@ -139,17 +140,15 @@
           </div>
         </div>
       </div>
-      <div class="jumbotron rounded "
+      <div class="jumbotron rounded"
            style="background-color: whitesmoke; margin-top:1em; margin-bottom: 2em; text-align: left !important;">
-        <div class="container ">
-          <h1 class="display-5" style="font-weight: bold">¿Sigues con la duda?</h1>
-          <hr>
-          <br>
-          <p class="lead">No dudes en
-            <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
-            , ¡y te ayudaremos!
-          </p>
-        </div>
+        <h1 class="display-5" style="font-weight: bold">¿Sigues con alguna duda?</h1>
+        <hr>
+        <br>
+        <p class="lead">No dudes en
+          <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
+          , ¡y te ayudaremos!
+        </p>
       </div>
     </div>
   </div>
@@ -169,7 +168,7 @@ export default {
     type: Number
   },
   created() {
-    scrollTo(0,0)
+    scrollTo(0, 0)
     this.getConsults()
     //this.getCategories()
   },
@@ -189,7 +188,14 @@ export default {
   ,
   methods: {
     suppressSpace(word) {
-      return word.replace(/ /g, '')
+      var ret = word.replace(/ /g, '')
+      if (ret[ret.length - 1] == '?') {
+        ret = ret.slice(0, -1)
+      }
+      if (ret[0] == '¿') {
+        ret = ret.slice(1, ret.length)
+      }
+      return ret
     },
     getConsults() {
       var path = api + 'faqs'
@@ -254,12 +260,6 @@ export default {
               preventDuplicates: true
             })
       } else {
-        if (this.newQuestion[this.newQuestion.length - 1] == '?') {
-          this.newQuestion = this.newQuestion.slice(0, -1)
-        }
-        if (this.newQuestion[0] == '¿') {
-          this.newQuestion = this.newQuestion.slice(1, this.newQuestion.length)
-        }
         var tmp = {
           "category": this.newCategory,
           "question": this.newQuestion,
