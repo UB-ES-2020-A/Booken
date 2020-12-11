@@ -1,5 +1,6 @@
 from flask import Flask
-
+from decouple import config as config_decouple
+from config import config
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -53,6 +54,10 @@ def create_app(test=False):
     app.config['MAIL_DEFAULT_SENDER'] = ["","booken.eshop@gmail.com"] # 0: Nombre de encabezado / 1: Correo electronico
 
     app.config.from_object(__name__)
+
+    if config_decouple('PRODUCTION', cast=bool, default=False):
+        environment = config['production']
+        app.config.from_object(environment)
     # Cross-origin request config
     CORS(app, resources={r'/*': {'origins': '*'}})
     # Database config
