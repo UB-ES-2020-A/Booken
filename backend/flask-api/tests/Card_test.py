@@ -3,7 +3,6 @@
 import os
 import unittest
 import sys
-import json
 
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
@@ -70,10 +69,9 @@ class CardResourceGetTests(unittest.TestCase):
                                  data=dict(email='test', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth1 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth1 = get_auth(my_id,token)
 
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
@@ -83,10 +81,9 @@ class CardResourceGetTests(unittest.TestCase):
                                  data=dict(email='tes2t@asd.com', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth2 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth2 = get_auth(my_id,token)
 
     def test_get_existent_card_from_non_existent_account(self):
         card = CardModel(self.card_info['card_owner'], self.card_info['number'], self.card_info['date'],
@@ -276,3 +273,6 @@ class CardResourceDeleteTests(unittest.TestCase):
                              headers=self.auth1,
                              follow_redirects=True)
 
+def get_auth(my_id,token):
+    return {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
+        .decode('ascii')}
