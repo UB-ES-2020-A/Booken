@@ -167,10 +167,9 @@ class CardResourcePostTests(unittest.TestCase):
                                  data=dict(email='test', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth1 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth1 = get_auth(my_id,token)
 
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
@@ -180,10 +179,9 @@ class CardResourcePostTests(unittest.TestCase):
                                  data=dict(email='tes2t@asd.com', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth2 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth2 = get_auth(my_id,token)
 
     def test_post_card(self):
         response = self.add_card(self.card_info)
@@ -229,10 +227,9 @@ class CardResourceDeleteTests(unittest.TestCase):
                                  data=dict(email='test', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth1 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth1 = get_auth(my_id,token)
 
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
@@ -242,10 +239,9 @@ class CardResourceDeleteTests(unittest.TestCase):
                                  data=dict(email='tes2t@asd.com', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth2 = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
+        self.auth2 = get_auth(my_id,token)
 
     def test_delete_card(self):
         self.add_card(self.card_info)
