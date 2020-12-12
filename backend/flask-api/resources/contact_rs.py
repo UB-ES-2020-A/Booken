@@ -9,7 +9,7 @@ class Contact(Resource):
         if contact:
             return {"contact": contact.json()}, 200
 
-        return {"Error: ": "Contact information not found"}, 400
+        return {"Error: ": "Contact information not found"}, 404
 
     # Post: Adds a contact_query to our database
     def post(self):
@@ -24,11 +24,8 @@ class Contact(Resource):
         data = parser.parse_args()
         contact = ContactModel(data['full_name'], data['email'], data['phone_number'], data['contact_query'])
 
-        try:
-            contact.save_to_db()
-            return {"Message": "Contact saved correctly"}, 200
-        except:
-            return {"Message": "Couldn't save changes"}, 500
+        contact.save_to_db()
+        return {"Message": "Contact saved correctly"}, 200
 
     # Delete: Deletes an account from the database
     def delete(self, idd):

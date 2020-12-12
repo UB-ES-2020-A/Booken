@@ -18,13 +18,39 @@ class ArticleTest(unittest.TestCase):
     article_info = {
         'price': 1,
         'categoria': "HUMANIDADES",
-        'quant': 1
+        'quant': 1,
+        'book_id': 1
+    }
+    book_info = {
+        "isbn": 12345678911,
+        "name": 'Book post',
+        "author_name": 'Kim Follet',
+        "author_bd": '10/10/1979',
+        "author_city": "BCN",
+        "author_country": "Spain",
+        "genre": 'HUMANIDADES',
+        "year": 2020,
+        "editorial": 'Santillana',
+        "language": 'Castellano',
+        "price": 10.9,
+        "synopsis": 'Synopsis',
+        "description": 'Descripcion',
+        "num_pages": 130,
+        "cover_type": 0,
+        "num_sales": 0,
+        "total_available": 15,
+        "cover_image_url": 'asd',
+        "back_cover_image_url": 'asd'
     }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.postBook(self.book_info)
+
+    def postBook(self, info):
+        return self.app.post('api/book', data=info, follow_redirects=True)
 
     def tearDown(self):
         # Executed after each test
@@ -37,14 +63,16 @@ class ArticleTest(unittest.TestCase):
 
     def test_get_article(self):
         self.add_article(self.article_info)
-        response = self.app.get('/article/1', follow_redirects=True)
+        response = self.app.get('api/article/1', follow_redirects=True)
+        resp = self.app.get('api/article/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(resp.status_code, 404)
 
     def test_get_articles(self):
         self.add_article(self.article_info)
         self.add_article(self.article_info)
-        response = self.app.get('/articles', follow_redirects=True)
+        response = self.app.get('api/articles', follow_redirects=True)
 
         article_1 = self.article_info.copy()
         article_2 = self.article_info.copy()
@@ -57,14 +85,14 @@ class ArticleTest(unittest.TestCase):
     def test_delete_article(self):
         self.add_article(self.article_info)
 
-        response = self.app.delete('/article/1', follow_redirects=True)
+        response = self.app.delete('api/article/1', follow_redirects=True)
+        resp = self.app.delete('api/article/1000', follow_redirects=True)
 
         self.assertEqual(response.status_code, 201)
-
+        self.assertEqual(resp.status_code, 404)
 
     def add_article(self, info):
-        return self.app.post('/article',
+        return self.app.post('api/article',
                              data=info,
                              follow_redirects=True)
-if __name__ == '__main__':
-    unittest.main()
+

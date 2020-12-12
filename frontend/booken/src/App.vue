@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <wrapper class="d-flex flex-column">
+  <div class="wrapper d-flex flex-column">
     <!-- First navbar-->
     <div style="background: #2bc4ed;">
 
@@ -17,14 +17,14 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark ">
           <!-- Brand -->
-          <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken<span
-              class="badge badge-warning" style="font-size: 0.3em; letter-spacing: normal">beta</span></a>
+          <a class="navbar-brand mainlogo ml-3 animate__animated animate__flipInX" href="/">booken</a>
 
           <div class="form-inline mx-auto searchBarOutside" style="min-width: 30%">
             <input class="form-control" style="min-width: 80%" type="search" v-model="information"
                    placeholder="Busca por autor, título, ISBN"
-                   aria-label="Search">
-            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit" @click="goToSearch"><i
+                   aria-label="Search" @input="goToSearch">
+            <button class="btn ml-2" style="min-width: 50px; background-color: #3b494d;" type="submit"
+                    @click="goToSearch"><i
                 class="fas fa-search"
                 style="color: #FFF"/>
             </button>
@@ -45,7 +45,7 @@
                   <div class="form-inline ">
                     <input class="form-control" type="search" v-model="information"
                            placeholder="Busca por autor, título, ISBN"
-                           aria-label="Search">
+                           aria-label="Search" @input="searchInputChange">
                     <button class="btn ml-auto" data-toggle="collapse" data-target="#mynavbar, #mynavbar2"
                             style="background-color: #3b494d;" type="submit" @click="goToSearch"><i
                         class="fas fa-search"
@@ -74,9 +74,9 @@
               <li class="nav-item  my-3 mx-2 mx-md-3 ">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
                         data-target="#mynavbar, #mynavbar2"
-                        style="background-color: #3b494d;" type="submit">
-                  <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
-                    class="navbartextbt" @click="getHelp">Ayuda</a>
+                        style="background-color: #3b494d;" type="submit" @click="goToFAQ">
+                  <i class="fas fa-question-circle" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
+                  <a class="navbartextbt">Ayuda</a>
                 </button>
               </li>
               <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
@@ -170,7 +170,9 @@
                 <div class="_grid">
                   <button class="_btn _column product-subtract" @click="decreaseQuant(item.id)">&minus;</button>
                   <div class="_column product-qty">{{ item.quant }}</div>
-                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)" :disabled="item.quant>=item.quant_t">&plus;</button>
+                  <button class="_btn _column product-plus" @click="increaseQuant(item.id)"
+                          :disabled="item.quant>=item.quant_t">&plus;
+                  </button>
                 </div>
                 <button class="_btn entypo-trash product-remove" @click="removeBook(item.id)">Quitar</button>
                 <div class="price product-total-price">{{ this.round2Dec(item.quant * item.price) }}€</div>
@@ -283,6 +285,16 @@
         </div>
       </div>
     </main>
+    <div class="card cookie-alert show" v-if="!cookiesack">
+      <div class="card-body">
+        <h5 class="card-title">&#x1F36A; ¿Te gustan las cookies?</h5>
+        <p class="card-text">Usamos cookies para ofrecerte la mejor experiencia en nuestra web.</p>
+        <div class="btn-toolbar justify-content-end">
+          <a href="http://cookiesandyou.com/" target="_blank" class="btn btn-link">¿Que son las cookies?</a>
+          <a class="btn btn-primary accept-cookies" @click="acknowledgeCookies">¡Ok!</a>
+        </div>
+      </div>
+    </div>
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
@@ -307,7 +319,9 @@
               <li @click="hideCart">
                 <router-link to="/contact">Contacto</router-link>
               </li>
-              <li @click="hideCart"><a href="">Preguntas frecuentes</a></li>
+              <li @click="hideCart">
+                <router-link to="/faq">Preguntas frecuentes</router-link>
+              </li>
 
             </ul>
           </div>
@@ -333,19 +347,21 @@
         </div>
       </div>
     </footer>
-  </wrapper>
+  </div>
 </template>
 <script>
 import * as toastr from './assets/toastr.js'
 import Front from './components/Front.vue'
 import Access from "@/components/Access"
 import {bus, api} from './main.js'
+import { debounce } from "debounce";
 import axios from 'axios'
 import BookInfo from "@/components/BookInfo";
 import Contact from "@/components/Contact";
 import ControlPanel from "@/components/ControlPanel";
 import ShowBooks from "@/components/ShowBooks";
 import Search from "./components/Search";
+import FAQ from "@/components/FAQ";
 
 export default {
   name: 'App',
@@ -363,14 +379,18 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     ShowBooks,
     // eslint-disable-next-line vue/no-unused-components
-    Search
+    Search,
+    // eslint-disable-next-line vue/no-unused-components
+    FAQ,
   },
   created() {
+    this.cookieManagement()
     bus.on('has-logged-in', (asd) => {
       this.loggedIn = Boolean(asd.logged)
       this.tokenIn = String(asd.token)
       this.typeIn = parseInt(asd.type)
       this.idIn = parseInt(asd.id)
+      this.saveLogInDataCookie({id: this.idIn, token: this.tokenIn, type: this.typeIn, logged: this.loggedIn}, false)
     })
     bus.on('added-to-cart', (book) => {
       this.checkAddToCart(book)
@@ -384,6 +404,7 @@ export default {
       this.tokenIn = ''
       this.typeIn = -1
       this.idIn = -1
+      this.saveLogInDataCookie({id: this.idIn, token: this.tokenIn, type: this.typeIn, logged: this.loggedIn}, true)
     })
     bus.on('empty_cart', () => {
       this.cart = []
@@ -401,53 +422,57 @@ export default {
       idIn: -1,
       cart: [],
       information: '',
-      wish_list: [
-        {
-          ISBN: 9788431690656,
-          author: ["Maria Angelidou"],
-          back_cover_image_url: "https://images-na.ssl-images-amazon.com/images/I/81MQygGNrCL.jpg",
-          cover_image_url: "https://pictures.abebooks.com/isbn/9788431690656-es.jpg",
-          cover_type: 0,
-          description: "Regresa Megan Maxwell con una novela romántico-erótica tan ardiente que se derretirá en tus manos. Vuelve a soñar con la nueva novela de la autora nacional más vendida.",
-          editorial: "Vicens Vives",
-          genre: "HUMANIDADES",
-          id: 1,
-          language: "Castellano",
-          name: "Mitos griegos",
-          num_pages: 128,
-          num_sales: 0,
-          price: 7.5,
-          synopsis: "El presente volumen constituye una inmejorable introducción al universo de la mitología. Recoge catorce mitos griegos, seleccionados entre los más famosos y atractivos, que han sido narrados con amenidad y sencillez, pero también con una evidente ambición literaria. El libro cuenta con magníficas ilustraciones realizadas por el artista búlgaro Svetlín.",
-          total_available: 28,
-          year: 2013
-        },
-        {
-          ISBN: 9788466668545,
-          author: ["Arturo Pérez-Reverte"],
-          back_cover_image_url: "",
-          cover_image_url: "https://imagessl5.casadellibro.com/a/l/t5/45/9788466668545.jpg",
-          cover_type: 0,
-          description: "Vive el fenómeno que ha enganchado a más de 1.000.000 de lectores",
-          editorial: "S.A. Ediciones B",
-          genre: "LITERATURA",
-          id: 6,
-          language: "Castellano",
-          name: "Rey Blanco",
-          num_pages: 528,
-          num_sales: 10,
-          price: 20,
-          synopsis: "Cuando Antonia Scott recibe este mensaje, sabe muy bien quien se lo envía. Tambien sabe que ese juego es casi imposible de ganar. Pero a Antonia no le gusta perder.  Despues de todo este tiempo huyendo, la realidad ha acabado alcanzándola. Antonia es cinturón negro en mentirse a sí misma, pero ahora tiene claro que si pierde esta batalla, las habrá perdido todas.  -La reina es la figura más poderosa del tablero -dice el Rey Blanco-. Pero por poderosa que sea una pieza de ajedrez, nunca debe olvidar que hay una mano que la mueve.  -Eso ya lo veremos-, responde Antonia.  EL FINAL ES SOLO EL PRINCIPIO",
-          total_available: 100,
-          year: 2020,
-        }
-      ],
+      cookiesack: false,
+      wish_list: [],
       typeIn: -1,
       email: "prueba@gmail.com",
       viewCart: false,
+      query: ''
       //toggledNav: false
     }
   },
   methods: {
+    searchInputChange(){
+      //  deepcode ignore UsageOfUndefinedReturnValue: shut it deepcode
+      debounce(this.goToSearch(), 5000)
+    },
+    saveLogInDataCookie(data, clear){
+      this.$cookie.setCookie("logindata", data, {
+        expire: '1h',
+        path: '/',
+        domain: '',
+        secure: '',
+        sameSite: '',
+      })
+      if(clear){
+        this.retrieveLoginCookies()
+      }
+    },
+    retrieveLoginCookies(){
+      var data = this.cookiesack = this.$cookie.getCookie("logindata")
+        this.loggedIn = data.logged
+        this.tokenIn = data.token
+        this.idIn = data.id
+        this.typeIn = data.type
+    },
+    acknowledgeCookies() {
+      this.$cookie.setCookie("ackcookies", true, {
+        expire: '90d',
+        path: '/',
+        domain: '',
+        secure: '',
+        sameSite: '',
+      })
+      this.cookiesack = this.$cookie.getCookie("ackcookies")
+    },
+    cookieManagement() {
+      if(this.$cookie.isCookieAvailable("ackcookies")){
+        this.cookiesack = this.$cookie.getCookie("ackcookies")
+      }
+      if(this.$cookie.isCookieAvailable("logindata")){
+        this.retrieveLoginCookies()
+      }
+    },
     round2Dec(trnd) {
       return Math.round(trnd * 100) / 100
     },
@@ -461,7 +486,13 @@ export default {
       b.quant += 1
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, preventDuplicates: true, positionClass: 'toast-bottom-right'})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            preventDuplicates: true,
+            positionClass: 'toast-bottom-right'
+          })
     },
     getSubTotal() {
       this.subtotal = 0
@@ -494,18 +525,25 @@ export default {
       }
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
     },
     removeBook(id) {
       this.cart.splice(this.getBookIndex(id), 1)
       bus.emit('cart-updated')
       toastr.success('', 'Carrito actualizado.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-    },
-    getHelp() {
-      if (this.viewCart)
-        this.viewCart = false
-      //this.$router.push({path: '/cp'})
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
     },
     hideCart() {
       if (this.viewCart)
@@ -522,7 +560,6 @@ export default {
         this.$router.push({path: '/cfm'})
       else
         this.$router.push({path: '/access'})
-
     },
     searchInCart(id) {
       var i, item
@@ -548,6 +585,11 @@ export default {
     getYear() {
       return new Date().getFullYear()
     },
+    goToFAQ() {
+      if (this.viewCart)
+        this.viewCart = false
+      this.$router.push({path: '/faq'})
+    },
     goToAccess() {
       if (this.viewCart)
         this.viewCart = false
@@ -561,7 +603,7 @@ export default {
     goToSearch() {
       if (this.viewCart)
         this.viewCart = false
-      this.$router.push({ path: '/search', query: { name: this.information } })
+      this.$router.push({path: '/search', query: {name: this.information}})
     },
     getTodayDate() {
       var today = new Date()
@@ -574,8 +616,13 @@ export default {
     },
     addToCart(book) {
       toastr.success('', 'Libro añadido a tu cesta.',
-          {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-      console.log(book)
+          {
+            timeOut: 2500,
+            progressBar: true,
+            newestOnTop: true,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true
+          })
       bus.emit('added-to-cart', {
         'id': book.id,
         'title': book.name,
@@ -600,18 +647,29 @@ export default {
     deleteFromWishList(book) {
       var path = api + 'wishlist/' + this.idIn + '/' + book.id
       axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            console.log(res)
             toastr.success('', 'Lista de deseados actualizada correctamente.',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
 
             this.getWishList();
           })
           .catch((error) => {
             console.log(error)
             toastr.error('', 'Algo no salió como se esperaba, intentelo de nuevo mas tarde',
-                {timeOut: 2500, progressBar: true, newestOnTop: true, positionClass: 'toast-bottom-right', preventDuplicates: true})
-
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
             this.getWishList();
           })
     }
@@ -629,6 +687,24 @@ export default {
 }
 </style>
 <style scoped>
+.cookie-alert {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 320px;
+  margin: 0 !important;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all 500ms ease-out;
+}
+
+.cookie-alert.show {
+  opacity: 1;
+  transform: translateY(0%);
+  transition-delay: 1000ms;
+}
+
 @font-face {
   font-family: 'LogoFont';
   src: url('/assets/logo_font.woff')
@@ -723,7 +799,7 @@ export default {
   }
 }
 
-body, wrapper {
+body, .wrapper {
   min-height: 100vh;
 }
 

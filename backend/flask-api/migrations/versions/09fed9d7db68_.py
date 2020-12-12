@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 63133e693e1d
+Revision ID: 09fed9d7db68
 Revises: 
-Create Date: 2020-11-29 13:51:49.410765
+Create Date: 2020-12-09 20:38:50.382950
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '63133e693e1d'
+revision = '09fed9d7db68'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,6 +32,7 @@ def upgrade():
     )
     op.create_table('articles',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('book_id', sa.Integer(), nullable=True),
     sa.Column('price', sa.Float(), nullable=False),
     sa.Column('categoria', sa.String(), nullable=False),
     sa.Column('quant', sa.Integer(), nullable=False),
@@ -65,6 +66,13 @@ def upgrade():
     sa.Column('back_cover_image_url', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('category',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('type', sa.String(length=30), nullable=False),
+    sa.Column('num_faq', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
+    )
     op.create_table('contacts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(length=30), nullable=False),
@@ -72,6 +80,41 @@ def upgrade():
     sa.Column('phone_number', sa.Integer(), nullable=True),
     sa.Column('contact_query', sa.String(), nullable=False),
     sa.Column('contact_date', sa.String(), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
+    )
+    op.create_table('faq',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('question', sa.String(length=30), nullable=False),
+    sa.Column('answer', sa.String(length=30), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
+    )
+    op.create_table('interfaces',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('order', sa.Integer(), nullable=False),
+    sa.Column('front_type', sa.Integer(), nullable=False),
+    sa.Column('t2BookMode', sa.Integer(), nullable=False),
+    sa.Column('t1BackgndURL', sa.String(length=100), nullable=True),
+    sa.Column('t1BackgndCOL', sa.String(length=30), nullable=False),
+    sa.Column('t1LinkTo', sa.String(length=100), nullable=False),
+    sa.Column('t1Tit', sa.String(length=100), nullable=False),
+    sa.Column('t1Separator', sa.String(length=30), nullable=False),
+    sa.Column('t1Sub', sa.String(length=30), nullable=False),
+    sa.Column('t1Small', sa.String(length=30), nullable=False),
+    sa.Column('t2RowTitle', sa.String(length=50), nullable=False),
+    sa.Column('t2RowNumber', sa.Integer(), nullable=False),
+    sa.Column('t1TxtColor', sa.String(length=30), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('loginlog',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('day', sa.Integer(), nullable=True),
+    sa.Column('month', sa.Integer(), nullable=True),
+    sa.Column('year', sa.Integer(), nullable=True),
+    sa.Column('hour', sa.Integer(), nullable=True),
+    sa.Column('minutes', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
@@ -97,10 +140,22 @@ def upgrade():
     sa.Column('card_owner', sa.String(), nullable=False),
     sa.Column('number', sa.String(), nullable=False),
     sa.Column('date', sa.String(), nullable=False),
-    sa.Column('payment_method', sa.Enum('Visa', 'Mastercard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners', name='payment_method'), nullable=False),
+    sa.Column('payment_method', sa.Enum('Visa', 'MasterCard', 'AMEX', 'JCB', 'Discover', 'Visa electron', 'Diners', name='payment_method'), nullable=False),
     sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
+    )
+    op.create_table('cat_relation',
+    sa.Column('category_id', sa.Integer(), nullable=True),
+    sa.Column('faq_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
+    sa.ForeignKeyConstraint(['faq_id'], ['faq.id'], )
+    )
+    op.create_table('interface',
+    sa.Column('interface_id', sa.Integer(), nullable=True),
+    sa.Column('book_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['book_id'], ['books.id'], ),
+    sa.ForeignKeyConstraint(['interface_id'], ['interfaces.id'], )
     )
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -112,6 +167,7 @@ def upgrade():
     sa.Column('state', sa.Integer(), nullable=False),
     sa.Column('send_type', sa.Integer(), nullable=False),
     sa.Column('card_id', sa.Integer(), nullable=False),
+    sa.Column('address_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['accounts.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -169,9 +225,15 @@ def downgrade():
     op.drop_table('tags')
     op.drop_table('reviews')
     op.drop_table('orders')
+    op.drop_table('interface')
+    op.drop_table('cat_relation')
     op.drop_table('card_model')
     op.drop_table('addresses')
+    op.drop_table('loginlog')
+    op.drop_table('interfaces')
+    op.drop_table('faq')
     op.drop_table('contacts')
+    op.drop_table('category')
     op.drop_table('books')
     op.drop_table('authors')
     op.drop_table('articles')

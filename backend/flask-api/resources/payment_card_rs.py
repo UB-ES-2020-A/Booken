@@ -27,7 +27,7 @@ class Card(Resource):
             return {'message': "Account with id [{}] Not found".format(account_id)}, 404
 
         if len(account.cards) == 2:
-            return {'message': "Account with id [{}] cannot have more cards".format(account_id)}, 404
+            return {'message': "Account with id [{}] cannot have more cards".format(account_id)}, 403
 
         # define the input parameters need and its type
         parser.add_argument('card_owner', type=str, required=True, help="This field cannot be left blanck")
@@ -36,15 +36,13 @@ class Card(Resource):
         parser.add_argument('payment_method', type=str, required=True, help="This field cannot be left blanck")
 
         data = parser.parse_args()
-        card = CardModel(data['card_owner'],data['number'],data['date'],data['payment_method'])
+        card = CardModel(data['card_owner'], data['number'], data['date'], data['payment_method'])
 
         account.cards.append(card)
 
-        try:
-            account.save_to_db()
-            return {"Message": "Card saved correctly"}, 200
-        except:
-            return {"Message": "Coudln't save changes"}, 500
+
+        account.save_to_db()
+        return {"Message": "Card saved correctly"}, 200
 
     def delete(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
@@ -52,17 +50,12 @@ class Card(Resource):
 
         if card is not None and account is not None:
             if card in account.cards:
-                try:
-                    card.delete_from_db()
-                    return {"Message": "Card deleted correctly"}, 200
-                except:
-                    return {"Message": "Coudln't save changes"}, 500
-            else:
-                return {'message': "This account doesn't have an card with id [{}] ".format(idd)}, 409
+                card.delete_from_db()
+                return {"Message": "Card deleted correctly"}, 200
+            return {'message': "This account doesn't have an card with id [{}] ".format(idd)}, 409
         elif card is None:
             return {'message': "Card with id [{}] Not found".format(idd)}, 404
-        else:
-            return {'message': "Account with id [{}] Not found".format(idd)}, 404
+        return {'message': "Account with id [{}] Not found".format(idd)}, 404
 
 
 class CardList(Resource):

@@ -1,7 +1,8 @@
 from db import db
 
 b = db.Table('b', db.Column('wishlist_id', db.Integer, db.ForeignKey('wishlists.id')),
-                db.Column('book_id', db.Integer, db.ForeignKey('books.id')))
+             db.Column('book_id', db.Integer, db.ForeignKey('books.id')))
+
 
 class WishlistModel(db.Model):
     __tablename__ = 'wishlists'

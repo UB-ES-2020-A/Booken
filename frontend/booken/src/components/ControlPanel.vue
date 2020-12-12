@@ -1,9 +1,9 @@
 <style>
-
 @import url("../assets/toastr.css");
 @import url("../assets/animate.min.css");
 @import url("../assets/book_info.css");
-
+</style>
+<style lang="scss" src="../assets/ticket.scss" scoped>
 </style>
 <template>
   <div class="container front-container">
@@ -114,23 +114,28 @@
           </div>
         </div>
         <ul class="nav nav-pills flex-column flex-sm-row" id="pills-tab" role="tablist">
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 0">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 0">
             <a class="nav-link active" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab"
                aria-controls="pills-orders" aria-selected="false">Tus pedidos</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item active myPillItems" role="presentation" v-if="this.type == 2">
-            <a class="nav-link" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list" role="tab"
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 1">
+            <a class="nav-link active" id="pills-contacts-tab" data-toggle="pill" href="#pills-contacts" role="tab"
+               aria-controls="pills-contacts" aria-selected="false">Lista de consultas</a>
+          </li>
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="this.type == 2">
+            <a class="nav-link active" id="pills-orders-list-tab" data-toggle="pill" href="#pills-orders-list"
+               role="tab"
                aria-controls="pills-orders-list" aria-selected="false">Lista de pedidos</a>
           </li>
           <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-directions-tab" data-toggle="pill" href="#pills-directions" role="tab"
                aria-controls="pills-directions" aria-selected="false">Direcciones</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>
@@ -179,7 +184,148 @@
                       <button class="btn btn-danger" @click="cancelOrder(item.id)">Cancelar</button>
                     </td>
                     <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      <button class="btn btn-light" @click="viewOrder(item)" data-toggle="modal"
+                              data-target="#view-ticket-c">Ver pedido
+                      </button>
+                      <div class="modal fade" id="view-ticket-c" tabindex="-1" role="dialog"
+                           aria-labelledby="modalAddressLabel"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document"
+                             style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Detalles del pedido</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-ticket">
+                                <div class="ticket">
+                                  <div class="head-ticket">
+                                    <p class="x-bold">booken & co</p>
+                                    <p class="bold">08032 BARCELONA</p>
+                                    <p class="bold">Tfno: 932 98 65 00</p>
+                                    <p>{{ order.date }}</p>
+                                    <p>Pedido {{ getYear() + "-" + order.id.toString() }} QRL 02154</p>
+                                    <div class="code-barre">
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                    </div>
+                                  </div>
+                                  <div class="body-ticket">
+                                    <div class="produits">
+                                      <div class="col2" v-for="art in this.order.articles" :key="art.id">
+                                        <p>{{ art.quant }} x {{ art.book_title }}</p>
+                                        <p class="prix">{{ art.price }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.send_type == 1">1 x Envío Estándard</p>
+                                        <p v-if="order.send_type == 2">1 x Envío Estándard Plus</p>
+                                        <p v-if="order.send_type == 3">1 x Envío Ultra Express</p>
+                                        <p class="prix">{{ order.shipping }}€</p>
+                                      </div>
+                                      <div class="hr-sm"></div>
+                                      <div class="col2">
+                                        <p>IVA (21%)</p>
+                                        <p class="prix">{{ order.taxes }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.articles.length == 1">Total 1 artículo</p>
+                                        <p v-else>Total {{ order.articles.length }} artículos</p>
+                                        <p class="prix">{{ order.total }}€</p>
+                                      </div>
+                                      <p>En pesetas : {{ round2Dec(order.total * 166.386) }} ptas</p>
+                                      <p>(1 euro = 166.386 pesetas)</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Dirección de envío</p>
+                                      <p class="lel">{{ order.add_name + " " + order.add_lname }}</p>
+                                      <p class="lel">{{ order.street + ", " + order.add_number }}</p>
+                                      <p class="lel">{{ order.add_cp + " " + order.add_prov }}</p>
+                                      <p class="lel">Tfno: {{ order.telf }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Método de pago</p>
+                                      <p class="lel">{{ order.card_vendor }} **** **** **** {{ order.card_num }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                  </div>
+                                  <div class="footer-ticket">
+                                    <p class="title-footer">¡Gracias por comprar en booken!</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" @click="printReceipt">
+                                Imprimir
+                              </button>
+
+                              <button type="button" class="btn btn-primary" @click="send_ticket(order.id)">
+                                  <div v-if="!sending_mail">
+                                      Enviar al correo
+                                  </div>
+                                  <div v-else>
+                                      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                      </span>
+                                      Enviando ticket...
+                                  </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   </tbody>
@@ -197,6 +343,105 @@
                     </span>
                   </ul>
                 </nav>
+              </div>
+            </div>
+          </div>
+          <!-- CONTACTS: view contacts for support-->
+          <div class="tab-pane fade show active" id="pills-contacts" role="tabpanel"
+               aria-labelledby="pills-orders-list-tab" v-if="type == 1">
+            <div class="container-fluid">
+              <div class=" list-group-flush">
+
+                <div v-for="(contact, index) in this.contacts" :key="index"
+                     :class="['list-group-item ', (index === 0 ? '' : '')]"
+                     href="#">
+
+                  <div class="row">
+                    <div class="col-12 col-md-9 my-md-auto my-2">
+                      <div class="row d-flex justify-content-between">
+                        <h6 class="col-12 col-md-10 my-md-auto my-1 text-left">
+                            <b>Consulta: </b>{{ contact.contact_query }}
+                        </h6>
+                        <small class="col-12 col-md-2 my-md-auto my-1">{{ contact.contact_date }}</small>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-3 my-md-auto my-2 myButton">
+                      <div style="display:flex; flex-direction: row; justify-content: center; align-items:center;">
+                          <button type="button" class="btn btn-danger align-middle"
+                                  style="margin-right:0.5em" @click="deleteContact(index)">
+                                  Eliminar
+                          </button>
+                          <button type="button" class="btn btn-primary align-middle" data-toggle="modal"
+                                  data-target="#answerContact" @click="assignContact(index)">Responder
+                          </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="answerContact" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="border-bottom: 0 none;">
+                        <h5 class="modal-title">Responder la pregunta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-12 text-left">
+                            <strong> Datos vinculados: </strong><br>
+                          </div>
+                          <div class="col-12 mt-2">
+                            <div class="border rounded" style="background: whitesmoke;">
+                              <div class="col-12 text-left mt-2">
+                                <strong> ID: </strong> {{ contactToAnswer['id'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Email: </strong> {{ contactToAnswer['email'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Nombre: </strong> {{ contactToAnswer['full_name'] }}
+                              </div>
+                              <div class="col-12 text-left">
+                                <strong> Teléfono: </strong> {{ contactToAnswer['phone_number'] }}
+                              </div>
+                              <div class="col-12 text-left mb-2">
+                                <strong> Fecha de creación: </strong> {{ contactToAnswer['contact_date'] }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 text-left mt-4">
+                            <strong> Pregunta: </strong><br> {{ contactToAnswer['contact_query'] }}
+                          </div>
+                          <div class="col-12 text-left mt-4">
+                            <div class="form-group">
+                              <label class="col-form-label"><strong>Respuesta:</strong></label>
+                              <textarea type="text" class="form-control" col=30 rows=10 v-model="newContactAnswer"/>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer" style="border-top: 0 none;">
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" @click="validate_response" v-if="!sent">
+                            <div v-if="!sending_mail">
+                                Enviar la respuesta
+                            </div>
+                            <div v-else>
+                                <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                </span>
+                                Enviando respuesta...
+                            </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -241,9 +486,7 @@
                       <select id="sortByStateHist" @change="changeState(sortState[item.id],item.id)"
                               v-model="sortState[item.id]"
                               class="form-control-sm" style="width: 120px;text-align: center">
-                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{
-                            state.text
-                          }}
+                        <option v-for="state in sortEditOptions" :key="state" :value="state.value">{{ state.text }}
                         </option>
                       </select>
                     </td>
@@ -251,7 +494,148 @@
                       <button class="btn btn-danger" @click="cancelOrderList(item.id)">Cancelar</button>
                     </td>
                     <td class="text-right" v-if="item.state!=0">
-                      <button class="btn btn-light" @click="viewOrder(item.id)">Ver pedido</button>
+                      <button class="btn btn-light" @click="viewOrder(item)" data-toggle="modal"
+                              data-target="#view-ticket-a">Ver pedido
+                      </button>
+                      <div class="modal fade" id="view-ticket-a" tabindex="-1" role="dialog"
+                           aria-labelledby="modalAddressLabel"
+                           aria-hidden="true">
+                        <div class="modal-dialog" role="document"
+                             style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Detalles del pedido</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="container-ticket" id="ticket-pdf">
+                                <div class="ticket">
+                                  <div class="head-ticket">
+                                    <p class="x-bold">booken & co</p>
+                                    <p class="bold">08032 BARCELONA</p>
+                                    <p class="bold">Tfno: 932 98 65 00</p>
+                                    <p>{{ order.date }}</p>
+                                    <p>Pedido {{ getYear() + "-" + order.id.toString() }} QRL 02154</p>
+                                    <div class="code-barre">
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                      <span></span>
+                                    </div>
+                                  </div>
+                                  <div class="body-ticket">
+                                    <div class="produits">
+                                      <div class="col2" v-for="art in this.order.articles" :key="art.id">
+                                        <p class="xd">{{ art.quant }} x {{ art.book_title }}</p>
+                                        <p class="prix">{{ art.price }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.send_type == 1">1 x Envío Estándard</p>
+                                        <p v-if="order.send_type == 2">1 x Envío Estándard Plus</p>
+                                        <p v-if="order.send_type == 3">1 x Envío Ultra Express</p>
+                                        <p class="prix">{{ order.shipping }}€</p>
+                                      </div>
+                                      <div class="hr-sm"></div>
+                                      <div class="col2">
+                                        <p>IVA (21%)</p>
+                                        <p class="prix">{{ order.taxes }}€</p>
+                                      </div>
+                                      <div class="col2">
+                                        <p v-if="order.articles.length == 1">Total 1 artículo</p>
+                                        <p v-else>Total {{ order.articles.length }} artículos</p>
+                                        <p class="prix">{{ order.total }}€</p>
+                                      </div>
+                                      <p>En pesetas : {{ round2Dec(order.total * 166.386) }} ptas</p>
+                                      <p>(1 euro = 166.386 pesetas)</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Dirección de envío</p>
+                                      <p class="lel">{{ order.add_name + " " + order.add_lname }}</p>
+                                      <p class="lel">{{ order.street + ", " + order.add_number }}</p>
+                                      <p class="lel">{{ order.add_cp + " " + order.add_prov }}</p>
+                                      <p class="lel">Tfno: {{ order.telf }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                    <div class="carte">
+                                      <p class="title-carte">Método de pago</p>
+                                      <p class="lel">{{ order.card_vendor }} **** **** **** {{ order.card_num }}</p>
+                                    </div>
+                                    <div class="hr-lg"></div>
+                                  </div>
+                                  <div class="footer-ticket">
+                                    <p class="title-footer">¡Gracias por comprar en booken!</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" @click="printReceipt">
+                                Imprimir
+                              </button>
+
+                              <button type="button" class="btn btn-primary" @click="send_ticket(order.id)">
+                                  <div v-if="!sending_mail">
+                                      Enviar al correo
+                                  </div>
+                                  <div v-else>
+                                      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true">
+                                      </span>
+                                      Enviando ticket...
+                                  </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   </tbody>
@@ -452,11 +836,11 @@
                       <div class="modal-body">
                         <form>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <label class="col-form-label">Identificador</label>
                             <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <label class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
                               <input type="text" class="form-control"
                                      v-model="newAddressName" placeHolder="Nombre">
@@ -465,7 +849,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <label class="col-form-label">Dirección</label>
                             <div style="display:flex">
                               <input type="text" class="form-control" style="width:80%;"
                                      v-model="newAddressRoad" placeHolder="Calle">
@@ -474,11 +858,11 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <label class="col-form-label">Código postal</label>
                             <input type="number" class="form-control" v-model="newAddressCode">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <label class="col-form-label">Residencia</label>
                             <div style="display:flex">
                               <input type="text" class="form-control"
                                      v-model="newAddressCity" placeHolder="Ciudad">
@@ -487,7 +871,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <label class="col-form-label">Teléfono</label>
                             <input type="number" class="form-control" v-model="newAddressPhone">
                           </div>
                         </form>
@@ -519,7 +903,7 @@
                 <div class="col-12 col-lg-6 mb-4 myPaymentCard" v-for="item in this.cards" :key="item.id">
                   <div class="card" style=" text-align: left">
                     <div class="card-header">
-                      <span v-if="item.vendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                      <span v-if="item.vendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
                       <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                                                               style="font-size: 1.8em"></i></span>
@@ -577,7 +961,7 @@
                                 <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/aaaa">
                               </div>
                               <div class="form-group" style="text-align: center; font-size: 3em">
-                                <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                                <span v-if="ccvendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                          style="font-size: 1.8em"></i></span>
                                 <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                                                                   style="font-size: 1.8em"></i></span>
@@ -761,6 +1145,15 @@
                   ></apexchart>
                 </div>
               </div>
+              <div class="row row-cols-1 row-cols-md-1" style="margin-top: 1em">
+                <div class="col">
+                  <apexchart
+                      width="100%"
+                      type="line"
+                      :options="loginLogOptions"
+                  ></apexchart>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -771,6 +1164,7 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
+import {jsPDF} from "jspdf"
 import {bus, api} from '../main.js'
 import axios from 'axios'
 import * as toastr from "@/assets/toastr";
@@ -821,6 +1215,7 @@ export default {
       gainMonthOptions: {},
       gainMonthSeries: {},
       gainGenreOptions: {},
+      loginLogOptions: {},
       cards: [
         {
           "id": 0,
@@ -839,7 +1234,25 @@ export default {
         "date": '',
         "payment_method": ''
       },
-
+      order: {
+        id: -1,
+        date: "",
+        total: -1,
+        shipping: -1,
+        send_type: -1,
+        card_vendor: "",
+        card_num: "",
+        add_name: "",
+        add_lname: "",
+        add_number: -1,
+        add_cp: "",
+        add_city: "",
+        add_prov: "",
+        street: "",
+        telf: -1,
+        articles: {},
+        taxes: -1
+      },
       address_edit: -1,
       ccvendor: '',
       newAddressLabel: '',
@@ -867,6 +1280,7 @@ export default {
         {text: 'Recibidos', value: '2'}
       ],
       years_data: [],
+      log_month: {},
       total_sales: 0,
       total_users: 0,
       sales_month: {},
@@ -878,12 +1292,18 @@ export default {
       gain_genre: {},
       selYear: -1,
       salesYear: 0,
-      gainYear: 0
+      gainYear: 0,
+      contacts: [],
+      contactToAnswer: [],
+      newContactAnswer: '',
+      sending_mail: 0,
+      sent: 0
     }
   },
   created() {
     this.getOrders()
-    this.getOrdersList()
+    if (this.type == 2)
+        this.getOrdersList()
     this.getAddresses()
     this.getCards()
     this.getAccount()
@@ -892,11 +1312,19 @@ export default {
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
+    this.getContacts()
+    this.changeViewingOrders(0)
   },
   mounted() {
     this.getData()
   },
   methods: {
+    round2Dec(trnd) {
+      return Math.round(trnd * 100) / 100
+    },
+    printReceipt() {
+      print()
+    },
     getCardType(number) {
       // visa
       var re = new RegExp("^4");
@@ -906,7 +1334,7 @@ export default {
       // Mastercard
       re = new RegExp("^5[1-5]");
       if (number.match(re) != null)
-        return "Mastercard";
+        return "MasterCard";
 
       // AMEX
       re = new RegExp("^3[47]");
@@ -998,9 +1426,17 @@ export default {
       }
       return arrr
     },
+    toSimpleArrayKeys(arr) {
+      var arrr = []
+      for (var i in arr) {
+        arrr.push(i)
+      }
+      return arrr
+    },
     getOrders() {
       var path = api + 'order-user/' + this.id
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.orders = res.data.orders
             this.splitOrders()
@@ -1112,13 +1548,58 @@ export default {
           },
         }
       }
+      this.loginLogOptions = {
+        series: [{
+          name: "Accesos",
+          data: this.toSimpleArray(this.log_month)
+        }],
+        labels: this.toSimpleArrayKeys(this.log_month),
+        title: {
+          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth() + 1) + ')',
+          align: 'center',
+          margin: 10,
+          floating: false,
+          style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#263238'
+          },
+        }
+      }
+    },
+    getMonthString(month) {
+      switch (month) {
+        case 1:
+          return "enero"
+        case 2:
+          return "febrero"
+        case 3:
+          return "marzo"
+        case 4:
+          return "abril"
+        case 5:
+          return "mayo"
+        case 6:
+          return "junio"
+        case 7:
+          return "julio"
+        case 8:
+          return "agosto"
+        case 9:
+          return "septiembre"
+        case 10:
+          return "octubre"
+        case 11:
+          return "noviembre"
+        case 12:
+          return "diciembre"
+      }
     },
     getData() {
       var path = api + 'data_retriever/all'
       axios.get(path)
           .then((res) => {
             this.years_data = res.data.all.years_data
-            console.log(this.years_data)
             this.total_sales = res.data.all.total_sales
             this.total_users = res.data.all.total_users
             this.sales_month = res.data.all.sales_month
@@ -1128,6 +1609,7 @@ export default {
             this.gain_month = res.data.all.gain_month
             this.gain_year = res.data.all.gain_year
             this.gain_genre = res.data.all.gain_genre
+            this.log_month = res.data.all.log_month
             this.chartGeneration(this.years_data[0])
           })
           .catch((error) => {
@@ -1144,7 +1626,8 @@ export default {
     },
     getOrdersList() {
       var path = api + 'orders'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -1218,9 +1701,7 @@ export default {
       this.cIndex = index
     },
     changeViewingOrdersList(index) {
-      console.log(this.viewOrdersList)
       this.viewOrdersList = this.sOrdersList[index]
-      console.log(this.viewOrdersList)
       this.cIndexList = index
     },
     splitOrders() {
@@ -1253,11 +1734,12 @@ export default {
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
+      this.changeViewingOrdersList(this.cIndexList)
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
-      console.log(id)
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
@@ -1284,8 +1766,8 @@ export default {
     },
     cancelOrderList(id) {
       var path = api + 'order/' + id
-      console.log(id)
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Pedido cancelado!',
@@ -1310,8 +1792,24 @@ export default {
                 })
           })
     },
-    viewOrder(id) {
-      console.log(id)
+    viewOrder(i) {
+      this.order.id = i.id
+      this.order.date = i.date
+      this.order.total = i.total
+      this.order.taxes = i.taxes
+      this.order.shipping = i.shipping
+      this.order.send_type = i.send_type
+      this.order.card_num = i.card.number
+      this.order.card_vendor = i.card.method
+      this.order.add_name = i.address.name
+      this.order.add_lname = i.address.surnames
+      this.order.street = i.address.street
+      this.order.add_number = i.address.number
+      this.order.add_cp = i.address.cp
+      this.order.add_city = i.address.city
+      this.order.add_prov = i.address.province
+      this.order.telf = i.address.telf
+      this.order.articles = i.articles
     },
     modifyProfile() {
       this.editProfile = true
@@ -1476,6 +1974,9 @@ export default {
 
       return score
     },
+    getYear() {
+      return new Date().getFullYear()
+    },
     checkNewPasswordStrength() {
       const score = this.scoreNewPassword();
       if (score >= 80) {
@@ -1498,14 +1999,11 @@ export default {
     },
     stateOrdersInProgress() {
       var path = api + 'orders-state-0/' + this.id
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1522,14 +2020,11 @@ export default {
     },
     stateOrdersSend() {
       var path = api + 'orders-state-1/' + this.id
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1546,14 +2041,12 @@ export default {
     },
     stateOrdersReceived() {
       var path = api + 'orders-state-2/' + this.id
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
-            console.log(this.ordersHist.length)
             this.orders = res.data.orders
-            console.log(this.orders)
             this.splitOrders()
-            console.log(this.ordersHist.length)
           })
           .catch((error) => {
             console.log(error)
@@ -1570,10 +2063,10 @@ export default {
     },
     stateOrdersListInProgress() {
       var path = api + 'orders-list-state-0'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
-            console.log(res.data.orders)
             this.ordersHist = res.data.orders
             this.splitOrdersList()
           })
@@ -1592,8 +2085,9 @@ export default {
     },
     stateOrdersListSend() {
       var path = api + 'orders-list-state-1'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -1613,8 +2107,9 @@ export default {
     },
     stateOrdersListReceived() {
       var path = api + 'orders-list-state-2'
+      var currentUser = {username: this.id, password: this.token}
 
-      axios.get(path)
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.ordersHist = res.data.orders
             this.splitOrdersList()
@@ -1728,9 +2223,7 @@ export default {
     validateEndDate(date) {
       var today, someday
       var exMonth = date.slice(0, 2)
-      console.log(exMonth)
       var exYear = date.slice(3)
-      console.log(exYear)
       today = new Date()
       someday = new Date()
       someday.setFullYear(exYear, exMonth, 1)
@@ -1851,29 +2344,25 @@ export default {
 
     },
     changeState(type, order_id) {
-      console.log(this.sortTypeHist)
       const path = api + 'order/' + order_id
       const parameters = {
         state: type
       }
-      axios.put(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.put(path, parameters,{auth: currentUser})
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            console.log(res)
             if (this.sortTypeHist == "-1") {
               this.getOrdersList()
-
             }
             if (this.sortTypeHist == "0") {
               this.stateOrdersListInProgress()
-
             }
             if (this.sortTypeHist == "1") {
               this.stateOrdersListSend()
-
             }
             if (this.sortTypeHist == "2") {
               this.stateOrdersListReceived()
-
             }
           })
           .catch((error) => {
@@ -1981,10 +2470,9 @@ export default {
     },
     deleteAccount() {
       var path = api + 'account/' + this.id
-      console.log(this.id)
       axios.delete(path)
+          // eslint-disable-next-line no-unused-vars
           .then((res) => {
-            console.log(res.data)
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
                 {
                   timeOut: 2500,
@@ -2008,8 +2496,155 @@ export default {
                 })
           })
     },
+    // eslint-disable-next-line no-unused-vars
     searchOrder(order_id) {
-      console.log(order_id)
+    },
+    getContacts() {
+      var path = api + 'contact_list/'
+      axios.get(path)
+          .then((res) => {
+            this.contacts = res.data.contacts
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido recuperar los contactos.',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+          })
+    },
+    assignContact(index) {
+      this.contactToAnswer = this.contacts[index]
+      this.sent = 0
+      this.sending_mail = 0
+    },
+    deleteContact(index){
+      this.assignContact(index)
+      var path = api + 'contact_info/' + this.contactToAnswer.id
+      axios.delete(path)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡Consulta eliminada con éxito!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.getContacts()
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.getContacts()
+      })
+    },
+    validate_response(){
+      if(this.sending_mail)
+        return
+      this.sending_mail = 1
+      if( this.newContactAnswer == '' ){
+        toastr.info('', 'Por favor, añada una respuesta.',
+            {
+              timeOut: 2500,
+              progressBar: true,
+              newestOnTop: true,
+              positionClass: 'toast-bottom-right',
+              preventDuplicates: true
+            })
+        this.sending_mail = 0
+      }
+      else{
+        var parameters = {
+          "contact_id":this.contactToAnswer.id,
+          "contact_response": this.newContactAnswer
+        }
+        console.log(parameters)
+        this.send_response(parameters)
+      }
+      this.newContactAnswer = ''
+    },
+    send_response(parameters){
+      var path = api + 'send_contact_response'
+      axios.post(path, parameters)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡La respuesta fue enviada!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sent = 1
+          this.sending_mail = 0
+          this.getContacts()
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sent = 1
+          this.sending_mail = 0
+          this.getContacts()
+        })
+    },
+    send_ticket(order_id){
+      if(this.sending_mail)
+        return
+
+      this.sending_mail = 1
+
+      var parameters = {"account_id": this.id, "order_id": order_id}
+
+      var path = api + 'send_ticket'
+      axios.post(path, parameters)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          toastr.success('', '¡El ticket fue enviado!',
+              {
+                timeOut: 2500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sending_mail = 0
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error)
+          toastr.error('', 'Algo no salió como se esperaba... pruebe de nuevo mas tarde',
+              {
+                timeOut: 1500,
+                progressBar: true,
+                newestOnTop: true,
+                positionClass: 'toast-bottom-right',
+                preventDuplicates: true
+              })
+          this.sending_mail = 0
+        })
     }
   }
 }

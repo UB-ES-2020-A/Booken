@@ -1,13 +1,16 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
+import {VueCookieNext} from 'vue-cookie-next'
 import App from './App.vue'
 import router from './router'
 import mitt from 'mitt'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-// eslint-disable-next-line no-unused-vars
 export const bus = mitt()
-//export const api = 'http://127.0.0.1:5000/'
-export const api = 'https://booken-dev.herokuapp.com/'
+export const api = process.env.VUE_APP_BACKEND_URL
 
-createApp(App).use(router).mount('#app')
+const app = createApp(App)
+
+app.use(VueCookieNext)
+app.use(router)
+app.mount('#app')
