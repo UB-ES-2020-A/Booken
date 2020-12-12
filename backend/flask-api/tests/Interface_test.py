@@ -11,7 +11,8 @@ from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
-import json, base64
+import json
+import base64
 
 #  deepcode ignore C0411: not an issue
 
@@ -86,9 +87,9 @@ class InterfaceTests(unittest.TestCase):
                                  data=dict(email='test', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
             .decode('ascii')}
 
     def tearDown(self):

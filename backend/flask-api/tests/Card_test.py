@@ -13,7 +13,8 @@ from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
-import json, base64
+import json
+import base64
 
 class CardModelTests(unittest.TestCase):
 
