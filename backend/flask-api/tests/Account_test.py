@@ -87,11 +87,11 @@ class AccountModelTests(unittest.TestCase):
         response = self.app.post('api/login',
                                  data=dict(email='tengo@barcos.tech', password='america16'),
                                  follow_redirects=True)
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
-        response = self.add_address(self.address_info,auth)
+        my_auth = auth(my_id,token)
+
+        response = self.add_address(self.address_info,my_auth)
         self.assertEqual(self.address_info['city'],
                          AccountModel.find_by_email('tengo@barcos.tech').find_address_by_id(1).city)
 
@@ -183,16 +183,15 @@ class AccountResourceGetTests(unittest.TestCase):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         acc = AccountModel.query.first()
         acc.type = 2
-        acc.save_to_db
+        acc.save_to_db()
         response = self.app.post('api/login',
                                  data=dict(email='tengo@barcos.tech', password='america16'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
-            .decode('ascii')}
-        response = self.app.get('api/accounts', headers=auth, follow_redirects=True)
+        my_auth = auth(my_id,token)
+        response = self.app.get('api/accounts', headers=my_auth, follow_redirects=True)
         self.assertEqual(200, response.status_code)
 
     def register(self, name, lname, email, password):

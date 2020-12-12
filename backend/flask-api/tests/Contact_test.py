@@ -40,15 +40,15 @@ class ContactTests(unittest.TestCase):
 
         acc = AccountModel.query.first()
         acc.type = 1
-        acc.save_to_db
+        acc.save_to_db()
 
         response = self.app.post('api/login',
                                  data=dict(email='test', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
             .decode('ascii')}
 
     def tearDown(self):

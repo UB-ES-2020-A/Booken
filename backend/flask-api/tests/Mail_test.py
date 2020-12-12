@@ -48,9 +48,9 @@ class MailTests(unittest.TestCase):
                                  data=dict(email='booken.eshop@gmail.com', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
             .decode('ascii')}
 
         self.app.post('api/account/1/address',
@@ -145,9 +145,9 @@ class MailTests(unittest.TestCase):
                                  data=dict(email='test_fail', password='test'),
                                  follow_redirects=True)
 
-        id = json.loads(response.data)['id']
+        my_id = json.loads(response.data)['id']
         token = json.loads(response.data)['token']
-        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(id) + ":" + token, 'ascii'))
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
             .decode('ascii')}
 
         response = self.send_ticket(1,1)
