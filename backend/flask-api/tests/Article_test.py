@@ -58,16 +58,17 @@ class ArticleTest(unittest.TestCase):
         db.drop_all()
         db.create_all()
         self.postBook(self.book_info)
-        self.register(self.account_admin_info)
-        self.acc = AccountModel.find_by_email("a@a.com")
-        self.acc.type = 2
-        self.acc.save_to_db()
-        self.resp_account_admin = self.login('a@a.com', 'sm22')
+
 
     def postBook(self, info):
+        self.register(self.account_admin_info)
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         return self.app.post('api/book', data=info,
                              headers={'Authorization': 'Basic ' + base64.b64encode(
-                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                 bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
@@ -82,16 +83,21 @@ class ArticleTest(unittest.TestCase):
 
 
     def test_get_article(self):
+        self.register(self.account_admin_info)
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         self.add_article(self.article_info)
         response = self.app.get('api/article/1',
                                 headers={'Authorization': 'Basic ' + base64.b64encode(
-                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                    bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                           'ascii')).decode(
                                     'ascii')},
                                 follow_redirects=True)
         resp = self.app.get('api/article/1000',
                             headers={'Authorization': 'Basic ' + base64.b64encode(
-                                bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                       'ascii')).decode(
                                 'ascii')},
                             follow_redirects=True)
@@ -100,11 +106,16 @@ class ArticleTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 404)
 
     def test_get_articles(self):
+        self.register(self.account_admin_info)
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         self.add_article(self.article_info)
         self.add_article(self.article_info)
         response = self.app.get('api/articles',
                                 headers={'Authorization': 'Basic ' + base64.b64encode(
-                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                    bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                           'ascii')).decode(
                                     'ascii')},
                                 follow_redirects=True)
@@ -118,17 +129,22 @@ class ArticleTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_delete_article(self):
+        self.register(self.account_admin_info)
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         self.add_article(self.article_info)
 
         response = self.app.delete('api/article/1',
                                    headers={'Authorization': 'Basic ' + base64.b64encode(
-                                       bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                              'ascii')).decode(
                                        'ascii')},
                                    follow_redirects=True)
         resp = self.app.delete('api/article/1000',
                                headers={'Authorization': 'Basic ' + base64.b64encode(
-                                   bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                   bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                          'ascii')).decode(
                                    'ascii')},
                                follow_redirects=True)
@@ -137,10 +153,15 @@ class ArticleTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 404)
 
     def add_article(self, info):
+        self.register(self.account_admin_info)
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         return self.app.post('api/article',
                              data=info,
                              headers={'Authorization': 'Basic ' + base64.b64encode(
-                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                 bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
