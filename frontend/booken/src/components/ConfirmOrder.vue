@@ -718,7 +718,8 @@ export default {
     },
     cardToDB() {
       const path = api + 'account/' + this.id + '/card'
-      axios.post(path, this.addCardForm)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, this.addCardForm, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
@@ -780,7 +781,8 @@ export default {
     },
     deleteCard(card_id) {
       const path = api + 'account/' + this.id + '/card/' + card_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
@@ -993,7 +995,8 @@ export default {
     },
     getCards() {
       var path = api + 'account/' + this.id + '/cards'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.cards = []
             var data = res.data.accounts_cards
