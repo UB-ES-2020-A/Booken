@@ -7,7 +7,9 @@ import json
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
 from models.contact import ContactModel
+from models.accounts import AccountModel
 
+import base64
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 #  deepcode ignore C0411: stupid issue
@@ -36,6 +38,19 @@ class ContactTests(unittest.TestCase):
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
 
+        acc = AccountModel.query.first()
+        acc.type = 1
+        acc.save_to_db()
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
+            .decode('ascii')}
+
     def tearDown(self):
         # Executed after each test
         pass
@@ -46,13 +61,13 @@ class ContactTests(unittest.TestCase):
 
     def test_get_concrete_contact(self):
         self.add_contact(self.contact_info)
-        response = self.app.get('api/contact_info/1', follow_redirects=True)
+        response = self.app.get('api/contact_info/1', headers=self.auth, follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.contact_info, json.loads(response.data)["contact"])
 
     def test_get_non_existent_contact(self):
-        response = self.app.get('api/contact_info/1', follow_redirects=True)
+        response = self.app.get('api/contact_info/1', headers=self.auth,  follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_model_find_contact_by_email(self):
@@ -63,7 +78,7 @@ class ContactTests(unittest.TestCase):
     def test_get_contacts(self):
         self.add_contact(self.contact_info)
         self.add_contact(self.contact_info)
-        response = self.app.get('api/contact_list', follow_redirects=True)
+        response = self.app.get('api/contact_list', headers=self.auth,  follow_redirects=True)
 
         tmp_contact_1 = self.contact_info.copy()
         tmp_contact_2 = self.contact_info.copy()
@@ -76,11 +91,11 @@ class ContactTests(unittest.TestCase):
 
     def test_delete_contact(self):
         self.add_contact(self.contact_info)
-        response = self.app.delete('api/contact_info/1', follow_redirects=True)
+        response = self.app.delete('api/contact_info/1', headers=self.auth,  follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_non_existent_contact(self):
-        response = self.app.delete('api/contact_info/1', follow_redirects=True)
+        response = self.app.delete('api/contact_info/1', headers=self.auth,  follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def add_contact(self, info):

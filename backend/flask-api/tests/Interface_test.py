@@ -3,13 +3,17 @@ import unittest
 #  deepcode ignore C0411: not an issue
 import sys
 
-#  deepcode ignore C0411: not an issue
+#  deepcode ignore C04
+#  11: not an issue
 sys.path.append('../')
+from models.accounts import AccountModel
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
+import json
+import base64
 
 #  deepcode ignore C0411: not an issue
 
@@ -72,6 +76,23 @@ class InterfaceTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
+        self.app.post('api/account',
+                      data=dict(name="test", lastname="test", email="test", password="test"),
+                      follow_redirects=True)
+
+        acc = AccountModel.query.first()
+        acc.type = 2
+        acc.save_to_db()
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
+            .decode('ascii')}
+
     def tearDown(self):
         # Executed after each test
         pass
@@ -115,8 +136,8 @@ class InterfaceTests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_post_book_interface(self):
-        self.postBook(self.book_info)
-        self.postInterface(self.interface_info)
+        response = self.postBook(self.book_info)
+        response = self.postInterface(self.interface_info)
         response = self.app.post('api/interface_books/1/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
@@ -144,9 +165,9 @@ class InterfaceTests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_delete_book_interface(self):
-        self.postBook(self.book_info)
-        self.postInterface(self.interface_info)
-        self.app.post('api/interface_books/1/1', follow_redirects=True)
+        respone = self.postBook(self.book_info)
+        respone = self.postInterface(self.interface_info)
+        respone = self.app.post('api/interface_books/1/1', follow_redirects=True)
         response = self.app.delete('api/interface_books/1/1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
@@ -183,7 +204,7 @@ class InterfaceTests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
 
     def postBook(self, info):
-        return self.app.post('api/book', data=info, follow_redirects=True)
+        return self.app.post('api/book', data=info, headers=self.auth, follow_redirects=True)
 
     def postInterface(self, info):
         return self.app.post('/api/interface', data=info, follow_redirects=True)

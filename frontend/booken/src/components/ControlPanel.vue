@@ -1646,7 +1646,8 @@ export default {
     },
     getCards() {
       var path = api + 'account/' + this.id + '/cards'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path, {auth: currentUser})
           .then((res) => {
             this.cards = []
             var data = res.data.accounts_cards
@@ -2163,7 +2164,8 @@ export default {
     },
     cardToDB() {
       const path = api + 'account/' + this.id + '/card'
-      axios.post(path, this.addCardForm)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, this.addCardForm,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
@@ -2192,7 +2194,8 @@ export default {
     },
     deleteCard(card_id) {
       const path = api + 'account/' + this.id + '/card/' + card_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
@@ -2470,7 +2473,8 @@ export default {
     },
     deleteAccount() {
       var path = api + 'account/' + this.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
@@ -2501,7 +2505,8 @@ export default {
     },
     getContacts() {
       var path = api + 'contact_list/'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.contacts = res.data.contacts
           })
@@ -2525,7 +2530,8 @@ export default {
     deleteContact(index){
       this.assignContact(index)
       var path = api + 'contact_info/' + this.contactToAnswer.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡Consulta eliminada con éxito!',
@@ -2579,7 +2585,8 @@ export default {
     },
     send_response(parameters){
       var path = api + 'send_contact_response'
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡La respuesta fue enviada!',
@@ -2619,7 +2626,8 @@ export default {
       var parameters = {"account_id": this.id, "order_id": order_id}
 
       var path = api + 'send_ticket'
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡El ticket fue enviado!',
