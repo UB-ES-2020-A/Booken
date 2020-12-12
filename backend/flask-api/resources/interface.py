@@ -97,6 +97,7 @@ class Interface(Resource):
             return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
         exists.delete_from_db()
         interfaces = sorted([i for i in db.session.query(InterfaceModel).all()], key=lambda x: x.order)
+        # file deepcode ignore C0200: <comment the reason here>
         for i in range(len(interfaces)):
             interfaces[i].order = i + 1
             interfaces[i].save_to_db()
