@@ -1,5 +1,6 @@
 # file deepcode ignore C0411: n/a
 # file deepcode ignore C0413: n/a
+import base64
 import unittest
 import sys
 import json
@@ -11,16 +12,15 @@ from app import setupApp
 from db import db
 #  deepcode ignore C0413: stupid issue
 from models.wishlist import WishlistModel
-
+from models.accounts import AccountModel
 
 
 class WishlistTest(unittest.TestCase):
-
-    account_info = {
-        "name": "Test",
-        "lastname": "Test",
-        "email": "prueba@gmail.com",
-        "password": "EsTo123Prueba"
+    account_admin_info = {
+        "name": 'Admin',
+        "lastname": 'Admin',
+        "email": "a@a.com",
+        "password": 'sm22'
     }
 
     book_info = {
@@ -68,21 +68,36 @@ class WishlistTest(unittest.TestCase):
     }
 
     def setUp(self):
-
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
+        self.register(self.account_admin_info)
+        self.acc = AccountModel.find_by_email("a@a.com")
+        self.acc.type = 2
+        self.acc.save_to_db()
+        self.resp_account_admin = self.login('a@a.com', 'sm22')
 
     def tearDown(self):
         # Executed after each test
         pass
 
     def test_create_wishlist(self):
-        self.create_account(self.account_info)
         self.postBook(self.book_info)
         response = self.add_wishlist()
-        resp_not_acc = self.app.post('api/wishlist/1000/1', follow_redirects=True)
-        resp_not_book = self.app.post('api/wishlist/1/1000', follow_redirects=True)
+        resp_not_acc = self.app.post('api/wishlist/1000/1',
+                                     headers={'Authorization': 'Basic ' + base64.b64encode(
+                                         bytes(
+                                             str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                             'ascii')).decode(
+                                         'ascii')},
+                                     follow_redirects=True)
+        resp_not_book = self.app.post('api/wishlist/1/1000',
+                                      headers={'Authorization': 'Basic ' + base64.b64encode(
+                                          bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                              'token'],
+                                                'ascii')).decode(
+                                          'ascii')},
+                                      follow_redirects=True)
         response_book_exist = self.add_wishlist()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp_not_acc.status_code, 404)
@@ -90,22 +105,51 @@ class WishlistTest(unittest.TestCase):
         self.assertEqual(response_book_exist.status_code, 400)
 
     def test_get_wishlist(self):
-        self.create_account(self.account_info)
         self.add_wishlist()
-        response = self.app.get('api/wishlist/1', follow_redirects=True)
+        response = self.app.get('api/wishlist/1',
+                                headers={'Authorization': 'Basic ' + base64.b64encode(
+                                    bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                        'token'],
+                                          'ascii')).decode(
+                                    'ascii')},
+                                follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
 
     def test_delete_wishlist(self):
-        self.create_account(self.account_info)
         self.postBook(self.book_info)
         self.add_wishlist()
 
-        response = self.app.delete('api/wishlist/1/1', follow_redirects=True)
-        resp_not_acc = self.app.delete('api/wishlist/1000/1', follow_redirects=True)
-        resp_not_book = self.app.delete('api/wishlist/1/1000', follow_redirects=True)
+        response = self.app.delete('api/wishlist/1/1',
+                                   headers={'Authorization': 'Basic ' + base64.b64encode(
+                                       bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                           'token'],
+                                             'ascii')).decode(
+                                       'ascii')},
+                                   follow_redirects=True)
+        resp_not_acc = self.app.delete('api/wishlist/1000/1',
+                                       headers={'Authorization': 'Basic ' + base64.b64encode(
+                                           bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                               'token'],
+                                                 'ascii')).decode(
+                                           'ascii')},
+                                       follow_redirects=True)
+        resp_not_book = self.app.delete('api/wishlist/1/1000',
+                                        headers={'Authorization': 'Basic ' + base64.b64encode(
+                                            bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                                'token'],
+                                                  'ascii')).decode(
+                                            'ascii')},
+                                        follow_redirects=True)
         self.postBook(self.book_info2)
-        response_book_exist = self.app.delete('api/wishlist/1/2', follow_redirects=True)
+        response_book_exist = self.app.delete('api/wishlist/1/2',
+                                              headers={'Authorization': 'Basic ' + base64.b64encode(
+                                                  bytes(
+                                                      str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)[
+                                                          'token'],
+                                                      'ascii')).decode(
+                                                  'ascii')},
+                                              follow_redirects=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp_not_acc.status_code, 404)
@@ -113,18 +157,18 @@ class WishlistTest(unittest.TestCase):
         self.assertEqual(response_book_exist.status_code, 400)
 
     def test_get_wishlist_by_id(self):
-        self.create_account(self.account_info)
         self.postBook(self.book_info)
         resp = self.add_wishlist()
         response = WishlistModel.find_by_id(1)
-        self.assertEqual(response.json(),json.loads(resp.data)["wl"])
+        self.assertEqual(response.json(), json.loads(resp.data)["wl"])
 
     def add_wishlist(self):
         return self.app.post('api/wishlist/1/1',
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
                              follow_redirects=True)
-
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -132,4 +176,14 @@ class WishlistTest(unittest.TestCase):
                              follow_redirects=True)
 
     def postBook(self, info):
-        return self.app.post('api/book', data=info, follow_redirects=True)
+        return self.app.post('api/book', data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(self.acc.id) + ":" + json.loads(self.resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
+                             follow_redirects=True)
+
+    def login(self, email, password):
+        return self.app.post('api/login',
+                             data=dict(email=email, password=password),
+                             follow_redirects=True)
