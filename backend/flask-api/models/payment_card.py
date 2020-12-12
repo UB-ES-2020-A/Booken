@@ -6,7 +6,7 @@ class CardModel(db.Model):
     __table_name__ = 'payment_card'
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    account_id = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
 
     card_owner = db.Column(db.String(), nullable=False)
     number = db.Column(db.String(), nullable=False)
