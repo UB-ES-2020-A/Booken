@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from db import db
+from models.accounts import auth
 from models.book import BookModel
 from models.interface import InterfaceModel
 
@@ -19,6 +20,7 @@ class InterfaceListBooks(Resource):
             return {'message': "Interface with ['id': {}] not found".format(id_interface)}, 404
         return {'books': [i.json() for i in interface.books]}, 200
 
+    @auth.login_required(role='stock_manager')
     def post(self, id_interface, id_book):
         interface = InterfaceModel.find_by_id(id_interface)
         if not interface:
@@ -30,6 +32,7 @@ class InterfaceListBooks(Resource):
         interface.save_to_db()
         return {'message': "Book with ['id': {}] has successfully been added".format(id_book)}, 200
 
+    @auth.login_required(role='stock_manager')
     def delete(self, id_interface, id_book):
         interface = InterfaceModel.find_by_id(id_interface)
         if not interface:
@@ -50,6 +53,7 @@ class Interface(Resource):
             return interface.json(), 200
         return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
 
+    @auth.login_required(role='stock_manager')
     def post(self):
         data = self.__parse_request__()
         interface = InterfaceModel(data.get('front_type'), data.get('t2BookMode'), data.get('t1BackgndURL'),
@@ -61,6 +65,7 @@ class Interface(Resource):
         interface.save_to_db()
         return interface.json(), 200
 
+    @auth.login_required(role='stock_manager')
     def put(self, idd):
         data = self.__parse_request__()
         exists = InterfaceModel.find_by_id(idd)
@@ -85,13 +90,13 @@ class Interface(Resource):
         exists.save_to_db()
         return exists.json(), 200
 
+    @auth.login_required(role='stock_manager')
     def delete(self, idd):
         exists = InterfaceModel.find_by_id(idd)
         if not exists:
             return {'message': "Interface with ['id': {}] not found".format(idd)}, 404
         exists.delete_from_db()
         interfaces = sorted([i for i in db.session.query(InterfaceModel).all()], key=lambda x: x.order)
-        # file deepcode ignore C0200: <comment the reason here>
         for i in range(len(interfaces)):
             interfaces[i].order = i + 1
             interfaces[i].save_to_db()
@@ -128,6 +133,7 @@ class Interface(Resource):
 
 class ChangePositionBanner(Resource):
 
+    @auth.login_required(role='stock_manager')
     def post(self, id_1, id_2):
         banner_top = InterfaceModel.find_by_id(id_1)
         banner_down = InterfaceModel.find_by_id(id_2)
