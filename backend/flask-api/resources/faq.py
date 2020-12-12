@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from models.faq import FAQModel
 from models.category_faq import CategoryModel
+from models.accounts import auth
 
 class FAQ(Resource):
 
@@ -10,6 +11,7 @@ class FAQ(Resource):
             return {'faq': faq.json()},200
         return {'message': "Faq with id [{}] Not found".format(idd)}, 404
 
+    @auth.login_required(role='dev_manager')
     def post(self):
         # Create a new faq with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -32,6 +34,7 @@ class FAQ(Resource):
         new_faq.save_to_db()
         return {'message': "OK"}, 200
 
+    @auth.login_required(role='dev_manager')
     def delete(self, idd):
         faq = FAQModel.find_by_id(idd)
         if faq:
@@ -47,6 +50,7 @@ class FAQ(Resource):
             return {'message': "OK"}, 200
         return {'message': "Faq with id [{}] Not found".format(idd)}, 404
 
+    @auth.login_required(role='dev_manager')
     def put(self, idd):
 
         # Create a new faq with the data passed to us.

@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.category_faq import CategoryModel
-
+from models.accounts import auth
 
 class Category_FAQ(Resource):
 
@@ -10,6 +10,7 @@ class Category_FAQ(Resource):
             return {'Category': cat.json()},200
         return {'message': "Category with id [{}] Not found".format(idd)}, 404
 
+    @auth.login_required(role='dev_manager')
     def post(self):
         # Create a new faq with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request

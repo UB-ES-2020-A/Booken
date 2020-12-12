@@ -2,13 +2,14 @@ import smtplib
 
 from flask_restful import Resource, reqparse
 
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 from models.orders import OrdersModel
 from models.contact import ContactModel
 from utils.mail_sender import MailSender
 
 class SendContactResponse(Resource):
 
+    @auth.login_required(role="dev_manager")
     def post(self,):
         parser = reqparse.RequestParser()
 
@@ -41,6 +42,7 @@ class SendContactResponse(Resource):
 
 class SendTicket(Resource):
 
+    @auth.login_required
     def post(self,):
         parser = reqparse.RequestParser()
 

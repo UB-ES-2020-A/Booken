@@ -1,12 +1,17 @@
 # file deepcode ignore C0411: n/a
 # file deepcode ignore C0413: n/a
 
+import base64
 import unittest
 import sys
+
+from models.accounts import AccountModel
 
 sys.path.append('../')
 
 from data import books
+
+#  deepcode ignore C0412: stupid issue
 from models.author import AuthorModel
 from models.book import BookModel
 
@@ -24,15 +29,24 @@ class MailTests(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-        self.app.post('api/account',
+        response = self.app.post('api/account',
                          data=dict(name='test', lastname='test', email='test', password='test'),
                          follow_redirects=True)
+
+        account = AccountModel.query.first()
+        account.type = 2
+
+        account.save_to_db()
 
         response = self.app.post('api/login',
                          data=dict(email='test', password='test'),
                          follow_redirects=True)
 
+        self.my_id = json.loads(response.data)['id']
         self.token = json.loads(response.data)['token']
+
+        self.auth = {'Authorization': 'Basic ' + base64.b64encode(bytes(str(self.my_id) + ":" + self.token,'ascii'))
+            .decode('ascii')}
 
         self.app.post('api/account/1/address',
                          data=dict(
@@ -46,6 +60,7 @@ class MailTests(unittest.TestCase):
                              province="Mi provincia",
                              telf=123456
                          ),
+                         headers=self.auth,
                          follow_redirects=True)
 
         self.app.post('api/account/1/card',
@@ -55,6 +70,7 @@ class MailTests(unittest.TestCase):
                              date="12/2025",
                              payment_method="Visa"
                          ),
+                         headers=self.auth,
                          follow_redirects=True)
 
         self.add_book()
@@ -70,6 +86,7 @@ class MailTests(unittest.TestCase):
                                 card_id=1,
                                 address_id=1
                           ),
+                          headers=self.auth,
                           follow_redirects=True)
 
         self.app.post('/api/article-order/1',
@@ -78,6 +95,7 @@ class MailTests(unittest.TestCase):
                             quant=1,
                             id_book=1
                         ),
+                        headers=self.auth,
                         follow_redirects=True)
 
     def tearDown(self):
@@ -123,7 +141,9 @@ class MailTests(unittest.TestCase):
 
 
     def retrieve(self, data):
-        return self.app.get('/api/data_retriever/' + data, follow_redirects=True)
+        return self.app.get('/api/data_retriever/' + data,
+                            headers=self.auth,
+                            follow_redirects=True)
 
     def add_book(self):
         b = books[0]

@@ -2,11 +2,12 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 
 from models.payment_card import CardModel
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 
 
 class Card(Resource):
 
+    @auth.login_required
     def get(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         card = CardModel.find_by_id(idd)
@@ -19,6 +20,7 @@ class Card(Resource):
             return {'message': "Card with id [{}] Not found".format(idd)}, 404
         return {'message': "Account with id [{}] Not found".format(idd)}, 404
 
+    @auth.login_required
     def post(self, account_id, idd=None):
         parser = reqparse.RequestParser()
 
@@ -44,6 +46,7 @@ class Card(Resource):
         account.save_to_db()
         return {"Message": "Card saved correctly"}, 200
 
+    @auth.login_required
     def delete(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         card = CardModel.find_by_id(idd)
@@ -59,6 +62,7 @@ class Card(Resource):
 
 
 class CardList(Resource):
+    @auth.login_required
     def get(self, account_id):
         account = AccountModel.find_by_id(account_id)
         cards = []

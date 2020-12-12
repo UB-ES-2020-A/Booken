@@ -504,7 +504,8 @@ export default {
   methods: {
     deleteReview(id) {
       var path = api + 'review/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Reseña eliminada',
@@ -579,7 +580,7 @@ export default {
     postReview() {
 
       var path = api + 'review'
-
+      var currentUser = {username: this.id, password: this.token}
       axios.post(path, {
         "user_id": this.id,
         "book_id": this.bookInfo.id,
@@ -587,7 +588,7 @@ export default {
         "valuation": this.addvaluationNumber,
         "comment": this.valuationText,
         "date": this.getTodayDate()
-      })
+      },{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
@@ -693,6 +694,7 @@ export default {
         if(this.bookInfo.author != 0){
           this.nAutor.name = this.bookInfo.author
         }
+        var currentUser = {username: this.id, password: this.token}
         if (this.book_id != 0) {
           path = api + 'book/' + this.book_id
           axios.put(path, {
@@ -716,7 +718,7 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro actualizado correctamente!',
@@ -763,7 +765,7 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 this.$router.push({path: '/book/' + res.data.book.id})
