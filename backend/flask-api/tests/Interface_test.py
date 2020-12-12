@@ -2,7 +2,8 @@
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
-#  deepcode ignore C0411: not an issue
+#  deepcode ignore C04
+#  11: not an issue
 sys.path.append('../')
 from models.accounts import AccountModel
 #  deepcode ignore C0413: stupid issue
