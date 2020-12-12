@@ -68,7 +68,7 @@ class AddressOrderTest(unittest.TestCase):
         "cp": "08431",
         "city": "Mi city",
         "province": "Mi provincia",
-        "telf": 123456
+        "telf": 666666666
     }
 
     def setUp(self):
@@ -120,9 +120,10 @@ class AddressOrderTest(unittest.TestCase):
                                          'ascii')},
                                      follow_redirects=True)
 
-        self.add_address_account(self.address_info)
-        self.add_address_account(self.address_info)
-        self.add_address_account(self.address_info)
+        resp = self.add_address_account(self.address_info)
+        resp = self.add_address_account(self.address_info)
+        resp = self.add_address_account(self.address_info)
+
 
         resp_max_address = self.app.post('api/address-order/1/1',
                                          data=self.address_order_info,
@@ -285,6 +286,14 @@ class AddressOrderTest(unittest.TestCase):
                              follow_redirects=True)
 
     def add_address_account(self, info):
+        acc = AccountModel.find_by_email("a@a.com")
+        acc.type = 2
+        acc.save_to_db()
+        resp_account_admin = self.login('a@a.com', 'sm22')
         return self.app.post('api/account/1/address',
                              data=info,
+                             headers={'Authorization': 'Basic ' + base64.b64encode(
+                                 bytes(str(acc.id) + ":" + json.loads(resp_account_admin.data)['token'],
+                                       'ascii')).decode(
+                                 'ascii')},
                              follow_redirects=True)

@@ -1,9 +1,8 @@
 from flask_restful import Resource, reqparse
 from db import db
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 from models.book import BookModel
 from models.review import ReviewModel
-
 
 class ReviewListUser(Resource):
 
@@ -37,6 +36,7 @@ class Review(Resource):
             return review.json(), 200
         return {'message': "Review with ['id': {}] not found".format(idd)}, 404
 
+    @auth.login_required
     def post(self):
         data = self.__parse_request__()
         user = AccountModel.find_by_id(data.get('user_id'))
@@ -53,6 +53,7 @@ class Review(Resource):
         book.reviews.append(new_review)
         return new_review.json(), 201
 
+    @auth.login_required(role = 'stock_manager')
     def put(self, idd):
         data = self.__parse_request__()
         review = ReviewModel.find_by_id(idd)
@@ -73,6 +74,7 @@ class Review(Resource):
         book.reviews.append(new_review)
         return new_review.json(), 200
 
+    @auth.login_required(role = 'stock_manager')
     def delete(self, idd):
         exists = ReviewModel.find_by_id(idd)
         if not exists:

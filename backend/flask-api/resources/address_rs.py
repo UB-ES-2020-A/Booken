@@ -3,10 +3,11 @@ from flask_restful import Resource, Api, reqparse
 
 from models.address import AddressModel
 from models.accounts import AccountModel
-
+from models.accounts import auth
 
 class Address(Resource):
 
+    @auth.login_required
     def get(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         address = AddressModel.find_by_id(idd)
@@ -18,6 +19,7 @@ class Address(Resource):
             return {'message': "This account doesn't have an address with id [{}] ".format(idd)}, 409
         return {'message': "Address with id [{}] Not found".format(idd)}, 404
 
+    @auth.login_required
     def post(self, account_id, idd=None):
         parser = reqparse.RequestParser()
 
@@ -48,6 +50,7 @@ class Address(Resource):
         account.save_to_db()
         return {"Message": "Address saved correctly"}, 200
 
+    @auth.login_required
     def put(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         address = AddressModel.find_by_id(idd)
@@ -85,6 +88,7 @@ class Address(Resource):
         address.save_to_db()
         return {"Message": "Address saved correctly"}, 200
 
+    @auth.login_required
     def delete(self, account_id, idd):
         account = AccountModel.find_by_id(account_id)
         address = AddressModel.find_by_id(idd)
@@ -98,6 +102,7 @@ class Address(Resource):
 
 
 class AddressList(Resource):
+    @auth.login_required
     def get(self, account_id):
         account = AccountModel.find_by_id(account_id)
         addresses = []

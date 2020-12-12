@@ -3,7 +3,6 @@
 import os
 import unittest
 import sys
-import json
 
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
@@ -14,6 +13,8 @@ from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
+import json
+import base64
 
 class CardModelTests(unittest.TestCase):
 
@@ -64,9 +65,26 @@ class CardResourceGetTests(unittest.TestCase):
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth1 = get_auth(my_id,token)
+
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
                       follow_redirects=True)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='tes2t@asd.com', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth2 = get_auth(my_id,token)
 
     def test_get_existent_card_from_non_existent_account(self):
         card = CardModel(self.card_info['card_owner'], self.card_info['number'], self.card_info['date'],
@@ -74,7 +92,7 @@ class CardResourceGetTests(unittest.TestCase):
         account = AccountModel.query.first()
         account.cards.append(card)
         card.save_to_db()
-        response = self.app.get('/api/account/3/card/1', follow_redirects=True)
+        response = self.app.get('/api/account/3/card/1', headers=self.auth1, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_get_existent_card_from_non_owner_account(self):
@@ -83,16 +101,16 @@ class CardResourceGetTests(unittest.TestCase):
         account = AccountModel.query.first()
         account.cards.append(card)
         card.save_to_db()
-        response = self.app.get('/api/account/2/card/1', follow_redirects=True)
+        response = self.app.get('/api/account/2/card/1', headers=self.auth2, follow_redirects=True)
         self.assertEqual(409, response.status_code)
 
     def test_get_non_existent_card_from_account(self):
-        response = self.app.get('/api/account/1/card/12', follow_redirects=True)
+        response = self.app.get('/api/account/1/card/12', headers=self.auth1, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_get_concrete_card(self):
         self.add_card(self.card_info)
-        response = self.app.get('api/account/1/card/1', follow_redirects=True)
+        response = self.app.get('api/account/1/card/1', headers=self.auth1, follow_redirects=True)
 
         tmp = self.card_info.copy()
         tmp.pop("payment_method")
@@ -104,7 +122,7 @@ class CardResourceGetTests(unittest.TestCase):
     def test_get_cards(self):
         self.add_card(self.card_info)
         self.add_card(self.card_info)
-        response = self.app.get('api/account/1/cards', follow_redirects=True)
+        response = self.app.get('api/account/1/cards', headers=self.auth1, follow_redirects=True)
 
         tmp = self.card_info.copy()
         tmp.pop("payment_method")
@@ -123,6 +141,7 @@ class CardResourceGetTests(unittest.TestCase):
     def add_card(self, info):
         return self.app.post('api/account/1/card',
                              data=info,
+                             headers=self.auth1,
                              follow_redirects=True)
 
 
@@ -144,27 +163,45 @@ class CardResourcePostTests(unittest.TestCase):
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth1 = get_auth(my_id,token)
+
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
                       follow_redirects=True)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='tes2t@asd.com', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth2 = get_auth(my_id,token)
 
     def test_post_card(self):
         response = self.add_card(self.card_info)
         self.assertEqual(response.status_code, 200)
 
     def test_post_account_to_non_existent_account(self):
-        response = self.app.post('api/account/98/card', data=self.card_info, follow_redirects=True)
+        response = self.app.post('api/account/98/card', headers=self.auth1, data=self.card_info, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_post_account_to_max_card_number_account(self):
         card = self.card_info
         for i in range(3):
-            response = self.app.post('api/account/1/card', data=self.card_info, follow_redirects=True)
+            response = self.app.post('api/account/1/card', headers=self.auth1, data=self.card_info, follow_redirects=True)
         self.assertEqual(403, response.status_code)
 
     def add_card(self, info):
         return self.app.post('api/account/1/card',
                              data=info,
+                             headers=self.auth1,
                              follow_redirects=True)
 
 
@@ -186,32 +223,53 @@ class CardResourceDeleteTests(unittest.TestCase):
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="test", password="test"),
                       follow_redirects=True)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='test', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth1 = get_auth(my_id,token)
+
         self.app.post('api/account',
                       data=dict(name="test", lastname="test", email="tes2t@asd.com", password="test"),
                       follow_redirects=True)
 
+        response = self.app.post('api/login',
+                                 data=dict(email='tes2t@asd.com', password='test'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth2 = get_auth(my_id,token)
+
     def test_delete_card(self):
         self.add_card(self.card_info)
-        response = self.app.delete('api/account/1/card/1', follow_redirects=True)
+        response = self.app.delete('api/account/1/card/1', headers=self.auth1, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_delete_non_assigned_card(self):
         self.add_card(self.card_info)
-        response = self.app.delete('api/account/2/card/1', follow_redirects=True)
+        response = self.app.delete('api/account/2/card/1', headers=self.auth1, follow_redirects=True)
         self.assertEqual(409, response.status_code)
 
     def test_delete_non_existent_card(self):
         self.add_card(self.card_info)
-        response = self.app.delete('api/account/2/card/15', follow_redirects=True)
+        response = self.app.delete('api/account/2/card/15', headers=self.auth1, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def test_delete_existent_card_from_non_existent_account(self):
         self.add_card(self.card_info)
-        response = self.app.delete('api/account/251/card/1', follow_redirects=True)
+        response = self.app.delete('api/account/251/card/1', headers=self.auth1, follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def add_card(self, info):
         return self.app.post('api/account/1/card',
                              data=info,
+                             headers=self.auth1,
                              follow_redirects=True)
 
+def get_auth(my_id,token):
+    return {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
+        .decode('ascii')}
