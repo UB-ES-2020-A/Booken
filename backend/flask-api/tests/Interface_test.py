@@ -2,16 +2,17 @@
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
+
 #  deepcode ignore C04
 #  11: not an issue
 sys.path.append('../')
+import json
 from models.accounts import AccountModel
 #  deepcode ignore C0413: stupid issue
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
-import json
 import base64
 
 #  deepcode ignore C0411: not an issue
