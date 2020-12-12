@@ -13,7 +13,7 @@ class OrdersModel(db.Model):
     __tablename__ = 'orders'
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.String(30), db.ForeignKey('accounts.id'), primary_key=False, nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey('accounts.id'), primary_key=False, nullable=False)
     date = db.Column(db.String(30), primary_key=False, unique=False, nullable=False)
     total = db.Column(db.Float, primary_key=False, nullable=False)
     shipping = db.Column(db.Float, primary_key=False, nullable=False)
