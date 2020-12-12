@@ -1,4 +1,6 @@
 #  deepcode ignore C0411: not an issue
+import json
+import base64
 import unittest
 #  deepcode ignore C0411: not an issue
 import sys
@@ -12,8 +14,7 @@ from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
 
-import json
-import base64
+
 
 #  deepcode ignore C0411: not an issue
 
