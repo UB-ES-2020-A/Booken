@@ -85,7 +85,6 @@ export default {
             this.searching = false
           })
           .catch((error) => {
-            this.searching = false
             console.log(error)
           })
     }

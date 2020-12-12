@@ -83,7 +83,15 @@ class AccountModelTests(unittest.TestCase):
     def test_model_find_address_id(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
         self.assertEqual(response.status_code, 200)
-        response = self.add_address(self.address_info)
+
+        response = self.app.post('api/login',
+                                 data=dict(email='tengo@barcos.tech', password='america16'),
+                                 follow_redirects=True)
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        auth = get_auth(my_id,token)
+
+        response = self.add_address(self.address_info,auth)
         self.assertEqual(self.address_info['city'],
                          AccountModel.find_by_email('tengo@barcos.tech').find_address_by_id(1).city)
 
@@ -97,26 +105,14 @@ class AccountModelTests(unittest.TestCase):
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
 
-    def add_address(self, info):
+    def add_address(self, info,auth):
         return self.app.post('api/account/1/address',
                              data=info,
+                             headers=auth,
                              follow_redirects=True)
 
 
 class AccountClassAuxFuncTests(unittest.TestCase):
-
-    address_info = {
-        "id": 1,
-        "label_name": "Mi casa",
-        "name": "test",
-        "surnames": "tests",
-        "street": "La calle de mi casa",
-        "number": 32,
-        "cp": "08431",
-        "city": "Mi city",
-        "province": "Mi provincia",
-        "telf": 123456
-    }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
@@ -168,19 +164,6 @@ class AccountClassAuxFuncTests(unittest.TestCase):
 
 class AccountResourceGetTests(unittest.TestCase):
 
-    address_info = {
-        "id": 1,
-        "label_name": "Mi casa",
-        "name": "test",
-        "surnames": "tests",
-        "street": "La calle de mi casa",
-        "number": 32,
-        "cp": "08431",
-        "city": "Mi city",
-        "province": "Mi provincia",
-        "telf": 123456
-    }
-
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
@@ -198,7 +181,17 @@ class AccountResourceGetTests(unittest.TestCase):
 
     def test_get_accounts(self):
         response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
-        response = self.app.get('api/accounts', follow_redirects=True)
+        acc = AccountModel.query.first()
+        acc.type = 2
+        acc.save_to_db()
+        response = self.app.post('api/login',
+                                 data=dict(email='tengo@barcos.tech', password='america16'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        auth = get_auth(my_id,token)
+        response = self.app.get('api/accounts', headers=auth, follow_redirects=True)
         self.assertEqual(200, response.status_code)
 
     def register(self, name, lname, email, password):
@@ -208,19 +201,6 @@ class AccountResourceGetTests(unittest.TestCase):
 
 
 class LoginResourceTests(unittest.TestCase):
-
-    address_info = {
-        "id": 1,
-        "label_name": "Mi casa",
-        "name": "test",
-        "surnames": "tests",
-        "street": "La calle de mi casa",
-        "number": 32,
-        "cp": "08431",
-        "city": "Mi city",
-        "province": "Mi provincia",
-        "telf": 123456
-    }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
@@ -258,19 +238,6 @@ class LoginResourceTests(unittest.TestCase):
 
 
 class AccountResourcePutTests(unittest.TestCase):
-
-    address_info = {
-        "id": 1,
-        "label_name": "Mi casa",
-        "name": "test",
-        "surnames": "tests",
-        "street": "La calle de mi casa",
-        "number": 32,
-        "cp": "08431",
-        "city": "Mi city",
-        "province": "Mi provincia",
-        "telf": 123456
-    }
 
     def setUp(self):
         self.app = setupApp(True).test_client()
@@ -380,35 +347,38 @@ class AccountResourcePutTests(unittest.TestCase):
 
 class AccountResourceDeleteTests(unittest.TestCase):
 
-    address_info = {
-        "id": 1,
-        "label_name": "Mi casa",
-        "name": "test",
-        "surnames": "tests",
-        "street": "La calle de mi casa",
-        "number": 32,
-        "cp": "08431",
-        "city": "Mi city",
-        "province": "Mi provincia",
-        "telf": 123456
-    }
-
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
 
+        self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
+        response = self.app.post('api/login',
+                                 data=dict(email='tengo@barcos.tech', password='america16'),
+                                 follow_redirects=True)
+
+        my_id = json.loads(response.data)['id']
+        token = json.loads(response.data)['token']
+        self.auth = get_auth(my_id, token)
+
     def test_delete_account_from_db(self):
-        response = self.register('Cristobal', 'Colon', 'tengo@barcos.tech', 'america16')
-        self.assertEqual(response.status_code, 200)
-        response = self.app.delete('api/account/1', follow_redirects=True)
+        response = self.app.delete('api/account/1',
+                                   headers=self.auth,
+                                   follow_redirects=True)
         self.assertEqual(200, response.status_code)
 
     def test_delete_non_existent_account_from_db(self):
-        response = self.app.delete('api/account/1', follow_redirects=True)
+        response = self.app.delete('api/account/2',
+                                   headers=self.auth,
+                                   follow_redirects=True)
         self.assertEqual(404, response.status_code)
 
     def register(self, name, lname, email, password):
         return self.app.post('api/account',
                              data=dict(name=name, lastname=lname, email=email, password=password),
                              follow_redirects=True)
+
+
+def get_auth(my_id,token):
+    return {'Authorization': 'Basic ' + base64.b64encode(bytes(str(my_id) + ":" + token, 'ascii'))
+            .decode('ascii')}

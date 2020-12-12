@@ -131,11 +131,11 @@
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-directions-tab" data-toggle="pill" href="#pills-directions" role="tab"
                aria-controls="pills-directions" aria-selected="false">Direcciones</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>
@@ -1303,7 +1303,7 @@ export default {
   created() {
     this.getOrders()
     if (this.type == 2)
-        this.getOrdersList()
+        this.getOrdersList();
     this.getAddresses()
     this.getCards()
     this.getAccount()
@@ -1313,7 +1313,6 @@ export default {
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
     this.getContacts()
-    this.changeViewingOrders(0)
   },
   mounted() {
     this.getData()
@@ -1555,7 +1554,7 @@ export default {
         }],
         labels: this.toSimpleArrayKeys(this.log_month),
         title: {
-          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth() + 1) + ')',
+          text: 'Accesos por mes (' + this.getMonthString(new Date().getMonth()) + ')',
           align: 'center',
           margin: 10,
           floating: false,
@@ -1597,7 +1596,8 @@ export default {
     },
     getData() {
       var path = api + 'data_retriever/all'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path, {auth: currentUser})
           .then((res) => {
             this.years_data = res.data.all.years_data
             this.total_sales = res.data.all.total_sales
@@ -1646,7 +1646,8 @@ export default {
     },
     getCards() {
       var path = api + 'account/' + this.id + '/cards'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path, {auth: currentUser})
           .then((res) => {
             this.cards = []
             var data = res.data.accounts_cards
@@ -1678,8 +1679,8 @@ export default {
     },
     getAddresses() {
       var path = api + 'account/' + this.id + '/addresses'
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.addresses = res.data.accounts_addresses
             this.addressNumber = this.addresses.length
@@ -1734,7 +1735,6 @@ export default {
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
-      this.changeViewingOrdersList(this.cIndexList)
     },
     cancelOrder(id) {
       var path = api + 'order/' + id
@@ -2164,7 +2164,8 @@ export default {
     },
     cardToDB() {
       const path = api + 'account/' + this.id + '/card'
-      axios.post(path, this.addCardForm)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, this.addCardForm,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
@@ -2193,7 +2194,8 @@ export default {
     },
     deleteCard(card_id) {
       const path = api + 'account/' + this.id + '/card/' + card_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
@@ -2380,8 +2382,8 @@ export default {
     },
     addressToDB(parameters) {
       const path = api + 'account/' + this.id + '/address'
-
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -2410,8 +2412,8 @@ export default {
     },
     addressUpdateToDB(parameters) {
       const path = api + 'account/' + this.id + '/address/' + this.address_edit
-
-      axios.put(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.put(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -2440,7 +2442,8 @@ export default {
     },
     deleteAddress(address_id) {
       const path = api + 'account/' + this.id + '/address/' + address_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',
@@ -2470,7 +2473,8 @@ export default {
     },
     deleteAccount() {
       var path = api + 'account/' + this.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tu cuenta ha sido eliminada! :(',
@@ -2501,7 +2505,8 @@ export default {
     },
     getContacts() {
       var path = api + 'contact_list/'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.contacts = res.data.contacts
           })
@@ -2525,7 +2530,8 @@ export default {
     deleteContact(index){
       this.assignContact(index)
       var path = api + 'contact_info/' + this.contactToAnswer.id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡Consulta eliminada con éxito!',
@@ -2579,7 +2585,8 @@ export default {
     },
     send_response(parameters){
       var path = api + 'send_contact_response'
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡La respuesta fue enviada!',
@@ -2619,7 +2626,8 @@ export default {
       var parameters = {"account_id": this.id, "order_id": order_id}
 
       var path = api + 'send_ticket'
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters, {auth: currentUser})
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           toastr.success('', '¡El ticket fue enviado!',

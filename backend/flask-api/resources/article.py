@@ -7,14 +7,14 @@ from models.accounts import auth, g
 
 
 class Articles(Resource):
-
+    @auth.login_required(role='stock_manager')
     def get(self, idd):
         article = ArticlesModel.find_by_id(idd)
         if article:
             return {"article": article.json()}, 200
         return {'message': "Article with id [{}] Not found".format(idd)}, 404
 
-    # @auth.login_required(role='admin')
+    @auth.login_required
     def post(self):
         # Create a new artist with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -30,7 +30,7 @@ class Articles(Resource):
         new_article.save_to_db()
         return {'message': "OK"}, 201
 
-    # @auth.login_required(role='admin')
+    @auth.login_required(role='stock_manager')
     def delete(self, idd):
         article = ArticlesModel.find_by_id(idd)
         if article:
@@ -40,6 +40,6 @@ class Articles(Resource):
 
 
 class ArticlesList(Resource):
-
+    @auth.login_required(role='stock_manager')
     def get(self):
         return ArticlesModel.get_articles(), 200

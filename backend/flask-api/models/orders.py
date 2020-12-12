@@ -102,7 +102,7 @@ class OrdersModel(db.Model):
 
     @classmethod
     def get_orders(cls):
-        list_orders = sorted([order.json() for order in OrdersModel.query.all()], key=lambda x: x["id"], reverse=True)
+        list_orders = [order.json() for order in OrdersModel.query.all()]
         dicc = {"orders": list_orders}
         return dicc
 
