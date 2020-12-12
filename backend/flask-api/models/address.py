@@ -6,7 +6,7 @@ class AddressModel(db.Model):
     __tablename__ = 'addresses'
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    account_id = db.Column(db.String(30), db.ForeignKey('accounts.id'), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'), nullable=False)
 
     label_name = db.Column(db.String(), nullable=False)
     name = db.Column(db.String(), nullable=False)

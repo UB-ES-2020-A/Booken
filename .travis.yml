@@ -14,10 +14,32 @@ stages:
   if: "(branch = main)"
 - name: code_analysis
   if: "(branch = ca)"
+- name: pdb
+  if: "(branch = pdb)"
 - name: build
   if: "(branch != dev AND branch != main AND branch != ca)"
 jobs:
   include:
+  - stage: pdb
+    name: Production DB migration tests
+    script:
+    - cd frontend/booken
+    - npm install
+    - npm run staging
+    before_deploy:
+    - cd ../../backend/flask-api
+    on:
+      repo: UB-ES-2020-A/Booken
+    branches:
+      only:
+      - pdb
+    deploy:
+      provider: heroku
+      skip_cleanup: true
+      api_key:
+        secure: n9vGyY20ikM3PaFtQTbWyX3zEf95c3awg/kC4aV+evfDQOGo6qJLZXilkXGFRJkSBTdzKc0bh45i/LL2ImccevsxRgl01Uw0k+dO1uXlJc8ZbwRbluEt7Mxo+87fcouUT1xLmGljbIjtvmrPbpDCYjmlU5kiOKf1hJbC09QM6mMeqALg1Nq2aQ59CzuRGh4IfgfSdxh76v+HiVFyufu3yX5ZNgFj/G+zrbNl99k3woS7RkfGrggpEVZz23VMDBC4LJZDvyrjAz3ViXQuxbtjfRIvTj7FIRzsODCyTB5LcUiVLXL4cFKgP82QVmrPcP8dKrcJ/T5aAVBnlCX1EXsulIvsvs7hUNek5022yjNODIipK1EbOVrw0dVSUZT7V01gPoH0qc0Tkmxnx81NycZGPV7k9HyCzs0bEtVYqQIhH/gjyXOpRaaBZNXmUjxEKWn9j+jB7Og6htiI9x5tu0SgrGOB/ALWPSHs/T4IVM79dhb4KDTQoVmpln5zctzVtQ6x4MtTyeYCvUE6FsiYI3CHm3wSLko8DZTj9FNhgfNjMKmAWTHRVwA9zdeCYY8CZXkxbUxrw61dRYCIakxtNMr36Vzn3sbopuhTlzBKZHUVasgcFSGDZeWBJBbxyUpE04/k4VP4sjY9QO0ie8JLmrMGDc4Ta4gzNWhtv9O6bIeQ3qs=
+      app:
+        pdb: booken-dev
   - stage: build_deploy
     name: Dev deployment
     script:
