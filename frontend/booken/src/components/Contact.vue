@@ -12,15 +12,15 @@
 
   <div class="container">
 
-    <h1>Contacto</h1>
+    <h1>Formulario de contacto</h1>
     <form>
       <div class="form-group">
-        <label>Nombre y apellido</label>
-        <input type="text" class="form-control" id="full_name" placeholder="Name Surname">
+        <label for="exampleFormControlInput1">Nombre y apellidos</label>
+        <input type="text" class="form-control" id="full_name" placeholder="Nombre Apellidos">
       </div>
       <div class="form-group">
-        <label>Correo electrónico</label>
-        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+        <label for="exampleFormControlInput2">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" placeholder="hola@quetal.com">
       </div>
       <div class="form-group">
         <label>Teléfono de contacto</label>
@@ -34,14 +34,14 @@
       <div class="form-group">
           <div class="form-check" style="margin-top: 2em">
             <input class="form-check-input" type="checkbox" id="check_box">
-            <label class="form-check-label">
-              He leído y acepto <a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">la política de privacidad</a>
+            <label class="form-check-label" for="gridCheck1">
+              He leído y acepto <a href="https://pdfhost.io/v/ElKYUhMFl_privacidadpdf.pdf">la política de privacidad</a>.
             </label>
           </div>
         </div>
 
       <div class="form-group row justify-content-center align-items-center">
-          <button type="button" class="btn btn-primary" style="max-width: 300px; margin: 30px 0" @click="doContactQuery">Submit</button>
+          <button type="button" class="btn btn-primary" style="max-width: 300px; margin: 30px 0" @click="doContactQuery">Enviar</button>
         </div>
 
     </form>
