@@ -110,6 +110,3 @@ class SearchBookTests(unittest.TestCase):
         return self.app.post('api/login',
                              data=dict(email=email, password=password),
                              follow_redirects=True)
-
-if __name__ == '__main__':
-    unittest.main()
