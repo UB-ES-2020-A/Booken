@@ -16,9 +16,7 @@ from app import setupApp
 from db import db
 
 
-
 class CategoryTest(unittest.TestCase):
-
     category_info = {
         'type': "Test",
     }
@@ -31,7 +29,6 @@ class CategoryTest(unittest.TestCase):
     }
 
     def setUp(self):
-
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
@@ -74,9 +71,6 @@ class CategoryTest(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',

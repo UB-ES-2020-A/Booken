@@ -524,8 +524,8 @@ export default {
           })
     }
     ,
+    // eslint-disable-next-line no-unused-vars
     getRowClassName(rows) {
-      console.log(rows)
       return "row row-cols-1 row-cols-sm-5 justify-content-around" //+ String(rows)
     }
     ,

@@ -6,6 +6,7 @@ import unittest
 #  deepcode ignore C0411: not an issue
 import sys
 import json
+
 #  deepcode ignore C0411: not an issue
 sys.path.append('../')
 from models.accounts import AccountModel
@@ -13,11 +14,12 @@ from models.accounts import AccountModel
 from app import setupApp
 #  deepcode ignore C0413: stupid issue
 from db import db
+
+
 #  deepcode ignore C0413: stupid issue
 
 
 class ArticleTest(unittest.TestCase):
-
     article_info = {
         'price': 1,
         'categoria': "HUMANIDADES",
@@ -59,7 +61,6 @@ class ArticleTest(unittest.TestCase):
         db.create_all()
         self.postBook(self.book_info)
 
-
     def postBook(self, info):
         self.register(self.account_admin_info)
         acc = AccountModel.find_by_email("a@a.com")
@@ -80,7 +81,6 @@ class ArticleTest(unittest.TestCase):
     def test_create_article(self):
         response = self.add_article(self.article_info)
         self.assertEqual(response.status_code, 201)
-
 
     def test_get_article(self):
         self.register(self.account_admin_info)
@@ -166,9 +166,6 @@ class ArticleTest(unittest.TestCase):
                                  'ascii')},
                              follow_redirects=True)
 
-    def create_account(self, info):
-        return self.register(info)
-
     def register(self, info):
         return self.app.post('api/account',
                              data=info,
@@ -178,4 +175,3 @@ class ArticleTest(unittest.TestCase):
         return self.app.post('api/login',
                              data=dict(email=email, password=password),
                              follow_redirects=True)
-

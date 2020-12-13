@@ -185,9 +185,6 @@ class BookTests(unittest.TestCase):
                                  'ascii')},
                              follow_redirects=True)
 
-    def create_account(self, info):
-        return self.register(info)
-
     def register(self, info):
         return self.app.post('api/account',
                              data=info,

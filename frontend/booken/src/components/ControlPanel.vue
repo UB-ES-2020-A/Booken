@@ -1304,6 +1304,8 @@ export default {
     this.getOrders()
     if (this.type == 2)
         this.getOrdersList();
+    if (this.type == 1)
+      this.getContacts()
     this.getAddresses()
     this.getCards()
     this.getAccount()
@@ -1312,7 +1314,6 @@ export default {
     //this.stateOrdersInProgress()
     //this.stateOrdersReceived()
     //this.stateOrdersSend()
-    this.getContacts()
   },
   mounted() {
     this.getData()
@@ -1735,6 +1736,7 @@ export default {
       for (i = 0; i < this.viewOrdersList.length; i++) {
         this.sortState[this.viewOrdersList[i].id] = this.viewOrdersList[i].state
       }
+      this.changeViewingOrdersList(this.cIndexList)
     },
     cancelOrder(id) {
       var path = api + 'order/' + id

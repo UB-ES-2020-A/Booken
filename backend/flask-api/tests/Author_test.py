@@ -7,6 +7,7 @@ import unittest
 import json
 #  deepcode ignore C0411: not an issue
 import sys
+
 parent_path = os.path.dirname(os.path.abspath(__file__))[:-6]
 sys.path.insert(1, parent_path)
 #  deepcode ignore C0411: not an issue
@@ -20,11 +21,12 @@ from app import setupApp
 from db import db
 #  deepcode ignore C0411: not an issue
 from datetime import date
+
+
 #  deepcode ignore C0413: stupid issue
 
 
 class AuthorModelTest(unittest.TestCase):
-
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -42,7 +44,6 @@ class AuthorModelTest(unittest.TestCase):
 
 
 class AuthorResourceGetTest(unittest.TestCase):
-
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -98,9 +99,6 @@ class AuthorResourceGetTest(unittest.TestCase):
                                  'ascii')},
                              follow_redirects=True)
 
-    def create_account(self, info):
-        return self.register(info)
-
     def register(self, info):
         return self.app.post('api/account',
                              data=info,
@@ -112,9 +110,7 @@ class AuthorResourceGetTest(unittest.TestCase):
                              follow_redirects=True)
 
 
-
 class AuthorResourcePostTest(unittest.TestCase):
-
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -151,9 +147,6 @@ class AuthorResourcePostTest(unittest.TestCase):
                                  'ascii')},
                              follow_redirects=True)
 
-    def create_account(self, info):
-        return self.register(info)
-
     def register(self, info):
         return self.app.post('api/account',
                              data=info,
@@ -166,7 +159,6 @@ class AuthorResourcePostTest(unittest.TestCase):
 
 
 class AuthorResourcePutTest(unittest.TestCase):
-
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -231,9 +223,6 @@ class AuthorResourcePutTest(unittest.TestCase):
                                  'ascii')},
                              follow_redirects=True)
 
-    def create_account(self, info):
-        return self.register(info)
-
     def register(self, info):
         return self.app.post('api/account',
                              data=info,
@@ -246,7 +235,6 @@ class AuthorResourcePutTest(unittest.TestCase):
 
 
 class AuthorResourceDeleteTest(unittest.TestCase):
-
     author_info = {
         'name': "Test",
         'birth_date': "29/11/2020",
@@ -298,9 +286,6 @@ class AuthorResourceDeleteTest(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
