@@ -73,7 +73,7 @@ class MailSender():
 
         self.parser = BeautifulSoup(html, 'lxml')
         self._replace_content(self, "UserName", data['full_name'] + ",")
-        self._replace_content(self, "footeryear", str(datetime.year))
+        self._replace_content(self, "footeryear", str(datetime.now().year))
         self._replace_content(self, "AdminResponse", data['response'])
         self._replace_content(self, "UserQuery", data['contact_query'])
 
@@ -84,7 +84,7 @@ class MailSender():
 
         self.parser = BeautifulSoup(html, 'lxml')
         self._replace_content(self, "UserName", data['full_name'] + ",")
-        self._replace_content(self, "footeryear", str(datetime.year))
+        self._replace_content(self, "footeryear", str(datetime.now().year))
 
         html.close()
 

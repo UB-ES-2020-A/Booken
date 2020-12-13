@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 from db import db
 from models.author import AuthorModel
 from models.book import BookModel
-
+from models.accounts import auth
 
 class BookList(Resource):
 
@@ -29,6 +29,7 @@ class Book(Resource):
             return book.json(), 200
         return {'message': "Book with ['id': {}] not found".format(idd)}, 404
 
+    @auth.login_required(role='stock_manager')
     def post(self):
         data = self.__parse_request__()
         exists = BookModel.find_by_name(data.get('name'))
@@ -51,6 +52,7 @@ class Book(Resource):
         new_book.save_to_db()
         return new_book.json(), 200
 
+    @auth.login_required(role='stock_manager')
     def delete(self, idd):
         book = BookModel.find_by_id(idd)
         if not book:
@@ -59,12 +61,15 @@ class Book(Resource):
         return {'message': "Book with ['id': {}, 'name': {}] has successfully been"
                            " deleted".format(idd, book.name)}, 200
 
+    @auth.login_required(role='stock_manager')
     def put(self, idd):
         data = self.__parse_request__()
         exists = BookModel.find_by_id(idd)
         if not exists:
             return {'message': "A book with ['id': {}] not found".format(idd)}, 404
         authors = []
+        exists.author = []
+        exists.save_to_db()
         a = AuthorModel.find_by_name(data.get('author_name'))
         if a:
             authors.append(a)
@@ -79,6 +84,7 @@ class Book(Resource):
                              data.get('description'), data.get('num_pages'), data.get('cover_type'),
                              data.get('num_sales'), data.get('total_available'), data.get('cover_image_url'),
                              data.get('back_cover_image_url'))
+        new_book.id = idd
         new_book.save_to_db()
         return new_book.json(), 200
 

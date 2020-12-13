@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 import datetime
 from models.author import AuthorModel
-
+from models.accounts import auth
 
 class Author(Resource):
 
@@ -12,6 +12,7 @@ class Author(Resource):
             return {'author': author.json()}
         return {'message': "Author with id [{}] Not found".format(idd)}, 409
 
+    @auth.login_required(role='stock_manager')
     def post(self):
         # Create a new author with the data passed to us.
         parser = reqparse.RequestParser()  # create parameters parser from request
@@ -32,6 +33,7 @@ class Author(Resource):
         new_author.save_to_db()
         return {'message': "OK"}, 201
 
+    @auth.login_required(role='stock_manager')
     def delete(self, idd):
         author = AuthorModel.find_by_id(idd)
         if author:
@@ -39,6 +41,7 @@ class Author(Resource):
             return {'message': "OK"}, 201
         return {'message': "Artist with id [{}] Not found".format(idd)}, 409
 
+    @auth.login_required(role='stock_manager')
     def put(self, idd):
 
         # Create a new author with the data passed to us.

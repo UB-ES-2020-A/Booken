@@ -13,7 +13,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
-      <div class="card" style="margin-top: 1em">
+      <div class="card" style="margin-top: 1em; margin-bottom: 0.5em">
         <div class="card-body" style="text-align: left">
           <!-- Book title and author -->
           <div class="row row-cols-1 row-cols-md-2">
@@ -155,7 +155,7 @@
                       <td v-if="bookInfo.cover_type == 0 && !edit">Tapa dura</td>
                       <td v-if="bookInfo.cover_type == 1 && !edit">Tapa blanda</td>
                       <td v-if="edit">
-                        <select class="form-control">
+                        <select class="form-control" v-model="bookInfo.cover_type">
                           <option :selected="bookInfo.cover_type == -1">Seleccione formato</option>
                           <option :selected="bookInfo.cover_type == 0" value=0>Tapa dura</option>
                           <option :selected="bookInfo.cover_type == 1" value=1>Tapa blanda</option>
@@ -163,12 +163,16 @@
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">ISBN</th>
-                      <td v-if="!edit">{{ bookInfo.isbn }}</td>
-                      <td v-if="edit"><input class="form-control" v-model="bookInfo.isbn" type="number" maxlength="13">
-                      </td>
+                      <th scope="row">Idioma</th>
+                      <td v-if="!edit">{{ bookInfo.language }}</td>
+                      <td v-if="edit"><input class="form-control" v-model="bookInfo.language" type="text"></td>
                     </tr>
-
+                    <tr>
+                    <th scope="row">ISBN</th>
+                    <td v-if="!edit">{{ bookInfo.isbn }}</td>
+                    <td v-if="edit"><input class="form-control" v-model="bookInfo.isbn" type="number" maxlength="13">
+                    </td>
+                    </tr>
                     <tr v-if="edit">
                       <th scope="row">Descripción corta</th>
                       <td><textarea class="form-control" rows="3" v-model="bookInfo.desc"></textarea></td>
@@ -216,10 +220,10 @@
                    src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
             </div>
             <div v-if="this.loading == true" style="text-align: center">
-                <h3>Cargando</h3>
-                <div class="spinner-border text-info" role="status" style="width: 5em; height: 5em; margin-top: 0.5em">
-                </div>
+              <h3>Cargando</h3>
+              <div class="spinner-border text-info" role="status" style="width: 5em; height: 5em; margin-top: 0.5em">
               </div>
+            </div>
           </div>
         </div>
       </div>
@@ -383,7 +387,7 @@
           <a class="navbartextbt">Ver menos</a>
         </button>
       </div>
-      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
+      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem" v-if="this.bookInfo.id != 0">
         <div class="card-body" v-if="this.loading == false">
           <h2 class="card-title">Te recomendamos</h2>
           <div class="row row-cols-1 row-cols-md-4">
@@ -433,6 +437,7 @@ export default {
       if (this.admin) {
         this.book_found = 1
         this.edit = 1
+        this.loading = false
       }
     } else {
       this.initBookInfo()
@@ -499,7 +504,8 @@ export default {
   methods: {
     deleteReview(id) {
       var path = api + 'review/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Reseña eliminada',
@@ -574,7 +580,7 @@ export default {
     postReview() {
 
       var path = api + 'review'
-
+      var currentUser = {username: this.id, password: this.token}
       axios.post(path, {
         "user_id": this.id,
         "book_id": this.bookInfo.id,
@@ -582,7 +588,7 @@ export default {
         "valuation": this.addvaluationNumber,
         "comment": this.valuationText,
         "date": this.getTodayDate()
-      })
+      },{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
@@ -685,6 +691,10 @@ export default {
         if (this.bookInfo.cover_image_url == '') {
           this.bookInfo.cover_image_url = 'https://i.ibb.co/jkbth7h/Portada-no-disponible.png'
         }
+        if(this.bookInfo.author != 0){
+          this.nAutor.name = this.bookInfo.author
+        }
+        var currentUser = {username: this.id, password: this.token}
         if (this.book_id != 0) {
           path = api + 'book/' + this.book_id
           axios.put(path, {
@@ -708,7 +718,7 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro actualizado correctamente!',
@@ -719,6 +729,7 @@ export default {
                       positionClass: 'toast-bottom-right',
                       preventDuplicates: true
                     })
+                this.initBookInfo()
               })
               .catch((error) => {
                 console.log(error)
@@ -754,9 +765,10 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
+                this.$router.push({path: '/book/' + res.data.book.id})
                 toastr.success('', '¡Libro añadido correctamente!',
                     {
                       timeOut: 2500,
@@ -914,6 +926,7 @@ export default {
             this.bookInfo.id = res.data.book.id
             this.bookInfo.name = res.data.book.name
             this.bookInfo.author = res.data.book.author[0]
+            this.nAutor.name = res.data.book.author[0]
             this.bookInfo.genre = res.data.book.genre
             this.bookInfo.year = res.data.book.year
             this.bookInfo.editorial = res.data.book.editorial
