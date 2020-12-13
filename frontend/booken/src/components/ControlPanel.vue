@@ -1316,7 +1316,8 @@ export default {
     //this.stateOrdersSend()
   },
   mounted() {
-    this.getData()
+    if (this.type == 2)
+      this.getData()
   },
   methods: {
     round2Dec(trnd) {
