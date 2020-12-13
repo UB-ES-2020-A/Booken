@@ -342,7 +342,7 @@ export default {
     move(id1, id2) {
       var currentUser = {username: this.id, password: this.token}
       var path = api + 'changeposition/' + id1 + '/' + id2
-      axios.post(path, {auth: currentUser})
+      axios.post(path, {}, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             this.getBannersFromDB()
