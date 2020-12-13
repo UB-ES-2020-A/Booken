@@ -74,9 +74,6 @@ class AddressModelTests(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-    
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -109,7 +106,7 @@ class AddressResourceGetTests(unittest.TestCase):
         "email": "a@a.com",
         "password": 'sm22'
     }
-    
+
     def setUp(self):
         self.app = setupApp(True).test_client()
         db.drop_all()
@@ -184,9 +181,6 @@ class AddressResourceGetTests(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-    
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -200,7 +194,6 @@ class AddressResourceGetTests(unittest.TestCase):
 
 
 class AddressResourcePostTests(unittest.TestCase):
-
     address_info = {
         "id": 1,
         "label_name": "Mi casa",
@@ -266,9 +259,6 @@ class AddressResourcePostTests(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-    
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -282,7 +272,6 @@ class AddressResourcePostTests(unittest.TestCase):
 
 
 class AddressResourcePutTests(unittest.TestCase):
-
     address_info = {
         "id": 1,
         "label_name": "Mi casa",
@@ -379,9 +368,6 @@ class AddressResourcePutTests(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-    
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -395,7 +381,6 @@ class AddressResourcePutTests(unittest.TestCase):
 
 
 class AddressResourceDeleteTests(unittest.TestCase):
-
     address_info = {
         "id": 1,
         "label_name": "Mi casa",
@@ -469,9 +454,6 @@ class AddressResourceDeleteTests(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-    
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
@@ -482,4 +464,3 @@ class AddressResourceDeleteTests(unittest.TestCase):
         return self.app.post('api/login',
                              data=dict(email=email, password=password),
                              follow_redirects=True)
-

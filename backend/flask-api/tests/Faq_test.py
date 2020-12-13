@@ -13,9 +13,7 @@ from app import setupApp
 from db import db
 
 
-
 class FaqTest(unittest.TestCase):
-
     faq_info = {
         'category': "Test",
         'question': "test",
@@ -34,7 +32,6 @@ class FaqTest(unittest.TestCase):
     }
 
     def setUp(self):
-
         self.app = setupApp(True).test_client()
         db.drop_all()
         db.create_all()
@@ -51,7 +48,6 @@ class FaqTest(unittest.TestCase):
     def test_create_faq(self):
         response = self.add_faq(self.faq_info)
         self.assertEqual(response.status_code, 200)
-
 
     def test_get_faq(self):
         self.add_faq(self.faq_info)
@@ -123,7 +119,6 @@ class FaqTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(resp.status_code, 404)
 
-
     def add_faq(self, info):
         return self.app.post('api/faq',
                              data=info,
@@ -141,9 +136,6 @@ class FaqTest(unittest.TestCase):
                                        'ascii')).decode(
                                  'ascii')},
                              follow_redirects=True)
-
-    def create_account(self, info):
-        return self.register(info)
 
     def register(self, info):
         return self.app.post('api/account',
