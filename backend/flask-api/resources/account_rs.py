@@ -45,13 +45,13 @@ class Account(Resource):
         parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
         data = parser.parse_args()
-        if AccountModel.find_by_email(data['email']):
+        if AccountModel.find_by_email(data['email']) and account.email != data['email']:
             return {"message": "Account already registered for that email address"}, 409
 
         account.name, account.lastname, account.email = data['name'], data['lastname'], data['email']
 
         account.save_to_db()
-        return {"message": "Account saved correctly"}, 200
+        return {"token": account.generate_auth_token().decode('ascii')}, 200
 
     # Delete: Deletes an account from the database
     @auth.login_required

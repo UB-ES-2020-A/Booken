@@ -1824,7 +1824,12 @@ export default {
 
       axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email}, {auth: currentUser})
           .then((res) => {
-            path = res
+            bus.emit('has-logged-in', {
+              'logged': this.logged,
+              'token': String(res.data.token),
+              'type': parseInt(this.type),
+              'id': this.id
+            })
             toastr.success('', 'Datos de usuario actualizados.',
                 {
                   timeOut: 2500,
@@ -2289,8 +2294,8 @@ export default {
               positionClass: 'toast-bottom-right',
               preventDuplicates: true
             })
-      } else if (this.newAddressPhone.length != 9) {
-        toastr.info('', 'El numero de telefono debe contener 9 digitos.',
+      } else if (String(this.newAddressPhone).length != 9) {
+        toastr.info('', 'El numero de teléfono debe contener 9 digitos.',
             {
               timeOut: 2500,
               progressBar: true,
