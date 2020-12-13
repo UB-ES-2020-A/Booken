@@ -9,7 +9,7 @@
           <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                   data-toggle="modal" data-target="#addFAQ" v-if="type == 1">
             <i class="fas fa-edit" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/>
-            <a class="navbartextbt">Nueva FAQ</a>
+            <a class="navbartextbt">Nueva entrada</a>
             <span aria-hidden="true"></span>
           </button>
 
@@ -20,7 +20,7 @@
                  style="min-height: calc(100vh - 60px); display: flex;flex-direction: column;justify-content: center;overflow: auto;">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="modalFAQLabel">Añadir FAQ</h5>
+                  <h5 class="modal-title" id="modalFAQLabel">Añadir entrada</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -93,13 +93,14 @@
                       <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
                               data-toggle="collapse" :data-target="'#'+this.suppressSpace(consult.question)"
                               aria-expanded="true">
-                        ¿{{ consult.question }}?
+                        {{ consult.question }}
                       </button>
 
-                      <button type="submit" class="close" aria-label="Close" style="font-size:2em; color:red;"
+                      <button type="submit" class="close" aria-label="Close"
+                              style="font-size:2em; color:red; margin-left: 0.5em"
                               data-toggle="modal" data-target="#deleteFAQ" v-if="type===1"
                               @click="this.FAQ_to_delete = consult.id">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
                       </button>
                     </div>
 
@@ -109,7 +110,29 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div v-if="category === 'Sobre la página web'">
 
+                  <div style="display:flex;">
+                    <button class="card-header text-decoration-none btn btn-link btn-block text-left" type="button"
+                            data-toggle="collapse" :data-target="'#'+'contributors'"
+                            aria-expanded="true">
+                      Autores del proyecto
+                    </button>
+                  </div>
+                  <div id="contributors" class="collapse">
+                    <div class="card-body">
+                      Si te ha gustado nuestro proyecto, puedes seguirnos en GitHub y conocer algunos de nuestros otros
+                      proyectos:&nbsp;
+                      <li style="padding-left: 1em">Qijun <i class="fab fa-github"></i> <a
+                          href="https://github.com/qijunJin">qijunJin</a></li>
+                      <li style="padding-left: 1em">Abdel <i class="fab fa-github"></i> <a
+                          href="https://github.com/abdelkarimAzzouguagh">abdelkarimAzzouguagh</a></li>
+                      <li style="padding-left: 1em">Quim <i class="fab fa-github"></i> <a href="https://github.com/joaquimYuste">joaquimYuste</a></li>
+                      <li style="padding-left: 1em">David <i class="fab fa-github"></i> <a href="https://github.com/davidFernandezUB">davidFernandezUB</a></li>
+                      <li style="padding-left: 1em">Rodrigo <i class="fab fa-github"></i> <a href="https://github.com/leroderic">leRoderic</a></li>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -139,17 +162,15 @@
           </div>
         </div>
       </div>
-      <div class="jumbotron rounded "
+      <div class="jumbotron rounded"
            style="background-color: whitesmoke; margin-top:1em; margin-bottom: 2em; text-align: left !important;">
-        <div class="container ">
-          <h1 class="display-5" style="font-weight: bold">¿Sigues con la duda?</h1>
-          <hr>
-          <br>
-          <p class="lead">No dudes en
-            <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
-            , ¡y te ayudaremos!
-          </p>
-        </div>
+        <h1 class="display-5" style="font-weight: bold">¿Sigues con alguna duda?</h1>
+        <hr>
+        <br>
+        <p class="lead">No dudes en
+          <router-link to="/contact" style="font-weight: bold">contactarnos</router-link>
+          , ¡y te ayudaremos!
+        </p>
       </div>
     </div>
   </div>
@@ -159,7 +180,6 @@
 import {api} from "../main";
 import axios from "axios";
 import * as toastr from "@/assets/toastr";
-
 export default {
   name: "FAQ",
   props: {
@@ -169,7 +189,7 @@ export default {
     type: Number
   },
   created() {
-    scrollTo(0,0)
+    scrollTo(0, 0)
     this.getConsults()
     //this.getCategories()
   },
@@ -179,7 +199,6 @@ export default {
       FAQ_to_delete: 0,
       consults: [],
       consultsCat: new Set(), // List of categories
-
       //New FAQ
       newCategory: '',
       newQuestion: '',
@@ -189,14 +208,14 @@ export default {
   ,
   methods: {
     suppressSpace(word) {
-      return word.replace(/ /g, '')
+      var ret = word.replace(/ /g, '')
+      return ret.replace(/[^\w\s]/g, '');
     },
     getConsults() {
       var path = api + 'faqs'
       axios.get(path)
           .then((res) => {
             this.consults = res.data.FAQ
-            for (var i in this.consults) console.log(this.consults[i])
             this.getCategories()
           })
           .catch((error) => {
@@ -206,22 +225,17 @@ export default {
     getCategories() {
       this.consultsCat.clear()
       if (this.consults.length === 0) return
-
       for (let i in this.consults) {
         let cat = this.consults[i].category[0].type
         this.consultsCat.add(cat)
       }
     },
-
-
     deleteFAQ_DB() {
       var path = api + 'faq/' + this.FAQ_to_delete
-      var currentUser = {username: this.id, password: this.token}
-      axios.delete(path,{auth: currentUser})
+      axios.delete(path)
           .then((res) => {
             console.log(res)
             this.getConsults()
-
             toastr.success('', '¡Las FAQ se han actualizado con éxito!',
                 {
                   timeOut: 2500,
@@ -233,7 +247,6 @@ export default {
           })
           .catch((error) => {
             console.log(error)
-
             toastr.error('', 'Algo no salió como se esperaba.',
                 {
                   timeOut: 2500,
@@ -255,25 +268,16 @@ export default {
               preventDuplicates: true
             })
       } else {
-        if (this.newQuestion[this.newQuestion.length - 1] == '?') {
-          this.newQuestion = this.newQuestion.slice(0, -1)
-        }
-        if (this.newQuestion[0] == '¿') {
-          this.newQuestion = this.newQuestion.slice(1, this.newQuestion.length)
-        }
         var tmp = {
           "category": this.newCategory,
           "question": this.newQuestion,
           "answer": this.newAnswer
         }
-
         var path = api + 'faq'
-        var currentUser = {username: this.id, password: this.token}
-        axios.post(path, tmp,{auth: currentUser})
+        axios.post(path, tmp)
             .then((res) => {
               console.log(res)
               this.getConsults()
-
               toastr.success('', '¡FAQ registrada con éxito!',
                   {
                     timeOut: 2500,
@@ -294,7 +298,6 @@ export default {
                     preventDuplicates: true
                   })
             })
-
         this.newCategory = ''
         this.newQuestion = ''
         this.newAnswer = ''
