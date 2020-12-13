@@ -31,7 +31,7 @@
               <div class="card h-100 text-white bg-info" style="text-align: left"
                    @click="changeSend(1)"
                    v-if="selected!=1">
-                <div class="card-header"><b>Envío estándar - 5€</b></div>
+                <div class="card-header"><b>Envío Estándar - 5€</b></div>
                 <div class="card-body">
                   <h5 class="card-title">5 a 7 días laborables</h5>
                   <p class="card-text">Recibirás tu pedido el <b>{{ this.getDatePlus(5) }}</b>, probablemente cuando no
@@ -43,7 +43,7 @@
               <div class="card h-100 text-white bg-info"
                    style="text-align: left; border-color: black; border-width: 2px"
                    v-if="selected==1">
-                <div class="card-header"><b>Envío estándar - 5€</b></div>
+                <div class="card-header"><b>Envío Estándar - 5€</b></div>
                 <div class="card-body">
                   <h5 class="card-title">5 a 7 días laborables</h5>
                   <p class="card-text">Recibirás tu pedido el <b>{{ this.getDatePlus(5) }}</b>, probablemente cuando no
@@ -56,7 +56,7 @@
             <div class="col-12 col-md-4 mb-2">
               <div class="card h-100 text-white bg-warning" style=" text-align: left"
                    @click="changeSend(2)" v-if="selected!=2">
-                <div class="card-header"><b>Envío estándar Plus - 7€</b></div>
+                <div class="card-header"><b>Envío Estándar Plus - 7€</b></div>
                 <div class="card-body">
                   <h5 class="card-title">2 a 3 días laborables</h5>
                   <p class="card-text">Recibirás tu pedido el <b>{{ this.getDatePlus(2) }}</b>, más rápido y si no estás
@@ -67,7 +67,7 @@
               <div class="card h-100 text-white bg-warning"
                    style=" text-align: left; border-color: black; border-width: 2px"
                    v-if="selected==2">
-                <div class="card-header"><b>Envío estándar Plus - 7€</b></div>
+                <div class="card-header"><b>Envío Estándar Plus - 7€</b></div>
                 <div class="card-body">
                   <h5 class="card-title">2 a 3 días laborables</h5>
                   <p class="card-text">Recibirás tu pedido el <b>{{ this.getDatePlus(2) }}</b>, más rápido y si no estás
@@ -171,11 +171,11 @@
                       <div class="modal-body">
                         <form>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressLabel" class="col-form-label">Identificador</label>
+                            <label class="col-form-label">Identificador</label>
                             <input type="test" class="form-control" v-model="newAddressLabel">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressName" class="col-form-label">Nombre y apellidos</label>
+                            <label class="col-form-label">Nombre y apellidos</label>
                             <div style="display:flex;">
                               <input type="text" class="form-control"
                                      v-model="newAddressName" placeHolder="Nombre">
@@ -184,7 +184,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressRoad" class="col-form-label">Dirección</label>
+                            <label class="col-form-label">Dirección</label>
                             <div style="display:flex">
                               <input type="text" class="form-control" style="width:80%;"
                                      v-model="newAddressRoad" placeHolder="Calle">
@@ -193,11 +193,11 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressCode" class="col-form-label">Código postal</label>
+                            <label class="col-form-label">Código postal</label>
                             <input type="number" class="form-control" v-model="newAddressCode">
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressProvince" class="col-form-label">Residencia</label>
+                            <label class="col-form-label">Residencia</label>
                             <div style="display:flex">
                               <input type="text" class="form-control"
                                      v-model="newAddressCity" placeHolder="Ciudad">
@@ -206,7 +206,7 @@
                             </div>
                           </div>
                           <div class="form-group" style="text-align: left">
-                            <label for="addressPhone" class="col-form-label">Telefono</label>
+                            <label class="col-form-label">Telefono</label>
                             <input type="number" class="form-control" v-model="newAddressPhone">
                           </div>
                         </form>
@@ -232,14 +232,18 @@
             <div class="col-12 col-md-6 mb-2" v-for="(item, index) in this.cards" :key="item.id">
               <div class="card" style=" text-align: left" @click="changeCard(index)" v-if="selectedCard!=index">
                 <div class="card-header">
-                      <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
+                      <span v-if="item.vendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'VISA'"><i class="fab fa-cc-visa"
-                                                        style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'DISCOVER'"><i class="fab fa-cc-discover"
-                                                            style="font-size: 1.8em"></i></span><br>
-                </div>
+                      <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
+                                                                                              style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'Discover'"><i class="fab fa-cc-discover"
+                                                                style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'AMEX'"><i class="fab fa-cc-amex"
+                                                            style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'Diners'"><i class="fab fa-cc-diners-club"
+                                                              style="font-size: 1.8em"></i></span><br>
+                    </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
                     <b>Titular:</b> {{ item.holder }}<br>
@@ -255,14 +259,18 @@
               <div class="card" style=" text-align: left;  border-color: black; border-width: 2px"
                    v-if="selectedCard==index">
                 <div class="card-header">
-                      <span v-if="item.vendor == 'MASTERCARD'"><i class="fab fa-cc-mastercard"
+                      <span v-if="item.vendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                   style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'VISA'"><i class="fab fa-cc-visa"
-                                                        style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
-                  <span v-if="item.vendor == 'DISCOVER'"><i class="fab fa-cc-discover"
-                                                            style="font-size: 1.8em"></i></span><br>
-                </div>
+                      <span v-if="item.vendor == 'Visa' || item.vendor == 'Visa electron'"><i class="fab fa-cc-visa"
+                                                                                              style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'JCB'"><i class="fab fa-cc-jcb" style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'Discover'"><i class="fab fa-cc-discover"
+                                                                style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'AMEX'"><i class="fab fa-cc-amex"
+                                                            style="font-size: 1.8em"></i></span>
+                      <span v-if="item.vendor == 'Diners'"><i class="fab fa-cc-diners-club"
+                                                              style="font-size: 1.8em"></i></span><br>
+                    </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
                     <b>Titular:</b> {{ item.holder }}<br>
@@ -310,7 +318,7 @@
                             <input type="text" class="form-control" id="paymentEndDate" placeholder="mm/yyyy">
                           </div>
                           <div class="form-group" style="text-align: center; font-size: 3em">
-                            <span v-if="ccvendor == 'Mastercard'"><i class="fab fa-cc-mastercard"
+                            <span v-if="ccvendor == 'MasterCard'"><i class="fab fa-cc-mastercard"
                                                                      style="font-size: 1.8em"></i></span>
                             <span v-if="ccvendor == 'Visa' || ccvendor == 'Visa electron'"><i class="fab fa-cc-visa"
                                                                                               style="font-size: 1.8em"></i></span>
@@ -560,7 +568,7 @@ export default {
       // Mastercard
       re = new RegExp("^5[1-5]");
       if (number.match(re) != null)
-        return "Mastercard";
+        return "MasterCard";
 
       // AMEX
       re = new RegExp("^3[47]");
@@ -635,21 +643,19 @@ export default {
       this.dateAprox = this.getDatePlus(this.days[this.selected])
       const path = api + 'order/' + this.id
       const parameters = {
-        date: this.dateAprox,
+        date: this.getDate(),
         total: this.total,
         shipping: this.prices[this.selected],
         taxes: this.taxes,
         state: 0,
-        send_type: this.send,
-        card_id: this.selectedCard
+        send_type: this.selected,
+        card_id: this.cards[this.selectedCard].id,
+        address_id: this.addresses[this.selectedAdd].id
       }
-      console.log(path)
-      console.log(parameters)
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters,{auth: currentUser})
           .then((res) => {
-            console.log(res)
             var order_id = res.data
-            console.log(order_id)
             this.finalizePurchase(order_id)
           })
           .catch((error) => {
@@ -660,10 +666,8 @@ export default {
           })
     },
     finalizePurchase(order_id) {
-      console.log(this.cart)
       for (let i = 0; i < this.cart.length; i += 1) {
         var item = this.cart[i]
-        console.log(item)
         var price = item.price * item.quant
         const path = api + 'article-order/' + order_id
         const parameters = {
@@ -671,10 +675,9 @@ export default {
           id_book: item.id,
           quant: item.quant
         }
-        axios.post(path, parameters)
+        var currentUser = {username: this.id, password: this.token}
+        axios.post(path, parameters,{auth: currentUser})
             .then(() => {
-              console.log('Order done')
-              console.log('Article added')
               bus.emit('empty_cart')
             })
             .catch((error) => {
@@ -683,7 +686,6 @@ export default {
               const path_del = api + 'order/' + order_id
               axios.delete(path_del)
                   .then(() => {
-                    console.log('Bad Order deleted')
                     return
                   })
                   .catch((error) => {
@@ -716,7 +718,8 @@ export default {
     },
     cardToDB() {
       const path = api + 'account/' + this.id + '/card'
-      axios.post(path, this.addCardForm)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, this.addCardForm, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta guardada con éxito!',
@@ -778,7 +781,8 @@ export default {
     },
     deleteCard(card_id) {
       const path = api + 'account/' + this.id + '/card/' + card_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Tarjeta eliminada con éxito!',
@@ -809,9 +813,7 @@ export default {
     validateEndDate(date) {
       var today, someday
       var exMonth = date.slice(0, 2)
-      console.log(exMonth)
       var exYear = date.slice(3)
-      console.log(exYear)
       today = new Date()
       someday = new Date()
       someday.setFullYear(exYear, exMonth, 1)
@@ -901,8 +903,8 @@ export default {
     },
     addressToDB(parameters) {
       const path = api + 'account/' + this.id + '/address'
-
-      axios.post(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.post(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -931,8 +933,8 @@ export default {
     },
     addressUpdateToDB(parameters) {
       const path = api + 'account/' + this.id + '/address/' + this.address_edit
-
-      axios.put(path, parameters)
+      var currentUser = {username: this.id, password: this.token}
+      axios.put(path, parameters,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección guardada con éxito!',
@@ -961,7 +963,8 @@ export default {
     },
     deleteAddress(address_id) {
       const path = api + 'account/' + this.id + '/address/' + address_id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Dirección eliminada con éxito!',
@@ -992,7 +995,8 @@ export default {
     },
     getCards() {
       var path = api + 'account/' + this.id + '/cards'
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.cards = []
             var data = res.data.accounts_cards
@@ -1024,8 +1028,8 @@ export default {
     },
     getAddresses() {
       var path = api + 'account/' + this.id + '/addresses'
-
-      axios.get(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.get(path,{auth: currentUser})
           .then((res) => {
             this.addresses = res.data.accounts_addresses
             this.addressNumber = this.addresses.length
@@ -1049,6 +1053,19 @@ export default {
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
       return dd + "/" + mm + "/" + yyyy;
+    },
+    getDate(){
+      var today = new Date()
+      var dd = String(today.getDate()).padStart(2, '0')
+      var m = String(today.getMonth() + 1).padStart(2, '0')
+      var yyyy = today.getFullYear()
+      var hh = today.getHours().toString()
+      var mm = today.getMinutes().toString()
+      if (mm.length < 2)
+        mm = "0" + mm
+      if (hh.length < 2)
+        hh = "0" + hh
+      return dd + "/" + m + "/" + yyyy + " " + hh + ":" + mm
     }
   }
 }

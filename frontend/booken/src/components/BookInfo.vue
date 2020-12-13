@@ -13,11 +13,11 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
-      <div class="card" style="margin-top: 1em">
+      <div class="card" style="margin-top: 1em; margin-bottom: 0.5em">
         <div class="card-body" style="text-align: left">
           <!-- Book title and author -->
           <div class="row row-cols-1 row-cols-md-2">
-            <div class="col" v-if="book_found">
+            <div class="col" v-if="book_found && this.loading == false">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle">{{ bookInfo.name }}</p></h1>
               <h1 class="card-title" v-if="edit"><input class="form-control" type="text" v-model="bookInfo.name"
                                                         style="font-size: 52px" placeholder="Título del libro"></h1>
@@ -42,7 +42,7 @@
                        style="margin-top: 0.5em">
               </div>
             </div>
-            <div class="col" style="text-align: right; margin-bottom: 1em" v-if="book_found">
+            <div class="col" style="text-align: right; margin-bottom: 1em" v-if="book_found && this.loading == false">
               <h1 class="card-title" v-if="book_found && !edit"><p class="bookTitle"
                                                                    style="text-align: right !important">
                 {{ this.replaceDecimal(bookInfo.price) }}€</p></h1>
@@ -55,13 +55,16 @@
                       v-if="type == 2 && !edit" @click="editInfo"><i class="fas fa-edit"
                                                                      style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt">Editar</a></button>
+              <button class="btn btn-danger my-2 my-sm-0 mr-2" type="submit"
+                      v-if="edit"><i class="fas fa-times" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
+                  class="navbartextbt" @click="discardChanges">Descartar</a></button>
               <button class="btn btn-warning my-2 my-sm-0 mr-2" type="submit"
                       v-if="edit"><i class="fas fa-save" style="color: #FFF; font-size: 1.5em; margin-right: 0.5em"/><a
                   class="navbartextbt" @click="saveChanges">Guardar</a></button>
             </div>
           </div>
           <!-- Book images/found -->
-          <div class="col" v-if="book_found">
+          <div class="col" v-if="book_found && this.loading == false">
             <div class="row">
               <div ref="images" class="col" style="margin-bottom: 2rem">
                 <div style="display:flex; flex-direction: row">
@@ -152,7 +155,7 @@
                       <td v-if="bookInfo.cover_type == 0 && !edit">Tapa dura</td>
                       <td v-if="bookInfo.cover_type == 1 && !edit">Tapa blanda</td>
                       <td v-if="edit">
-                        <select class="form-control">
+                        <select class="form-control" v-model="bookInfo.cover_type">
                           <option :selected="bookInfo.cover_type == -1">Seleccione formato</option>
                           <option :selected="bookInfo.cover_type == 0" value=0>Tapa dura</option>
                           <option :selected="bookInfo.cover_type == 1" value=1>Tapa blanda</option>
@@ -160,12 +163,16 @@
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">ISBN</th>
-                      <td v-if="!edit">{{ bookInfo.isbn }}</td>
-                      <td v-if="edit"><input class="form-control" v-model="bookInfo.isbn" type="number" maxlength="13">
-                      </td>
+                      <th scope="row">Idioma</th>
+                      <td v-if="!edit">{{ bookInfo.language }}</td>
+                      <td v-if="edit"><input class="form-control" v-model="bookInfo.language" type="text"></td>
                     </tr>
-
+                    <tr>
+                    <th scope="row">ISBN</th>
+                    <td v-if="!edit">{{ bookInfo.isbn }}</td>
+                    <td v-if="edit"><input class="form-control" v-model="bookInfo.isbn" type="number" maxlength="13">
+                    </td>
+                    </tr>
                     <tr v-if="edit">
                       <th scope="row">Descripción corta</th>
                       <td><textarea class="form-control" rows="3" v-model="bookInfo.desc"></textarea></td>
@@ -207,14 +214,21 @@
           </div>
           <!-- Book images/not found -->
           <div class="col" v-else style="text-align: center">
-            <h1>No se ha encontrado el libro</h1>
-            <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
-                 src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+            <div v-if="this.loading == false">
+              <h1>No se ha encontrado el libro</h1>
+              <img style="width: 50%; margin-top: 2rem" class="animate__animated animate__tada  animate__infinite"
+                   src="https://www.pinclipart.com/picdir/big/160-1604750_sad-cloud-icon-clipart.png">
+            </div>
+            <div v-if="this.loading == true" style="text-align: center">
+              <h3>Cargando</h3>
+              <div class="spinner-border text-info" role="status" style="width: 5em; height: 5em; margin-top: 0.5em">
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 1rem"
-           v-if="book_found && book_id != 0">
+           v-if="book_found && book_id != 0 && this.loading == false">
         <div class="card-body">
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col">
@@ -308,7 +322,18 @@
           <div class="row" v-if="reviews.length > 0">
             <div class="col-12" v-for="(item) in this.viewingReviews" :key="item.user">
               <div class="card" style="width: auto; margin-top: 1em">
-                <div class="card-header">{{ item.name }} - {{ item.date }}</div>
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col">
+                      {{ item.name }} - {{ item.date }}
+                    </div>
+                    <div class="col" style="text-align: right" v-if="type == 2">
+                      <button v-if="type == 2" class="btn btn-sm btn-danger" style="margin-left: 0.5em"
+                              @click="deleteReview(item.id)"><i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <div class="card-body">
                   <h5 class="card-title"><b>{{ item.title }}</b></h5>
                   <h6 class="card-subtitle" style="margin-top: 1em">Valoración</h6>
@@ -362,15 +387,17 @@
           <a class="navbartextbt">Ver menos</a>
         </button>
       </div>
-      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem">
-        <div class="card-body">
+      <div class="card" style="text-align: left; margin-top: 1rem; margin-bottom: 2rem" v-if="this.bookInfo.id != 0">
+        <div class="card-body" v-if="this.loading == false">
           <h2 class="card-title">Te recomendamos</h2>
           <div class="row row-cols-1 row-cols-md-4">
             <div class="col mb-4" v-for="(item, index) in this.booksRM" :key="index">
               <div class="card h-100">
-                <img
-                    :src="item.cover_image_url"
-                    class="card-img-top" alt="...">
+                <router-link :to="{name: 'BookInfo', params: {id: item.id}}">
+                  <img
+                      :src="item.cover_image_url"
+                      class="card-img-top" alt="...">
+                </router-link>
                 <div class="card-body">
                   <h6 class="card-subtitle">{{ item.author[0] }}</h6>
                   <h4 class="card-title">
@@ -402,7 +429,7 @@ export default {
   },
 
   created() {
-    scrollTo(0 ,0)
+    scrollTo(0, 0)
     this.is_edit = this.$route.query.is_edit
     this.book_id = this.$route.params.id
     this.initAuthors()
@@ -410,6 +437,7 @@ export default {
       if (this.admin) {
         this.book_found = 1
         this.edit = 1
+        this.loading = false
       }
     } else {
       this.initBookInfo()
@@ -424,6 +452,7 @@ export default {
       loggedIn: false,
       book_found: 0,
       newAutor: 0,
+      loading: true,
       addvaluationNumber: 0,
       valuationTitle: '',
       valuationText: '',
@@ -473,6 +502,34 @@ export default {
     }
   },
   methods: {
+    deleteReview(id) {
+      var path = api + 'review/' + id
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path,{auth: currentUser})
+          // eslint-disable-next-line no-unused-vars
+          .then((res) => {
+            toastr.success('', 'Reseña eliminada',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+            this.getReviewsFromDB()
+          })
+          .catch((error) => {
+            console.log(error)
+            toastr.error('', 'No se ha podido borrar la reseña',
+                {
+                  timeOut: 2500,
+                  progressBar: true,
+                  newestOnTop: true,
+                  positionClass: 'toast-bottom-right',
+                  preventDuplicates: true
+                })
+          })
+    },
     getReviewsFromDB() {
       var path = api + 'reviewsBook/' + this.$route.params.id
       axios.get(path)
@@ -497,7 +554,6 @@ export default {
       }
     },
     splitReviews() {
-      console.log(this.reviews)
       if (this.reviews.length <= 2) {
         this.viewingReviews = this.reviews
       } else {
@@ -524,7 +580,7 @@ export default {
     postReview() {
 
       var path = api + 'review'
-
+      var currentUser = {username: this.id, password: this.token}
       axios.post(path, {
         "user_id": this.id,
         "book_id": this.bookInfo.id,
@@ -532,7 +588,7 @@ export default {
         "valuation": this.addvaluationNumber,
         "comment": this.valuationText,
         "date": this.getTodayDate()
-      })
+      },{auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', '¡Reseña añadida!',
@@ -546,7 +602,7 @@ export default {
             this.getReviewsFromDB()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
             toastr.error('', 'No se ha guardar la reseña.',
                 {
                   timeOut: 2500,
@@ -573,6 +629,10 @@ export default {
       if (this.admin) {
         this.edit = 1
       }
+    },
+    discardChanges() {
+      this.edit = false
+      this.initBookInfo()
     },
     saveChanges() {
       if (this.admin) {
@@ -631,6 +691,10 @@ export default {
         if (this.bookInfo.cover_image_url == '') {
           this.bookInfo.cover_image_url = 'https://i.ibb.co/jkbth7h/Portada-no-disponible.png'
         }
+        if(this.bookInfo.author != 0){
+          this.nAutor.name = this.bookInfo.author
+        }
+        var currentUser = {username: this.id, password: this.token}
         if (this.book_id != 0) {
           path = api + 'book/' + this.book_id
           axios.put(path, {
@@ -654,7 +718,7 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
                 toastr.success('', '¡Libro actualizado correctamente!',
@@ -665,9 +729,10 @@ export default {
                       positionClass: 'toast-bottom-right',
                       preventDuplicates: true
                     })
+                this.initBookInfo()
               })
               .catch((error) => {
-                this.toPrint(error)
+                console.log(error)
                 toastr.error('', 'No se ha podido guardar los cambios en el libro.',
                     {
                       timeOut: 2500,
@@ -700,9 +765,10 @@ export default {
             'total_available': this.bookInfo.available,
             'cover_image_url': this.bookInfo.cover_image_url,
             'back_cover_image_url': this.bookInfo.back_cover_image_url
-          })
+          },{auth: currentUser})
               // eslint-disable-next-line no-unused-vars
               .then((res) => {
+                this.$router.push({path: '/book/' + res.data.book.id})
                 toastr.success('', '¡Libro añadido correctamente!',
                     {
                       timeOut: 2500,
@@ -774,8 +840,8 @@ export default {
         this.wish_list = []
         var path = api + 'wishlist/' + this.id + '/' + book.id
         axios.post(path)
+            // eslint-disable-next-line no-unused-vars
             .then((res) => {
-              console.log(res.data)
               toastr.success('', 'Añadido a tu lista de deseos.',
                   {
                     timeOut: 2500,
@@ -838,12 +904,7 @@ export default {
         'quant': 1,
         'quant_t': book.available
       })
-    }
-    ,
-    toPrint(toPrint) {
-      console.log(toPrint)
-    }
-    ,
+    },
     initAuthors() {
       var path = api + 'authors'
 
@@ -852,7 +913,7 @@ export default {
             this.authors = res.data.authors
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     }
     ,
@@ -865,6 +926,7 @@ export default {
             this.bookInfo.id = res.data.book.id
             this.bookInfo.name = res.data.book.name
             this.bookInfo.author = res.data.book.author[0]
+            this.nAutor.name = res.data.book.author[0]
             this.bookInfo.genre = res.data.book.genre
             this.bookInfo.year = res.data.book.year
             this.bookInfo.editorial = res.data.book.editorial
@@ -879,9 +941,11 @@ export default {
             this.bookInfo.num_pages = res.data.book.num_pages
             this.bookInfo.back_cover_image_url = res.data.book.back_cover_image_url
             this.bookInfo.synopsis = res.data.book.synopsis
+            this.loading = false
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
+            this.loading = false
           })
     }
     ,
@@ -906,20 +970,20 @@ export default {
             this.recommendBooks()
           })
           .catch((error) => {
-            this.toPrint(error)
+            console.log(error)
           })
     },
     recommendBooks() {
       var min = 0, max = this.books.length - 1
       var r1 = 0, r2 = 0, r3 = 0, r4 = 0
-      while(r1 == r2 || r1 == r3 || r1 == r4 ||
-          r2 == r1 || r2 == r3 || r2 == r4 ||
-          r3 == r1 || r3 == r2 || r3 == r4 ||
-          r4 == r1 || r4 == r2 || r4 == r3){
-        r1 =  Math.floor(Math.random()*(max-min+1)+min)
-        r2 =  Math.floor(Math.random()*(max-min+1)+min)
-        r3 =  Math.floor(Math.random()*(max-min+1)+min)
-        r4 =  Math.floor(Math.random()*(max-min+1)+min)
+      while (r1 == r2 || r1 == r3 || r1 == r4 ||
+      r2 == r1 || r2 == r3 || r2 == r4 ||
+      r3 == r1 || r3 == r2 || r3 == r4 ||
+      r4 == r1 || r4 == r2 || r4 == r3) {
+        r1 = Math.floor(Math.random() * (max - min + 1) + min)
+        r2 = Math.floor(Math.random() * (max - min + 1) + min)
+        r3 = Math.floor(Math.random() * (max - min + 1) + min)
+        r4 = Math.floor(Math.random() * (max - min + 1) + min)
       }
       this.booksRM.push(this.books[r1])
       this.booksRM.push(this.books[r2])

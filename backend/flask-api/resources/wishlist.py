@@ -1,16 +1,18 @@
 from flask_restful import Resource
 from models.wishlist import WishlistModel
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 from models.book import BookModel
 
 
 class Wishlist(Resource):
 
+    @auth.login_required
     def get(self, id_account):
         wl = WishlistModel.find_by_account(id_account)
         if wl:
             return {'List': wl.json()}, 200
 
+    @auth.login_required
     def post(self, id_account, id_book):
         acc = AccountModel.find_by_id(id_account)
         if not acc:
@@ -25,6 +27,7 @@ class Wishlist(Resource):
         wl.save_to_db()
         return {'message': "Book with ['id': {}] added to wish list".format(id_book), 'wl': wl.json()}, 200
 
+    @auth.login_required
     def delete(self, id_account, id_book):
         acc = AccountModel.find_by_id(id_account)
         if not acc:

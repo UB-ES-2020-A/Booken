@@ -1,3 +1,4 @@
+# file deepcode ignore W0611: <comment the reason here>
 from data import books, users, admin_add, admin_cards
 from db import db, create_app
 from models.author import AuthorModel
@@ -9,8 +10,9 @@ from models.review import ReviewModel
 from models.address import AddressModel
 from models.payment_card import CardModel
 from models.wishlist import WishlistModel
+from models.interface import InterfaceModel
 
-
+"""
 app = create_app()
 app.app_context().push()
 
@@ -62,3 +64,4 @@ print("add_data> Added {} new books and {} new authors".format(bookss, authorss)
 db.session.commit()
 db.session.close()
 exit(0)
+"""

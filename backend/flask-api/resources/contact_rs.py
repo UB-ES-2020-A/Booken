@@ -1,15 +1,17 @@
 from flask_restful import Resource, reqparse
 from models.contact import ContactModel
 
+from models.accounts import auth
 
 class Contact(Resource):
     # Get: Returns a contact_query information
+    @auth.login_required(role='dev_manager')
     def get(self, idd):
         contact = ContactModel.find_by_id(idd)
         if contact:
             return {"contact": contact.json()}, 200
 
-        return {"Error: ": "Contact information not found"}, 400
+        return {"Error: ": "Contact information not found"}, 404
 
     # Post: Adds a contact_query to our database
     def post(self):
@@ -24,13 +26,11 @@ class Contact(Resource):
         data = parser.parse_args()
         contact = ContactModel(data['full_name'], data['email'], data['phone_number'], data['contact_query'])
 
-        try:
-            contact.save_to_db()
-            return {"Message": "Contact saved correctly"}, 200
-        except:
-            return {"Message": "Couldn't save changes"}, 500
+        contact.save_to_db()
+        return {"Message": "Contact saved correctly"}, 200
 
     # Delete: Deletes an account from the database
+    @auth.login_required(role='dev_manager')
     def delete(self, idd):
         contact = ContactModel.find_by_id(idd)
         if not contact:
@@ -40,6 +40,7 @@ class Contact(Resource):
 
 
 class ContactList(Resource):
+    @auth.login_required(role='dev_manager')
     def get(self):
         contacts = []
         for a in ContactModel.query.all():

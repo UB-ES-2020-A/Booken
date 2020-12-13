@@ -37,17 +37,11 @@ class AuthorModel(db.Model):
 
     @classmethod
     def find_by_id(cls, idd):
-        try:
-            return AuthorModel.query.filter_by(id=idd).first()
-        except:
-            return None
+        return AuthorModel.query.filter_by(id=idd).first()
 
     @classmethod
     def find_by_name(cls, name):
-        try:
-            return AuthorModel.query.filter_by(name=name).first()
-        except:
-            return None
+        return AuthorModel.query.filter_by(name=name).first()
 
     @classmethod
     def num_authors(cls):

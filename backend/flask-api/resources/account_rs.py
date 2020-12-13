@@ -10,7 +10,7 @@ class Account(Resource):
         account = AccountModel.find_by_id(idd)
         if account:
             return {"account": account.json()}, 200
-        return {"error: ": "Account not found"}, 400
+        return {"error: ": "Account not found"}, 404
 
     # Post: Adds an account to our database
     def post(self):
@@ -23,14 +23,11 @@ class Account(Resource):
         parser.add_argument('password', required=True, type=str, help="This field cannot be left blank")
 
         data = parser.parse_args()
+        if AccountModel.find_by_email(data['email']):
+            return {"message": "Account already registered for that email address"}, 409
         account = AccountModel(data['email'], data['name'], data['lastname'], data['password'])
-
-        try:
-            account.save_to_db()
-            return {"message": "Account saved correctly"}, 200
-        except:
-            account.db_rollback()
-            return {"message": "Couldn't save changes"}, 500
+        account.save_to_db()
+        return {"message": "Account saved correctly"}, 200
 
     @auth.login_required
     def put(self, idd):
@@ -39,7 +36,7 @@ class Account(Resource):
             if g.user != account:
                 return {"error: ": "You cannot modify an account which you are not log with"}, 401
         else:
-            return {"error: ": "Account not found"}, 400
+            return {"error: ": "Account not found"}, 404
 
         parser = reqparse.RequestParser()
 
@@ -47,18 +44,17 @@ class Account(Resource):
         parser.add_argument('name', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('lastname', type=str, required=True, help="This field cannot be left blank")
         parser.add_argument('email', type=str, required=True, help="This field cannot be left blank")
-
         data = parser.parse_args()
+        if AccountModel.find_by_email(data['email']):
+            return {"message": "Account already registered for that email address"}, 409
+
         account.name, account.lastname, account.email = data['name'], data['lastname'], data['email']
 
-        try:
-            account.save_to_db()
-            return {"message": "Account saved correctly"}, 200
-        except:
-            account.db_rollback()
-            return {"message": "Couldn't save changes"}, 500
+        account.save_to_db()
+        return {"message": "Account saved correctly"}, 200
 
     # Delete: Deletes an account from the database
+    @auth.login_required
     def delete(self, idd):
         account = AccountModel.find_by_id(idd)
         if not account:
@@ -68,7 +64,6 @@ class Account(Resource):
         tmp = [rev.delete_from_db() for rev in account.reviews]
         tmp = [c.delete_from_db() for c in account.cards]
         tmp = [o.delete_from_db() for o in account.orders]
-        tmp = [wl.delete_from_db() for wl in account.wishlist]
 
         account.delete_from_db()
 
@@ -76,11 +71,13 @@ class Account(Resource):
 
 
 class Accounts(Resource):
+    @auth.login_required(role='stock_manager')
     def get(self):
         accounts = []
         for a in AccountModel.query.all():
             accounts.append(a.json())
         return {"accounts": accounts}, 200
+
 
 class PasswordChange(Resource):
     @auth.login_required
@@ -89,8 +86,6 @@ class PasswordChange(Resource):
         if account:
             if g.user != account:
                 return {"error: ": "You cannot modify an account which you are not log with"}, 401
-        else:
-            return {"error: ": "Account not found"}, 400
 
         parser = reqparse.RequestParser()
 
@@ -102,13 +97,6 @@ class PasswordChange(Resource):
 
         if account.verify_password(data["old_password"]):
             account.hash_password(data['new_password'])
-
-            try:
-                account.save_to_db()
-                return {"message": "Password changed correctly"}, 200
-            except:
-                account.db_rollback()
-                return {"message": "Couldn't save changes"}, 500
-
-        else:
-            return {'message': "Incorrect password"}, 406
+            account.save_to_db()
+            return {"message": "Password changed correctly"}, 200
+        return {'message': "Incorrect password"}, 406

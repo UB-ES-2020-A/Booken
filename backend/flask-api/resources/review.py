@@ -1,9 +1,8 @@
 from flask_restful import Resource, reqparse
 from db import db
-from models.accounts import AccountModel
+from models.accounts import AccountModel, auth
 from models.book import BookModel
 from models.review import ReviewModel
-
 
 class ReviewListUser(Resource):
 
@@ -37,6 +36,7 @@ class Review(Resource):
             return review.json(), 200
         return {'message': "Review with ['id': {}] not found".format(idd)}, 404
 
+    @auth.login_required
     def post(self):
         data = self.__parse_request__()
         user = AccountModel.find_by_id(data.get('user_id'))
@@ -51,11 +51,12 @@ class Review(Resource):
         new_review.save_to_db()
         user.reviews.append(new_review)
         book.reviews.append(new_review)
-        return new_review.json(), 200
+        return new_review.json(), 201
 
+    @auth.login_required(role = 'stock_manager')
     def put(self, idd):
         data = self.__parse_request__()
-        review =ReviewModel.find_by_id(id)
+        review = ReviewModel.find_by_id(idd)
         if not review:
             return {'message': "There is no review with ['id': {}]".format(idd)}, 404
         review.delete_from_db()
@@ -73,14 +74,13 @@ class Review(Resource):
         book.reviews.append(new_review)
         return new_review.json(), 200
 
+    @auth.login_required(role = 'stock_manager')
     def delete(self, idd):
         exists = ReviewModel.find_by_id(idd)
         if not exists:
             return {'message': "There is no review with ['id': {}], therefore it cannot be deleted".format(idd)}, 404
         user = AccountModel.find_by_id(exists.user_id)
         book = BookModel.find_by_id(exists.book_id)
-        user.reviews.remove(exists)
-        book.reviews.remove(exists)
         exists.delete_from_db()
         return {'message': "Review with ['id': {}] has successfully been deleted".format(idd)}, 200
 
