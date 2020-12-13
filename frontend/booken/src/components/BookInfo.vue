@@ -201,12 +201,12 @@
               </div>
               <div style="text-align: right" v-if="!edit">
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
-                        v-if="bookInfo.available > 0"><a
+                        v-if="bookInfo.available > 0 && type != 1"><a
                     class="navbartextbt" @click="addToCart(bookInfo)">Añadir a la cesta</a></button>
                 <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"
-                        v-if="bookInfo.available <= 0" disabled><a
+                        v-if="bookInfo.available <= 0 && type != 1" disabled><a
                     class="navbartextbt" v-if="!edit">Agotado</a></button>
-                <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit"><a
+                <button class="btn my-2 my-sm-0 mr-2" style="background-color: #3b494d" type="submit" v-if="type != 1"><a
                     class="navbartextbt" v-if="!edit" @click="addToWishList(bookInfo)">Añadir a lista de deseos</a>
                 </button>
               </div>
@@ -839,7 +839,8 @@ export default {
       if (this.logged) {
         this.wish_list = []
         var path = api + 'wishlist/' + this.id + '/' + book.id
-        axios.post(path)
+        var currentUser = {username: this.id, password: this.token}
+        axios.post(path, {}, {auth: currentUser})
             // eslint-disable-next-line no-unused-vars
             .then((res) => {
               toastr.success('', 'Añadido a tu lista de deseos.',

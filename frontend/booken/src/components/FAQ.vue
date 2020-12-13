@@ -232,7 +232,8 @@ export default {
     },
     deleteFAQ_DB() {
       var path = api + 'faq/' + this.FAQ_to_delete
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           .then((res) => {
             console.log(res)
             this.getConsults()
@@ -274,7 +275,8 @@ export default {
           "answer": this.newAnswer
         }
         var path = api + 'faq'
-        axios.post(path, tmp)
+        var currentUser = {username: this.id, password: this.token}
+        axios.post(path, tmp, {auth: currentUser})
             .then((res) => {
               console.log(res)
               this.getConsults()

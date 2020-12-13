@@ -79,7 +79,7 @@
                   <a class="navbartextbt">Ayuda</a>
                 </button>
               </li>
-              <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0  ">
+              <li class="nav-item  my-3 ml-2 mr-2 ml-md-auto mr-md-0 " v-if="typeIn != 1">
                 <button class="btn mt-md-3 my-xl-auto my-lg-auto" data-toggle="collapse"
                         data-target="#mynavbar, #mynavbar2"
                         style="background-color: #3b494d;" type="submit" @click="toggleCart" v-if="!viewCart">
@@ -635,7 +635,8 @@ export default {
       if (this.loggedIn) {
         this.wish_list = []
         var path = api + 'wishlist/' + this.idIn
-        axios.get(path)
+        var currentUser = {username: this.idIn, password: this.tokenIn}
+        axios.get(path, {auth: currentUser})
             .then((res) => {
               this.wish_list = res.data.List.Wishlist.books
             })
@@ -646,7 +647,8 @@ export default {
     },
     deleteFromWishList(book) {
       var path = api + 'wishlist/' + this.idIn + '/' + book.id
-      axios.delete(path)
+      var currentUser = {username: this.idIn, password: this.tokenIn}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Lista de deseados actualizada correctamente.',
