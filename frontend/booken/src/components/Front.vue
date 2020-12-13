@@ -340,8 +340,9 @@ export default {
       return !false
     },
     move(id1, id2) {
+      var currentUser = {username: this.id, password: this.token}
       var path = api + 'changeposition/' + id1 + '/' + id2
-      axios.post(path)
+      axios.post(path, {}, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             this.getBannersFromDB()
@@ -480,9 +481,10 @@ export default {
         }
         this.selectedBooks = []
       }
+      var currentUser = {username: this.id, password: this.token}
       if(this.idEditingSection == -1){
         path = api + 'interface'
-        axios.post(path, data)
+        axios.post(path, data, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Sección añadida.',
@@ -496,7 +498,7 @@ export default {
           })
       }else{
         path = api + 'interface/' + this.idEditingSection
-        axios.put(path, data)
+        axios.put(path, data, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             toastr.success('', 'Sección editada.',
@@ -514,7 +516,8 @@ export default {
     ,
     deleteSection(id) {
       var path = api + 'interface/' + id
-      axios.delete(path)
+      var currentUser = {username: this.id, password: this.token}
+      axios.delete(path, {auth: currentUser})
           // eslint-disable-next-line no-unused-vars
           .then((res) => {
             this.getBannersFromDB()
