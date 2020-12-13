@@ -131,11 +131,11 @@
             <a class="nav-link" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
                aria-controls="pills-home" aria-selected="false">Perfil</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-directions-tab" data-toggle="pill" href="#pills-directions" role="tab"
                aria-controls="pills-directions" aria-selected="false">Direcciones</a>
           </li>
-          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation">
+          <li class="flex-sm-fill text-sm-center nav-item myPillItems" role="presentation" v-if="type != 1">
             <a class="nav-link" id="pills-pay-tab" data-toggle="pill" href="#pills-pay" role="tab"
                aria-controls="pills-pay" aria-selected="false">Métodos de pago</a>
           </li>
@@ -1301,11 +1301,12 @@ export default {
     }
   },
   created() {
-    this.getOrders()
     if (this.type == 2)
         this.getOrdersList();
     if (this.type == 1)
       this.getContacts()
+    if(this.type == 0)
+      this.getOrders()
     this.getAddresses()
     this.getCards()
     this.getAccount()
@@ -1824,7 +1825,12 @@ export default {
 
       axios.put(path, {'name': this.fname, 'lastname': this.lname, 'email': this.email}, {auth: currentUser})
           .then((res) => {
-            path = res
+            bus.emit('has-logged-in', {
+              'logged': this.logged,
+              'token': String(res.data.token),
+              'type': parseInt(this.type),
+              'id': this.id
+            })
             toastr.success('', 'Datos de usuario actualizados.',
                 {
                   timeOut: 2500,
@@ -2289,8 +2295,8 @@ export default {
               positionClass: 'toast-bottom-right',
               preventDuplicates: true
             })
-      } else if (this.newAddressPhone.length != 9) {
-        toastr.info('', 'El numero de telefono debe contener 9 digitos.',
+      } else if (String(this.newAddressPhone).length != 9) {
+        toastr.info('', 'El numero de teléfono debe contener 9 digitos.',
             {
               timeOut: 2500,
               progressBar: true,

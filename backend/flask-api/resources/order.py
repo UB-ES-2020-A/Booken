@@ -219,7 +219,7 @@ class OrderAddress(Resource):
 class OrderUser(Resource):
     @auth.login_required
     def get(self, id_user):
-        orders = [order.json() for order in OrdersModel.find_by_id_user(id_user)]
+        orders = sorted([order.json() for order in OrdersModel.find_by_id_user(id_user)], key=lambda x: x['id'], reverse=True)
         return {"orders": orders}, 200
 
     @auth.login_required
